@@ -1,0 +1,31 @@
+{
+  "name": "hejmdal",
+  "version": "0.0.1",
+  "description": "Adgangsplatform...",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "npm run serve",
+    "serve": "LOG_LEVEL=DEBUG nodemon --exec node --no-stdin src/main.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DBCDK/hejmdal.git"
+  },
+  "author": "DBCDK",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DBCDK/hejmdal/issues"
+  },
+  "homepage": "https://github.com/DBCDK/hejmdal#readme",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-monitor": "^0.2.4",
+    "koa-router": "^5.4.0"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.14.0",
+    "babel-register": "^6.14.0",
+    "nodemon": "^1.10.2"
+  }
+}
