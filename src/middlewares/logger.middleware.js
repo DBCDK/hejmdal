@@ -11,8 +11,8 @@ export function LoggerMiddlewre() {
       },
       response: {
         status: this.response.status,
-        message: this.response.message,
+        message: this.response.message
       }
     });
-  }
+  };
 }
