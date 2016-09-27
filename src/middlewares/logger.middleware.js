@@ -1,6 +1,6 @@
 import {log} from '../utils/logging';
 
-export function LoggerMiddlewre() {
+export function LoggerMiddleware() {
   return function *(next) {
     yield next;
     log.info('page request', {

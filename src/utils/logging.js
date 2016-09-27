@@ -51,7 +51,7 @@ function doLog(level, msg, args) {
   var blob = {
     '@timestamp': (new Date()).toISOString(),
     '@version': 1,
-    app: 'serviceprovider',
+    app: 'hejmdal',
     version: version,
     level: level.toUpperCase(),
     host: hostname(),
@@ -62,7 +62,7 @@ function doLog(level, msg, args) {
     blob.msg = msg;
   }
 
-  console.log(JSON.stringify(Object.assign(blob, args))); //NOSONAR
+  console.log(JSON.stringify(Object.assign(blob, args))); // NOSONAR
 }
 
 /**
