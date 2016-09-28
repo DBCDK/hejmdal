@@ -19,6 +19,9 @@
     "url": "https://github.com/DBCDK/hejmdal/issues"
   },
   "homepage": "https://github.com/DBCDK/hejmdal#readme",
+  "engines": {
+    "node": ">=6.7.0"
+  },
   "dependencies": {
     "koa": "^1.2.4",
     "koa-router": "^5.4.0"
