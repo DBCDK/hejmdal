@@ -1,3 +1,8 @@
+[![David](https://img.shields.io/david/DBCDK/hejmdal.svg?style=flat-square)](https://david-dm.org/DBCDK/hejmdal#info=dependencies)
+[![David](https://img.shields.io/david/dev/DBCDK/hejmdal.svg?style=flat-square)](https://david-dm.org/DBCDK/hejmdal#info=devDependencies)
+[![bitHound Code](https://www.bithound.io/github/DBCDK/hejmdal/badges/code.svg)](https://www.bithound.io/github/DBCDK/hejmdal)
+[![Build Status](https://travis-ci.org/DBCDK/hejmdal.svg?branch=master)](https://travis-ci.org/DBCDK/hejmdal)
+
 # hejmdal
 *Heimdall eller Hejmdal (norrønt: Heimdallr) [...] har en fantastisk hørelse, og optræder af den grund i myterne som gudernes vagtmand, der sidder ved enden af Bifrost og overvåger, at ingen jætter sniger sig ind i Asgård.*
 [Wikipedia](https://da.wikipedia.org/wiki/Hejmdal)
