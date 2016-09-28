@@ -21,7 +21,6 @@
   "homepage": "https://github.com/DBCDK/hejmdal#readme",
   "dependencies": {
     "koa": "^1.2.4",
-    "koa-monitor": "^0.2.4",
     "koa-router": "^5.4.0"
   },
   "devDependencies": {
