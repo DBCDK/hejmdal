@@ -1,0 +1,11 @@
+
+# ==========
+# IDE #
+# ==========
+.idea/
+
+# ==========
+# NODE/NPM #
+# ==========
+node_modules/
+npm-debug.log
