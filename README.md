@@ -16,7 +16,7 @@ I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin
 
 ##Tests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
-Skal der tests på i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`*[]: 
+Skal der tests på i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test` 
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
 ##Logning
