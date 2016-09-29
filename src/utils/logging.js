@@ -62,7 +62,7 @@ function doLog(level, msg, args) {
     blob.msg = msg;
   }
 
-  console.log(JSON.stringify(Object.assign(blob, args))); // NOSONAR
+  console.log(JSON.stringify(Object.assign(blob, args))); // eslint-disable-line no-console
 }
 
 /**

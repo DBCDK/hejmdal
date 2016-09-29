@@ -24,7 +24,7 @@
     "koa-router": "^5.4.0"
   },
   "devDependencies": {
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.14.0",
     "babel-register": "^6.14.0",
     "chai": "^3.5.0",
