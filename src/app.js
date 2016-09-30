@@ -6,7 +6,7 @@
 // Config
 import {version} from '../package.json';
 // path for the API-endpoint, ie /v0/, /v1/, or ..
-const apiPath = '/v' + parseInt(version, 10) + '/';
+const apiPath = '/v' + parseInt(version, 10) + '/';   // eslint-disable-line
 
 // Libraries
 import koa from 'koa';
@@ -30,7 +30,7 @@ export function startServer() {
     origin: '*',
     methods: 'GET POST OPTIONS',
     headers: 'Authorization, Origin, X-Requested-With, Content-Type, Accept'
-  }
+  };
   app.use(cors(corsOptions));
 
   // trust ip-addresses from X-Forwarded-By header, and log requests
@@ -50,7 +50,7 @@ export function startServer() {
 
   app.use(Router.routes());
 
-  app.on('error', function(err, ctx) {
+  app.on('error', function (err, ctx) {
     log.error('Server error', {error: err, ctx: ctx});
   });
 
