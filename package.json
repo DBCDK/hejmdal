@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "koa": "^1.2.4",
+    "koa-response-time": "^1.0.2",
     "koa-router": "^5.4.0"
   },
   "devDependencies": {
