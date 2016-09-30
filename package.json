@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npm run serve",
     "lint": "eslint ./src",
+    "lint:checkstyle": "eslint ./src  -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "LOG_LEVEL=DEBUG nodemon --exec node --no-stdin src/main.js",
     "test": "mocha --recursive ./src --compilers js:babel-register --reporter mocha-jenkins-reporter"
