@@ -9,7 +9,7 @@
     "lint:checkstyle": "eslint ./src  -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "LOG_LEVEL=DEBUG nodemon --exec node --no-stdin src/main.js",
-    "test": "mocha --recursive ./src --compilers js:babel-register --reporter mocha-jenkins-reporter"
+    "test": "mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,9 @@
     "node": ">=6.7.0"
   },
   "dependencies": {
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
+    "babel-register": "^6.16.0",
     "koa": "^1.2.4",
     "koa-response-time": "^1.0.2",
     "koa-router": "^5.4.0",
@@ -32,12 +35,10 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.0.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
-    "babel-register": "^6.16.0",
     "chai": "^3.5.0",
     "eslint": "^3.6.1",
     "mocha": "^3.1.0",
-    "mocha-jenkins-reporter": "^0.2.6",
+    "mocha-jenkins-reporter": "0.2.6",
     "nodemon": "^1.10.2",
     "npm-check-updates": "^2.8.0",
     "sinon": "^1.17.6"
