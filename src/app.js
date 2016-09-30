@@ -1,4 +1,5 @@
 import koa from 'koa';
+import serve from 'koa-static';
 import router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import responseTime from 'koa-response-time';
 import {LoggerMiddleware} from './middlewares/logger.middleware';
@@ -11,6 +12,8 @@ export function startServer() {
 
   app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
   app.use(LoggerMiddleware());
+
+  app.use(serve('./static'));
 
   Router.get('/', function *(next) {
     this.body = 'Hejmdal!';
