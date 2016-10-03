@@ -28,7 +28,7 @@ export function startServer() {
 
   app.use(Router.routes());
 
- app.on('error', function(err, ctx) {
+  app.on('error', function(err, ctx) {
     log.error('Server error', {error: err, ctx: ctx});
   });
 
