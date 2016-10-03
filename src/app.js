@@ -10,6 +10,7 @@ const apiPath = '/v' + parseInt(version, 10) + '/';   // eslint-disable-line
 
 // Libraries
 import koa from 'koa';
+import serve from 'koa-static';
 import router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import cors from 'koa-cors'; // @see https://github.com/evert0n/koa-cors
 import responseTime from 'koa-response-time';
@@ -37,6 +38,8 @@ export function startServer() {
   app.proxy = true;
 
   app.use(LoggerMiddleware());
+
+  app.use(serve('./static'));
 
   Router.get('/', function *(next) {
     this.body = 'Hejmdal!';

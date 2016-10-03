@@ -9,3 +9,9 @@
 # ==========
 node_modules/
 npm-debug.log
+
+# ==========
+# REPORTS #
+# ==========
+
+report.xml
