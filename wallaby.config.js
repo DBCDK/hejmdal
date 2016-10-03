@@ -15,7 +15,10 @@ module.exports = function(wallaby) {
     compilers: {
       '**/*.js': wallaby.compilers.babel({
         babel: babel,
-        plugins: ['transform-es2015-modules-commonjs']
+        plugins: [
+          'transform-es2015-modules-commonjs',
+          'transform-async-to-generator'
+        ]
       })
     },
 
