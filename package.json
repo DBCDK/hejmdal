@@ -9,7 +9,7 @@
     "lint:checkstyle": "eslint ./src  -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "LOG_LEVEL=DEBUG nodemon --exec node --no-stdin src/main.js",
-    "test": "mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter"
+    "test": "LOG_LEVEL=OFF mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter"
   },
   "repository": {
     "type": "git",

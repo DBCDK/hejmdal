@@ -1,10 +1,7 @@
-
-
 import fs from 'fs';
 import {hostname} from 'os';
 import process from 'process';
 import {version} from '../../package.json';
-
 
 /**
  * @returns current log level
