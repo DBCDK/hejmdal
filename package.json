@@ -29,6 +29,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
     "babel-register": "^6.16.0",
     "koa": "^1.2.4",
+    "koa-cors": "^0.0.16",
     "koa-response-time": "^1.0.2",
     "koa-router": "^5.4.0",
     "koa-static": "^2.0.0"
