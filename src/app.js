@@ -5,8 +5,6 @@
 
 // Config
 import {version} from '../package.json';
-// path for the API-endpoint, ie /v0/, /v1/, or ..
-const apiPath = '/v' + parseInt(version, 10) + '/';   // eslint-disable-line
 
 // Libraries
 import koa from 'koa';
@@ -20,6 +18,8 @@ import {LoggerMiddleware} from './middlewares/logger.middleware';
 import {log} from './utils/logging';
 
 export function startServer() {
+// path for the API-endpoint, ie /v0/, /v1/, or ..
+  const apiPath = '/v' + parseInt(version, 10) + '/';   // eslint-disable-line
   const app = koa();
   const Router = router();
   const PORT = process.env.PORT || 3010; // eslint-disable-line no-process-env
