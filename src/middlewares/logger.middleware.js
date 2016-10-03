@@ -14,7 +14,8 @@ export async function LoggerMiddleware(ctx, next) {
         message: ctx.response.message
       }
     });
-  } catch (e) {
+  }
+  catch (e) {
     log.error('parsing of ctx object failed', {error: e, ctx: ctx});
   }
 }
