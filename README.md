@@ -16,15 +16,16 @@ I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin
 
 ##Tests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
-Skal der tests på i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test` 
+Skal der tests på i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`
+ Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
 ##Logning
 Der logges til `stdout` med de levels der er specificeret i afsnittet om Environment variabler herunder.
 
 ##Environment variabler
-- `PORT`
-Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
 - `LOG_LEVEL`
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
+- `PORT`
+Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
