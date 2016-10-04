@@ -1,6 +1,5 @@
 import Router from 'koa-router';
-import compose from 'koa-compose';
-import {initialize, authenticate, callback}  from '../components/identityprovider/identityprovider';
+import {initialize, authenticate, callback}  from '../components/identityprovider/identityprovider.component';
 const router = new Router({ prefix: '/login' });
 
 router.get('/', initialize, authenticate);
