@@ -52,7 +52,7 @@ export function authenticate(ctx, next) {
  * @param ctx
  * @param next
  */
-export function callback(ctx, next) {
+export function identityProviderCallback(ctx, next) {
   ctx.state.user = {
     id: ctx.query.id,
     type: ctx.params.type,

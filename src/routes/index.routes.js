@@ -2,11 +2,11 @@ import combineRouters from 'koa-combine-routers';
 
 // Routes
 import rootRoutes from './root.routes';
-import ipRoutes from './idenityprovider.routes';
+import loginRoutes from './login.routes';
 
 const router = combineRouters([
   rootRoutes,
-  ipRoutes
+  loginRoutes
 ]);
 
 export default router;

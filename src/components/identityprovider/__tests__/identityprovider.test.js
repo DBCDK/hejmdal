@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {authenticate, initialize, callback} from '../identityprovider.component';
+import {authenticate, initialize, identityProviderCallback} from '../identityprovider.component';
 
 describe('test authenticate method', () => {
   const state = {
@@ -27,7 +27,7 @@ describe('test authenticate method', () => {
 });
 
 
-describe('test callback method', () => {
+describe('test identityProviderCallback method', () => {
   const ctx = {
     params: {
       type: 'test'
@@ -52,7 +52,7 @@ describe('test callback method', () => {
         },
       }
     };
-    callback(ctx, next);
+    identityProviderCallback(ctx, next);
     assert.deepEqual(ctx.state, expected);
   });
 });
