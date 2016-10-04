@@ -1,0 +1,137 @@
+import crypto from 'crypto';
+import {log} from '../utils/logging';
+
+const secretSalt = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
+
+/**
+ *
+ * @param {string} toEncrypt
+ * @return {string}
+ */
+function digestHMAC(toEncrypt) {
+  return crypto.createHmac('sha256', secretSalt).update(toEncrypt).digest('hex');
+}
+
+// TODO: ---- the 3 DB functions could live some other place than here  ------
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @param {object} attributes
+ * @returns {boolean}
+ */
+function writeTicketToDb(ticketIdentifier, attributes) {    // eslint-disable-line no-unused-vars
+  try {
+    // TODO: write attributes in ticket to some storage
+  }
+  catch (e) {
+    log.error('Write ticket', e.message);
+  }
+  return true;
+}
+
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @returns {mixed}
+ */
+function readTicketFromDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
+  const mockAttributes = {cpr: 1234567890};
+  let attributes = false;
+  try {
+    // TODO: read ticket from some storage
+    attributes = mockAttributes;
+  }
+  catch (e) {
+    log.error('Fetch ticket', e.message);
+  }
+  return attributes;
+}
+
+/**
+ *
+ * @param ticketIdentifier
+ * @returns {boolean}
+ */
+function deleteTicketInDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
+  try {
+    // TODO: delete ticket in some storage
+  }
+  catch (e) {
+    log.error('Delete ticket', e.message);
+  }
+  return true;
+}
+
+/**
+ * Verify that ticketToken is generated from ticketIdentifier
+ *
+ * @param {string} ticketIdentifier
+ * @param {string} ticketToken
+ * @return {boolean}
+ */
+function validateTicket(ticketIdentifier, ticketToken) {
+  return (ticketToken === digestHMAC(ticketIdentifier));
+}
+
+/**
+ * generate a ticketToken from ticketIdentifier
+ *
+ * @param {string} ticketIdentifier
+ * @return {string}
+ */
+function generateTicketToken(ticketIdentifier) {
+
+  return digestHMAC(ticketIdentifier);
+}
+
+/**
+ *
+ * @return {string}
+ */
+function getNextTicketIdentifier() {
+  // TODO: fetch number from unique counter or create unique sequence
+  return '12345';
+}
+
+/**
+ *
+ * @param {string} serviceId
+ * @param {object} attributes
+ * @return {string}
+ */
+export function storeTicket(serviceId, attributes) {
+  const ticketIdentifier = getNextTicketIdentifier();
+  const ticketToken = generateTicketToken(ticketIdentifier);
+
+  writeTicketToDb(ticketIdentifier, attributes);
+
+  return {ticketIdentifier: ticketIdentifier, ticketToken: ticketToken};
+}
+
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @param [string} ticketToken
+ * @param {boolean} invalidate
+ * @return {mixed}
+ */
+export function getTicket(ticketIdentifier, ticketToken, invalidate = true) {
+  let attributes = false;
+
+  if (validateTicket(ticketIdentifier, ticketToken)) {
+    attributes = readTicketFromDb(ticketIdentifier);
+    if (invalidate) {
+      deleteTicketInDb(ticketIdentifier);
+    }
+  }
+  return attributes;
+}
+
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @return {boolean}
+ */
+export function invalidateTicket(ticketIdentifier) {
+  return deleteTicketInDb(ticketIdentifier);
+}
