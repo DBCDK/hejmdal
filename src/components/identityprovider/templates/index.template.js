@@ -9,6 +9,7 @@ export default ({title, content}) => `
 <html>
 <head>
   <title>${title}</title>
+  <link rel="stylesheet" href="/main.css">
 </head>
 <body>
   <div id="content">
