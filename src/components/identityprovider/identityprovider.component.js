@@ -38,11 +38,10 @@ export function authenticate(ctx, next) {
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
     }
-  } catch (e) {
-    console.log(e);
+  }
+  catch (e) {
     ctx.status = 404;
   }
-  console.log(next);
   return next();
 }
 

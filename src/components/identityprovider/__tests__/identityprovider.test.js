@@ -14,8 +14,8 @@ describe('test authenticate method', () => {
     const ctx = {state};
     authenticate(ctx, next);
     assert.equal(ctx.status, 200);
-    assert.include(ctx.body, 'id="borchk"')
-    assert.notInclude(ctx.body, 'id="nemlogin"')
+    assert.include(ctx.body, 'id="borchk"');
+    assert.notInclude(ctx.body, 'id="nemlogin"');
   });
 
   it('Should return error', () => {
@@ -49,7 +49,7 @@ describe('test identityProviderCallback method', () => {
         query: {
           id: 'testId',
           somekey: 'somevalue'
-        },
+        }
       }
     };
     identityProviderCallback(ctx, next);
