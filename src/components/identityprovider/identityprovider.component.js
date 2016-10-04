@@ -1,10 +1,9 @@
-import index from '../../templates/index.template';
-import borchk from '../../templates/borchk.template';
-import nemlogin from '../../templates/nemlogin.template';
-import unilogin from '../../templates/unilogin.template';
+import index from './templates/index.template';
+import borchk from './templates/borchk.template';
+import nemlogin from './templates/nemlogin.template';
+import unilogin from './templates/unilogin.template';
 
 const templates = {index, borchk, nemlogin, unilogin};
-
 
 /**
  * Initializes state object.
