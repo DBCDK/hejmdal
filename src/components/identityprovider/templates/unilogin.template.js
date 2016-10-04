@@ -3,6 +3,6 @@
  *
  */
 
-export default () => `
-<a href="/login/callback/unilogin/qwerty?id=nemtestuser">UNI-login</a>
+export default (token) => `
+<a href="/login/identityProviderCallback/unilogin/${token}?id=nemtestuser">UNI-login</a>
 `;

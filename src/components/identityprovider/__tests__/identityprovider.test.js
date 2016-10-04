@@ -30,13 +30,16 @@ describe('test authenticate method', () => {
 describe('test identityProviderCallback method', () => {
   const ctx = {
     params: {
-      type: 'test'
+      type: 'test',
+      token: 'e3ddad404e9ec232aa04787bc0080ca5'
     },
     query: {
       id: 'testId',
       somekey: 'somevalue'
     },
-    state: {}
+    state: {
+      token: 'qwerty'
+    }
   };
   const next = () => {
   };
@@ -53,7 +56,7 @@ describe('test identityProviderCallback method', () => {
       }
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.state, expected);
+    assert.deepEqual(ctx.state.user, expected.user);
   });
 });
 
