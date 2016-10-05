@@ -15,3 +15,4 @@ npm-debug.log
 # ==========
 
 report.xml
+static/*.css
