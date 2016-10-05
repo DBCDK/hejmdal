@@ -5,12 +5,17 @@
  *
  * Tickets are identified by a ticketId and ticketToken
  *
+ * ? serviceId is used by storeTicket but not used - part of salting? and part of getTicket
+ * ? store return id and token
+ * ? export function at top or bottom
+ * ? filterings/mapping of CULR data to attributes to store
+ * ? DB functions moved otherwise
  */
 
 import crypto from 'crypto';
 import {log} from '../utils/logging';
 
-const ticketDB = {}
+const ticketDB = {};
 
 const secretSalt = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
 
