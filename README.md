@@ -27,5 +27,15 @@ Der logges til `stdout` med de levels der er specificeret i afsnittet om Environ
 - `LOG_LEVEL`
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
+- `NODE_ENV`
+Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production` 
 - `PORT`
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
+- `PRETTY_LOG`
+Sæt `PRETTY_LOG` til hvilken som helst værdi og alle logstatements vil blive pretty-printed. Hvis `PRETTY_LOG` er udefineret holdes logstatements på en enkelt linje. 
+
+# Dokumentation
+## Endpoints
+- `/logout` eller `/logout?redirect=URL` 
+En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en kort besked om at brugeren er logget ud. 
+
