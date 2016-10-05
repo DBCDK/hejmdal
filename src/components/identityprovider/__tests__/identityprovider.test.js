@@ -44,26 +44,45 @@ describe('test identityProviderCallback method', () => {
   const next = () => {
   };
 
-  it('Should add user to context', () => {
+  it('Should add unilogin user to context', () => {
+    ctx.params.type = 'unilogin';
     const expected = {
-      user: {
-        id: 'testId',
-        type: 'test',
-        query: {
-          id: 'testId',
-          somekey: 'somevalue'
-        }
-      }
+      cpr: 'testId',
+      type: 'unilogin',
+      unilogin: 'uniloginId'
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.state.user, expected.user);
+    assert.deepEqual(ctx.state.user, expected);
+  });
+
+  it('Should add nemlogin user to context', () => {
+    ctx.params.type = 'nemlogin';
+    const expected = {
+      cpr: 'testId',
+      type: 'nemlogin'
+    };
+    identityProviderCallback(ctx, next);
+    assert.deepEqual(ctx.state.user, expected);
+  });
+
+  it('Should add library user to context', () => {
+    ctx.params.type = 'borchk';
+    const expected = {
+      cpr: 'testId',
+      type: 'borchk',
+      libraryId: 'libraryId',
+      pincode: 'pincode'
+    };
+    identityProviderCallback(ctx, next);
+    assert.deepEqual(ctx.state.user, expected);
   });
 });
 
 describe('test initialize method', () => {
   it('Should add state to context', () => {
     const ctx = {};
-    const next = () => {};
+    const next = () => {
+    };
     initialize(ctx, next);
     assert.isDefined(ctx.state.user);
     assert.isObject(ctx.state.attributes);

@@ -1,12 +1,14 @@
 import crypto from 'crypto';
+import compose from 'koa-compose';
+import {log} from '../../utils/logging';
 import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
 
+
 const templates = {index, borchk, nemlogin, unilogin};
 const salt = 'thisisnotAsalt';
-
 
 /**
  * Create a new token.
@@ -73,10 +75,67 @@ export function authenticate(ctx, next) {
     }
   }
   catch (e) {
+    log.error(e);
     ctx.status = 404;
   }
   return next();
 }
+
+
+/**
+ * Parses the callback parameters for unilogin.
+ *
+ * @param ctx
+ * @param next
+ * @returns {*}
+ */
+export function uniloginCallback(ctx, next) {
+  if (ctx.params.type !== 'unilogin') {
+    return next();
+  }
+  ctx.state.user = {
+    cpr: ctx.query.id,
+    type: 'unilogin',
+    unilogin: 'uniloginId'
+  };
+}
+
+/**
+ * Parses the callback parameters for borchk.
+ *
+ * @param ctx
+ * @param next
+ * @returns {*}
+ */
+export function borchkCallback(ctx, next) {
+  if (ctx.params.type !== 'borchk') {
+    return next();
+  }
+  ctx.state.user = {
+    cpr: ctx.query.id,
+    type: 'borchk',
+    libraryId: 'libraryId',
+    pincode: 'pincode'
+  };
+}
+
+/**
+ * Parses the callback parameters for nemlogin.
+ *
+ * @param ctx
+ * @param next
+ * @returns {*}
+ */
+export function nemloginCallback(ctx, next) {
+  if (ctx.params.type !== 'nemlogin') {
+    return next();
+  }
+  ctx.state.user = {
+    cpr: ctx.query.id,
+    type: 'nemlogin'
+  };
+}
+
 
 /**
  * Callback function from external identityproviders
@@ -90,14 +149,14 @@ export function identityProviderCallback(ctx, next) {
       ctx.status = 403;
       return next();
     }
-    ctx.state.user = {
-      id: ctx.query.id,
-      type: ctx.params.type,
-      query: ctx.query
-    };
+
+    compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx, next);
+
+    // Expose the state, so we can view the result
     ctx.body = ctx.state;
   }
   catch (e) {
+    log.error(e);
     ctx.status = 500;
   }
 
