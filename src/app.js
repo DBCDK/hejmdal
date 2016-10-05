@@ -3,9 +3,6 @@
  * Configure and start our server
  */
 
-// Config
-import {version} from '../package.json';
-
 // Libraries
 import Koa from 'koa';
 import serve from 'koa-static';
@@ -21,9 +18,6 @@ import {log} from './utils/logging';
 export function startServer() {
   const app = new Koa();
   const PORT = process.env.PORT || 3010; // eslint-disable-line no-process-env
-
-  // path for the API-endpoint, ie /v0/, /v1/, or ..
-  const apiPath = '/v' + parseInt(version, 10) + '/';   // eslint-disable-line
 
   app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
   app.use(LoggerMiddleware);
