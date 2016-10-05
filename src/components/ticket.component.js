@@ -1,3 +1,12 @@
+/**
+ * @file
+ *
+ * Functions to store and retrieve attributes in a ticket, and invalidate the ticket once it is fetched
+ *
+ * Tickets are identified by a ticketId and ticketToken
+ *
+ */
+
 import crypto from 'crypto';
 import {log} from '../utils/logging';
 
