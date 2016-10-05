@@ -19,6 +19,48 @@ const ticketDB = {};
 
 const secretSalt = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
 
+/**
+ *
+ * @param {string} serviceId
+ * @param {object} attributes
+ * @return {string}
+ */
+export function storeTicket(serviceId, attributes) {
+  const ticketIdentifier = getNextTicketIdentifier();
+  const ticketToken = generateTicketToken(ticketIdentifier);
+
+  writeTicketToDb(ticketIdentifier, attributes);
+
+  return {ticketIdentifier: ticketIdentifier, ticketToken: ticketToken};
+}
+
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @param [string} ticketToken
+ * @param {boolean} invalidate
+ * @return {mixed}
+ */
+export function getTicket(ticketIdentifier, ticketToken, invalidate = true) {
+  let attributes = false;
+
+  if (validateTicket(ticketIdentifier, ticketToken)) {
+    attributes = readTicketFromDb(ticketIdentifier);
+    if (invalidate) {
+      deleteTicketInDb(ticketIdentifier);
+    }
+  }
+  return attributes;
+}
+
+/**
+ *
+ * @param {string} ticketIdentifier
+ * @return {boolean}
+ */
+export function invalidateTicket(ticketIdentifier) {
+  return deleteTicketInDb(ticketIdentifier);
+}
 
 // TODO: ---- the 3 DB functions could live some other place than here  ------
 /**
@@ -111,48 +153,5 @@ function generateTicketToken(ticketIdentifier) {
 function getNextTicketIdentifier() {
   // TODO: fetch number from unique counter or create unique sequence
   return '12345';
-}
-
-/**
- *
- * @param {string} serviceId
- * @param {object} attributes
- * @return {string}
- */
-export function storeTicket(serviceId, attributes) {
-  const ticketIdentifier = getNextTicketIdentifier();
-  const ticketToken = generateTicketToken(ticketIdentifier);
-
-  writeTicketToDb(ticketIdentifier, attributes);
-
-  return {ticketIdentifier: ticketIdentifier, ticketToken: ticketToken};
-}
-
-/**
- *
- * @param {string} ticketIdentifier
- * @param [string} ticketToken
- * @param {boolean} invalidate
- * @return {mixed}
- */
-export function getTicket(ticketIdentifier, ticketToken, invalidate = true) {
-  let attributes = false;
-
-  if (validateTicket(ticketIdentifier, ticketToken)) {
-    attributes = readTicketFromDb(ticketIdentifier);
-    if (invalidate) {
-      deleteTicketInDb(ticketIdentifier);
-    }
-  }
-  return attributes;
-}
-
-/**
- *
- * @param {string} ticketIdentifier
- * @return {boolean}
- */
-export function invalidateTicket(ticketIdentifier) {
-  return deleteTicketInDb(ticketIdentifier);
 }
 
