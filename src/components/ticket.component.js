@@ -1,16 +1,10 @@
 import crypto from 'crypto';
 import {log} from '../utils/logging';
 
+const ticketDB = {}
+
 const secretSalt = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
 
-/**
- *
- * @param {string} toEncrypt
- * @return {string}
- */
-function digestHMAC(toEncrypt) {
-  return crypto.createHmac('sha256', secretSalt).update(toEncrypt).digest('hex');
-}
 
 // TODO: ---- the 3 DB functions could live some other place than here  ------
 /**
@@ -22,6 +16,7 @@ function digestHMAC(toEncrypt) {
 function writeTicketToDb(ticketIdentifier, attributes) {    // eslint-disable-line no-unused-vars
   try {
     // TODO: write attributes in ticket to some storage
+    ticketDB[ticketIdentifier] = attributes;
   }
   catch (e) {
     log.error('Write ticket', e.message);
@@ -35,11 +30,12 @@ function writeTicketToDb(ticketIdentifier, attributes) {    // eslint-disable-li
  * @returns {mixed}
  */
 function readTicketFromDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
-  const mockAttributes = {cpr: 1234567890};
   let attributes = false;
   try {
     // TODO: read ticket from some storage
-    attributes = mockAttributes;
+    if (ticketDB[ticketIdentifier]) {
+      attributes = ticketDB[ticketIdentifier];
+    }
   }
   catch (e) {
     log.error('Fetch ticket', e.message);
@@ -55,11 +51,21 @@ function readTicketFromDb(ticketIdentifier) {           // eslint-disable-line n
 function deleteTicketInDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
   try {
     // TODO: delete ticket in some storage
+    delete ticketDB[ticketIdentifier];
   }
   catch (e) {
     log.error('Delete ticket', e.message);
   }
   return true;
+}
+
+/**
+ *
+ * @param {string} toHash
+ * @return {string}
+ */
+function digestHMAC(toHash) {
+  return crypto.createHmac('sha256', secretSalt).update(toHash).digest('hex');
 }
 
 /**
@@ -135,3 +141,4 @@ export function getTicket(ticketIdentifier, ticketToken, invalidate = true) {
 export function invalidateTicket(ticketIdentifier) {
   return deleteTicketInDb(ticketIdentifier);
 }
+
