@@ -5,61 +5,52 @@
  *
  * Tickets are identified by a ticketId and ticketToken
  *
- * ? serviceId is used by storeTicket but not used - part of salting? and part of getTicket
- * ? store return id and token
- * ? export function at top or bottom
- * ? filterings/mapping of CULR data to attributes to store
  * ? DB functions moved otherwise
  */
 
-import crypto from 'crypto';
 import {log} from '../utils/logging';
+import {createHash, validateHash} from '../utils/hash.utils';
 
 const ticketDB = {};
 
-const secretSalt = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
-
 /**
+ * Write a attribute object to storage, and returns an identifier and token for later retrieval
  *
- * @param {string} serviceId
- * @param {object} attributes
- * @return {string}
+ * @param ctx
+ * @param next
+ * @returns {*}
  */
-export function storeTicket(serviceId, attributes) {
-  const ticketIdentifier = getNextTicketIdentifier();
-  const ticketToken = generateTicketToken(ticketIdentifier);
+export function storeTicket(ctx, next) {
+  const ticket = ctx.state.ticket;
+  if (ticket !== null && ticket.attributes === Object(ticket.attributes) && ticket.identifier === null) {
+    const identifier = writeTicketToDb(ticket.attributes);
+    const token = createHash(identifier);
 
-  writeTicketToDb(ticketIdentifier, attributes);
-
-  return {ticketIdentifier: ticketIdentifier, ticketToken: ticketToken};
+    ctx.state.ticket = Object.assign(ticket, {
+      identifier: identifier,
+      token: token
+    });
+  }
+  return next();
 }
 
 /**
+ * Fetch an attribute object from storage from the identifier and token
  *
- * @param {string} ticketIdentifier
- * @param [string} ticketToken
- * @param {boolean} invalidate
- * @return {mixed}
+ * @param ctx
+ * @param next
+ * @returns {*}
  */
-export function getTicket(ticketIdentifier, ticketToken, invalidate = true) {
-  let attributes = false;
-
-  if (validateTicket(ticketIdentifier, ticketToken)) {
-    attributes = readTicketFromDb(ticketIdentifier);
-    if (invalidate) {
-      deleteTicketInDb(ticketIdentifier);
+export function getTicket(ctx, next) {
+  const ticket = ctx.state.ticket;
+  if (ticket !== null && ticket.token !== null && ticket.identifier !== null) {
+    ticket.attributes = false;
+    if (validateHash(ticket.token, ticket.identifier)) {
+      ticket.attributes = readTicketFromDb(ticket.identifier);
+      deleteTicketInDb(ticket.identifier);
     }
   }
-  return attributes;
-}
-
-/**
- *
- * @param {string} ticketIdentifier
- * @return {boolean}
- */
-export function invalidateTicket(ticketIdentifier) {
-  return deleteTicketInDb(ticketIdentifier);
+  return next();
 }
 
 // TODO: ---- the 3 DB functions could live some other place than here  ------
@@ -67,17 +58,19 @@ export function invalidateTicket(ticketIdentifier) {
  *
  * @param {string} ticketIdentifier
  * @param {object} attributes
- * @returns {boolean}
+ * @returns {string}
  */
-function writeTicketToDb(ticketIdentifier, attributes) {    // eslint-disable-line no-unused-vars
+function writeTicketToDb(attributes) {
+  let ticketIdentifier;
   try {
     // TODO: write attributes in ticket to some storage
+    ticketIdentifier = Object.keys(ticketDB).length;
     ticketDB[ticketIdentifier] = attributes;
   }
   catch (e) {
     log.error('Write ticket', e.message);
   }
-  return true;
+  return ticketIdentifier;
 }
 
 /**
@@ -85,7 +78,7 @@ function writeTicketToDb(ticketIdentifier, attributes) {    // eslint-disable-li
  * @param {string} ticketIdentifier
  * @returns {mixed}
  */
-function readTicketFromDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
+function readTicketFromDb(ticketIdentifier) {
   let attributes = false;
   try {
     // TODO: read ticket from some storage
@@ -104,7 +97,7 @@ function readTicketFromDb(ticketIdentifier) {           // eslint-disable-line n
  * @param ticketIdentifier
  * @returns {boolean}
  */
-function deleteTicketInDb(ticketIdentifier) {           // eslint-disable-line no-unused-vars
+function deleteTicketInDb(ticketIdentifier) {
   try {
     // TODO: delete ticket in some storage
     delete ticketDB[ticketIdentifier];
@@ -113,45 +106,5 @@ function deleteTicketInDb(ticketIdentifier) {           // eslint-disable-line n
     log.error('Delete ticket', e.message);
   }
   return true;
-}
-
-/**
- *
- * @param {string} toHash
- * @return {string}
- */
-function digestHMAC(toHash) {
-  return crypto.createHmac('sha256', secretSalt).update(toHash).digest('hex');
-}
-
-/**
- * Verify that ticketToken is generated from ticketIdentifier
- *
- * @param {string} ticketIdentifier
- * @param {string} ticketToken
- * @return {boolean}
- */
-function validateTicket(ticketIdentifier, ticketToken) {
-  return (ticketToken === digestHMAC(ticketIdentifier));
-}
-
-/**
- * generate a ticketToken from ticketIdentifier
- *
- * @param {string} ticketIdentifier
- * @return {string}
- */
-function generateTicketToken(ticketIdentifier) {
-
-  return digestHMAC(ticketIdentifier);
-}
-
-/**
- *
- * @return {string}
- */
-function getNextTicketIdentifier() {
-  // TODO: fetch number from unique counter or create unique sequence
-  return '12345';
 }
 
