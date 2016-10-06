@@ -10,11 +10,11 @@ import {log} from '../../utils/logging.util';
 
 export default class SessionStore extends Store {
   /**
-   * Initises the SessionStore and the underlying Storage component.
+   * Initises the SessionStore and the underlying storage component.
    * If the memory paramter is used one should be aware that sharring of sessions across instances of the application
-   * is not pissoble. The feaure is intended for testing only.
+   * is not possible. The feature is intended for testing only.
    *
-   * @param {boolean} memory if set to true a Map will be used for storring sessions
+   * @param {boolean} memory if set to true a Map will be used for storing sessions
    */
   constructor(memory = false) {
     super();

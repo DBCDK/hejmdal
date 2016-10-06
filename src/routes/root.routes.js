@@ -4,10 +4,9 @@
  */
 
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
-import {getVersionPrefix} from '../utils/version.util';
+import {VERSION_PREFIX} from '../utils/version.util';
 
-const versionPrefix = getVersionPrefix();
-const router = new Router({prefix: versionPrefix});
+const router = new Router({prefix: VERSION_PREFIX});
 
 router.get('/', (ctx, next) => {
   ctx.body = 'Hejmdal!';

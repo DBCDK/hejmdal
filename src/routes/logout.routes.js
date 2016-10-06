@@ -3,8 +3,10 @@
  * Handles logout
  */
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
+import {VERSION_PREFIX} from '../utils/version.util';
 
-const router = new Router();
+
+const router = new Router({prefix: VERSION_PREFIX});
 
 /**
  * Sets the session to null which will provoke the session to be destroyed.
