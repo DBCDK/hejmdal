@@ -6,7 +6,7 @@
 import {KeyValueStorage} from './keyvalue.storage.model';
 
 export class SessionStorage extends KeyValueStorage {
-  constructor(){
+  constructor() {
     const db_connection = {};
     super(db_connection);
   }

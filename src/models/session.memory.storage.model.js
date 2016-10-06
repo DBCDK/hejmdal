@@ -1,12 +1,12 @@
 /**
-* @file
-* Storage model for non-persistent (memory) storage of sessions
-*/
+ * @file
+ * Storage model for non-persistent (memory) storage of sessions
+ */
 
 import {KeyValueStorage} from './keyvalue.storage.model';
 
 export class SessionMemoryStorage extends KeyValueStorage {
-  constructor(){
+  constructor() {
     const db_connection = {};
     super(db_connection);
   }
