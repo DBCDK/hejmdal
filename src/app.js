@@ -26,13 +26,13 @@ import SessionStore from './components/SessionStore/SessionStore.component';
 
 export function startServer() {
   const app = new Koa();
-  const PORT = process.env.PORT || 3010; // eslint-disable-line no-process-env
+  const PORT = process.env.PORT || 3010;
 
   app.use(session({
     store: new SessionStore(),
     key: 'sid',
     maxAge: getSessionLifeTime(),
-    secure: process.env.NODE_ENV === 'production', // eslint-disable-line no-process-env
+    secure: process.env.NODE_ENV === 'production',
     path: '/',
     httpOnly: true
   }));

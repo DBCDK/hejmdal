@@ -10,7 +10,7 @@ describe('Testing the SessionStore class', () => {
   let store;
 
   beforeEach(() => {
-    store = new SessionStore();
+    store = new SessionStore(true);
   });
 
   afterEach(() => {
@@ -60,8 +60,10 @@ describe('Testing the SessionStore class', () => {
     const res = store.set(session, {});
 
     return res.then((sid) => {
-      store.destroy(sid);
-      assert.isUndefined(store.Store.get(sid));
+      return store.destroy(sid).then((res) => {
+        assert.isTrue(res);
+        assert.isUndefined(store.Store.get(sid));
+      });
     });
   });
 });
