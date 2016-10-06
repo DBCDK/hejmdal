@@ -22,7 +22,7 @@ describe('Testing the SessionStore class', () => {
     const res = store.set(newSession, {});
 
     return res.then((sid) => {
-      assert.isString(sid)
+      assert.isString(sid);
     });
   });
 
@@ -60,8 +60,8 @@ describe('Testing the SessionStore class', () => {
     const res = store.set(session, {});
 
     return res.then((sid) => {
-      return store.destroy(sid).then((res) => {
-        assert.isTrue(res);
+      return store.destroy(sid).then((result) => {
+        assert.isTrue(result);
         assert.isUndefined(store.Store.get(sid));
       });
     });
