@@ -4,6 +4,8 @@
  */
 
 import {Store} from 'koa-session2';
+import {SessionStorage} from '../../models/session.persistent.storage.model';
+import {SessionMemoryStorage} from '../../models/session.memory.storage.model';
 import {log} from '../../utils/logging.util';
 
 export default class SessionStore extends Store {
@@ -17,7 +19,7 @@ export default class SessionStore extends Store {
   constructor(memory = false) {
     super();
     // TODO request StoreController to connect to -- should tests run in a memorystore?
-    this.Store = memory ? new Map() : new Map();
+    this.Store = memory ? new SessionMemoryStorage() : new SessionStorage();
   }
 
   /**
@@ -62,6 +64,6 @@ export default class SessionStore extends Store {
    */
   async destroy(sid) {
     // TODO request session delted on StoreController
-    return await this.Store.delete(sid);
+    return await this.Store.deleteSession(sid);
   }
 }

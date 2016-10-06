@@ -31,16 +31,18 @@ describe('Testing the SessionStore class', () => {
     const res = store.set(newSession, {});
 
     return res.then((sid) => {
-      const content = store.Store.get(sid);
-      assert.isDefined(content);
-      assert.isObject(content);
+      return store.Store.get(sid).then((content) => {
+        assert.isDefined(content);
+        assert.isObject(content);
+      });
     });
   });
 
-  it('It should return undefined when no matching session matching given sid is found', () => {
+  it('It should return false when no matching session matching given sid is found', () => {
     const sid = 'unknown-sid';
-    const content = store.Store.get(sid);
-    assert.isUndefined(content);
+    return store.Store.get(sid).then((content) => {
+      assert.isFalse(content);
+    });
   });
 
   it('It should return session object when given a sid', () => {
@@ -62,7 +64,9 @@ describe('Testing the SessionStore class', () => {
     return res.then((sid) => {
       return store.destroy(sid).then((result) => {
         assert.isTrue(result);
-        assert.isUndefined(store.Store.get(sid));
+        return store.Store.get(sid).then((content) => {
+          assert.isFalse(content);
+        });
       });
     });
   });

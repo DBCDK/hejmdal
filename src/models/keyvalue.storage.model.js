@@ -11,8 +11,8 @@ export class KeyValueStorage {
   /**
    * Constructor should have the DB connection as parameter
    */
-  constructor() {
-    this.someDb = {};
+  constructor(db_connecton = {}) {
+    this.someDb = db_connecton;
   }
 
   /**
@@ -21,17 +21,40 @@ export class KeyValueStorage {
    * @param {object} attributes
    * @returns {string} key to stored object
    */
-  writeObject(object) {
+  writeObject(attributes) {
     let objectKey = false;
     try {
       // TODO: write attributes in ticket to some storage
       objectKey = Object.keys(this.someDb).length;
-      this.someDb[objectKey] = object;
+      this.someDb[objectKey] = attributes;
     }
     catch (e) {
       log.error('Write object', e.message);
     }
+
     return objectKey;
+  }
+
+  /**
+   * Store an object in a DB by the given key
+   *
+   * @param {string} key
+   * @param {object} value
+   * @returns {boolean} Returns true if succesfully stored otherwise false
+   */
+  writeObjectWithKey(key, value) {
+    let success = false;
+
+    try {
+      // TODO: write attributes in ticket to some storage
+      this.someDb[key] = value;
+      success = true;
+    }
+    catch (e) {
+      log.error('Write object with key', e.message);
+    }
+
+    return success;
   }
 
   /**
@@ -70,5 +93,4 @@ export class KeyValueStorage {
     }
     return true;
   }
-
 }
