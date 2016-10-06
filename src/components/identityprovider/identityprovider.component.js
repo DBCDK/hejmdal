@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import compose from 'koa-compose';
-import {log} from '../../utils/logging';
+import {log} from '../../utils/logging.util';
 import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';

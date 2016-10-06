@@ -8,18 +8,20 @@ const router = new Router();
 
 /**
  * Sets the session to null which will provoke the session to be destroyed.
- * After the session is destroyed the a message is shown to the user, unless a redirect paramter is present. If
+ * After the session is destroyed a message is shown to the user, unless a redirect paramter is present. If
  * that's the case the browser will be redirected to that.
  */
-router.get('/logout', async (ctx, next) => {
-  await next();
+router.get('/logud', (ctx, next) => {
   ctx.session = null;
 
-  if(ctx.request.query.redirect){
+  if (ctx.request.query.redirect) {
     ctx.redirect(ctx.request.query.redirect);
-  } else {
+  }
+  else {
     ctx.body = 'Du er nu logget ud';
   }
+
+  next();
 });
 
 export default router;

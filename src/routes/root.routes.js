@@ -1,9 +1,12 @@
-import {version} from '../../package.json';
+/**
+ * @file
+ * Specifying the most simple routes
+ */
+
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
+import {getVersionPrefix} from '../utils/version.util';
 
-// prefix for the API-endpoint, ie /v0, /v1, or ..
-const versionPrefix = '/v' + parseInt(version, 10);
-
+const versionPrefix = getVersionPrefix();
 const router = new Router({prefix: versionPrefix});
 
 router.get('/', (ctx, next) => {

@@ -3,7 +3,7 @@ import {hostname} from 'os';
 import process from 'process';
 import {version} from '../../package.json';
 
-const PRETTY_PRINT = process.env.PRETTY_LOG ? 2 : null;
+const PRETTY_PRINT = process.env.PRETTY_LOG ? 2 : null; // eslint-disable-line no-process-env
 
 /**
  * @returns current log level

@@ -1,0 +1,38 @@
+/**
+ * @file
+ * Class that extends the koa-seesion2 Store object and serves as the binding layer to the session storage
+ */
+
+import {Store} from 'koa-session2';
+import {createHash} from '../../utils/hash.utils';
+import {log} from '../../utils/logging.util';
+
+export default class SessionStore extends Store {
+  constructor() {
+    super();
+    this.Store = new Map();
+  }
+
+  async get(sid) {
+    return await this.Store.get(sid);
+  }
+
+  async set(session, opts) {
+    if (!opts.sid) {
+      opts.sid = createHash(this.getID(32));
+    }
+
+    try {
+      await this.Store.set(opts.sid, session);
+    }
+    catch (e) {
+      log.error('Faield to set session', e.message);
+    }
+
+    return opts.sid;
+  }
+
+  async destroy(sid) {
+    return await this.Store.delete(sid);
+  }
+}
