@@ -52,6 +52,7 @@ export function initialize(ctx, next) {
       providers: ['borchk', 'unilogin']
     },
     token: 'qwerty',
+    ticket: null,
     service: 'testservice'
   }, ctx.state || {});
   return next();

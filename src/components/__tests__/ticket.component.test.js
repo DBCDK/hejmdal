@@ -3,29 +3,44 @@ import {assert} from 'chai';
 import {storeTicket, getTicket} from '../ticket.component.js';
 
 describe('test store and get ticket', () => {
+  const state = {
+    ticket: {
+      attributes: null,
+      identifier: 'foo',
+      token: 'bar'
+    }
+  };
+  const next = () => {
+  };
   it('should return false for nonexisting ticket', () => {
-    const falseContent = getTicket('foo', 'bar');
-    assert.isFalse(falseContent);
+    const ctx = {state};
+    getTicket(ctx, next);
+    assert.isFalse(ctx.state.ticket.attributes);
   });
 
-  const serviceId = '654321';
   const attributes = {cpr: '123', library: '717171'};
-  let ticket;
-  it('should create a ticket', () => {
-    ticket = storeTicket(serviceId, attributes);
-    assert.isString(ticket.ticketIdentifier);
-    assert.isString(ticket.ticketToken);
+  it('should create a ticket-identifier and -token', () => {
+    state.ticket.attributes = attributes;
+    state.ticket.identifier = null;
+    const ctx = {state};
+    storeTicket(ctx, next);
+    assert.isNumber(ctx.state.ticket.identifier);
+    assert.isString(ctx.state.ticket.token);
   });
 
   it('should fetch the ticket', () => {
-    const ticketContent = getTicket(ticket.ticketIdentifier, ticket.ticketToken);
-    assert.isObject(ticketContent);
-    assert.deepEqual(ticketContent, attributes);
+    state.ticket.attributes = null;
+    const ctx = {state};
+    getTicket(ctx, next);
+    assert.isObject(ctx.state.ticket.attributes);
+    assert.deepEqual(ctx.state.ticket.attributes, attributes);
   });
 
   it('should only fetch ticket once', () => {
-    const falseContent = getTicket(ticket.ticketIdentifier, ticket.ticketToken);
-    assert.isFalse(falseContent);
+    state.ticket.attributes = null;
+    const ctx = {state};
+    getTicket(ctx, next);
+    assert.isFalse(ctx.state.ticket.attributes);
   });
 });
 
