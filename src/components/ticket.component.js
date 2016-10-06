@@ -13,7 +13,7 @@
  */
 
 import crypto from 'crypto';
-import {log} from '../utils/logging';
+import {log} from '../utils/logging.util';
 
 const ticketDB = {};
 
