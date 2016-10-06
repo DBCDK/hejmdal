@@ -33,7 +33,7 @@ Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`:
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
 - `PRETTY_LOG`
 Sæt `PRETTY_LOG` til hvilken som helst værdi og alle logstatements vil blive pretty-printed. Hvis `PRETTY_LOG` er udefineret holdes logstatements på en enkelt linje.
- - `SESSION_LIFE_TIME`
+- `SESSION_LIFE_TIME`
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
 
 # Dokumentation
