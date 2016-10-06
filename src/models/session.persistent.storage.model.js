@@ -1,3 +1,8 @@
+/**
+ * @file
+ * Storage model for persistent storage of sessions
+ */
+
 import {KeyValueStorage} from './keyvalue.storage.model';
 
 export class SessionStorage extends KeyValueStorage {
