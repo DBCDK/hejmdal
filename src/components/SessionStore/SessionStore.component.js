@@ -4,25 +4,27 @@
  */
 
 import {Store} from 'koa-session2';
-import {createHash} from '../../utils/hash.utils';
 import {log} from '../../utils/logging.util';
 
 export default class SessionStore extends Store {
   constructor() {
     super();
     this.Store = new Map();
+    // TODO request StoreController to connect to -- should tests run in a memorystore?
   }
 
   async get(sid) {
+    // TODO request session from StoreController
     return await this.Store.get(sid);
   }
 
   async set(session, opts) {
     if (!opts.sid) {
-      opts.sid = createHash(this.getID(32));
+      opts.sid = this.getID(32);
     }
 
     try {
+      // TODO set session on StoreController
       await this.Store.set(opts.sid, session);
     }
     catch (e) {
@@ -33,6 +35,7 @@ export default class SessionStore extends Store {
   }
 
   async destroy(sid) {
+    // TODO request session delted on StoreController
     return await this.Store.delete(sid);
   }
 }
