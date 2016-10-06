@@ -8,10 +8,10 @@
  * ? DB functions moved otherwise
  */
 
-import {log} from '../utils/logging';
 import {createHash, validateHash} from '../utils/hash.utils';
+import {KeyValueStorage} from '../models/keyvalue.storage.model';
 
-const ticketDB = {};
+var storage = new KeyValueStorage();
 
 /**
  * Write a attribute object to storage, and returns an identifier and token for later retrieval
@@ -23,7 +23,7 @@ const ticketDB = {};
 export function storeTicket(ctx, next) {
   const ticket = ctx.state.ticket;
   if (ticket !== null && ticket.attributes === Object(ticket.attributes) && ticket.identifier === null) {
-    const identifier = writeTicketToDb(ticket.attributes);
+    const identifier = storage.writeObject(ticket.attributes);
     const token = createHash(identifier);
 
     ctx.state.ticket = Object.assign(ticket, {
@@ -46,65 +46,9 @@ export function getTicket(ctx, next) {
   if (ticket !== null && ticket.token !== null && ticket.identifier !== null) {
     ticket.attributes = false;
     if (validateHash(ticket.token, ticket.identifier)) {
-      ticket.attributes = readTicketFromDb(ticket.identifier);
-      deleteTicketInDb(ticket.identifier);
+      ticket.attributes = storage.readObject(ticket.identifier);
+      storage.deleteObject(ticket.identifier);
     }
   }
   return next();
 }
-
-// TODO: ---- the 3 DB functions could live some other place than here  ------
-/**
- *
- * @param {string} ticketIdentifier
- * @param {object} attributes
- * @returns {string}
- */
-function writeTicketToDb(attributes) {
-  let ticketIdentifier;
-  try {
-    // TODO: write attributes in ticket to some storage
-    ticketIdentifier = Object.keys(ticketDB).length;
-    ticketDB[ticketIdentifier] = attributes;
-  }
-  catch (e) {
-    log.error('Write ticket', e.message);
-  }
-  return ticketIdentifier;
-}
-
-/**
- *
- * @param {string} ticketIdentifier
- * @returns {mixed}
- */
-function readTicketFromDb(ticketIdentifier) {
-  let attributes = false;
-  try {
-    // TODO: read ticket from some storage
-    if (ticketDB[ticketIdentifier]) {
-      attributes = ticketDB[ticketIdentifier];
-    }
-  }
-  catch (e) {
-    log.error('Fetch ticket', e.message);
-  }
-  return attributes;
-}
-
-/**
- *
- * @param ticketIdentifier
- * @returns {boolean}
- */
-function deleteTicketInDb(ticketIdentifier) {
-  try {
-    // TODO: delete ticket in some storage
-    delete ticketDB[ticketIdentifier];
-  }
-  catch (e) {
-    log.error('Delete ticket', e.message);
-  }
-  return true;
-}
-
