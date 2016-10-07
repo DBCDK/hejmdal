@@ -11,6 +11,9 @@ import cors from 'koa-cors'; // @see https://github.com/evert0n/koa-cors
 import convert from 'koa-convert';
 import responseTime from 'koa-response-time';
 import session from 'koa-session2';
+import Knex from 'knex';
+import knexConfig from '../knexfile';
+import {Model} from 'objection';
 
 // Middleware
 import {LoggerMiddleware} from './middlewares/logger.middleware';
@@ -27,6 +30,14 @@ import SessionStore from './components/SessionStore/SessionStore.component';
 export function startServer() {
   const app = new Koa();
   const PORT = process.env.PORT || 3010;
+
+  // Initialize knex.
+  const knex = Knex(knexConfig.development);
+
+  // Bind all Models to a knex instance. If you only have one database in
+  // your server this is all you have to do. For multi database systems, see
+  // the Model.bindKnex method.
+  Model.knex(knex);
 
   app.use(session({
     store: new SessionStore(),
@@ -58,7 +69,7 @@ export function startServer() {
 
   app.use(router);
 
-  app.on('error', function (err, ctx) {
+  app.on('error', function(err, ctx) {
     log.error('Server error', {error: err, ctx: ctx});
   });
 

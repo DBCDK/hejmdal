@@ -30,7 +30,7 @@ export default class SessionStore extends Store {
    */
   async get(sid) {
     // TODO request session from StoreController
-    return await this.Store.get(sid);
+    return this.Store.get(sid);
   }
 
   /**
@@ -50,7 +50,8 @@ export default class SessionStore extends Store {
       await this.Store.set(opts.sid, session);
     }
     catch (e) {
-      log.error('Faield to set session', e.message);
+      console.error(e);
+      log.error('Faield to set session', {error: e.message});
     }
 
     return opts.sid;

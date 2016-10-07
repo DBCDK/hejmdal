@@ -24,6 +24,14 @@ Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins
 Der logges til `stdout` med de levels der er specificeret i afsnittet om Environment variabler herunder.
 
 ##Environment variabler
+- `HEJMDAL_DB_HOST`
+DB host
+- `HEJMDAL_DB_NAME`
+Navn på hejmdals db
+- `HEJMDAL_DB_USER`
+db-bruger
+- `HEJMDAL_DB_USER_PASSWORD`
+Password til hejmdal db-bruger
 - `LOG_LEVEL`
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)

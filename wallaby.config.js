@@ -17,7 +17,8 @@ module.exports = function(wallaby) {
         babel: babel,
         plugins: [
           'transform-es2015-modules-commonjs',
-          'transform-async-to-generator'
+          'transform-async-to-generator',
+          'transform-class-properties'
         ]
       })
     },
