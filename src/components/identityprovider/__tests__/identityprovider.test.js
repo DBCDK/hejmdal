@@ -1,12 +1,14 @@
 import {assert} from 'chai';
 import {authenticate, initialize, identityProviderCallback} from '../identityprovider.component';
+import {createHash} from '../../../utils/hash.utils';
 
 describe('test authenticate method', () => {
   const state = {
     user: null,
     attributes: {
       providers: ['borchk', 'unilogin']
-    }
+    },
+    token: 'qwerty'
   };
   const next = () => {
   };
@@ -31,7 +33,7 @@ describe('test identityProviderCallback method', () => {
   const ctx = {
     params: {
       type: 'test',
-      token: 'e3ddad404e9ec232aa04787bc0080ca5'
+      token: '...depending.on.secret...'
     },
     query: {
       id: 'testId',
@@ -41,6 +43,7 @@ describe('test identityProviderCallback method', () => {
       token: 'qwerty'
     }
   };
+  ctx.params.token = createHash(ctx.state.token);
   const next = () => {
   };
 
