@@ -13,7 +13,7 @@ export class KeyValueStorage {
    */
   constructor(db_connecton = {}) {
     this.someDb = db_connecton;
-    this.someKey = 0;
+    this.someKey = 1;
   }
 
   /**
