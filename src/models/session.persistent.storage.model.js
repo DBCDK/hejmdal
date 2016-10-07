@@ -9,7 +9,7 @@ export class PersistenSessionStorage {
 
   async get(sid) {
     return Session.query().select('session').where('sid', sid).then((result) => {
-      return result.length ? result[0].session : undefined;
+      return result.length ? result[0].session : null;
     });
   }
 
