@@ -11,7 +11,7 @@ import unilogin from './templates/unilogin.template';
 const templates = {index, borchk, nemlogin, unilogin};
 
 /**
- * Initializes state object.
+ * Initializes state object.  TODO: in its own component???
  *
  * @param ctx
  * @param next
@@ -32,7 +32,7 @@ export function initialize(ctx, next) {
 }
 
 /**
- * Returns Identityprovider screen if user is not logged in.
+ * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
  *
  * @param ctx
  * @param next
@@ -125,9 +125,6 @@ export function identityProviderCallback(ctx, next) {
     }
 
     compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx, next);
-
-    // Expose the state, so we can view the result
-    ctx.body = ctx.state;
   }
   catch (e) {
     log.error(e);

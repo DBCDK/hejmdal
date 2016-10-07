@@ -5,13 +5,31 @@
  *
  * Tickets are identified by a ticketId and ticketToken
  *
- * ? DB functions moved otherwise
  */
 
 import {createHash, validateHash} from '../utils/hash.utils';
 import {KeyValueStorage} from '../models/keyvalue.storage.model';
 
 var storage = new KeyValueStorage();
+
+/**
+ * selects data from CULR / identityProvider as given by the service-context from Smaug
+ *
+ * TODO: probably in its own component
+ *
+ * @param ctx
+ * @param next
+ * @returns {*}
+ */
+export function generateTicketData(ctx, next) {
+  const attributes = {
+    cpr: ctx.state.user.cpr
+  };
+  ctx.state.ticket = {
+    attributes: attributes
+  };
+  return next();
+}
 
 /**
  * Write a attribute object to storage, and returns an identifier and token for later retrieval
@@ -22,7 +40,7 @@ var storage = new KeyValueStorage();
  */
 export function storeTicket(ctx, next) {
   const ticket = ctx.state.ticket;
-  if (ticket !== null && ticket.attributes === Object(ticket.attributes) && ticket.identifier === null) {
+  if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
     const identifier = storage.writeObject(ticket.attributes);
     const token = createHash(identifier);
 
@@ -42,13 +60,15 @@ export function storeTicket(ctx, next) {
  * @returns {*}
  */
 export function getTicket(ctx, next) {
-  const ticket = ctx.state.ticket;
-  if (ticket !== null && ticket.token !== null && ticket.identifier !== null) {
-    ticket.attributes = false;
-    if (validateHash(ticket.token, ticket.identifier)) {
-      ticket.attributes = storage.readObject(ticket.identifier);
-      storage.deleteObject(ticket.identifier);
+  let attributes = false;
+  if (!ctx.state.ticket && ctx.params.token && ctx.params.id) {
+    if (validateHash(ctx.params.token, ctx.params.id)) {
+      attributes = storage.readObject(ctx.params.id);
+      storage.deleteObject(ctx.params.id);
     }
   }
+  ctx.state.ticket = {
+    attributes: attributes
+  };
   return next();
 }

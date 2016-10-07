@@ -13,6 +13,7 @@ export class KeyValueStorage {
    */
   constructor(db_connecton = {}) {
     this.someDb = db_connecton;
+    this.someKey = 0;
   }
 
   /**
@@ -25,7 +26,7 @@ export class KeyValueStorage {
     let objectKey = false;
     try {
       // TODO: write attributes in ticket to some storage
-      objectKey = Object.keys(this.someDb).length;
+      objectKey = this.someKey++;
       this.someDb[objectKey] = attributes;
     }
     catch (e) {
