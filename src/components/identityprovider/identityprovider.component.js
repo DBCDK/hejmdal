@@ -1,6 +1,7 @@
 import compose from 'koa-compose';
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
+import {VERSION_PREFIX} from '../../utils/version.util';
 import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
@@ -42,7 +43,7 @@ export function authenticate(ctx, next) {
   try {
     if (!ctx.state.user) {
       const authToken = createHash(ctx.state.token);
-      const content = ctx.state.attributes.providers.map(value => templates[value](authToken)).join('');
+      const content = ctx.state.attributes.providers.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
     }
