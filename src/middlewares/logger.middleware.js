@@ -1,4 +1,4 @@
-import {log} from '../utils/logging';
+import {log} from '../utils/logging.util';
 
 export async function LoggerMiddleware(ctx, next) {
   await next();

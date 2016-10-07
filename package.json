@@ -4,13 +4,13 @@
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
-    "dev": "npm run serve",
+    "dev": "LOG_LEVEL=DEBUG PRETTY_LOG=1 npm run serve",
     "build:css:dev": "postcss --map --use postcss-import --use autoprefixer --use cssnano src/**/*.css > static/main.css",
     "build:css:prod": "postcss --use postcss-import --use autoprefixer --use cssnano src/**/*.css > static/main.css",
     "lint": "eslint ./src",
     "lint:checkstyle": "eslint ./src  -o report.xml -f checkstyle",
     "ncu:check": "ncu",
-    "serve": "LOG_LEVEL=DEBUG nodemon --exec node --no-stdin src/main.js",
+    "serve": "nodemon --exec node --no-stdin src/main.js",
     "test": "LOG_LEVEL=OFF mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter"
   },
   "repository": {
@@ -37,6 +37,7 @@
     "koa-cors": "^0.0.16",
     "koa-response-time": "^2.0.0",
     "koa-router": "^7.0.0",
+    "koa-session2": "^1.0.8",
     "koa-static": "^2.0.0"
   },
   "devDependencies": {

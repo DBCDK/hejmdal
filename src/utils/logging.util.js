@@ -3,6 +3,8 @@ import {hostname} from 'os';
 import process from 'process';
 import {version} from '../../package.json';
 
+const PRETTY_PRINT = process.env.PRETTY_LOG ? 2 : null; // eslint-disable-line no-process-env
+
 /**
  * @returns current log level
  */
@@ -41,6 +43,7 @@ function getNumericalLogLevel(logLevel) {
 function doLog(level, msg, args) {
   const currentNumericalLogLevel = getNumericalLogLevel(getCurrentLogLevel());
   const targetNumericalLogLevel = getNumericalLogLevel(level);
+
   if (currentNumericalLogLevel < targetNumericalLogLevel) {
     return; // level low, do nothing
   }
@@ -52,14 +55,15 @@ function doLog(level, msg, args) {
     version: version,
     level: level.toUpperCase(),
     host: hostname(),
-    pid: process.pid
+    pid: process.pid,
+    env: process.env.NODE_ENV || 'dev'
   };
 
   if (msg) {
     blob.msg = msg;
   }
 
-  console.log(JSON.stringify(Object.assign(blob, args))); // eslint-disable-line no-console
+  console.log(JSON.stringify(Object.assign(blob, args), null, PRETTY_PRINT)); // eslint-disable-line no-console
 }
 
 /**
