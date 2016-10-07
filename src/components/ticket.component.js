@@ -22,12 +22,14 @@ var storage = new KeyValueStorage();
  * @returns {*}
  */
 export function generateTicketData(ctx, next) {
-  const attributes = {
-    cpr: ctx.state.user.cpr
-  };
-  ctx.state.ticket = {
-    attributes: attributes
-  };
+  if (ctx.state.user) {
+    const attributes = {
+      cpr: ctx.state.user.cpr
+    };
+    ctx.state.ticket = {
+      attributes: attributes
+    };
+  }
   return next();
 }
 
