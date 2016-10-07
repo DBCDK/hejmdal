@@ -6,7 +6,7 @@ import ctxdump from '../components/ctxdump.component.js';
 
 const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
-router.get('/', initialize, authenticate, generateTicketData, storeTicket, ctxdump);
+router.get('/', initialize, authenticate, generateTicketData, storeTicket/* , ctxdump */);
 router.get('/identityProviderCallback/:type/:token', initialize, identityProviderCallback, generateTicketData, storeTicket, ctxdump);
 router.get('/getTicket/:token/:id', initialize, authenticate, getTicket, ctxdump);
 
