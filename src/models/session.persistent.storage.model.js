@@ -3,23 +3,37 @@
  * Storage model for persistent storage of sessions
  */
 
-import {KeyValueStorage} from './keyvalue.storage.model';
+import Session from './db_models/session.model';
+import {log} from '../utils/logging.util';
 
-export class PersistenSessionStorage extends KeyValueStorage {
-  constructor() {
-    const db_connection = {};
-    super(db_connection);
+export class PersistenSessionStorage {
+
+  get(sid) {
+    return Session.query().select('session').where('sid', sid)
+      .then((result) => {
+        return result.length ? result[0].session : null;
+      })
+      .catch((error) => {
+        log.error('Failed to get session', {error: error.message});
+        return null;
+      });
   }
 
-  async get(sid) {
-    return await this.readObject(sid);
+  set(sid, session) {
+    return Session.query().insert({sid: sid, session: session})
+      .catch((error) => {
+        log.error('Failed to set session', {error: error.message});
+      });
   }
 
-  async set(sid, session) {
-    return await this.writeObjectWithKey(sid, session);
-  }
-
-  async deleteSession(sid) {
-    return await this.deleteObject(sid);
+  deleteSession(sid) {
+    return Session.query().delete().where('sid', sid)
+      .then(() => {
+        return true;
+      })
+      .catch((error) => {
+        log.error('Failed to delete session', {error: error.message});
+        return false;
+      });
   }
 }

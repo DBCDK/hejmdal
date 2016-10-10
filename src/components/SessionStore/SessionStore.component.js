@@ -6,7 +6,6 @@
 import {Store} from 'koa-session2';
 import {PersistenSessionStorage} from '../../models/session.persistent.storage.model';
 import {MemorySessionStorage} from '../../models/session.memory.storage.model';
-import {log} from '../../utils/logging.util';
 
 export default class SessionStore extends Store {
   /**
@@ -18,7 +17,6 @@ export default class SessionStore extends Store {
    */
   constructor(memory = false) {
     super();
-    // TODO request StoreController to connect to -- should tests run in a memorystore?
     this.Store = memory ? new MemorySessionStorage() : new PersistenSessionStorage();
   }
 
@@ -29,7 +27,6 @@ export default class SessionStore extends Store {
    * @return {undefined|object}
    */
   async get(sid) {
-    // TODO request session from StoreController
     return await this.Store.get(sid);
   }
 
@@ -45,13 +42,7 @@ export default class SessionStore extends Store {
       opts.sid = this.getID(128);
     }
 
-    try {
-      // TODO set session on StoreController
-      await this.Store.set(opts.sid, session);
-    }
-    catch (e) {
-      log.error('Faield to set session', e.message);
-    }
+    await this.Store.set(opts.sid, session);
 
     return opts.sid;
   }
@@ -63,7 +54,6 @@ export default class SessionStore extends Store {
    * @return {boolean} true if session was successfully deleted otherwise false i.e. if the session was not found.
    */
   async destroy(sid) {
-    // TODO request session delted on StoreController
     return await this.Store.deleteSession(sid);
   }
 }
