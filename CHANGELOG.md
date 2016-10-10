@@ -2,13 +2,39 @@
 
 ## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
 
+**Fixed bugs:**
+
+- Robots.txt er ikke aktiv [\#28](https://github.com/DBCDK/hejmdal/issues/28)
+- \#28: Robots.txt er ikke aktiv [\#30](https://github.com/DBCDK/hejmdal/pull/30) ([hrmoller](https://github.com/hrmoller))
+
 **Closed issues:**
 
+- SessionStorage klassen skal kunne gemme i en postgress [\#47](https://github.com/DBCDK/hejmdal/issues/47)
+- Hejmdal skal være baseret på koa@2 frem koa@1 [\#35](https://github.com/DBCDK/hejmdal/issues/35)
+- npm lint:checkstyle [\#29](https://github.com/DBCDK/hejmdal/issues/29)
 - Node version skal bumpes til 6.7 [\#23](https://github.com/DBCDK/hejmdal/issues/23)
+- Logning [\#21](https://github.com/DBCDK/hejmdal/issues/21)
+- Log ud [\#19](https://github.com/DBCDK/hejmdal/issues/19)
+- SessionStore [\#6](https://github.com/DBCDK/hejmdal/issues/6)
 - Opret basis node applikation [\#1](https://github.com/DBCDK/hejmdal/issues/1)
 
 **Merged pull requests:**
 
+- \#47: SessionStorage klassen skal kunne gemme i en postgress [\#51](https://github.com/DBCDK/hejmdal/pull/51) ([hrmoller](https://github.com/hrmoller))
+- \#11: endpoint for getTicket - placed under login. [\#50](https://github.com/DBCDK/hejmdal/pull/50) ([fvsdbc](https://github.com/fvsdbc))
+- \#5: use hash utils to generate and validate token [\#49](https://github.com/DBCDK/hejmdal/pull/49) ([fvsdbc](https://github.com/fvsdbc))
+- \#7: some tests for hash util [\#48](https://github.com/DBCDK/hejmdal/pull/48) ([fvsdbc](https://github.com/fvsdbc))
+- \#7: ticket ctx-driven. Minor change for hash.utils as add ticket to s… [\#44](https://github.com/DBCDK/hejmdal/pull/44) ([fvsdbc](https://github.com/fvsdbc))
+- \#6: SessionStore [\#42](https://github.com/DBCDK/hejmdal/pull/42) ([hrmoller](https://github.com/hrmoller))
+- issue \#7: ticket component. First shot at functions [\#40](https://github.com/DBCDK/hejmdal/pull/40) ([fvsdbc](https://github.com/fvsdbc))
+- \#5: setup for handling identityproviders [\#39](https://github.com/DBCDK/hejmdal/pull/39) ([vibjerg](https://github.com/vibjerg))
+- issue \#1: move version prefix to root.routes [\#38](https://github.com/DBCDK/hejmdal/pull/38) ([fvsdbc](https://github.com/fvsdbc))
+- Test was updated [\#37](https://github.com/DBCDK/hejmdal/pull/37) ([hrmoller](https://github.com/hrmoller))
+- \#35: Hejmdal skal være baseret på koa@2 frem koa@1 [\#36](https://github.com/DBCDK/hejmdal/pull/36) ([hrmoller](https://github.com/hrmoller))
+- Sandsynligt fix til knækkede CI tests [\#33](https://github.com/DBCDK/hejmdal/pull/33) ([hrmoller](https://github.com/hrmoller))
+- issue \#1: Add version and headers \(cors and proxy\) [\#32](https://github.com/DBCDK/hejmdal/pull/32) ([fvsdbc](https://github.com/fvsdbc))
+- \#29: npm lint:checkstyle [\#31](https://github.com/DBCDK/hejmdal/pull/31) ([hrmoller](https://github.com/hrmoller))
+- Outputting process time in repsonse headers [\#27](https://github.com/DBCDK/hejmdal/pull/27) ([hrmoller](https://github.com/hrmoller))
 - Tilføjede kommandoen ncu:check til check for opdateringer i dependenc… [\#26](https://github.com/DBCDK/hejmdal/pull/26) ([hrmoller](https://github.com/hrmoller))
 - Fjernede nogle underlige karaktere [\#25](https://github.com/DBCDK/hejmdal/pull/25) ([hrmoller](https://github.com/hrmoller))
 - \#23: Node version skal bumpes til 6.7 [\#24](https://github.com/DBCDK/hejmdal/pull/24) ([hrmoller](https://github.com/hrmoller))
