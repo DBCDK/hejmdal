@@ -6,7 +6,6 @@
 import {Store} from 'koa-session2';
 import {PersistenSessionStorage} from '../../models/session.persistent.storage.model';
 import {MemorySessionStorage} from '../../models/session.memory.storage.model';
-import {log} from '../../utils/logging.util';
 
 export default class SessionStore extends Store {
   /**
