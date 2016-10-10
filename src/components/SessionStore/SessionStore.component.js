@@ -18,7 +18,6 @@ export default class SessionStore extends Store {
    */
   constructor(memory = false) {
     super();
-    // TODO request StoreController to connect to -- should tests run in a memorystore?
     this.Store = memory ? new MemorySessionStorage() : new PersistenSessionStorage();
   }
 
@@ -29,8 +28,7 @@ export default class SessionStore extends Store {
    * @return {undefined|object}
    */
   async get(sid) {
-    // TODO request session from StoreController
-    return this.Store.get(sid);
+    return await this.Store.get(sid);
   }
 
   /**
@@ -45,14 +43,7 @@ export default class SessionStore extends Store {
       opts.sid = this.getID(128);
     }
 
-    try {
-      // TODO set session on StoreController
-      await this.Store.set(opts.sid, session);
-    }
-    catch (e) {
-      console.error(e); // eslint-disable-line TODO mmj stringify and include in log statement below
-      log.error('Faield to set session', {error: e.message});
-    }
+    await this.Store.set(opts.sid, session);
 
     return opts.sid;
   }
@@ -64,7 +55,6 @@ export default class SessionStore extends Store {
    * @return {boolean} true if session was successfully deleted otherwise false i.e. if the session was not found.
    */
   async destroy(sid) {
-    // TODO request session delted on StoreController
     return await this.Store.deleteSession(sid);
   }
 }

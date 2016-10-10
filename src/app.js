@@ -69,8 +69,8 @@ export function startServer() {
 
   app.use(router);
 
-  app.on('error', function(err, ctx) {
-    log.error('Server error', {error: err, ctx: ctx});
+  app.on('error', (err) => {
+    log.error('Server error', {error: err.message, stack: err.stack});
   });
 
   app.listen(PORT, () => {
