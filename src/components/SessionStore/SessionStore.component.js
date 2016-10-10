@@ -50,7 +50,7 @@ export default class SessionStore extends Store {
       await this.Store.set(opts.sid, session);
     }
     catch (e) {
-      console.error(e);
+      console.error(e); // eslint-disable-line TODO mmj stringify and include in log statement below
       log.error('Faield to set session', {error: e.message});
     }
 

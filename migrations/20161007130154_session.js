@@ -1,10 +1,9 @@
 /**
  * Creates the session table
  * @param knex
- * @param Promise
  * @return {*}
  */
-exports.up = function(knex, Promise) {
+exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('session', (table) => {
     table.increments('id').primary();
     table.string('sid', 256).unique().notNullable();
@@ -15,9 +14,8 @@ exports.up = function(knex, Promise) {
 /**
  * Drops the session table
  * @param knex
- * @param Promise
  * @return {*}
  */
-exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('session')
+exports.down = function(knex) {
+  return knex.schema.dropTable('session');
 };

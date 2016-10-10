@@ -15,7 +15,6 @@ export class PersistenSessionStorage {
 
   async set(sid, session) {
     return Session.query().insert({sid: sid, session: session}).then((result) => {
-      console.log('result', result);
       return result;
     });
   }
