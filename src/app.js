@@ -43,7 +43,7 @@ export function startServer() {
   // Making a query to db to ensure it is possible to connect
   Session.query().count('*')
     .catch((e) => {
-      log.error('Query failed', {error: e.message, stack: e.stack})
+      log.error('Query failed', {error: e.message, stack: e.stack});
     });
 
 

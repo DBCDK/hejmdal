@@ -1,9 +1,13 @@
-import {flatMapDeep} from 'lodash';
+/**
+ * @file
+ * TODO mmj do description
+ */
+
 
 export const CONFIG = {
   app: {
     env: process.env.NODE_ENV,
-    port: Number(process.env.PORT),
+    port: Number(process.env.PORT)
   },
   postgres: {
     client: 'postgresql',
@@ -24,7 +28,7 @@ export const CONFIG = {
   },
   log: {
     level: process.env.LOG_LEVEL,
-    pretty: process.env.PRETTY_LOG === "1",
+    pretty: process.env.PRETTY_LOG === '1'
   },
   session: {
     life_time: Number(process.env.SESSION_LIFE_TIME)
@@ -39,14 +43,15 @@ export const CONFIG = {
  * @param {Object} config
  */
 export function validateConfig(config = CONFIG) {
-  for(let key in config) {
-    if(typeof config[key] === 'object'){
+  for (let key in config) {
+    if (typeof config[key] === 'object') {
       validateConfig(config[key]);
-    } else {
-      if(config[key] === undefined ) {
+    }
+    else {
+      if (config[key] === undefined) { // eslint-disable-line no-undefined
         throw Error(`${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
-      if(typeof config[key] === 'number' && Number.isNaN(config[key])) {
+      if (typeof config[key] === 'number' && Number.isNaN(config[key])) {
         throw Error(`${key}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
     }
