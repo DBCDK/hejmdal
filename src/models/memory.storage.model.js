@@ -18,7 +18,7 @@ export default class MemoryStorage {
    * @param obj
    * @returns {*}
    */
-  insert(key, obj) {
+  async insert(key, obj) {
     if (!this.storage[key]) {
       return (this.storage[key] = obj);
     }
@@ -31,7 +31,7 @@ export default class MemoryStorage {
    * @param obj
    * @returns {number}
    */
-  insertNext(obj) {
+  async insertNext(obj) {
     this.storage[this.sequence] = obj;
     return this.sequence++;
   }
@@ -42,7 +42,7 @@ export default class MemoryStorage {
    * @param key
    * @returns {*}
    */
-  read(key) {
+  async read(key) {
     if (this.storage[key]) {
       return this.storage[key];
     }
@@ -56,7 +56,7 @@ export default class MemoryStorage {
    * @param obj
    * @returns {*}
    */
-  update(key, obj) {
+  async update(key, obj) {
     if (this.storage[key]) {
       return (this.storage[key] = obj);
     }
@@ -70,7 +70,7 @@ export default class MemoryStorage {
    * @param obj
    * @returns {*}
    */
-  upsert(key, obj) {
+  async upsert(key, obj) {
     return (this.storage[key] = obj);
   }
 
@@ -80,7 +80,7 @@ export default class MemoryStorage {
    * @param key
    * @returns {boolean}
    */
-  delete(key) {
+  async delete(key) {
     if (this.storage[key]) {
       return delete this.storage[key];
     }
