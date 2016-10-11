@@ -14,6 +14,7 @@ import session from 'koa-session2';
 import Knex from 'knex';
 import knexConfig from '../knexfile';
 import {Model} from 'objection';
+import Session from './models/db_models/session.model';
 
 // Middleware
 import {LoggerMiddleware} from './middlewares/logger.middleware';
@@ -38,6 +39,13 @@ export function startServer() {
   // your server this is all you have to do. For multi database systems, see
   // the Model.bindKnex method.
   Model.knex(knex);
+
+  // Making a query to db to ensure it is possible to connect
+  Session.query().count('*')
+    .catch((e) => {
+      log.error('Query failed', {error: e.message, stack: e.stack})
+    });
+
 
   app.use(session({
     store: new SessionStore(),
