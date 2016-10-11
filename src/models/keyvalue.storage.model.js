@@ -7,27 +7,24 @@
 
 import {log} from '../utils/logging.util';
 
-export class KeyValueStorage {
+export default class KeyValueStorage {
   /**
-   * Constructor should have the DB connection as parameter
+   * Constructor should have the CRUD storage class as parameter
    */
-  constructor(db_connecton = {}) {
-    this.someDb = db_connecton;
-    this.someKey = 1;
+  constructor(storage = () => {}) {
+    this.storage = storage;
   }
 
   /**
    * Store an object in a DB and return the key to it
    *
-   * @param {object} attributes
+   * @param {object} object
    * @returns {string} key to stored object
    */
-  writeObject(attributes) {
+  insertNext(object) {
     let objectKey = false;
     try {
-      // TODO: write attributes in ticket to some storage
-      objectKey = this.someKey++;
-      this.someDb[objectKey] = attributes;
+      objectKey = this.storage.insertNext(object);
     }
     catch (e) {
       log.error('Write object', e.message);
@@ -40,16 +37,14 @@ export class KeyValueStorage {
    * Store an object in a DB by the given key
    *
    * @param {string} key
-   * @param {object} value
+   * @param {object} object
    * @returns {boolean} Returns true if succesfully stored otherwise false
    */
-  writeObjectWithKey(key, value) {
+  insert(key, object) {
     let success = false;
 
     try {
-      // TODO: write attributes in ticket to some storage
-      this.someDb[key] = value;
-      success = true;
+      success = this.storage.insert(key, object);
     }
     catch (e) {
       log.error('Write object with key', e.message);
@@ -62,18 +57,15 @@ export class KeyValueStorage {
    * Read an on object from storage
    *
    * @param {string} objectKey
-   * @returns {mixed}
+   * @returns {boolean}
    */
-  readObject(objectKey) {
+  read(objectKey) {
     let object = false;
     try {
-      // TODO: read ticket from some storage
-      if (this.someDb[objectKey]) {
-        object = this.someDb[objectKey];
-      }
+      object = this.storage.read(objectKey);
     }
     catch (e) {
-      log.error('Fetch object', e.message);
+      log.error('Read object', e.message);
     }
     return object;
   }
@@ -84,14 +76,14 @@ export class KeyValueStorage {
    * @param {string} objectKey
    * @returns {boolean}
    */
-  deleteObject(objectKey) {
+  delete(objectKey) {
+    let success = false;
     try {
-      // TODO: delete ticket in some storage
-      delete this.someDb[objectKey];
+      success = this.storage.delete(objectKey);
     }
     catch (e) {
       log.error('Delete object', e.message);
     }
-    return true;
+    return success;
   }
 }

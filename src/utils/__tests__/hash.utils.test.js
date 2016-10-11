@@ -5,23 +5,23 @@ import {createHash, validateHash} from '../hash.utils.js';
 describe('test hashing', () => {
   let hash1;
   let hash2;
-  it('should create a hash from a string', () => {
+  it('should insert a hash from a string', () => {
     hash1 = createHash('some text');
     assert.isString(hash1);
   });
 
-  it('should create a different hash from a different string', () => {
+  it('should insert a different hash from a different string', () => {
     hash2 = createHash('some other text');
     assert.isString(hash2);
     assert.notEqual(hash1, hash2);
   });
 
-  it('should create a hash from a number', () => {
+  it('should insert a hash from a number', () => {
     hash1 = createHash(1234);
     assert.isString(hash1);
   });
 
-  it('should create identical hash from identical string', () => {
+  it('should insert identical hash from identical string', () => {
     hash2 = createHash('1234');
     assert.isString(hash2);
     assert.equal(hash1, hash2);

@@ -6,9 +6,9 @@
 import Session from './db_models/session.model';
 import {log} from '../utils/logging.util';
 
-export class PersistenSessionStorage {
+export default class PersistenSessionStorage {
 
-  get(sid) {
+  read(sid) {
     return Session.query().select('session').where('sid', sid)
       .then((result) => {
         return result.length ? result[0].session : null;
@@ -19,14 +19,14 @@ export class PersistenSessionStorage {
       });
   }
 
-  set(sid, session) {
+  insert(sid, session) {
     return Session.query().insert({sid: sid, session: session})
       .catch((error) => {
         log.error('Failed to set session', {error: error.message});
       });
   }
 
-  deleteSession(sid) {
+  delete(sid) {
     return Session.query().delete().where('sid', sid)
       .then(() => {
         return true;

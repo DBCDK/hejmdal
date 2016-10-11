@@ -8,9 +8,12 @@
  */
 
 import {createHash, validateHash} from '../utils/hash.utils';
-import {KeyValueStorage} from '../models/keyvalue.storage.model';
+import KeyValueStorage from '../models/keyvalue.storage.model';
+import PersistenTicketStorage from '../models/ticket.persistent.storage.model';
+import MemoryStorage from '../models/memory.storage.model';
 
-var storage = new KeyValueStorage();
+const memory = true;
+const storage = memory ? new KeyValueStorage(new MemoryStorage()) : new KeyValueStorage(new PersistenTicketStorage());
 
 /**
  * selects data from CULR / identityProvider as given by the service-context from Smaug
@@ -40,10 +43,10 @@ export function generateTicketData(ctx, next) {
  * @param next
  * @returns {*}
  */
-export function storeTicket(ctx, next) {
+export async function storeTicket(ctx, next) {
   const ticket = ctx.state.ticket;
   if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
-    const identifier = storage.writeObject(ticket.attributes);
+    const identifier = await storage.insertNext(ticket.attributes);
     const token = createHash(identifier);
 
     ctx.state.ticket = Object.assign(ticket, {
@@ -61,12 +64,12 @@ export function storeTicket(ctx, next) {
  * @param next
  * @returns {*}
  */
-export function getTicket(ctx, next) {
+export async function getTicket(ctx, next) {
   let attributes = false;
   if (!ctx.state.ticket && ctx.params.token && ctx.params.id) {
     if (validateHash(ctx.params.token, ctx.params.id)) {
-      attributes = storage.readObject(ctx.params.id);
-      storage.deleteObject(ctx.params.id);
+      attributes = await storage.read(ctx.params.id);
+      await storage.delete(ctx.params.id);
     }
   }
   ctx.state.ticket = {
