@@ -1,15 +1,16 @@
 import fs from 'fs';
 import {hostname} from 'os';
-import process from 'process';
 import {version} from '../../package.json';
 
-const PRETTY_PRINT = process.env.PRETTY_LOG ? 2 : null; // eslint-disable-line no-process-env
+import {CONFIG} from './config.util';
+
+const PRETTY_PRINT = CONFIG.log.pretty ? 2 : null; // eslint-disable-line no-process-env
 
 /**
  * @returns current log level
  */
 export function getCurrentLogLevel() {
-  return process.env.LOG_LEVEL || 'INFO'; // eslint-disable-line no-process-env
+  return CONFIG.log.level || 'INFO'; // eslint-disable-line no-process-env
 }
 
 /**
@@ -56,7 +57,7 @@ function doLog(level, msg, args) {
     level: level.toUpperCase(),
     host: hostname(),
     pid: process.pid,
-    env: process.env.NODE_ENV || 'dev'
+    env: CONFIG.app.env || 'dev'
   };
 
   if (msg) {

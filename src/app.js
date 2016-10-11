@@ -12,7 +12,6 @@ import convert from 'koa-convert';
 import responseTime from 'koa-response-time';
 import session from 'koa-session2';
 import Knex from 'knex';
-import knexConfig from '../knexfile';
 import {Model} from 'objection';
 import Session from './models/db_models/session.model';
 
@@ -22,18 +21,19 @@ import {SetVersionHeader} from './middlewares/headers.middleware';
 import {SessionMiddleware} from './middlewares/session.middleware';
 
 // Utils
+import {CONFIG, validateConfig} from './utils/config.util';
 import {log} from './utils/logging.util';
-import {getSessionLifeTime} from './utils/session.util';
 
 // Components
 import SessionStore from './components/SessionStore/SessionStore.component';
 
 export function startServer() {
+  validateConfig();
   const app = new Koa();
-  const PORT = process.env.PORT || 3010;
+  const PORT = CONFIG.app.port;
 
   // Initialize knex.
-  const knex = Knex(knexConfig.development);
+  const knex = Knex(CONFIG.postgres);
 
   // Bind all Models to a knex instance. If you only have one database in
   // your server this is all you have to do. For multi database systems, see
@@ -50,8 +50,8 @@ export function startServer() {
   app.use(session({
     store: new SessionStore(),
     key: 'sid',
-    maxAge: getSessionLifeTime(),
-    secure: process.env.NODE_ENV === 'production',
+    maxAge: CONFIG.session.life_time,
+    secure: CONFIG.app.env === 'production',
     path: '/',
     httpOnly: true
   }));
@@ -82,6 +82,6 @@ export function startServer() {
   });
 
   app.listen(PORT, () => {
-    log.debug(`Server is up and running on port ${PORT}!`, {sessionLifetime: getSessionLifeTime()});
+    log.debug(`Server is up and running on port ${PORT}!`, {sessionLifetime: CONFIG.session.life_time});
   });
 }

@@ -13,6 +13,10 @@ npm-debug.log
 # ==========
 # REPORTS #
 # ==========
-
 report.xml
 static/*.css
+
+# ==========
+# ENV #
+# ==========
+.env
