@@ -31,7 +31,7 @@ export default class PersistenTicketStorage {
   }
 
   delete(tid) {
-    //if (1 == 1) { return true; }   // test - do not delete
+    // if (1 == 1) { return true; }   // test - do not delete
     return Ticket.query().delete().where('id', tid)
       .then(() => {
         return true;
