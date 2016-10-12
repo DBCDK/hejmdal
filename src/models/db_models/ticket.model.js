@@ -10,7 +10,6 @@ export default class Ticket extends Model {
 
   static jsonSchema = {
     properties: {
-      tid: {type: 'string', minLength: 1},
       ticket: {type: 'object'}
     }
   };

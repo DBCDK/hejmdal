@@ -8,13 +8,8 @@ import {log} from '../utils/logging.util';
 
 export default class PersistenTicketStorage {
 
-  constructor() {
-    this.sequence = 1;
-
-  }
-
   read(tid) {
-    return Ticket.query().select('ticket').where('tid', tid)
+    return Ticket.query().select('ticket').where('id', tid)
       .then((result) => {
         return result[0] ? result[0].ticket : null;
       })
@@ -25,24 +20,19 @@ export default class PersistenTicketStorage {
   }
 
   insertNext(ticket) {
-    const tid = (this.sequence++).toString();
-    Ticket.query().insert({tid: tid, ticket: ticket})
+    return Ticket.query().insert({ticket: ticket})
+      .then((result) => {
+        return result.id ? result.id : null;
+      })
       .catch((error) => {
         log.error('Failed to set ticket', {error: error.message});
-      });
-    return tid;
-  }
-
-  insert(tid, ticket) {
-    return Ticket.query().insert({tid: tid, ticket: ticket})
-      .catch((error) => {
-        log.error('Failed to set ticket', {error: error.message});
+        return null;
       });
   }
 
   delete(tid) {
-    // if (1 == 1) { return true; }   // test - do not delete
-    return Ticket.query().delete().where('tid', tid)
+    //if (1 == 1) { return true; }   // test - do not delete
+    return Ticket.query().delete().where('id', tid)
       .then(() => {
         return true;
       })
