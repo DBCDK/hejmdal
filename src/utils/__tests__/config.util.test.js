@@ -17,12 +17,13 @@ describe('Unittesting methods in config.util.js', () => {
       postgres: {
         client: 'postgresql',
         connection: {
-          host: 'host',
-        },
+          host: 'host'
+        }
       },
       log: {
         level: 'LEVEL',
-        pretty: true
+        pretty: true,
+        pretty_: false
       },
       session: {
         life_time: Number(0)
@@ -38,17 +39,17 @@ describe('Unittesting methods in config.util.js', () => {
     CONFIG.app.port = Number('TEST');
 
     const result = () => {
-            validateConfig(CONFIG)
+      validateConfig(CONFIG);
     };
 
     assert.throws(result, 'port: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler');
   });
 
   it('Should throw when a value is undefined', () => {
-    CONFIG.postgres.connection.host = undefined;
+    CONFIG.postgres.connection.host = undefined; // eslint-disable-line no-undefined
 
     const result = () => {
-      validateConfig(CONFIG)
+      validateConfig(CONFIG);
     };
 
     assert.throws(result, 'host was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler');
