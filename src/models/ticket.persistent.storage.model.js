@@ -30,10 +30,6 @@ export default class PersistenTicketStorage {
       });
   }
 
-  insert(tid, ticket) {   // eslint-disable-line no-unused-vars
-    throw new Error('Cannot use insert in ticket');
-  }
-
   delete(tid) {
     // if (1 == 1) { return true; }   // test - do not delete
     return Ticket.query().delete().where('id', tid)
@@ -44,5 +40,17 @@ export default class PersistenTicketStorage {
         log.error('Failed to delete ticket', {error: error.message});
         return false;
       });
+  }
+
+  insert(tid, ticket) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use insert in ticket');
+  }
+
+  update(tid, ticket) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use update in ticket');
+  }
+
+  upsert(tid, ticket) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use upsert in ticket');
   }
 }
