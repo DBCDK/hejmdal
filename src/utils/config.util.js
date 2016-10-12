@@ -1,6 +1,7 @@
 /**
  * @file
- * TODO mmj do description
+ * Config mapper that maps environment variables to the exportet CONFIG object.
+ * A validateConfig method that validates the values found in the CONFIG object and throws an Error upon invalid values.
  */
 
 
@@ -38,7 +39,6 @@ export const CONFIG = {
 /**
  * Recursive functon that validates that all params in the above CONFIG object is set.
  * Number are validated to be non-NaN numbers.
- * TODO mmj testing
  *
  * @param {Object} config
  */
