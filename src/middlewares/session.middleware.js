@@ -3,7 +3,7 @@
  * Session relevant middleware
  */
 
-import {getSessionLifeTime} from '../utils/session.util';
+import {CONFIG} from '../utils/config.util';
 
 /**
  * Checks if session is set and refreshes time of expiry.
@@ -17,7 +17,7 @@ export async function SessionMiddleware(ctx, next) {
     ctx.session = {};
   }
 
-  ctx.session.expires = new Date(Date.now() + (getSessionLifeTime())).toISOString();
+  ctx.session.expires = new Date(Date.now() + (CONFIG.session.life_time)).toISOString();
 
   await next();
 }

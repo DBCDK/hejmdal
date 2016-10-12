@@ -24,24 +24,30 @@ Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins
 Der logges til `stdout` med de levels der er specificeret i afsnittet om Environment variabler herunder.
 
 ##Environment variabler
-- `HEJMDAL_DB_HOST`
+- `HEJMDAL_DB_CONNECTIONS_POOL_MAX`  
+Max connections in pool
+- `HEJMDAL_DB_CONNECTIONS_POOL_MIN`  
+Min connections in pool
+- `HEJMDAL_DB_HOST`  
 DB host
-- `HEJMDAL_DB_NAME`
+- `HEJMDAL_DB_HOST`  
+DB host
+- `HEJMDAL_DB_NAME`  
 Navn på hejmdals db
-- `HEJMDAL_DB_USER`
+- `HEJMDAL_DB_USER`  
 db-bruger
-- `HEJMDAL_DB_USER_PASSWORD`
+- `HEJMDAL_DB_USER_PASSWORD`  
 Password til hejmdal db-bruger
-- `LOG_LEVEL`
+- `LOG_LEVEL`  
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
-- `NODE_ENV`
+- `NODE_ENV`  
 Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production` 
-- `PORT`
+- `PORT`  
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
-- `PRETTY_LOG`
-Sæt `PRETTY_LOG` til hvilken som helst værdi og alle logstatements vil blive pretty-printed. Hvis `PRETTY_LOG` er udefineret holdes logstatements på en enkelt linje.
-- `SESSION_LIFE_TIME`
+- `PRETTY_LOG`  
+Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje. 
+- `SESSION_LIFE_TIME`  
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
 
 # Dokumentation

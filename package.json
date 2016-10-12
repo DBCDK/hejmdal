@@ -4,7 +4,7 @@
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
-    "dev": "LOG_LEVEL=DEBUG PRETTY_LOG=1 npm run serve",
+    "dev": ". ./env.env && npm run serve",
     "build:css:dev": "postcss --map --use postcss-import --use autoprefixer --use cssnano src/**/*.css > static/main.css",
     "build:css:prod": "postcss --use postcss-import --use autoprefixer --use cssnano src/**/*.css > static/main.css",
     "lint": "eslint ./src",
