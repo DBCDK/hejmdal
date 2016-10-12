@@ -30,6 +30,10 @@ export default class PersistenTicketStorage {
       });
   }
 
+  insert(tid, ticket) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use insert in ticket');
+  }
+
   delete(tid) {
     // if (1 == 1) { return true; }   // test - do not delete
     return Ticket.query().delete().where('id', tid)
