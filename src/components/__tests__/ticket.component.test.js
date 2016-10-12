@@ -24,32 +24,35 @@ describe('test store and get ticket', () => {
     state.ticket.attributes = attributes;
     state.ticket.identifier = null;
     const ctx = {state};
-    storeTicket(ctx, next);
-    assert.isNumber(ctx.state.ticket.identifier);
-    assert.isString(ctx.state.ticket.token);
-    params = {
-      token: ctx.state.ticket.token,
-      id: ctx.state.ticket.identifier
-    };
+    return storeTicket(ctx, next).then(() => {
+      assert.isNumber(ctx.state.ticket.identifier);
+      assert.isString(ctx.state.ticket.token);
+      params = {
+        token: ctx.state.ticket.token,
+        id: ctx.state.ticket.identifier
+      };
+    });
   });
 
   it('should fetch the ticket', () => {
     const ctx = {
-      state: { },
+      state: {},
       params: params
     };
-    getTicket(ctx, next);
-    assert.isObject(ctx.state.ticket.attributes);
-    assert.deepEqual(ctx.state.ticket.attributes, attributes);
+    return getTicket(ctx, next).then(() => {
+      assert.isObject(ctx.state.ticket.attributes);
+      assert.deepEqual(ctx.state.ticket.attributes, attributes);
+    });
   });
 
   it('should only fetch ticket once', () => {
     const ctx = {
-      state: { },
+      state: {},
       params: params
     };
-    getTicket(ctx, next);
-    assert.isFalse(ctx.state.ticket.attributes);
+    return getTicket(ctx, next).then(() => {
+      assert.isFalse(ctx.state.ticket.attributes);
+    });
   });
 });
 

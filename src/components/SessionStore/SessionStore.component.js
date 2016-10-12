@@ -4,8 +4,9 @@
  */
 
 import {Store} from 'koa-session2';
-import {PersistenSessionStorage} from '../../models/session.persistent.storage.model';
-import {MemorySessionStorage} from '../../models/session.memory.storage.model';
+import PersistenSessionStorage from '../../models/session.persistent.storage.model';
+import KeyValueStorage from '../../models/keyvalue.storage.model';
+import MemoryStorage from '../../models/memory.storage.model';
 
 export default class SessionStore extends Store {
   /**
@@ -17,7 +18,7 @@ export default class SessionStore extends Store {
    */
   constructor(memory = false) {
     super();
-    this.Store = memory ? new MemorySessionStorage() : new PersistenSessionStorage();
+    this.Store = memory ? new KeyValueStorage(new MemoryStorage()) : new KeyValueStorage(new PersistenSessionStorage());
   }
 
   /**
@@ -27,7 +28,7 @@ export default class SessionStore extends Store {
    * @return {undefined|object}
    */
   async get(sid) {
-    return await this.Store.get(sid);
+    return await this.Store.read(sid);
   }
 
   /**
@@ -42,7 +43,7 @@ export default class SessionStore extends Store {
       opts.sid = this.getID(128);
     }
 
-    await this.Store.set(opts.sid, session);
+    await this.Store.insert(opts.sid, session);
 
     return opts.sid;
   }
@@ -54,6 +55,6 @@ export default class SessionStore extends Store {
    * @return {boolean} true if session was successfully deleted otherwise false i.e. if the session was not found.
    */
   async destroy(sid) {
-    return await this.Store.deleteSession(sid);
+    return await this.Store.delete(sid);
   }
 }
