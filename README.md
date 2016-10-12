@@ -10,9 +10,15 @@
 
 ##Opstart
 ###Udvikling
-Efter repositortiet er bevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikre genstart af applikationen når kode er ændres.  
+Efter repositortiet er bevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikre genstart af applikationen når kode er ændres.
+
+For at køre med en lokal database installeres postgres. Bruger, password og database sættes via environment variabler.
+
 ###Produktion
 I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin reneste form kan applikationen startes med `node src/main.js` fra roden af projektet. 
+
+###Migrering###
+For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang. 
 
 ##Tests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
