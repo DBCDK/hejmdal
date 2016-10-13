@@ -18,7 +18,9 @@ For at køre med en lokal database installeres postgres. Bruger, password og dat
 I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin reneste form kan applikationen startes med `node src/main.js` fra roden af projektet. 
 
 ###Migrering###
-For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang. 
+For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang.
+ 
+I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.  
 
 ##Tests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
