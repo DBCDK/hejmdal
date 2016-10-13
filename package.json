@@ -11,7 +11,8 @@
     "lint:checkstyle": "eslint ./src  -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js",
-    "test": "LOG_LEVEL=OFF mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter"
+    "test": "LOG_LEVEL=OFF mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
+    "migrate:latest": "source env.env && knex migrate:latest"
   },
   "repository": {
     "type": "git",
