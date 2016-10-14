@@ -5,7 +5,8 @@
  * @param content
  */
 
-export default ({title, content}) => `
+export default function index({title, content}) {
+  return `
 <html>
 <head>
   <title>${title}</title>
@@ -17,4 +18,5 @@ export default ({title, content}) => `
   </div>
 </body>
 </html>
-`;
+`
+};

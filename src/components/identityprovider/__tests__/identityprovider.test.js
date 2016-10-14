@@ -12,6 +12,7 @@ describe('test authenticate method', () => {
   };
   const next = () => {
   };
+
   it('Should return content page', () => {
     const ctx = {state};
     authenticate(ctx, next);

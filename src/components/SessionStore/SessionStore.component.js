@@ -10,9 +10,9 @@ import MemoryStorage from '../../models/memory.storage.model';
 
 export default class SessionStore extends Store {
   /**
-   * Initises the SessionStore and the underlying storage component.
-   * If the memory paramter is used one should be aware that sharring of sessions across instances of the application
-   * is not possible. The feature is intended for testing only.
+   * Inits the SessionStore and the underlying storage component.
+   * If the memory parameter is used and true one should be aware that sharring of sessions across instances of the
+   * application is not possible. The feature is intended for testing only.
    *
    * @param {boolean} memory if set to true a Map will be used for storing sessions
    */

@@ -1,5 +1,23 @@
 # Change Log
 
+## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
+
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.1.0...HEAD)
+
+**Closed issues:**
+
+- knexfile.js skal læse fra config.utils.js [\#76](https://github.com/DBCDK/hejmdal/issues/76)
+- Check af environment vars ved startup [\#43](https://github.com/DBCDK/hejmdal/issues/43)
+- tilpas pipeline med stg maskiner [\#15](https://github.com/DBCDK/hejmdal/issues/15)
+- Komponent: IdentityProvider [\#5](https://github.com/DBCDK/hejmdal/issues/5)
+- Pipeline: Jenkins++ \(intern\) / initiel [\#3](https://github.com/DBCDK/hejmdal/issues/3)
+
+**Merged pull requests:**
+
+- lock knex to version 0.12.3 [\#75](https://github.com/DBCDK/hejmdal/pull/75) ([vibjerg](https://github.com/vibjerg))
+- \#43: Check af environment vars ved startup [\#60](https://github.com/DBCDK/hejmdal/pull/60) ([hrmoller](https://github.com/hrmoller))
+- Dependencies mmj [\#59](https://github.com/DBCDK/hejmdal/pull/59) ([hrmoller](https://github.com/hrmoller))
+
 ## [0.1.0](https://github.com/DBCDK/hejmdal/tree/0.1.0) (2016-10-10)
 **Fixed bugs:**
 
@@ -25,6 +43,7 @@
 
 **Merged pull requests:**
 
+- Changelog updated [\#58](https://github.com/DBCDK/hejmdal/pull/58) ([hrmoller](https://github.com/hrmoller))
 - Changelog updated [\#56](https://github.com/DBCDK/hejmdal/pull/56) ([hrmoller](https://github.com/hrmoller))
 - \#11: endpoint for getTicket - placed under login. [\#50](https://github.com/DBCDK/hejmdal/pull/50) ([fvsdbc](https://github.com/fvsdbc))
 - \#5: use hash utils to generate and validate token [\#49](https://github.com/DBCDK/hejmdal/pull/49) ([fvsdbc](https://github.com/fvsdbc))
