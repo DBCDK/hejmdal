@@ -19,25 +19,9 @@ clients.set('qwerty', {
  * @throws {TokenError}
  */
 export async function getClient(token) {
-  // Sleep to make it async
-  await sleep(100);
-
   if (clients.has(token)) {
-    return clients.get(token);
+    return Object.assign({token}, clients.get(token));
   }
 
   throw new TokenError();
-}
-
-
-/**
- * Sleep for x ms.
- *
- * A small util to simulate async behaviour
- *
- * @param ms
- * @returns {Promise}
- */
-function sleep(ms = 0) {
-  return new Promise(r => setTimeout(r, ms));
 }

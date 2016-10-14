@@ -22,7 +22,8 @@ export function authenticate(ctx, next) {
   try {
     if (!ctx.state.user) {
       const authToken = createHash(ctx.state.token);
-      const content = ctx.state.attributes.providers.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
+      const identityProviders = ctx.state.client.config.identityProviders;
+      const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
     }

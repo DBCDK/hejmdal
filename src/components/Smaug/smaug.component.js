@@ -15,12 +15,18 @@ export async function getAttributes(ctx, next) {
   try {
     const token = ctx.query.token;
     ctx.state.client = await getClient(token);
+    return next();
   }
   catch (err) {
     log.error('Invalid Token', err);
+
     // @todo how to validate returnUrl when token is invalid?
     // @todo add error params to returnUrl
-    ctx.redirect = ctx.query.returnUrl;
+    if (ctx.query.returnUrl) {
+      ctx.redirect(ctx.query.returnUrl);
+    }
+    else {
+      ctx.status = 403;
+    }
   }
-  next();
 }
