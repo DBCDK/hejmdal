@@ -66,6 +66,7 @@ export async function storeTicket(ctx, next) {
  */
 export async function getTicket(ctx, next) {
   let attributes = false;
+
   if (!ctx.session.state.ticket && ctx.params.token && ctx.params.id) {
     if (validateHash(ctx.params.token, ctx.params.id)) {
       attributes = await storage.read(ctx.params.id);
@@ -75,5 +76,6 @@ export async function getTicket(ctx, next) {
   ctx.session.state.ticket = {
     attributes: attributes
   };
+
   return next();
 }

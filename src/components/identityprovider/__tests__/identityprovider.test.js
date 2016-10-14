@@ -14,7 +14,7 @@ describe('test authenticate method', () => {
   };
 
   it('Should return content page', () => {
-    const ctx = {state};
+    const ctx = {session: {state}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 200);
     assert.include(ctx.body, 'id="borchk"');
@@ -23,12 +23,11 @@ describe('test authenticate method', () => {
 
   it('Should return error', () => {
     state.attributes.providers.push('invalid provider');
-    const ctx = {state};
+    const ctx = {session: {state}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 404);
   });
 });
-
 
 describe('test identityProviderCallback method', () => {
   const ctx = {
@@ -40,11 +39,13 @@ describe('test identityProviderCallback method', () => {
       id: 'testId',
       somekey: 'somevalue'
     },
-    state: {
-      token: 'qwerty'
+    session: {
+      state: {
+        token: 'qwerty'
+      }
     }
   };
-  ctx.params.token = createHash(ctx.state.token);
+  ctx.params.token = createHash(ctx.session.state.token);
   const next = () => {
   };
 
@@ -56,7 +57,7 @@ describe('test identityProviderCallback method', () => {
       unilogin: 'uniloginId'
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.state.user, expected);
+    assert.deepEqual(ctx.session.state.user, expected);
   });
 
   it('Should add nemlogin user to context', () => {
@@ -66,7 +67,7 @@ describe('test identityProviderCallback method', () => {
       type: 'nemlogin'
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.state.user, expected);
+    assert.deepEqual(ctx.session.state.user, expected);
   });
 
   it('Should add library user to context', () => {
@@ -78,18 +79,18 @@ describe('test identityProviderCallback method', () => {
       pincode: 'pincode'
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.state.user, expected);
+    assert.deepEqual(ctx.session.state.user, expected);
   });
 });
 
 describe('test initialize method', () => {
   it('Should add state to context', () => {
-    const ctx = {};
+    const ctx = {session:{}};
     const next = () => {
     };
     initialize(ctx, next);
-    assert.isDefined(ctx.state.user);
-    assert.isObject(ctx.state.attributes);
+    assert.isDefined(ctx.session.state.user);
+    assert.isObject(ctx.session.state.attributes);
   });
 });
 
