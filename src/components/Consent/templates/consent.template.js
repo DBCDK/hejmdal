@@ -5,6 +5,7 @@
  */
 
 export default ({service}) => `
+<!DOCTYPE html>
 <html>
   <head>
     <title>Tilladelse til udveksling af data</title>
