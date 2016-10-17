@@ -9,13 +9,17 @@
  */
 export function initState(ctx, next) {
   // this is a hardcoded state object for development
-  ctx.state = Object.assign({
+  ctx.session.state = Object.assign({
     user: null,
-    client: null,
+    attributes: {
+      providers: ['borchk', 'unilogin']
+    },
     token: 'qwerty',
-    returnUrl: '/fail',
-    ticket: null
-  }, ctx.state || {});
+    ticket: null,
+    service: 'testservice',
+    client: null,
+    returnUrl: '/fail'
+  }, ctx.session.state || {});
 
   next();
 }

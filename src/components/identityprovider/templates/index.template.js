@@ -6,6 +6,7 @@
  */
 
 export default ({title, content}) => `
+<!DOCTYPE html>
 <html>
 <head>
   <title>${title}</title>

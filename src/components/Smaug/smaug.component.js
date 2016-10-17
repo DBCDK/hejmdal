@@ -14,7 +14,7 @@ import {log} from '../../utils/logging.util';
 export async function getAttributes(ctx, next) {
   try {
     const token = ctx.query.token;
-    ctx.state.client = await getClient(token);
+    ctx.session.state.client = await getClient(token);
     return next();
   }
   catch (err) {

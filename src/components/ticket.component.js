@@ -25,11 +25,11 @@ const storage = memory ? new KeyValueStorage(new MemoryStorage()) : new KeyValue
  * @returns {*}
  */
 export function generateTicketData(ctx, next) {
-  if (ctx.state.user) {
+  if (ctx.session.state.user) {
     const attributes = {
-      cpr: ctx.state.user.cpr
+      cpr: ctx.session.state.user.cpr
     };
-    ctx.state.ticket = {
+    ctx.session.state.ticket = {
       attributes: attributes
     };
   }
@@ -44,12 +44,12 @@ export function generateTicketData(ctx, next) {
  * @returns {*}
  */
 export async function storeTicket(ctx, next) {
-  const ticket = ctx.state.ticket;
+  const ticket = ctx.session.state.ticket;
   if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
     const identifier = await storage.insertNext(ticket.attributes);
     const token = createHash(identifier);
 
-    ctx.state.ticket = Object.assign(ticket, {
+    ctx.session.state.ticket = Object.assign(ticket, {
       identifier: identifier,
       token: token
     });
@@ -66,14 +66,16 @@ export async function storeTicket(ctx, next) {
  */
 export async function getTicket(ctx, next) {
   let attributes = false;
-  if (!ctx.state.ticket && ctx.params.token && ctx.params.id) {
+
+  if (!ctx.session.state.ticket && ctx.params.token && ctx.params.id) {
     if (validateHash(ctx.params.token, ctx.params.id)) {
       attributes = await storage.read(ctx.params.id);
       await storage.delete(ctx.params.id);
     }
   }
-  ctx.state.ticket = {
+  ctx.session.state.ticket = {
     attributes: attributes
   };
+
   return next();
 }

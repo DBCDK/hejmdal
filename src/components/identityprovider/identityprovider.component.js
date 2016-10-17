@@ -7,8 +7,30 @@ import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
 
-
 const templates = {index, borchk, nemlogin, unilogin};
+
+/**
+ * Initializes state object.  TODO: in its own component???
+ *
+ * @param ctx
+ * @param next
+ * @returns {*}
+ */
+export function initialize(ctx, next) {
+  // this is a hardcoded state object for testing
+  ctx.session.state = Object.assign({
+    user: null,
+    attributes: {
+      providers: ['borchk', 'unilogin']
+    },
+    token: 'qwerty',
+    ticket: null,
+    service: 'testservice',
+    consents: {}
+  }, ctx.session.state || {});
+
+  return next();
+}
 
 /**
  * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
@@ -18,12 +40,12 @@ const templates = {index, borchk, nemlogin, unilogin};
  * @returns {*}
  */
 export function authenticate(ctx, next) {
-
   try {
-    if (!ctx.state.user) {
-      const authToken = createHash(ctx.state.token);
-      const identityProviders = ctx.state.client.config.identityProviders;
+    if (!ctx.session.state.user) {
+      const authToken = createHash(ctx.session.state.token);
+      const identityProviders = ctx.session.state.client.config.identityProviders;
       const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
+
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
     }
@@ -32,9 +54,9 @@ export function authenticate(ctx, next) {
     log.error(e);
     ctx.status = 404;
   }
+
   return next();
 }
-
 
 /**
  * Parses the callback parameters for unilogin.
@@ -47,7 +69,8 @@ export function uniloginCallback(ctx, next) {
   if (ctx.params.type !== 'unilogin') {
     return next();
   }
-  ctx.state.user = {
+
+  ctx.session.state.user = {
     cpr: ctx.query.id,
     type: 'unilogin',
     unilogin: 'uniloginId'
@@ -65,7 +88,7 @@ export function borchkCallback(ctx, next) {
   if (ctx.params.type !== 'borchk') {
     return next();
   }
-  ctx.state.user = {
+  ctx.session.state.user = {
     cpr: ctx.query.id,
     type: 'borchk',
     libraryId: 'libraryId',
@@ -84,12 +107,11 @@ export function nemloginCallback(ctx, next) {
   if (ctx.params.type !== 'nemlogin') {
     return next();
   }
-  ctx.state.user = {
+  ctx.session.state.user = {
     cpr: ctx.query.id,
     type: 'nemlogin'
   };
 }
-
 
 /**
  * Callback function from external identityproviders
@@ -99,7 +121,7 @@ export function nemloginCallback(ctx, next) {
  */
 export function identityProviderCallback(ctx, next) {
   try {
-    if (!validateHash(ctx.params.token, ctx.state.token)) {
+    if (!validateHash(ctx.params.token, ctx.session.state.token)) {
       ctx.status = 403;
       return next();
     }
