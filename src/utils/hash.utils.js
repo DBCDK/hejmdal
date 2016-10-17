@@ -20,7 +20,8 @@ function is_scalar(mixed) {
  * Create a hash
  *
  * @param toHash
- * @returns {string}
+ * @param hashSecret
+ * @returns {*}
  */
 export function createHash(toHash, hashSecret = 'shared') {
   const secret = CONFIG.hash[hashSecret] ? CONFIG.hash[hashSecret] : CONFIG.hash.shared;
@@ -38,8 +39,9 @@ export function createHash(toHash, hashSecret = 'shared') {
  *
  * @param hashedString
  * @param validateString
+ * @param hashSecret
  * @returns {boolean}
  */
-export function validateHash(hashedString, validateString) {
-  return (hashedString === createHash(validateString));
+export function validateHash(hashedString, validateString, hashSecret = 'shared') {
+  return (hashedString === createHash(validateString, hashSecret));
 }
