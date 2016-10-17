@@ -9,7 +9,7 @@
 
 import {createHash, validateHash} from '../utils/hash.utils';
 import KeyValueStorage from '../models/keyvalue.storage.model';
-import PersistenTicketStorage from '../models/ticket.persistent.storage.model';
+import PersistenTicketStorage from '../models/Ticket/ticket.persistent.storage.model';
 import MemoryStorage from '../models/memory.storage.model';
 
 const memory = true;

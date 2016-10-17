@@ -3,8 +3,8 @@
  * Storage model for persistent storage of tickets. CRUD functions
  */
 
-import Ticket from './db_models/ticket.model';
-import {log} from '../utils/logging.util';
+import Ticket from '../db_models/ticket.model';
+import {log} from '../../utils/logging.util';
 
 export default class PersistenTicketStorage {
 

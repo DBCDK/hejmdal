@@ -6,7 +6,7 @@
  * TODO Obsolete - to delete when appropriate
  */
 
-import KeyValueStorage from './keyvalue.storage.model';
+import KeyValueStorage from '../keyvalue.storage.model';
 
 export class MemorySessionStorage extends KeyValueStorage {
   constructor() {

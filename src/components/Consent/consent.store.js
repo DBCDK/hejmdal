@@ -4,11 +4,11 @@
  */
 
 import KeyValueStorage from '../../models/keyvalue.storage.model';
-import MemoryStorage from '../../models/memory.storage.model';
+import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 
 export default class ConsentStore {
   constructor() {
-    this.Store = new KeyValueStorage(new MemoryStorage());
+    this.Store = new KeyValueStorage(new PersistentConsentStorage());
   }
 
   /**

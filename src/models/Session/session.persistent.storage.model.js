@@ -3,8 +3,8 @@
  * Storage model for persistent storage of sessions
  */
 
-import Session from './db_models/session.model';
-import {log} from '../utils/logging.util';
+import Session from '../db_models/session.model';
+import {log} from '../../utils/logging.util';
 
 export default class PersistenSessionStorage {
 
