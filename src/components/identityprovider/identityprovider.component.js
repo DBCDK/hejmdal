@@ -11,27 +11,6 @@ import unilogin from './templates/unilogin.template';
 const templates = {index, borchk, nemlogin, unilogin};
 
 /**
- * Initializes state object.  TODO: in its own component???
- *
- * @param ctx
- * @param next
- * @returns {*}
- */
-export function initialize(ctx, next) {
-  // this is a hardcoded state object for testing
-  ctx.state = Object.assign({
-    user: null,
-    attributes: {
-      providers: ['borchk', 'unilogin']
-    },
-    token: 'qwerty',
-    ticket: null,
-    service: 'testservice'
-  }, ctx.state || {});
-  return next();
-}
-
-/**
  * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
  *
  * @param ctx
@@ -43,7 +22,8 @@ export function authenticate(ctx, next) {
   try {
     if (!ctx.state.user) {
       const authToken = createHash(ctx.state.token);
-      const content = ctx.state.attributes.providers.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
+      const identityProviders = ctx.state.client.config.identityProviders;
+      const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
     }
