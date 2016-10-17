@@ -7,8 +7,8 @@
 import {form} from 'co-body';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import consentTemplate from './templates/consent.template';
-import KeyValueStorage from "../../models/keyvalue.storage.model";
-import PersistentConsentStorage from "../../models/Consent/consent.persistent.storage.model";
+import KeyValueStorage from '../../models/keyvalue.storage.model';
+import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 
 const store = new KeyValueStorage(new PersistentConsentStorage());
 
@@ -78,7 +78,7 @@ export async function retrieveUserConsent(ctx, next) {
 async function checkForExistingConsent(ctx) {
   const consent = await store.read(`${ctx.session.state.user.cpr}:${ctx.session.state.service}`);
   // TODO do some checks and ensure that the user has given consent for exactly the actual service
-  if(consent){
+  if (consent) {
     ctx.session.state.consents[ctx.session.state.service] = consent;
   }
 
