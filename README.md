@@ -57,6 +57,8 @@ Specificere hvilken port applikatioen skal være tilgængelig på. Default: `301
 Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje. 
 - `SESSION_LIFE_TIME`  
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
+- `HASH_SHARED`
+Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
 
 # Dokumentation
 ## Endpoints
