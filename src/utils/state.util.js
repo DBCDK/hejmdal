@@ -17,6 +17,7 @@ export function initState(ctx, next) {
     token: 'qwerty',
     ticket: null,
     service: 'testservice',
+    consents: {},
     client: null,
     returnUrl: '/fail'
   }, ctx.session.state || {});

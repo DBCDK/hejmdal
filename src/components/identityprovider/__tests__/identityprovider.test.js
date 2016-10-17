@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {authenticate, initialize, identityProviderCallback} from '../identityprovider.component';
+import {authenticate, identityProviderCallback} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
 
@@ -87,15 +87,3 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.session.state.user, expected);
   });
 });
-
-describe('test initialize method', () => {
-  it('Should add state to context', () => {
-    const ctx = {session: {}};
-    const next = () => {
-    };
-    initialize(ctx, next);
-    assert.isDefined(ctx.session.state.user);
-    assert.isObject(ctx.session.state.attributes);
-  });
-});
-

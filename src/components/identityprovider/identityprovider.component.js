@@ -10,29 +10,6 @@ import unilogin from './templates/unilogin.template';
 const templates = {index, borchk, nemlogin, unilogin};
 
 /**
- * Initializes state object.  TODO: in its own component???
- *
- * @param ctx
- * @param next
- * @returns {*}
- */
-export function initialize(ctx, next) {
-  // this is a hardcoded state object for testing
-  ctx.session.state = Object.assign({
-    user: null,
-    attributes: {
-      providers: ['borchk', 'unilogin']
-    },
-    token: 'qwerty',
-    ticket: null,
-    service: 'testservice',
-    consents: {}
-  }, ctx.session.state || {});
-
-  return next();
-}
-
-/**
  * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
  *
  * @param ctx

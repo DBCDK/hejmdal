@@ -4,7 +4,7 @@
  */
 
 import {Store} from 'koa-session2';
-import PersistenSessionStorage from '../../models/session.persistent.storage.model';
+import PersistenSessionStorage from '../../models/Session/session.persistent.storage.model';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 
