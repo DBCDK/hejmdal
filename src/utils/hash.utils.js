@@ -4,7 +4,7 @@
  *
  */
 import crypto from 'crypto';
-import {CONFIG} from './config.util'
+import {CONFIG} from './config.util';
 
 /**
  * Return true for scalar variables
