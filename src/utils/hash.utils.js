@@ -39,8 +39,9 @@ export function createHash(toHash, hashSecret = 'shared') {
  *
  * @param hashedString
  * @param validateString
+ * @param hashSecret
  * @returns {boolean}
  */
-export function validateHash(hashedString, validateString) {
-  return (hashedString === createHash(validateString));
+export function validateHash(hashedString, validateString, hashSecret = 'shared') {
+  return (hashedString === createHash(validateString, hashSecret));
 }
