@@ -5,11 +5,14 @@ import {createHash} from '../../../utils/hash.utils';
 describe('test authenticate method', () => {
   const state = {
     user: null,
-    attributes: {
-      providers: ['borchk', 'unilogin']
+    client: {
+      config: {
+        identityProviders: ['borchk', 'unilogin']
+      }
     },
     token: 'qwerty'
   };
+
   const next = () => {
   };
 
@@ -22,7 +25,7 @@ describe('test authenticate method', () => {
   });
 
   it('Should return error', () => {
-    state.attributes.providers.push('invalid provider');
+    state.client.config.identityProviders.push('invalid provider');
     const ctx = {session: {state}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 404);
