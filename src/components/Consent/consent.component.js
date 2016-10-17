@@ -6,11 +6,15 @@
 // import ConsentStore from './consent.store';
 import {form} from 'co-body';
 import {VERSION_PREFIX} from '../../utils/version.util';
+import {CONFIG} from '../utils/config.util';
 import consentTemplate from './templates/consent.template';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
+import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 
-const store = new KeyValueStorage(new PersistentConsentStorage());
+const store = CONFIG.mock_externals.consent === 'memory' ?
+  new KeyValueStorage(new MemoryStorage()) :
+  new KeyValueStorage(new PersistentConsentStorage());
 
 /**
  * Renders the consent UI
