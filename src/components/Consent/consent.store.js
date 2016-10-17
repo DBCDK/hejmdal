@@ -19,7 +19,7 @@ export default class ConsentStore {
    */
   setConsent(userid, consentObj) {
     const result = this.Store.insert(userid, consentObj);
-    console.log('setConsent: ', result);
+    console.log('setConsent: ', result); // eslint-disable-line no-console
   }
 
   /**
@@ -33,7 +33,7 @@ export default class ConsentStore {
         return res;
       })
       .catch((err) => {
-        console.log('getConsent::err: ', err);
+        console.log('getConsent::err: ', err); // eslint-disable-line no-console
         return false;
       });
   }

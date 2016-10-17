@@ -5,7 +5,7 @@
  */
 import crypto from 'crypto';
 
-const secret = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting
+const secret = '$2a$10$CxBm8c7NDbvi24vGV7pwOe';  //  TODO: should be fetched from some setting/env var (issue #83)
 
 /**
  * Return true for scalar variables
@@ -30,6 +30,7 @@ export function createHash(toHash) {
       .update(toHash.toString())
       .digest('hex');
   }
+
   throw new TypeError('Wrong type for createHash function');
 }
 

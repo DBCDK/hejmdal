@@ -85,7 +85,7 @@ describe('test identityProviderCallback method', () => {
 
 describe('test initialize method', () => {
   it('Should add state to context', () => {
-    const ctx = {session:{}};
+    const ctx = {session: {}};
     const next = () => {
     };
     initialize(ctx, next);

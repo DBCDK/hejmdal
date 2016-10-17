@@ -10,6 +10,6 @@ const router = new Router({prefix: VERSION_PREFIX + '/login'});
 router.get('/', initialize, authenticate, generateTicketData, storeTicket, ctxdump);
 router.get('/identityProviderCallback/:type/:token', initialize, identityProviderCallback, Consent.retrieveUserConsent, generateTicketData, storeTicket, ctxdump);
 router.get('/consent', Consent.giveConsentUI, /* generateTicketData, storeTicket, */ ctxdump);
-router.post('/consentsubmit', Consent.consentSubmit, ctxdump);
+router.post('/consentsubmit', Consent.consentSubmit, generateTicketData, storeTicket, ctxdump);
 
 export default router;

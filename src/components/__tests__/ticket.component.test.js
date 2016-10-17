@@ -39,7 +39,7 @@ describe('test store and get ticket', () => {
   it('should fetch the ticket', () => {
     const ctx = {
       session: {
-        state: {},
+        state: {}
       },
       params: params
     };
@@ -53,7 +53,7 @@ describe('test store and get ticket', () => {
   it('should only fetch ticket once', () => {
     const ctx = {
       session: {
-        state: {},
+        state: {}
       },
       params: params
     };

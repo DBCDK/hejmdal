@@ -24,7 +24,7 @@ export function giveConsentUI(ctx, next) {
 /**
  * Submit handler for consent submission. If consent is rejected consentRejected is invoked. It it's accepted the
  * consent is requested to be saved and the flow is continued.
- *
+ * TODO mmj
  * @param {object} ctx
  * @param {function} next
  */
@@ -66,7 +66,7 @@ export async function retrieveUserConsent(ctx, next) {
   }
   else {
     ctx.redirect(`${VERSION_PREFIX}/login/consent`);
-    console.log('Existing consent not found');
+    console.log('Existing consent not found'); // eslint-disable-line no-console
   }
 }
 
@@ -78,18 +78,18 @@ export async function retrieveUserConsent(ctx, next) {
  */
 async function checkForExistingConsent(ctx) {
   const consent = await store.getConsent(ctx.session.state.user.cpr);
-  console.log('checkForExistingConsent: ', consent);
+  console.log('checkForExistingConsent: ', consent); // eslint-disable-line no-console
   // TODO do some checks and ensure that the user has given consent for exactly the actual service
   return consent;
 }
 
 /**
  * Stores the given consent in the storage.
- *
+ * TODO mmj
  * @param ctx
  * @return {*}
  */
-async function saveUserConsent(ctx) {
+async function saveUserConsent(ctx) { // eslint-disable-line no-unused-vars
   // TODO write consents to storeage
   const consent = await store.setConsent();
   return consent;
