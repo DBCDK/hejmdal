@@ -23,7 +23,7 @@ function is_scalar(mixed) {
  * @returns {string}
  */
 export function createHash(toHash, hashSecret = 'shared') {
-  const secret = CONFIG.hash.hashSecret ? CONFIG.hash.hashSecret : CONFIG.hash.shared;
+  const secret = CONFIG.hash[hashSecret] ? CONFIG.hash[hashSecret] : CONFIG.hash.shared;
   if (is_scalar(toHash)) {
     return crypto
       .createHmac('sha256', secret)
