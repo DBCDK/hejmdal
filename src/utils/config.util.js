@@ -34,7 +34,7 @@ export const CONFIG = {
   session: {
     life_time: Number(process.env.SESSION_LIFE_TIME)
   },
-  hash : {
+  hash: {
     shared: process.env.HASH_SHARED
   }
 };
