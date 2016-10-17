@@ -6,7 +6,7 @@
 import Ticket from '../db_models/ticket.model';
 import {log} from '../../utils/logging.util';
 
-export default class PersistenTicketStorage {
+export default class PersistentTicketStorage {
 
   read(tid) {
     return Ticket.query().select('ticket').where('id', tid)

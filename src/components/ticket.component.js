@@ -7,13 +7,15 @@
  *
  */
 
+import {CONFIG} from '../utils/config.util';
 import {createHash, validateHash} from '../utils/hash.utils';
 import KeyValueStorage from '../models/keyvalue.storage.model';
-import PersistenTicketStorage from '../models/Ticket/ticket.persistent.storage.model';
+import PersistentTicketStorage from '../models/Ticket/ticket.persistent.storage.model';
 import MemoryStorage from '../models/memory.storage.model';
 
-const memory = true;
-const storage = memory ? new KeyValueStorage(new MemoryStorage()) : new KeyValueStorage(new PersistenTicketStorage());
+const storage = CONFIG.mock_externals.ticket === 'memory' ?
+  new KeyValueStorage(new MemoryStorage()) :
+  new KeyValueStorage(new PersistentTicketStorage());
 
 /**
  * selects data from CULR / identityProvider as given by the service-context from Smaug
