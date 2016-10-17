@@ -1,6 +1,7 @@
 import {assert} from 'chai';
 import {authenticate, initialize, identityProviderCallback} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
+import {CONFIG} from '../../../utils/config.util';
 
 describe('test authenticate method', () => {
   const state = {
@@ -48,6 +49,7 @@ describe('test identityProviderCallback method', () => {
       }
     }
   };
+  CONFIG.hash.shared = 'some-secret-hash-salt-value';
   ctx.params.token = createHash(ctx.session.state.token);
   const next = () => {
   };
