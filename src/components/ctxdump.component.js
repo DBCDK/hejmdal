@@ -7,10 +7,10 @@
  */
 export default function ctxdump(ctx, next) {
   const body = ctx.body ? ctx.body : '';
-  ctx.body = body + '<pre>' +
-    'ctx:\n' + JSON.stringify(ctx, null, 2) +
-    '\nsession:\n' + JSON.stringify(ctx.session, null, 2) +
-    '\nticket:\n' + JSON.stringify(ctx.ticket, null, 2) +
-    '</pre>';   // For test
+  ctx.body = body + preDump(ctx, 'ctx') + preDump(ctx.session, 'session') + preDump(ctx.ticket, 'ticket');   // For test
   return next();
+}
+
+function preDump(obj, txt) {
+  return '<pre>\n' + txt + ':\n' + JSON.stringify(obj, null, 2) + '</pre>';
 }
