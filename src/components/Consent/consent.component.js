@@ -23,11 +23,11 @@ const store = CONFIG.mock_externals.consent === 'memory' ?
  * @param {function} next
  */
 export function giveConsentUI(ctx, next) {
-  if (!ctx.session.state || !ctx.session.state.service) {
+  if (!ctx.session.state.serviceClient || !ctx.session.state.serviceClient.name) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({service: ctx.session.state.service});
+    ctx.body = consentTemplate({service: ctx.session.state.serviceClient.name});
     next();
   }
 }

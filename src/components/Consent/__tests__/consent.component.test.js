@@ -8,17 +8,26 @@ import {giveConsentUI, consentSubmit} from '../consent.component';
 import sinon from 'sinon';
 
 import consentTemplate from '../templates/consent.template';
+import {initState} from '../../../utils/state.util';
 import {VERSION_PREFIX} from '../../../utils/version.util';
 
 describe('Unittesting methods in consent.component.test', () => {
+  let ctx;
+  const next = () => {};
+  let sandbox;
+
+  beforeEach(() => {
+    ctx = {query: {}};
+    initState(ctx, next);
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
 
   it('should redirect if state is unavailable on ctx.session object', () => {
-    const ctx = {
-      session: {},
-      redirect: sinon.stub()
-    };
-
-    const next = () => {};
+    ctx.redirect = sandbox.stub();
 
     giveConsentUI(ctx, next);
     assert.isTrue(ctx.redirect.called);
@@ -26,14 +35,7 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   it('should redirect if service is unavailable on ctx.session.state object', () => {
-    const ctx = {
-      session: {
-        state: {}
-      },
-      redirect: sinon.stub()
-    };
-
-    const next = () => {};
+    ctx.redirect = sandbox.stub();
 
     giveConsentUI(ctx, next);
     assert.isTrue(ctx.redirect.called);
@@ -41,32 +43,21 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   it('should render html to ctx.body and call next', () => {
-    const ctx = {
-      session: {
-        state: {
-          service: 'testing...'
-        }
-      }
-    };
+    ctx.redirect = sandbox.stub();
+    ctx.session.state.serviceClient.name = 'testing...';
+    const nextSpy = sandbox.stub();
 
-    const next = sinon.stub();
-
-    giveConsentUI(ctx, next);
-    assert.equal(ctx.body, consentTemplate({service: ctx.session.state.service}));
-    assert.isTrue(next.called);
+    giveConsentUI(ctx, nextSpy);
+    assert.equal(ctx.body, consentTemplate({service: ctx.session.state.serviceClient.name}));
+    assert.isTrue(nextSpy.called);
   });
 
   it('should display consent rejected information', async() => {
-    const ctx = {
-      req: {
-        headers: {}
-      }
-    };
+    ctx.req = {headers: {}};
+    const nextSpy = sandbox.stub();
 
-    const next = sinon.stub();
-
-    await consentSubmit(ctx, next);
+    await consentSubmit(ctx, nextSpy);
     assert.equal(ctx.body, 'Consent rejected. What to do...?');
-    assert.isTrue(next.called);
+    assert.isTrue(nextSpy.called);
   });
 });
