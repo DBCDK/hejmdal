@@ -1,7 +1,6 @@
 import {getClient} from './smaug.client';
 import {log} from '../../utils/logging.util';
 
-
 /**
  * Validate token.
  *

@@ -27,7 +27,7 @@ export default class KeyValueStorage {
       objectKey = this.storage.insertNext(object);
     }
     catch (e) {
-      log.error('Write object', e.message);
+      log.error('Write object', {error: e.message, stack: e.stack});
     }
 
     return objectKey;
@@ -47,7 +47,7 @@ export default class KeyValueStorage {
       success = this.storage.insert(key, object);
     }
     catch (e) {
-      log.error('Write object with key', e.message);
+      log.error('Write object with key', {error: e.message, stack: e.stack});
     }
 
     return success;
@@ -65,7 +65,7 @@ export default class KeyValueStorage {
       object = this.storage.read(objectKey);
     }
     catch (e) {
-      log.error('Read object', e.message);
+      log.error('Read object', {error: e.message, stack: e.stack});
     }
     return object;
   }
@@ -82,7 +82,7 @@ export default class KeyValueStorage {
       success = this.storage.delete(objectKey);
     }
     catch (e) {
-      log.error('Delete object', e.message);
+      log.error('Delete object', {error: e.message, stack: e.stack});
     }
     return success;
   }

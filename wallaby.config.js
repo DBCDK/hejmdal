@@ -23,10 +23,12 @@ module.exports = function(wallaby) {
       })
     },
 
-
     env: {
       type: 'node',
-      runner: 'node'
+      runner: 'node',
+      params: {
+        env: 'HASH_SHARED=12345;MOCK_TICKET_STORAGE=memory' // @see https://wallabyjs.com/docs/config/runner.html
+      }
     },
 
     testFramework: 'mocha@2.1.0'
