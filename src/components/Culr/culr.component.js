@@ -5,28 +5,28 @@
 
 export function getCulrAttributes(ctx, next) { // eslint-disable-line
   const userId = ctx.session.user.userId || null;
-  const culrAttributes = getUserAttributesFromCulr(userId); // eslint-disable-line
+  return getUserAttributesFromCulr(userId);
 }
 
 /**
  * Dummy method that fakes retrieval of user from CULR webservice
  *
- * @param user_id
+ * @param userId
  * @return {{error: null|string, user: null|object}}
  */
-function getUserAttributesFromCulr(user_id) {
+function getUserAttributesFromCulr(userId) {
   const result = {
     error: null,
     user: null
   };
 
-  if (!user_id) {
+  if (!userId) {
     result.error = 'brugeren findes ikke';
   }
   else {
     result.user = {
       patronid: 'abcdefghij',
-      cpr: user_id,
+      userId: userId,
       libraries: {}
     };
   }
