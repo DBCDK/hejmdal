@@ -14,11 +14,4 @@ export class TokenError extends Error {
     this.httpStatusCode = 400;
     this.httpError = 'generic_token_error';
   }
-  toJson() {
-    return {
-      statusCode: this.httpStatusCode,
-      error: this.httpError,
-      error_description: this.message
-    };
-  }
 }
