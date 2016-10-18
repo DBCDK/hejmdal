@@ -38,7 +38,12 @@ export const CONFIG = {
     shared: process.env.HASH_SHARED
   },
   smaug: {
-    uri: process.env.SMAUG_URI
+    uri: process.env.SMAUG_URI,
+  },
+  mock_externals: {
+    ticket: process.env.MOCK_TICKET_STORAGE,
+    consent: process.env.MOCK_CONSENT_STORAGE,
+    smaug: process.env.MOCK_SMAUG
   }
 };
 
