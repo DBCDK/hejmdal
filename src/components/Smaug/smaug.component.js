@@ -1,5 +1,4 @@
 import {getClient} from './smaug.client';
-import {getMockClient} from './smaug.client';
 import {log} from '../../utils/logging.util';
 
 
