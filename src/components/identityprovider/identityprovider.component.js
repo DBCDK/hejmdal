@@ -18,9 +18,9 @@ const templates = {index, borchk, nemlogin, unilogin};
  */
 export function authenticate(ctx, next) {
   try {
-    if (!ctx.session.state.user) {
-      const authToken = createHash(ctx.session.state.token);
-      const identityProviders = ctx.session.state.client.config.identityProviders;
+    if (!ctx.session.user.userId) {
+      const authToken = createHash(ctx.session.state.smaugToken);
+      const identityProviders = ctx.session.state.serviceClient.identityProviders;
       const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
 
       ctx.body = index({title: 'Log ind via ...', content});
@@ -47,10 +47,10 @@ export function uniloginCallback(ctx, next) {
     return next();
   }
 
-  ctx.session.state.user = {
-    cpr: ctx.query.id,
-    type: 'unilogin',
-    unilogin: 'uniloginId'
+  ctx.session.user = {
+    userId: ctx.query.id,
+    userType: 'unilogin',
+    identityProviders: ['unilogin']
   };
 }
 
@@ -65,9 +65,10 @@ export function borchkCallback(ctx, next) {
   if (ctx.params.type !== 'borchk') {
     return next();
   }
-  ctx.session.state.user = {
-    cpr: ctx.query.id,
-    type: 'borchk',
+  ctx.session.user = {
+    userId: ctx.query.id,
+    userType: 'borchk',
+    identityProviders: ['borchk'],
     libraryId: 'libraryId',
     pincode: 'pincode'
   };
@@ -84,9 +85,10 @@ export function nemloginCallback(ctx, next) {
   if (ctx.params.type !== 'nemlogin') {
     return next();
   }
-  ctx.session.state.user = {
-    cpr: ctx.query.id,
-    type: 'nemlogin'
+  ctx.session.user = {
+    userId: ctx.query.id,
+    userType: 'nemlogin',
+    identityProviders: ['nemlogin']
   };
 }
 
@@ -98,7 +100,7 @@ export function nemloginCallback(ctx, next) {
  */
 export function identityProviderCallback(ctx, next) {
   try {
-    if (!validateHash(ctx.params.token, ctx.session.state.token)) {
+    if (!validateHash(ctx.params.token, ctx.session.state.smaugToken)) {
       ctx.status = 403;
       return next();
     }

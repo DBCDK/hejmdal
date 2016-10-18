@@ -4,20 +4,19 @@ import {createHash} from '../../../utils/hash.utils';
 
 describe('test authenticate method', () => {
   const state = {
-    user: null,
-    client: {
-      config: {
-        identityProviders: ['borchk', 'unilogin']
-      }
+    serviceClient: {
+      attributes: [],
+      identityProviders: ['borchk', 'unilogin'],
+      id: 'test'
     },
-    token: 'qwerty'
+    smaugToken: 'qwerty'
   };
 
   const next = () => {
   };
 
   it('Should return content page', () => {
-    const ctx = {session: {state}};
+    const ctx = {session: {state, user: {}}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 200);
     assert.include(ctx.body, 'id="borchk"');
@@ -25,7 +24,7 @@ describe('test authenticate method', () => {
   });
 
   it('Should return error', () => {
-    state.client.config.identityProviders.push('invalid provider');
+    state.serviceClient.identityProviders.push('invalid provider');
     const ctx = {session: {state}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 404);
@@ -43,45 +42,48 @@ describe('test identityProviderCallback method', () => {
       somekey: 'somevalue'
     },
     session: {
+      user: {},
       state: {
-        token: 'qwerty'
+        smaugToken: 'qwerty'
       }
     }
   };
-  ctx.params.token = createHash(ctx.session.state.token);
+  ctx.params.token = createHash(ctx.session.state.smaugToken);
   const next = () => {
   };
 
   it('Should add unilogin user to context', () => {
     ctx.params.type = 'unilogin';
     const expected = {
-      cpr: 'testId',
-      type: 'unilogin',
-      unilogin: 'uniloginId'
+      userId: 'testId',
+      userType: 'unilogin',
+      identityProviders: ['unilogin']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.state.user, expected);
+    assert.deepEqual(ctx.session.user, expected);
   });
 
   it('Should add nemlogin user to context', () => {
     ctx.params.type = 'nemlogin';
     const expected = {
-      cpr: 'testId',
-      type: 'nemlogin'
+      userId: 'testId',
+      userType: 'nemlogin',
+      identityProviders: ['nemlogin']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.state.user, expected);
+    assert.deepEqual(ctx.session.user, expected);
   });
 
   it('Should add library user to context', () => {
     ctx.params.type = 'borchk';
     const expected = {
-      cpr: 'testId',
-      type: 'borchk',
+      userId: 'testId',
+      userType: 'borchk',
       libraryId: 'libraryId',
-      pincode: 'pincode'
+      pincode: 'pincode',
+      identityProviders: ['borchk']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.state.user, expected);
+    assert.deepEqual(ctx.session.user, expected);
   });
 });
