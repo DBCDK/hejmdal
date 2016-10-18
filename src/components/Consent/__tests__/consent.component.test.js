@@ -34,14 +34,6 @@ describe('Unittesting methods in consent.component.test', () => {
     assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
   });
 
-  it('should redirect if service is unavailable on ctx.session.state object', () => {
-    ctx.redirect = sandbox.stub();
-
-    giveConsentUI(ctx, next);
-    assert.isTrue(ctx.redirect.called);
-    assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
-  });
-
   it('should render html to ctx.body and call next', () => {
     ctx.redirect = sandbox.stub();
     ctx.session.state.serviceClient.name = 'testing...';
