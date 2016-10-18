@@ -26,11 +26,11 @@ describe('test store and get ticket', () => {
     ticket.identifier = null;
     const ctx = {ticket: ticket};
     return storeTicket(ctx, next).then(() => {
-      assert.isNumber(ctx.ticket.identifier);
+      assert.isNumber(ctx.ticket.id);
       assert.isString(ctx.ticket.token);
       params = {
         token: ctx.ticket.token,
-        id: ctx.ticket.identifier
+        id: ctx.ticket.id
       };
     });
   });

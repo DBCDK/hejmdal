@@ -5,6 +5,9 @@
  *
  * Tickets are identified by a ticketId and ticketToken
  *
+ * storeTicket stores ctx.ticket.attributes and return a key and token to the tickket
+ * getTicket sets cx.ticket.attributes from the key and token given in ctx.params
+ *
  */
 
 import {CONFIG} from '../utils/config.util';
@@ -48,11 +51,11 @@ export function generateTicketData(ctx, next) {
 export async function storeTicket(ctx, next) {
   const ticket = ctx.ticket;
   if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
-    const identifier = await storage.insertNext(ticket.attributes);
-    const token = createHash(identifier);
+    const id = await storage.insertNext(ticket.attributes);
+    const token = createHash(id);
 
     ctx.ticket = Object.assign(ticket, {
-      identifier: identifier,
+      id: id,
       token: token
     });
   }
