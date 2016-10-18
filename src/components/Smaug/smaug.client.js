@@ -1,5 +1,6 @@
 import {CONFIG} from '../../utils/config.util';
 import {TokenError} from './smaug.errors';
+import mockClient from './mock/smaug.client.mock';
 import request from 'request';
 
 /**
@@ -10,13 +11,20 @@ import request from 'request';
  * @throws {Error|TokenError}
  */
 export async function getClient(token) {
-  const {response, body} = await promiseRequest('get', {
-    uri: CONFIG.smaug.uri + '/configuration',
-    qs: {token: token}
-  });
+  let response;
 
+  // for test and development
+  if (CONFIG.mock_externals.smaug) {
+    response = mockClient(token);
+  }
+  else {
+    response = await promiseRequest('get', {
+      uri: CONFIG.smaug.uri + '/configuration',
+      qs: {token: token}
+    });
+  }
   if (response.statusCode === 200) {
-    return JSON.parse(body);
+    return JSON.parse(response.body);
   }
 
   throw new TokenError(response.message);

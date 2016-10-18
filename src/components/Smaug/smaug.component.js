@@ -1,4 +1,5 @@
 import {getClient} from './smaug.client';
+import {getMockClient} from './smaug.client';
 import {log} from '../../utils/logging.util';
 
 
@@ -13,7 +14,8 @@ import {log} from '../../utils/logging.util';
 export async function getAttributes(ctx, next) {
   try {
     const token = ctx.query.token;
-    ctx.session.state.client = await getClient(token);
+    const client = await getClient(token);
+    ctx.session.state.serviceClient = extractClientInfo(client);
     return next();
   }
   catch (err) {
@@ -22,3 +24,20 @@ export async function getAttributes(ctx, next) {
   }
 }
 
+/**
+ * Extract info about serviceClient from Smaug object
+ *
+ * @param client
+ * @returns {{id: String, identityProviders: Array, attributes: Array}}
+ */
+function extractClientInfo(client) {
+  if (client.app.clientId) {
+    return {
+      id: client.app.clientId,
+      identityProviders: client.identityProviders || [],
+      attributes: client.attributes || []
+    };
+  }
+
+  throw new Error('Invalid Client', client);
+}
