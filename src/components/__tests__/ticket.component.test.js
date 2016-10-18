@@ -3,50 +3,47 @@ import {assert} from 'chai';
 import {storeTicket, getTicket} from '../ticket.component.js';
 
 describe('test store and get ticket', () => {
-  const state = {
-    ticket: {
-      attributes: null,
-      identifier: 'foo',
-      token: 'bar'
-    }
+  const ticket = {
+    attributes: null,
+    identifier: 'foo',
+    token: 'bar'
   };
 
-  const next = () => {};
+  const next = () => {
+  };
 
   it('should return false for nonexisting ticket', () => {
-    const ctx = {session: {state}};
+    const ctx = { ticket: ticket };
     getTicket(ctx, next);
-    assert.isFalse(ctx.session.state.ticket.attributes);
+    assert.isFalse(ctx.ticket.attributes);
   });
 
-  const attributes = {cpr: '123', library: '717171'};
+  const attributes = {someId: '123', SomeInfo: '717171'};
   let params = {};
 
   it('should create a ticket-identifier and -token', () => {
-    state.ticket.attributes = attributes;
-    state.ticket.identifier = null;
-    const ctx = {session: {state}};
+    ticket.attributes = attributes;
+    ticket.identifier = null;
+    const ctx = { ticket: ticket };
     return storeTicket(ctx, next).then(() => {
-      assert.isNumber(ctx.session.state.ticket.identifier);
-      assert.isString(ctx.session.state.ticket.token);
+      assert.isNumber(ctx.ticket.identifier);
+      assert.isString(ctx.ticket.token);
       params = {
-        token: ctx.session.state.ticket.token,
-        id: ctx.session.state.ticket.identifier
+        token: ctx.ticket.token,
+        id: ctx.ticket.identifier
       };
     });
   });
 
   it('should fetch the ticket', () => {
     const ctx = {
-      session: {
-        state: {}
-      },
+      ticket: null,
       params: params
     };
 
     return getTicket(ctx, next).then(() => {
-      assert.isObject(ctx.session.state.ticket.attributes);
-      assert.deepEqual(ctx.session.state.ticket.attributes, attributes);
+      assert.isObject(ctx.ticket.attributes);
+      assert.deepEqual(ctx.ticket.attributes, attributes);
     });
   });
 
@@ -58,7 +55,7 @@ describe('test store and get ticket', () => {
       params: params
     };
     return getTicket(ctx, next).then(() => {
-      assert.isFalse(ctx.session.state.ticket.attributes);
+      assert.isFalse(ctx.ticket.attributes);
     });
   });
 });
