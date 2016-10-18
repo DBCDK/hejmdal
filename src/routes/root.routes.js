@@ -18,4 +18,9 @@ router.get('/health', (ctx, next) => {
   next();
 });
 
+router.get('/fejl', (ctx, next) => {
+  ctx.body = 'Fejl!';
+  next();
+});
+
 export default router;

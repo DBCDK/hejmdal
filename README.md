@@ -24,44 +24,64 @@ I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil s
 
 ##Tests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
-Skal der tests på i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`
- Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
+Skal der testes i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`  
+Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
 ##Logning
-Der logges til `stdout` med de levels der er specificeret i afsnittet om Environment variabler herunder.
+Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
 
 ##Environment variabler
-- `HEJMDAL_DB_CONNECTIONS_POOL_MAX`  
-Max connections in pool
-- `HEJMDAL_DB_CONNECTIONS_POOL_MIN`  
-Min connections in pool
-- `HEJMDAL_DB_HOST`  
-DB host
-- `HEJMDAL_DB_HOST`  
-DB host
-- `HEJMDAL_DB_NAME`  
-Navn på hejmdals db
-- `HEJMDAL_DB_USER`  
-db-bruger
-- `HEJMDAL_DB_USER_PASSWORD`  
-Password til hejmdal db-bruger
-- `LOG_LEVEL`  
+- `HASH_SHARED` : `hash`  
+Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
+
+- `HEJMDAL_DB_CONNECTIONS_POOL_MAX` : `max`  
+Maximum connections in pool
+
+- `HEJMDAL_DB_CONNECTIONS_POOL_MIN` : `min`  
+Minimum connections in pool
+
+- `HEJMDAL_DB_HOST` : `host`  
+Database host
+
+- `HEJMDAL_DB_NAME` : `database`  
+Navn på hejmdals database
+
+- `HEJMDAL_DB_USER` : `user`    
+Database bruger
+
+- `HEJMDAL_DB_USER_PASSWORD` : `password`  
+Password til hejmdal database bruger
+
+- `LOG_LEVEL` : `level`  
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
-- `NODE_ENV`  
-Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production` 
-- `PORT`  
+
+- `MOCK_CONSENT_STORAGE` : `consent`  
+Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+
+- `MOCK_TICKET_STORAGE` : `ticket`  
+Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+
+- `MOCK_SMAUG` : `smaug`  
+Sættes værdien til `0` (`MOCK_SMAUG=0`) vil Smaug ikke blive mocket ud. Alle andre værdier vil resultere i at Smaug mockes.
+ 
+- `NODE_ENV` : `env`  
+Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production`
+ 
+- `PORT` : `port`  
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
-- `PRETTY_LOG`  
-Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje. 
-- `SESSION_LIFE_TIME`  
+
+- `PRETTY_LOG` : `pretty`  
+Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje.
+ 
+- `SESSION_LIFE_TIME` : `life_time`  
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
-- `HASH_SHARED`
-Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
 
 # Dokumentation
 ## Endpoints
+- `/login?token=ABC_123` 
+Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl.
 - `/logud` eller `/logud?redirect=URL` 
 En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en kort besked om at brugeren er logget ud. 
 

@@ -3,7 +3,6 @@
  * Consent component handling the nessecary consent
  */
 
-// import ConsentStore from './consent.store';
 import {form} from 'co-body';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import {CONFIG} from '../../utils/config.util';
@@ -11,6 +10,7 @@ import consentTemplate from './templates/consent.template';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
+import {log} from '../../utils/logging.util';
 
 const store = CONFIG.mock_externals.consent === 'memory' ?
   new KeyValueStorage(new MemoryStorage()) :
@@ -23,8 +23,12 @@ const store = CONFIG.mock_externals.consent === 'memory' ?
  * @param {function} next
  */
 export function giveConsentUI(ctx, next) {
-  ctx.body = consentTemplate({service: ctx.session.state.service});
-  next();
+  if(!ctx.session.state || !ctx.session.state.service){
+    ctx.redirect(`${VERSION_PREFIX}/fejl`);
+  } else {
+    ctx.body = consentTemplate({service: ctx.session.state.service});
+    next();
+  }
 }
 
 /**
@@ -35,8 +39,9 @@ export function giveConsentUI(ctx, next) {
  * @param {function} next
  */
 export async function consentSubmit(ctx, next) {
-  const response = await form(ctx);
-  if (response.userconsent && response.userconsent === '0') {
+  const response = await getConsentResponse(ctx);
+
+  if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     consentRejected(ctx, next);
   }
   else {
@@ -46,13 +51,31 @@ export async function consentSubmit(ctx, next) {
 }
 
 /**
+ * Retrieving consent response through co-body module
+ *
+ * @param ctx
+ * @return {{}}
+ */
+async function getConsentResponse(ctx){
+  let response = null;
+  try{
+    response = await form(ctx);
+  }
+  catch (e){
+    log.error('Could not retrieve consent response', {error: e, stack: e.stack});
+  }
+
+  return response;
+}
+
+/**
  * Consent is rejected by user and the flow is halted.
  *
  * TODO Currently a message is displayed to the user but we should probably redirect the user somewhere
  * @param {object} ctx
  * @param {function} next
  */
-export async function consentRejected(ctx, next) {
+export function consentRejected(ctx, next) {
   ctx.body = 'Consent rejected. What to do...?';
   next();
 }

@@ -38,9 +38,9 @@ export const CONFIG = {
     shared: process.env.HASH_SHARED
   },
   mock_externals: {
-    ticket: process.env.MOCK_TICKET_STORAGE,
-    consent: process.env.MOCK_CONSENT_STORAGE,
-    smaug: process.env.MOCK_SMAUG
+    ticket: process.env.MOCK_TICKET_STORAGE || false,
+    consent: process.env.MOCK_CONSENT_STORAGE || false,
+    smaug: process.env.MOCK_SMAUG !== '0'
   }
 };
 
