@@ -41,7 +41,6 @@ export function giveConsentUI(ctx, next) {
  */
 export async function consentSubmit(ctx, next) {
   const response = await getConsentResponse(ctx);
-  console.log(response);
 
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     consentRejected(ctx, next);
@@ -111,7 +110,7 @@ export async function checkForExistingConsent(ctx) {
     consent = await store.read(`${ctx.session.user.userId}:${ctx.session.state.serviceClient.id}`);
   }
   catch (e) {
-    log.error('Failed check for existing consent', {error: e.message, stack: e.stack})
+    log.error('Failed check for existing consent', {error: e.message, stack: e.stack});
   }
   // TODO do some checks and ensure that the user has given consent for exactly the actual service
   if (consent) {
@@ -137,6 +136,6 @@ export async function storeUserConsent(ctx) {
     await store.insert(consentid, consent);
   }
   catch (e) {
-    log.error('Failed saving of user consent', {error: e.message, stack: e.stack})
+    log.error('Failed saving of user consent', {error: e.message, stack: e.stack});
   }
 }
