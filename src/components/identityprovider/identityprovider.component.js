@@ -20,7 +20,7 @@ export function authenticate(ctx, next) {
   try {
     if (!ctx.session.state.user) {
       const authToken = createHash(ctx.session.state.token);
-      const identityProviders = ctx.session.state.client.config.identityProviders;
+      const identityProviders = ctx.session.state.client.identityProviders;
       const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
 
       ctx.body = index({title: 'Log ind via ...', content});

@@ -11,10 +11,7 @@ export function initState(ctx, next) {
   // this is a hardcoded state object for development
   ctx.session.state = Object.assign({
     user: null,
-    attributes: {
-      providers: ['borchk', 'unilogin']
-    },
-    token: 'qwerty',
+    token: ctx.params.token || null,
     ticket: null,
     service: 'testservice',
     consents: {},

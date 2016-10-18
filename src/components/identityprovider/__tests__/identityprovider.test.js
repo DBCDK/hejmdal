@@ -7,9 +7,7 @@ describe('test authenticate method', () => {
   const state = {
     user: null,
     client: {
-      config: {
-        identityProviders: ['borchk', 'unilogin']
-      }
+      identityProviders: ['borchk', 'unilogin']
     },
     token: 'qwerty'
   };
@@ -26,7 +24,7 @@ describe('test authenticate method', () => {
   });
 
   it('Should return error', () => {
-    state.client.config.identityProviders.push('invalid provider');
+    state.client.identityProviders.push('invalid provider');
     const ctx = {session: {state}};
     authenticate(ctx, next);
     assert.equal(ctx.status, 404);

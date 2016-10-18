@@ -36,6 +36,9 @@ export const CONFIG = {
   },
   hash: {
     shared: process.env.HASH_SHARED
+  },
+  smaug: {
+    uri: process.env.SMAUG_URI
   }
 };
 
