@@ -5,7 +5,9 @@
 
 export function getCulrAttributes(ctx, next) { // eslint-disable-line
   const userId = ctx.session.user.userId || null;
-  return getUserAttributesFromCulr(userId);
+  const culrAttributes = getUserAttributesFromCulr(userId);
+  ctx.session.culr = culrAttributes;
+  next();
 }
 
 /**
@@ -24,7 +26,7 @@ function getUserAttributesFromCulr(userId) {
     result.error = 'brugeren findes ikke';
   }
   else {
-    result.user = {
+    result.culr = {
       patronid: 'abcdefghij',
       userId: userId,
       libraries: {}

@@ -12,6 +12,7 @@ describe('Unittesting methods in culr.component:', () => {
 
   describe('getCulrAttributes', () => {
     let ctx;
+    const next = () => {};
 
     beforeEach(() => {
       ctx = {query: {}};
@@ -19,19 +20,19 @@ describe('Unittesting methods in culr.component:', () => {
     });
 
     it('should return error', () => {
-      const result = getCulrAttributes(ctx);
+      getCulrAttributes(ctx, next);
 
-      assert.isNull(result.user);
-      assert.equal(result.error, 'brugeren findes ikke');
+      assert.isNull(ctx.session.culr.user);
+      assert.equal(ctx.session.culr.error, 'brugeren findes ikke');
     });
 
     it('should return error', () => {
       const userId = '0123456789';
       ctx.session.user.userId = userId;
-      const result = getCulrAttributes(ctx);
+      getCulrAttributes(ctx, next);
 
-      assert.isNull(result.error);
-      assert.equal(result.user.userId, userId);
+      assert.isNull(ctx.session.culr.error);
+      assert.equal(ctx.session.culr.culr.userId, userId);
     });
   });
 });
