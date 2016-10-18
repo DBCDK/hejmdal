@@ -23,11 +23,11 @@ const store = CONFIG.mock_externals.consent === 'memory' ?
  * @param {function} next
  */
 export function giveConsentUI(ctx, next) {
-  if (!ctx.session.state.serviceClient || !ctx.session.state.serviceClient.name) {
+  if (!ctx.session.state.serviceClient || !ctx.session.state.serviceClient.id) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({service: ctx.session.state.serviceClient.name});
+    ctx.body = consentTemplate({service: ctx.session.state.serviceClient.id});
     next();
   }
 }
@@ -41,6 +41,7 @@ export function giveConsentUI(ctx, next) {
  */
 export async function consentSubmit(ctx, next) {
   const response = await getConsentResponse(ctx);
+  console.log(response);
 
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     consentRejected(ctx, next);
@@ -63,7 +64,7 @@ async function getConsentResponse(ctx) {
     response = await form(ctx);
   }
   catch (e) {
-    log.error('Could not retrieve consent response', {error: e, stack: e.stack});
+    log.error('Could not retrieve consent response', {error: e.message, stack: e.stack});
   }
 
   return response;
@@ -99,15 +100,22 @@ export async function retrieveUserConsent(ctx, next) {
 
 /**
  * Checks the storage for an existing consent which is added to the session if found. Otherwise false is returned.
+ * Exported only to make testable.
  *
  * @param {object} ctx
  * @return {boolean}
  */
-async function checkForExistingConsent(ctx) {
-  const consent = await store.read(`${ctx.session.state.user.cpr}:${ctx.session.state.service}`);
+export async function checkForExistingConsent(ctx) {
+  let consent = null;
+  try {
+    consent = await store.read(`${ctx.session.user.userId}:${ctx.session.state.serviceClient.id}`);
+  }
+  catch (e) {
+    log.error('Failed check for existing consent', {error: e.message, stack: e.stack})
+  }
   // TODO do some checks and ensure that the user has given consent for exactly the actual service
   if (consent) {
-    ctx.session.state.consents[ctx.session.state.service] = consent;
+    ctx.session.state.consents[ctx.session.state.serviceClient.id] = consent;
   }
 
   return consent;
@@ -115,13 +123,20 @@ async function checkForExistingConsent(ctx) {
 
 /**
  * Stores the given consent in the storage.
+ * Exported only to make testable.
  *
  * @param {object} ctx
  * @return {*}
  */
-async function storeUserConsent(ctx) {
+export async function storeUserConsent(ctx) {
   const consent = {}; // TODO retrieve from SMAUG
-  ctx.session.state.consents[ctx.session.state.service] = consent;
-  const consentid = `${ctx.session.state.user.cpr}:${ctx.session.state.service}`;
-  await store.insert(consentid, consent);
+  ctx.session.state.consents[ctx.session.state.serviceClient.name] = consent;
+  const consentid = `${ctx.session.user.userId}:${ctx.session.state.serviceClient.id}`;
+
+  try {
+    await store.insert(consentid, consent);
+  }
+  catch (e) {
+    log.error('Failed saving of user consent', {error: e.message, stack: e.stack})
+  }
 }
