@@ -13,7 +13,7 @@ describe('test store and get ticket', () => {
   };
 
   it('should return false for nonexisting ticket', () => {
-    const ctx = { ticket: ticket };
+    const ctx = {ticket: ticket};
     getTicket(ctx, next);
     assert.isFalse(ctx.ticket.attributes);
   });
@@ -24,7 +24,7 @@ describe('test store and get ticket', () => {
   it('should create a ticket-identifier and -token', () => {
     ticket.attributes = attributes;
     ticket.identifier = null;
-    const ctx = { ticket: ticket };
+    const ctx = {ticket: ticket};
     return storeTicket(ctx, next).then(() => {
       assert.isNumber(ctx.ticket.identifier);
       assert.isString(ctx.ticket.token);
