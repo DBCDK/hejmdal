@@ -23,9 +23,10 @@ const store = CONFIG.mock_externals.consent === 'memory' ?
  * @param {function} next
  */
 export function giveConsentUI(ctx, next) {
-  if(!ctx.session.state || !ctx.session.state.service){
+  if (!ctx.session.state || !ctx.session.state.service) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
-  } else {
+  }
+  else {
     ctx.body = consentTemplate({service: ctx.session.state.service});
     next();
   }
@@ -56,12 +57,12 @@ export async function consentSubmit(ctx, next) {
  * @param ctx
  * @return {{}}
  */
-async function getConsentResponse(ctx){
+async function getConsentResponse(ctx) {
   let response = null;
-  try{
+  try {
     response = await form(ctx);
   }
-  catch (e){
+  catch (e) {
     log.error('Could not retrieve consent response', {error: e, stack: e.stack});
   }
 

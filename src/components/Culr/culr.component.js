@@ -3,9 +3,9 @@
  * CULR compoennt handles all interaction bewteen the containing application and CULR
  */
 
-export function getCulrAttributes(ctx, next){
+export function getCulrAttributes(ctx, next) { // eslint-disable-line
   const userId = ctx.session.user.userId || null;
-  const culrAttributes = getUserAttributesFromCulr(userId)
+  const culrAttributes = getUserAttributesFromCulr(userId); // eslint-disable-line
 }
 
 /**

@@ -18,7 +18,7 @@ describe('Unittesting methods in consent.component.test', () => {
       redirect: sinon.stub()
     };
 
-    const next  = () => {};
+    const next = () => {};
 
     giveConsentUI(ctx, next);
     assert.isTrue(ctx.redirect.called);
@@ -33,7 +33,7 @@ describe('Unittesting methods in consent.component.test', () => {
       redirect: sinon.stub()
     };
 
-    const next  = () => {};
+    const next = () => {};
 
     giveConsentUI(ctx, next);
     assert.isTrue(ctx.redirect.called);
@@ -49,24 +49,24 @@ describe('Unittesting methods in consent.component.test', () => {
       }
     };
 
-    const next  = sinon.stub();
+    const next = sinon.stub();
 
     giveConsentUI(ctx, next);
     assert.equal(ctx.body, consentTemplate({service: ctx.session.state.service}));
     assert.isTrue(next.called);
   });
 
-  it('should display consent rejected information', async () => {
+  it('should display consent rejected information', async() => {
     const ctx = {
       req: {
         headers: {}
       }
     };
 
-    const next  = sinon.stub();
+    const next = sinon.stub();
 
     await consentSubmit(ctx, next);
     assert.equal(ctx.body, 'Consent rejected. What to do...?');
     assert.isTrue(next.called);
-  })
+  });
 });
