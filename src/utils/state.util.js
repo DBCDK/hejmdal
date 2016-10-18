@@ -20,7 +20,7 @@ export function initState(ctx, next) {
     user: {}  // contains the userId, userIdType, identityProviders
   }, ctx.session || {});
 
-  ctx.ticket = {};  // ticketId and ticketToken
+  ctx.ticket = {};  // ticketId (id) and ticketToken (token) and/or attributes object
 
   next();
 }
