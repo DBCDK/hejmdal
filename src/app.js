@@ -19,6 +19,7 @@ import Session from './models/db_models/session.model';
 import {LoggerMiddleware} from './middlewares/logger.middleware';
 import {SetVersionHeader} from './middlewares/headers.middleware';
 import {SessionMiddleware} from './middlewares/session.middleware';
+import {stateMiddleware} from './middlewares/state.middleware';
 
 // Utils
 import {CONFIG, validateConfig} from './utils/config.util';
@@ -57,7 +58,7 @@ export function startServer() {
   }));
 
   app.use(SessionMiddleware);
-
+  app.use(stateMiddleware);
   app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
   app.use(LoggerMiddleware);
   app.use(SetVersionHeader);
