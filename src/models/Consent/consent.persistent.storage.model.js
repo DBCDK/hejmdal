@@ -14,7 +14,7 @@ export default class PersistentConsentStorage {
         return result.length ? result[0].consent : null;
       })
       .catch((error) => {
-        log.error('Failed to get session', {error: error.message});
+        log.error('Failed to get consent', {error: error.message});
         return null;
       });
   }
@@ -22,7 +22,7 @@ export default class PersistentConsentStorage {
   insert(consentid, consent) {
     return Consent.query().insert({consentid: consentid, consent: consent})
       .catch((error) => {
-        log.error('Failed to set session', {error: error.message});
+        log.error('Failed to set consent', {error: error.message});
       });
   }
 
@@ -32,7 +32,7 @@ export default class PersistentConsentStorage {
         return true;
       })
       .catch((error) => {
-        log.error('Failed to delete session', {error: error.message});
+        log.error('Failed to delete consent', {error: error.message});
         return false;
       });
   }

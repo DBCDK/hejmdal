@@ -6,7 +6,8 @@
 exports.up = function(knex) {
   return knex.schema.createTableIfNotExists('session', (table) => {
     table.increments('id').primary();
-    table.string('sid', 256).unique().notNullable();
+    table.string('sid', 256).unique().notNullable().index();
+    table.dateTime('created').defaultTo(knex.fn.now());
     table.jsonb('session');
   });
 };
