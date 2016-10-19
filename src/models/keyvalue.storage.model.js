@@ -101,7 +101,7 @@ export default class KeyValueStorage {
         return this.storage.garbageCollect(expires);
       }
       catch (e) {
-        log.error('Delete object', {error: e.message, stack: e.stack});
+        log.error('Garbage Collect', {error: e.message, stack: e.stack});
       }
     }
     return true;
