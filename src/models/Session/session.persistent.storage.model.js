@@ -45,7 +45,7 @@ export default class PersistenSessionStorage {
       .then((result) => {
         result.forEach((session) => {
           this.delete(session.sid);
-          log.info('Garbage collect session id: ' + session.sid + ' created: ' + ticket.created);
+          log.info('Garbage collect session', {sid: session.sid, created: session.created});
         });
       })
       .catch((error) => {
@@ -53,7 +53,7 @@ export default class PersistenSessionStorage {
         return false;
       });
 
-     return true;
+    return true;
      */
   }
 

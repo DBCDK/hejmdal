@@ -48,7 +48,7 @@ export default class PersistentTicketStorage {
       .then((result) => {
         result.forEach((ticket) => {
           this.delete(ticket.id);
-          log.info('Garbage collect ticket id: ' + ticket.id + ' created: ' + ticket.created);
+          log.info('Garbage collect ticket', {id: ticket.id, created: ticket.created});
         });
       })
       .catch((error) => {
