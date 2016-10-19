@@ -11,7 +11,8 @@ export default class KeyValueStorage {
   /**
    * Constructor should have the CRUD storage class as parameter
    */
-  constructor(storage = () => {}) {
+  constructor(storage = () => {
+  }) {
     this.storage = storage;
   }
 
@@ -85,5 +86,24 @@ export default class KeyValueStorage {
       log.error('Delete object', {error: e.message, stack: e.stack});
     }
     return success;
+  }
+
+  /**
+   * Garbage Collect
+   *
+   * @param probability
+   * @param expires - seconds
+   * @returns {*}
+   */
+  garbageCollect(probability, expires) {
+    if (!Math.floor(Math.random() * probability)) {
+      try {
+        return this.storage.garbageCollect(expires);
+      }
+      catch (e) {
+        log.error('Delete object', {error: e.message, stack: e.stack});
+      }
+    }
+    return true;
   }
 }

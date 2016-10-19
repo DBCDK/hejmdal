@@ -54,6 +54,7 @@ export async function storeTicket(ctx, next) {
     const id = await storage.insertNext(ticket.attributes);
     const token = createHash(id);
 
+    storage.garbageCollect(CONFIG.garbageCollect.ticket.divisor, CONFIG.garbageCollect.ticket.seconds);
     ctx.ticket = Object.assign(ticket, {
       id: id,
       token: token

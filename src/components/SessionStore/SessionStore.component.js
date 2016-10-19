@@ -4,6 +4,7 @@
  */
 
 import {Store} from 'koa-session2';
+import {CONFIG} from '../../utils/config.util';
 import PersistenSessionStorage from '../../models/Session/session.persistent.storage.model';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
@@ -44,6 +45,7 @@ export default class SessionStore extends Store {
     }
 
     await this.Store.insert(opts.sid, session);
+    this.Store.garbageCollect(CONFIG.garbageCollect.session.divisor, CONFIG.garbageCollect.session.seconds);
 
     return opts.sid;
   }
