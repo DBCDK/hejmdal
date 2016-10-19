@@ -86,4 +86,14 @@ export default class MemoryStorage {
     }
     return false;
   }
+
+  /**
+   * Garbage Collection
+   *
+   * @param expires
+   * @returns {boolean}
+   */
+  async garbageCollect(expires) {    // eslint-disable-line no-unused-vars
+    return true;
+  }
 }

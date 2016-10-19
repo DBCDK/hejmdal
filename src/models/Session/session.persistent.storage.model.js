@@ -36,4 +36,37 @@ export default class PersistenSessionStorage {
         return false;
       });
   }
+
+  garbageCollect(expires) {      // eslint-disable-line no-unused-vars
+    return true;
+    /* Session has no date column as now
+    const gcTime = new Date(new Date().getTime() - (expires * 1000));
+    Session.query().select('*').where('created', '<', gcTime)
+      .then((result) => {
+        result.forEach((session) => {
+          this.delete(session.sid);
+          log.info('Garbage collect session', {sid: session.sid, created: session.created});
+        });
+      })
+      .catch((error) => {
+        log.error('Failed to garbage collect tickets', {error: error.message});
+        return false;
+      });
+
+    return true;
+     */
+  }
+
+  update(sid, session) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use update in session');
+  }
+
+  upsert(sid, session) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use upsert in session');
+  }
+
+  insertNext(session) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use insertNext in session');
+  }
+
 }

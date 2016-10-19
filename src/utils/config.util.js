@@ -37,6 +37,16 @@ export const CONFIG = {
   hash: {
     shared: process.env.HASH_SHARED
   },
+  garbageCollect: {
+    ticket: {
+      divisor: Number(process.env.GC_TICKET_DIVISOR) || 1000,
+      seconds: Number(process.env.GC_TICKET_SECONDS) || 3600   // 60 * 60
+    },
+    session: {
+      divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
+      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400  // 31 * 24 * 60 * 60
+    }
+  },
   smaug: {
     uri: process.env.SMAUG_URI
   },
