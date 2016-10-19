@@ -6,15 +6,41 @@
 
 **Closed issues:**
 
+- Salt der bruges til at hashe med skal sættes i en env var [\#83](https://github.com/DBCDK/hejmdal/issues/83)
+- Dokumentation af Migrations via knex i README [\#77](https://github.com/DBCDK/hejmdal/issues/77)
 - knexfile.js skal læse fra config.utils.js [\#76](https://github.com/DBCDK/hejmdal/issues/76)
+- TicketStore - tickets skal gemmes i permanent storage \(postgress\) [\#55](https://github.com/DBCDK/hejmdal/issues/55)
+- Info til bruger ved logud [\#54](https://github.com/DBCDK/hejmdal/issues/54)
+- CULR identitet skal gemmes i session [\#46](https://github.com/DBCDK/hejmdal/issues/46)
+- Tjek om bruger allerede er logget ind [\#45](https://github.com/DBCDK/hejmdal/issues/45)
 - Check af environment vars ved startup [\#43](https://github.com/DBCDK/hejmdal/issues/43)
 - tilpas pipeline med stg maskiner [\#15](https://github.com/DBCDK/hejmdal/issues/15)
+- SMAUG mock [\#10](https://github.com/DBCDK/hejmdal/issues/10)
+- ConsentStore Controller [\#9](https://github.com/DBCDK/hejmdal/issues/9)
+- Dummy CULR Component [\#8](https://github.com/DBCDK/hejmdal/issues/8)
 - Komponent: IdentityProvider [\#5](https://github.com/DBCDK/hejmdal/issues/5)
 - Pipeline: Jenkins++ \(intern\) / initiel [\#3](https://github.com/DBCDK/hejmdal/issues/3)
 
 **Merged pull requests:**
 
+- Tester consent.component [\#98](https://github.com/DBCDK/hejmdal/pull/98) ([hrmoller](https://github.com/hrmoller))
+- dump ctx [\#97](https://github.com/DBCDK/hejmdal/pull/97) ([fvsdbc](https://github.com/fvsdbc))
+- \#7: ticket component and test aligned to new context [\#96](https://github.com/DBCDK/hejmdal/pull/96) ([fvsdbc](https://github.com/fvsdbc))
+- \#8: Dummy CULR Component [\#95](https://github.com/DBCDK/hejmdal/pull/95) ([hrmoller](https://github.com/hrmoller))
+- revised context [\#94](https://github.com/DBCDK/hejmdal/pull/94) ([fvsdbc](https://github.com/fvsdbc))
+- import typo [\#93](https://github.com/DBCDK/hejmdal/pull/93) ([fvsdbc](https://github.com/fvsdbc))
+- env vars in test.env for easier mock of externals and db's [\#92](https://github.com/DBCDK/hejmdal/pull/92) ([fvsdbc](https://github.com/fvsdbc))
+- Smaug client that fetches configuration from a smaug webservice [\#91](https://github.com/DBCDK/hejmdal/pull/91) ([vibjerg](https://github.com/vibjerg))
+- \#83: README and doc-adjust [\#90](https://github.com/DBCDK/hejmdal/pull/90) ([fvsdbc](https://github.com/fvsdbc))
+- \#9: Postgres layer impolemented in ConsentStore [\#89](https://github.com/DBCDK/hejmdal/pull/89) ([hrmoller](https://github.com/hrmoller))
+- \#83: move hash secret to environment [\#87](https://github.com/DBCDK/hejmdal/pull/87) ([fvsdbc](https://github.com/fvsdbc))
+- \#9: ConsentStore Controller [\#82](https://github.com/DBCDK/hejmdal/pull/82) ([hrmoller](https://github.com/hrmoller))
+- \#10 added smaug komponent with a mock client. [\#81](https://github.com/DBCDK/hejmdal/pull/81) ([vibjerg](https://github.com/vibjerg))
+- Tilføj en prod migrate kommando [\#80](https://github.com/DBCDK/hejmdal/pull/80) ([vibjerg](https://github.com/vibjerg))
+- \#11: move endpoint for getTicket [\#79](https://github.com/DBCDK/hejmdal/pull/79) ([fvsdbc](https://github.com/fvsdbc))
+- Tilføjet dokumentation om brug af postgres og migrations [\#78](https://github.com/DBCDK/hejmdal/pull/78) ([vibjerg](https://github.com/vibjerg))
 - lock knex to version 0.12.3 [\#75](https://github.com/DBCDK/hejmdal/pull/75) ([vibjerg](https://github.com/vibjerg))
+- Issue 55 fvs [\#61](https://github.com/DBCDK/hejmdal/pull/61) ([fvsdbc](https://github.com/fvsdbc))
 - \#43: Check af environment vars ved startup [\#60](https://github.com/DBCDK/hejmdal/pull/60) ([hrmoller](https://github.com/hrmoller))
 - Dependencies mmj [\#59](https://github.com/DBCDK/hejmdal/pull/59) ([hrmoller](https://github.com/hrmoller))
 
