@@ -11,7 +11,7 @@
  * @param {function} next
  */
 export function stateMiddleware(ctx, next) {
-  Object.assign(ctx, {getState, setState, getUser, setUser});
+  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser});
   next();
 }
 
@@ -75,3 +75,14 @@ function setUser(newValues) {
 function getUser() {
   return this.session.user;
 }
+
+/**
+ * Check if user is set on session
+ *
+ * @returns {boolean}
+ */
+function hasUser() {
+  return this.session.user.userId && true || false;
+}
+
+

@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
+import {mockContext} from '../../../utils/test.util';
 
 describe('Test smaug component', () => {
 
@@ -13,14 +14,8 @@ describe('Test smaug component', () => {
 
   beforeEach(() => {
     CONFIG.mock_externals.smaug = true;
-    ctx = {
-      session: {
-        state: {}
-      },
-      query: {
-        token: null
-      }
-    };
+    ctx = mockContext('valid_token');
+
   });
 
   afterEach(() => {
@@ -32,7 +27,6 @@ describe('Test smaug component', () => {
   });
 
   it('should add client token', async() => {
-    ctx.query.token = 'valid_token';
     await smaug.getAttributes(ctx, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
@@ -44,7 +38,6 @@ describe('Test smaug component', () => {
   it('should add empty default attributes', async() => {
     delete mockData.identityProviders;
     delete mockData.attributes;
-    ctx.query.token = 'valid_token';
     await smaug.getAttributes(ctx, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
@@ -54,19 +47,16 @@ describe('Test smaug component', () => {
   });
 
   it('should not set client with invalid token', async() => {
-    ctx.session.state = {};
-    ctx.query.token = 'invalid';
+    ctx = mockContext('invalid_token');
     await smaug.getAttributes(ctx, () => {});
-    assert.isUndefined(ctx.session.state.client);
+    assert.deepEqual(ctx.session.state.serviceClient, {});
     assert.equal(ctx.status, 403);
   });
 
   it('should throw error when invalid client', async() => {
-    ctx.session.state = {};
-    ctx.query.token = 'valid_token';
     delete mockData.app.clientId;
     await smaug.getAttributes(ctx, () => {});
-    assert.isUndefined(ctx.session.state.client);
     assert.equal(ctx.status, 403);
+    assert.deepEqual(ctx.session.state.serviceClient, {});
   });
 });
