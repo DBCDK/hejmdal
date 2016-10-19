@@ -44,19 +44,18 @@ export default class PersistentTicketStorage {
 
   garbageCollect(expires) {
     const gcTime = new Date(new Date().getTime() - (expires * 1000));
-    Ticket.query().select('*').where('created', '<', gcTime)
+    return Ticket.query().select('*').where('created', '<', gcTime)
       .then((result) => {
         result.forEach((ticket) => {
           this.delete(ticket.id);
           log.info('Garbage collect ticket', {id: ticket.id, created: ticket.created});
         });
+        return true;
       })
       .catch((error) => {
         log.error('Failed to garbage collect tickets', {error: error.message});
         return false;
       });
-
-    return true;
   }
 
   insert(tid, ticket) {   // eslint-disable-line no-unused-vars
