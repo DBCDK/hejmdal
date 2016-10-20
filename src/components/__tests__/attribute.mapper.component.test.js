@@ -28,6 +28,6 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
     mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {aaa: 'aaa', bbb: 'bbb'})
+    assert.deepEqual(ctx.session.state.ticket.attributes, {aaa: 'aaa', bbb: 'bbb'});
   });
 });
