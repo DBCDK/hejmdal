@@ -33,7 +33,7 @@ describe('Unittesting methods in culr.component:', () => {
       getCulrAttributes(ctx, next);
 
       assert.isNull(ctx.getState().culr.error);
-      assert.equal(ctx.getState().culr.culr.userId, userId);
+      assert.equal(ctx.getState().culr.attributes.userId, userId);
     });
   });
 });

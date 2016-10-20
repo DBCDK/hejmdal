@@ -19,7 +19,7 @@ describe('Attribute mapper unittest', () => {
     const ctx = mockContext();
     ctx.setState({
       culr: {
-        culr: {
+        attributes: {
           aaa: 'aaa', bbb: 'bbb', ccc: 'ccc'
         }
       }, serviceClient: {
