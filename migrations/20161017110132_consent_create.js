@@ -4,7 +4,7 @@
  * @param knex
  * @return {*}
  */
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTableIfNotExists('consent', (table) => {
     table.increments('id').primary();
     table.string('consentid', 256).unique().notNullable();
@@ -19,6 +19,6 @@ exports.up = function(knex) {
  * @param knex
  * @return {*}
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable('consent');
 };
