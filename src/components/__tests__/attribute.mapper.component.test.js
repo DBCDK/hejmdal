@@ -23,7 +23,7 @@ describe('Attribute mapper unittest', () => {
           aaa: 'aaa', bbb: 'bbb', ccc: 'ccc'
         }
       }, serviceClient: {
-        attributes: ['aaa', 'bbb']
+        attributes: ['aaa', 'bbb', 'ddd']
       },
       ticket: {}
     });
