@@ -9,7 +9,7 @@ describe('test authenticate method', () => {
   const ctx = mockContext();
 
   it('Should return content page', () => {
-    ctx.session.state.serviceClient.identityProviders = ['borchk', 'unilogin'];
+    ctx.setState({serviceClient: {identityProviders: ['borchk', 'unilogin']}});
     authenticate(ctx, next);
     assert.equal(ctx.status, 200);
     assert.include(ctx.body, 'id="borchk"');
@@ -17,7 +17,7 @@ describe('test authenticate method', () => {
   });
 
   it('Should return error', () => {
-    ctx.session.state.serviceClient.identityProviders = ['invalid provider'];
+    ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
     authenticate(ctx, next);
     assert.equal(ctx.status, 404);
   });
@@ -30,7 +30,7 @@ describe('test identityProviderCallback method', () => {
       id: 'testId'
     }
   });
-  ctx.params.token = createHash(ctx.session.state.smaugToken);
+  ctx.params.token = createHash(ctx.getState().smaugToken);
   const next = () => {
   };
 
@@ -42,7 +42,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['unilogin']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.user, expected);
+    assert.deepEqual(ctx.getUser(), expected);
   });
 
   it('Should add nemlogin user to context', () => {
@@ -53,7 +53,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['nemlogin']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.user, expected);
+    assert.deepEqual(ctx.getUser(), expected);
   });
 
   it('Should add library user to context', () => {
@@ -66,6 +66,6 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['borchk']
     };
     identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.session.user, expected);
+    assert.deepEqual(ctx.getUser(), expected);
   });
 });

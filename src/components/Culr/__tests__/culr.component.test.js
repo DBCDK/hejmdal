@@ -23,17 +23,17 @@ describe('Unittesting methods in culr.component:', () => {
     it('should return error', () => {
       getCulrAttributes(ctx, next);
 
-      assert.isNull(ctx.session.state.culr.user);
-      assert.equal(ctx.session.state.culr.error, 'brugeren findes ikke');
+      assert.isNull(ctx.getState().culr.user);
+      assert.equal(ctx.getState().culr.error, 'brugeren findes ikke');
     });
 
     it('should also return error', () => {
       const userId = '0123456789';
-      ctx.session.user.userId = userId;
+      ctx.setUser({userId: userId});
       getCulrAttributes(ctx, next);
 
-      assert.isNull(ctx.session.state.culr.error);
-      assert.equal(ctx.session.state.culr.culr.userId, userId);
+      assert.isNull(ctx.getState().culr.error);
+      assert.equal(ctx.getState().culr.culr.userId, userId);
     });
   });
 });
