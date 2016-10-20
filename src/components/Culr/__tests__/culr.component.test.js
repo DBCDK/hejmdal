@@ -7,32 +7,33 @@ import {assert} from 'chai';
 
 import {initState} from '../../../utils/state.util';
 import {getCulrAttributes} from '../culr.component.js';
+import {mockContext} from '../../../utils/test.util';
 
 describe('Unittesting methods in culr.component:', () => {
+  let ctx = mockContext();
 
   describe('getCulrAttributes', () => {
-    let ctx;
     const next = () => {};
 
     beforeEach(() => {
-      ctx = {query: {}};
+      ctx.query = {};
       initState(ctx, () => {});
     });
 
     it('should return error', () => {
       getCulrAttributes(ctx, next);
 
-      assert.isNull(ctx.session.culr.user);
-      assert.equal(ctx.session.culr.error, 'brugeren findes ikke');
+      assert.isNull(ctx.session.state.culr.user);
+      assert.equal(ctx.session.state.culr.error, 'brugeren findes ikke');
     });
 
-    it('should return error', () => {
+    it('should also return error', () => {
       const userId = '0123456789';
       ctx.session.user.userId = userId;
       getCulrAttributes(ctx, next);
 
-      assert.isNull(ctx.session.culr.error);
-      assert.equal(ctx.session.culr.culr.userId, userId);
+      assert.isNull(ctx.session.state.culr.error);
+      assert.equal(ctx.session.state.culr.culr.userId, userId);
     });
   });
 });

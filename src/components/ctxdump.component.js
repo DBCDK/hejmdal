@@ -7,7 +7,7 @@
  */
 export default function ctxdump(ctx, next) {
   const body = ctx.body ? ctx.body : '';
-  ctx.body = body + preDump(ctx, 'ctx') + preDump(ctx.session, 'session') + preDump(ctx.ticket, 'ticket');   // For test
+  ctx.body = body + preDump(ctx.session, 'session') + preDump(ctx, 'ctx');   // For test
   return next();
 }
 
