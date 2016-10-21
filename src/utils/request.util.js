@@ -9,7 +9,7 @@ import request from 'request';
  */
 export function promiseRequest(method, props) {
   return new Promise((resolve, reject) => {
-    request[method](props, (err, response, body) => {
+    request[method](props, (err, response) => {
       if (err) {
         reject(err);
       }
