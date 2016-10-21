@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
-// import {mockDataOk} from '../mock/borchk.client.mock';
 import {validateUserInLibrary} from '../borchk.component';
 import {mockContext} from '../../../utils/test.util';
 
