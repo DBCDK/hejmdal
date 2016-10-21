@@ -1,0 +1,104 @@
+version: '2'
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.169.1.0/28
+
+services:
+  culrDb:
+    image: postgres:9.4
+    environment:
+      - POSTGRES_USER=culr
+      - POSTGRES_PASSWORD=culrpass
+    expose:
+      - "5432"
+    ports:
+      - "15321:5432"
+
+  culr:
+    image: docker-i.dbc.dk/culr-glassfish-deployer:4.1-72
+    links:
+      - culrDb
+    ports:
+      - "18380:8080"
+      - "18348:4848"
+    environment:
+      - GF_HOST=culr
+      - GF_PORT=4848
+      - GLASSFISH_ADMIN_PORT=4848
+      - GF_CULR_PORT=5432
+      - GF_USER_PASSWORD=GoFish
+      - GF_CULR_DBUS=culr
+      - GF_CULR_USER=culr
+      - GF_CULR_PASS=culrpass
+      - GF_CULR_SERV=culrDb
+      - GF_PROP_CULR_LOGBACK_FILENAME=/home/$USER/gf-logs/culr
+      - GF_JNDI_CULR_FORSRIGHT_ENDPOINT="http\://forsrights.addi.dk/1.2/"
+      - GF_JNDI_CULR_FORSRIGHT_WSDL="forsrights.wsdl"
+      - GF_JNDI_CULR_OPENAGENCY_ENDPOINT="http\://openagency.addi.dk/test_2.25/"
+      - GF_JNDI_CULR_OPENAGENCY_WSDL="openagency.wsdl"
+      - GF_JNDI_CULR_LOGBACK_FILE="http\://svn.dbc.dk/repos/culrservice/trunk/culr-logback-include.xml"
+
+  smaugdb:
+    image: postgres:9.6
+    ports:
+      - "25432:5432"
+    environment:
+      - POSTGRES_USER=smaug
+      - POSTGRES_PASSWORD=smaug
+
+  smaug:
+    image: docker-xp.dbc.dk/smaug
+    ports:
+      - "8001:8001"
+      - "8002:8002"
+      - "8003:8003"
+    command: /opt/smaug/docker/start-smaug-default.sh
+    links:
+      - smaugdb
+    environment:
+      - PORT_OAUTH=8001
+      - PORT_CONFIG=8002
+      - PORT_ADMIN=8003
+      - DATABASE_URI=postgres://smaug:smaug@smaugDb:5432/smaug
+
+  hejmdalDb:
+    image: postgres:9.6
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=hejmdal
+      - POSTGRES_PASSWORD=hejmdal
+
+  hejmdal:
+    build: .
+    ports:
+      - "3010:3010"
+    volumes:
+      - .:/opt/hejmdal
+    links:
+      - culr
+      - smaug
+      - hejmdalDb:hejmdalDb
+    environment:
+      - NODE_ENV=development
+      - PORT=3010
+      - HEJMDAL_DB_HOST=hejmdalDb
+      - HEJMDAL_DB_NAME=hejmdal
+      - HEJMDAL_DB_USER=hejmdal
+      - HEJMDAL_DB_USER_PASSWORD=hejmdal
+      - HEJMDAL_DB_CONNECTIONS_POOL_MIN=2
+      - HEJMDAL_DB_CONNECTIONS_POOL_MAX=10
+      - LOG_LEVEL=DEBUG
+      - PRETTY_LOG=1
+      - SESSION_LIFE_TIME=86400001
+      - HASH_SHARED=test-me-has-shared
+      - SMAUG_URI=smaug:8001
+      - CULR_URI=culr:18380
+      - MOCK_TICKET_STORAGE=memory
+      - MOCK_CONSENT_STORAGE=memory
+      - MOCK_SMAUG=memory

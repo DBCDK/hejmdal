@@ -13,7 +13,8 @@
     "serve": "nodemon --exec node --no-stdin src/main.js",
     "test": ". ./env.test && LOG_LEVEL=OFF mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
     "migrate:latest": "knex migrate:latest",
-    "migrate:latest:dev": "source env.env && knex migrate:latest"
+    "migrate:latest:dev": "source env.env && knex migrate:latest",
+    "start": "npm run serve"
   },
   "repository": {
     "type": "git",
@@ -34,7 +35,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
     "babel-register": "^6.16.3",
     "co-body": "^4.2.0",
-    "knex": "0.12.5",
+    "knex": "0.12.6",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-combine-routers": "^1.0.0",

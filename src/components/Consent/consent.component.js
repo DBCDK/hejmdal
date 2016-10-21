@@ -23,11 +23,12 @@ const store = CONFIG.mock_externals.consent === 'memory' ?
  * @param {function} next
  */
 export function giveConsentUI(ctx, next) {
-  if (!ctx.session.state.serviceClient || !ctx.session.state.serviceClient.id) {
+  const state = ctx.getState();
+  if (!state.serviceClient || !state.serviceClient.id) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({service: ctx.session.state.serviceClient.id});
+    ctx.body = consentTemplate({service: state.serviceClient.id});
     next();
   }
 }
@@ -105,16 +106,18 @@ export async function retrieveUserConsent(ctx, next) {
  * @return {boolean}
  */
 export async function checkForExistingConsent(ctx) {
+  const state = ctx.getState();
+  const user = ctx.getUser();
   let consent = null;
   try {
-    consent = await store.read(`${ctx.session.user.userId}:${ctx.session.state.serviceClient.id}`);
+    consent = await store.read(`${user.userId}:${state.serviceClient.id}`);
   }
   catch (e) {
     log.error('Failed check for existing consent', {error: e.message, stack: e.stack});
   }
   // TODO do some checks and ensure that the user has given consent for exactly the actual service
   if (consent) {
-    ctx.session.state.consents[ctx.session.state.serviceClient.id] = consent;
+    addConsentToState(ctx, consent);
   }
 
   return consent;
@@ -129,13 +132,26 @@ export async function checkForExistingConsent(ctx) {
  */
 export async function storeUserConsent(ctx) {
   const consent = {}; // TODO retrieve from SMAUG
-  ctx.session.state.consents[ctx.session.state.serviceClient.name] = consent;
-  const consentid = `${ctx.session.user.userId}:${ctx.session.state.serviceClient.id}`;
-
+  const user = ctx.getUser();
+  const state = ctx.getState();
+  const consentid = `${user.userId}:${state.serviceClient.id}`;
+  addConsentToState(ctx, consent);
   try {
     await store.insert(consentid, consent);
   }
   catch (e) {
     log.error('Failed saving of user consent', {error: e.message, stack: e.stack});
   }
+}
+
+/**
+ * Adds a consent object to the state object
+ *
+ * @param ctx
+ * @param consent
+ */
+function addConsentToState(ctx, consent) {
+  const state = ctx.getState();
+  const consents = Object.assign({}, state.consents, {[state.serviceClient.id]: consent});
+  ctx.setState({consents});
 }

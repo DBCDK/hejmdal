@@ -10,6 +10,9 @@ export const CONFIG = {
     env: process.env.NODE_ENV,
     port: Number(process.env.PORT)
   },
+  borchk: {
+    uri: process.env.BORCHK_URI
+  },
   culr: {
     uri: process.env.CULR_WSDL_URI,
     userIdAut: process.env.CULR_USER_ID_AUT,
@@ -37,7 +40,8 @@ export const CONFIG = {
   mock_externals: {
     ticket: process.env.MOCK_TICKET_STORAGE || false,
     consent: process.env.MOCK_CONSENT_STORAGE || false,
-    smaug: process.env.MOCK_SMAUG !== '0'
+    smaug: process.env.MOCK_SMAUG !== '0',
+    borchk: process.env.MOCK_BORCHK !== '0'
   },
   postgres: {
     client: 'postgresql',
@@ -69,18 +73,19 @@ export const CONFIG = {
  * Number are validated to be non-NaN numbers.
  *
  * @param {Object} config
+ * @param {string} k String used for printing out which config param is missing
  */
-export function validateConfig(config = CONFIG) {
+export function validateConfig(config = CONFIG, k = '') {
   for (let key in config) {
     if (typeof config[key] === 'object') {
-      validateConfig(config[key]);
+      validateConfig(config[key], `${key}.`);
     }
     else {
       if (config[key] === undefined) { // eslint-disable-line no-undefined
-        throw Error(`${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler`);
+        throw Error(`${k}${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
       if (typeof config[key] === 'number' && Number.isNaN(config[key])) {
-        throw Error(`${key}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler`);
+        throw Error(`${k}${key} in ${k}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
     }
   }

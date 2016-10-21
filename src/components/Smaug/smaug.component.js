@@ -11,9 +11,9 @@ import {log} from '../../utils/logging.util';
  */
 export async function getAttributes(ctx, next) {
   try {
-    const token = ctx.query.token;
-    const client = await getClient(token);
-    ctx.session.state.serviceClient = extractClientInfo(client);
+    const smaugToken = ctx.getState().smaugToken;
+    const client = await getClient(smaugToken);
+    ctx.setState({serviceClient: extractClientInfo(client)});
     return next();
   }
   catch (err) {

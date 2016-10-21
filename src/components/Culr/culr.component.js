@@ -6,22 +6,23 @@
 import * as culr from './culr.client';
 
 export function getCulrAttributes(ctx, next) { // eslint-disable-line
-  const userId = ctx.session.user.userId || null;
+  const userId = ctx.getUser().userId || null;
   const culrAttributes = getUserAttributesFromCulr(userId);
-  ctx.session.culr = culrAttributes;
+  ctx.setState({culr: culrAttributes});
   next();
 }
+
 
 /**
  * Dummy method that fakes retrieval of user from CULR webservice
  *
  * @param userId
- * @return {{error: null|string, user: null|object}}
+ * @return {{error: null, attributes: null}}
  */
 async function getUserAttributesFromCulr(userId) {
   const result = {
     error: null,
-    user: null
+    attributes: null
   };
 
   let accounts = null;
@@ -38,7 +39,7 @@ async function getUserAttributesFromCulr(userId) {
 
   if(responseCode === 'OK200') {
     console.log('accounts.result', accounts.result.Account);
-    result.user = accounts.result.Account;
+    result.attributes = accounts.result.Account;
   } else if(responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
     result.error = 'brugeren findes ikke';
   } else {

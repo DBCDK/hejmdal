@@ -8,6 +8,9 @@
 *Heimdall eller Hejmdal (norrønt: Heimdallr) [...] har en fantastisk hørelse, og optræder af den grund i myterne som gudernes vagtmand, der sidder ved enden af Bifrost og overvåger, at ingen jætter sniger sig ind i Asgård.*
 [Wikipedia](https://da.wikipedia.org/wiki/Hejmdal)
 
+##Releases
+Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.
+
 ##Opstart
 ###Udvikling
 Efter repositortiet er bevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikre genstart af applikationen når kode er ændres.

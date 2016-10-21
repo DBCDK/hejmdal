@@ -1,20 +1,26 @@
 # Change Log
 
-## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
-
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.1.0...HEAD)
+## [0.2.0](https://github.com/DBCDK/hejmdal/tree/0.2.0) (2016-10-20)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.1.0...0.2.0)
 
 **Closed issues:**
 
 - Salt der bruges til at hashe med skal sættes i en env var [\#83](https://github.com/DBCDK/hejmdal/issues/83)
+- Implementere SMAUG operationer mod en test instans af SMAUG [\#69](https://github.com/DBCDK/hejmdal/issues/69)
+- Metoder til at sætte og hente state.  [\#85](https://github.com/DBCDK/hejmdal/issues/85)
+- Opgrader node version [\#84](https://github.com/DBCDK/hejmdal/issues/84)
 - Dokumentation af Migrations via knex i README [\#77](https://github.com/DBCDK/hejmdal/issues/77)
 - knexfile.js skal læse fra config.utils.js [\#76](https://github.com/DBCDK/hejmdal/issues/76)
+- Hejmdal kan ikke bygge med version 0.12.4 af knex [\#74](https://github.com/DBCDK/hejmdal/issues/74)
 - TicketStore - tickets skal gemmes i permanent storage \(postgress\) [\#55](https://github.com/DBCDK/hejmdal/issues/55)
 - Info til bruger ved logud [\#54](https://github.com/DBCDK/hejmdal/issues/54)
+- SessionStore - garbageCollection af udløbne cookies [\#53](https://github.com/DBCDK/hejmdal/issues/53)
+- TicketStore - garbageCollection af ikke indløste tickets [\#52](https://github.com/DBCDK/hejmdal/issues/52)
 - CULR identitet skal gemmes i session [\#46](https://github.com/DBCDK/hejmdal/issues/46)
 - Tjek om bruger allerede er logget ind [\#45](https://github.com/DBCDK/hejmdal/issues/45)
 - Check af environment vars ved startup [\#43](https://github.com/DBCDK/hejmdal/issues/43)
 - tilpas pipeline med stg maskiner [\#15](https://github.com/DBCDK/hejmdal/issues/15)
+- opret stagingmiljø til login.bib.dk [\#13](https://github.com/DBCDK/hejmdal/issues/13)
 - SMAUG mock [\#10](https://github.com/DBCDK/hejmdal/issues/10)
 - ConsentStore Controller [\#9](https://github.com/DBCDK/hejmdal/issues/9)
 - Dummy CULR Component [\#8](https://github.com/DBCDK/hejmdal/issues/8)
@@ -23,10 +29,14 @@
 
 **Merged pull requests:**
 
+- Issue 102 fvs [\#105](https://github.com/DBCDK/hejmdal/pull/105) ([fvsdbc](https://github.com/fvsdbc))
+- Added tests of state middleware [\#104](https://github.com/DBCDK/hejmdal/pull/104) ([vibjerg](https://github.com/vibjerg))
+- Add methods for updating state and user on session [\#103](https://github.com/DBCDK/hejmdal/pull/103) ([vibjerg](https://github.com/vibjerg))
+- \#52 \#53 : Garbage collection in persistent storage for ticket and ses… [\#101](https://github.com/DBCDK/hejmdal/pull/101) ([fvsdbc](https://github.com/fvsdbc))
+- \#84: Opgrader node version [\#99](https://github.com/DBCDK/hejmdal/pull/99) ([hrmoller](https://github.com/hrmoller))
 - Tester consent.component [\#98](https://github.com/DBCDK/hejmdal/pull/98) ([hrmoller](https://github.com/hrmoller))
 - dump ctx [\#97](https://github.com/DBCDK/hejmdal/pull/97) ([fvsdbc](https://github.com/fvsdbc))
 - \#7: ticket component and test aligned to new context [\#96](https://github.com/DBCDK/hejmdal/pull/96) ([fvsdbc](https://github.com/fvsdbc))
-- \#8: Dummy CULR Component [\#95](https://github.com/DBCDK/hejmdal/pull/95) ([hrmoller](https://github.com/hrmoller))
 - revised context [\#94](https://github.com/DBCDK/hejmdal/pull/94) ([fvsdbc](https://github.com/fvsdbc))
 - import typo [\#93](https://github.com/DBCDK/hejmdal/pull/93) ([fvsdbc](https://github.com/fvsdbc))
 - env vars in test.env for easier mock of externals and db's [\#92](https://github.com/DBCDK/hejmdal/pull/92) ([fvsdbc](https://github.com/fvsdbc))
@@ -41,6 +51,7 @@
 - Tilføjet dokumentation om brug af postgres og migrations [\#78](https://github.com/DBCDK/hejmdal/pull/78) ([vibjerg](https://github.com/vibjerg))
 - lock knex to version 0.12.3 [\#75](https://github.com/DBCDK/hejmdal/pull/75) ([vibjerg](https://github.com/vibjerg))
 - Issue 55 fvs [\#61](https://github.com/DBCDK/hejmdal/pull/61) ([fvsdbc](https://github.com/fvsdbc))
+- \#8: Dummy CULR Component [\#95](https://github.com/DBCDK/hejmdal/pull/95) ([hrmoller](https://github.com/hrmoller))
 - \#43: Check af environment vars ved startup [\#60](https://github.com/DBCDK/hejmdal/pull/60) ([hrmoller](https://github.com/hrmoller))
 - Dependencies mmj [\#59](https://github.com/DBCDK/hejmdal/pull/59) ([hrmoller](https://github.com/hrmoller))
 
@@ -53,7 +64,6 @@
 **Closed issues:**
 
 - opret produktionsmiljø [\#14](https://github.com/DBCDK/hejmdal/issues/14)
-- opret stagingmiljø til login.bib.dk [\#13](https://github.com/DBCDK/hejmdal/issues/13)
 - SessionStorage klassen skal kunne gemme i en postgress [\#47](https://github.com/DBCDK/hejmdal/issues/47)
 - Hejmdal skal være baseret på koa@2 frem koa@1 [\#35](https://github.com/DBCDK/hejmdal/issues/35)
 - npm lint:checkstyle [\#29](https://github.com/DBCDK/hejmdal/issues/29)

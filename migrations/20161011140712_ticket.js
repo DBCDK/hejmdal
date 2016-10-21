@@ -3,7 +3,7 @@
  * @param knex
  * @return {*}
  */
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTableIfNotExists('ticket', (table) => {
     table.increments('id').primary();
     table.dateTime('created').defaultTo(knex.fn.now());
@@ -16,6 +16,6 @@ exports.up = function(knex) {
  * @param knex
  * @return {*}
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable('ticket');
 };

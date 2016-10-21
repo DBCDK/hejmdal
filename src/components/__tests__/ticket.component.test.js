@@ -1,61 +1,48 @@
 import {assert} from 'chai';
 
 import {storeTicket, getTicket} from '../ticket.component.js';
+import {mockContext} from '../../utils/test.util';
 
 describe('test store and get ticket', () => {
-  const ticket = {
-    attributes: null,
-    identifier: 'foo',
-    token: 'bar'
-  };
+  const ctx = mockContext();
 
   const next = () => {
   };
 
   it('should return false for nonexisting ticket', () => {
-    const ctx = {ticket: ticket};
+    ctx.setState({ticket: {attributes: null, id: 'foo', token: 'bar'}});
     getTicket(ctx, next);
-    assert.isFalse(ctx.ticket.attributes);
+    assert.isFalse(ctx.getState().ticket.attributes);
   });
 
   const attributes = {someId: '123', SomeInfo: '717171'};
-  let params = {};
+  const params = {};
 
   it('should create a ticket-identifier and -token', () => {
-    ticket.attributes = attributes;
-    ticket.identifier = null;
-    const ctx = {ticket: ticket};
+    ctx.setState({ticket: {attributes: attributes, id: null}});
     return storeTicket(ctx, next).then(() => {
-      assert.isNumber(ctx.ticket.id);
-      assert.isString(ctx.ticket.token);
-      params = {
-        token: ctx.ticket.token,
-        id: ctx.ticket.id
-      };
+      assert.isNumber(ctx.getState().ticket.id);
+      assert.isString(ctx.getState().ticket.token);
+      params.token = ctx.getState().ticket.token;
+      params.id = ctx.getState().ticket.id;
     });
   });
 
   it('should fetch the ticket', () => {
-    const ctx = {
-      ticket: null,
-      params: params
-    };
+    ctx.setState({ticket: {}});
+    ctx.params = params;
 
     return getTicket(ctx, next).then(() => {
-      assert.isObject(ctx.ticket.attributes);
-      assert.deepEqual(ctx.ticket.attributes, attributes);
+      assert.isObject(ctx.getState().ticket.attributes);
+      assert.deepEqual(ctx.getState().ticket.attributes, attributes);
     });
   });
 
   it('should only fetch ticket once', () => {
-    const ctx = {
-      session: {
-        state: {}
-      },
-      params: params
-    };
+    ctx.setState({ticket: {}});
+    ctx.params = params;
     return getTicket(ctx, next).then(() => {
-      assert.isFalse(ctx.ticket.attributes);
+      assert.isFalse(ctx.getState().ticket.attributes);
     });
   });
 });

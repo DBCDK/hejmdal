@@ -37,24 +37,20 @@ export default class PersistenSessionStorage {
       });
   }
 
-  garbageCollect(expires) {      // eslint-disable-line no-unused-vars
-    return true;
-    /* Session has no date column as now
+  garbageCollect(expires) {
     const gcTime = new Date(new Date().getTime() - (expires * 1000));
-    Session.query().select('*').where('created', '<', gcTime)
+    return Session.query().select('*').where('created', '<', gcTime)
       .then((result) => {
         result.forEach((session) => {
           this.delete(session.sid);
           log.info('Garbage collect session', {sid: session.sid, created: session.created});
         });
+        return true;
       })
       .catch((error) => {
         log.error('Failed to garbage collect tickets', {error: error.message});
         return false;
       });
-
-    return true;
-     */
   }
 
   update(sid, session) {   // eslint-disable-line no-unused-vars

@@ -10,6 +10,7 @@ import sinon from 'sinon';
 import consentTemplate from '../templates/consent.template';
 import {initState} from '../../../utils/state.util';
 import {VERSION_PREFIX} from '../../../utils/version.util';
+import {mockContext} from '../../../utils/test.util';
 
 describe('Unittesting methods in consent.component.test', () => {
   let ctx;
@@ -17,7 +18,7 @@ describe('Unittesting methods in consent.component.test', () => {
   let sandbox;
 
   beforeEach(() => {
-    ctx = {query: {}};
+    ctx = mockContext();
     initState(ctx, next);
     sandbox = sinon.sandbox.create();
   });

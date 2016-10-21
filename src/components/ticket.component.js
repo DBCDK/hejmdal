@@ -21,27 +21,6 @@ const storage = CONFIG.mock_externals.ticket === 'memory' ?
   new KeyValueStorage(new PersistentTicketStorage());
 
 /**
- * selects data from CULR / identityProvider as given by the service-context from Smaug
- *
- * TODO: probably in its own component
- *
- * @param ctx
- * @param next
- * @returns {*}
- */
-export function generateTicketData(ctx, next) {
-  if (ctx.session.user) {
-    const attributes = {
-      id: ctx.session.user.id
-    };
-    ctx.ticket = {
-      attributes: attributes
-    };
-  }
-  return next();
-}
-
-/**
  * Write a attribute object to storage, and returns an identifier and token for later retrieval
  *
  * @param ctx
@@ -49,16 +28,13 @@ export function generateTicketData(ctx, next) {
  * @returns {*}
  */
 export async function storeTicket(ctx, next) {
-  const ticket = ctx.ticket;
+  const ticket = ctx.getState().ticket;
   if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
-    const id = await storage.insertNext(ticket.attributes);
-    const token = createHash(id);
+    ticket.id = await storage.insertNext(ticket.attributes);
+    ticket.token = createHash(ticket.id);
 
     storage.garbageCollect(CONFIG.garbageCollect.ticket.divisor, CONFIG.garbageCollect.ticket.seconds);
-    ctx.ticket = Object.assign(ticket, {
-      id: id,
-      token: token
-    });
+    ctx.setState({ticket: ticket});
   }
   return next();
 }
@@ -71,17 +47,16 @@ export async function storeTicket(ctx, next) {
  * @returns {*}
  */
 export async function getTicket(ctx, next) {
-  let attributes = false;
+  const ticket = ctx.getState().ticket;
+  ticket.attributes = false;
 
-  if (!ctx.ticket && ctx.params.token && ctx.params.id) {
+  if (ctx.params.token && ctx.params.id) {
     if (validateHash(ctx.params.token, ctx.params.id)) {
-      attributes = await storage.read(ctx.params.id);
+      ticket.attributes = await storage.read(ctx.params.id);
       await storage.delete(ctx.params.id);
     }
   }
-  ctx.ticket = {
-    attributes: attributes
-  };
+  ctx.setState({ticket: ticket});
 
   return next();
 }
