@@ -14,7 +14,7 @@ export function promiseRequest(method, props) {
         reject(err);
       }
       else {
-        resolve({response, body});
+        resolve(response);
       }
     });
   });
