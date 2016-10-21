@@ -35,6 +35,21 @@ Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
 
 ##Environment variabler
+- `BORCHK_URI` : `https adresse`  
+Adressen på den aktuelle version at borchk servicen
+
+- `GC_SESSION_DIVISOR` : `divisor`  
+Den reciprokke værdi for hvor ofte sessions bliver garbage collected. Væredien 1 vil garbage collecte sessions for hver forespørgsel
+
+- `GC_SESSION_SECONDS` : `seconds`  
+Antal sekunder en session skal være ældre end for at blive garbage collected. Der defaultes til 3600 (1 time)
+
+- `GC_TICKET_DIVISOR` : `divisor`  
+Den reciprokke værdi for hvor ofte tickets bliver garbage collected. Væredien 1 vil garbage collecte tickets for hver forespørgsel
+
+- `GC_TICKET_SECONDS` : `seconds`  
+Antal sekunder en ticket skal være ældre end for at blive garbage collected. Der defaultes til 2678400 (31 dage)
+
 - `HASH_SHARED` : `hash`  
 Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
 
@@ -60,6 +75,9 @@ Password til hejmdal database bruger
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
 
+- `MOCK_BORCHK`: `bodchk`
+Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle andre værdier vil resultere i at borchk mockes.
+
 - `MOCK_CONSENT_STORAGE` : `consent`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
@@ -79,6 +97,10 @@ Specificere hvilken port applikatioen skal være tilgængelig på. Default: `301
 Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje.
  
 - `SESSION_LIFE_TIME` : `life_time`  
+
+- `SMAUG_URI` : `https adresse`  
+Adressen på den aktuelle version at smaug servicen
+
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
 
 # Dokumentation
