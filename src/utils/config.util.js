@@ -10,6 +10,35 @@ export const CONFIG = {
     env: process.env.NODE_ENV,
     port: Number(process.env.PORT)
   },
+  culr: {
+    uri: process.env.CULR_WSDL_URI,
+    userIdAut: process.env.CULR_USER_ID_AUT,
+    groupIdAut: process.env.CULR_GROUP_ID_AUT,
+    passwordAut: process.env.CULR_PASSWORD_AUT,
+    profileName: process.env.CULR_PROFILE_NAME,
+  },
+  garbageCollect: {
+    ticket: {
+      divisor: Number(process.env.GC_TICKET_DIVISOR) || 1000,
+      seconds: Number(process.env.GC_TICKET_SECONDS) || 3600   // 60 * 60
+    },
+    session: {
+      divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
+      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400  // 31 * 24 * 60 * 60
+    }
+  },
+  hash: {
+    shared: process.env.HASH_SHARED
+  },
+  log: {
+    level: process.env.LOG_LEVEL,
+    pretty: process.env.PRETTY_LOG === '1'
+  },
+  mock_externals: {
+    ticket: process.env.MOCK_TICKET_STORAGE || false,
+    consent: process.env.MOCK_CONSENT_STORAGE || false,
+    smaug: process.env.MOCK_SMAUG !== '0'
+  },
   postgres: {
     client: 'postgresql',
     connection: {
@@ -27,33 +56,11 @@ export const CONFIG = {
       tableName: 'knex_migrations'
     }
   },
-  log: {
-    level: process.env.LOG_LEVEL,
-    pretty: process.env.PRETTY_LOG === '1'
-  },
   session: {
     life_time: Number(process.env.SESSION_LIFE_TIME)
   },
-  hash: {
-    shared: process.env.HASH_SHARED
-  },
-  garbageCollect: {
-    ticket: {
-      divisor: Number(process.env.GC_TICKET_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_TICKET_SECONDS) || 3600   // 60 * 60
-    },
-    session: {
-      divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400  // 31 * 24 * 60 * 60
-    }
-  },
   smaug: {
     uri: process.env.SMAUG_URI
-  },
-  mock_externals: {
-    ticket: process.env.MOCK_TICKET_STORAGE || false,
-    consent: process.env.MOCK_CONSENT_STORAGE || false,
-    smaug: process.env.MOCK_SMAUG !== '0'
   }
 };
 

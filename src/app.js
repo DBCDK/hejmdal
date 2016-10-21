@@ -27,11 +27,15 @@ import {log} from './utils/logging.util';
 
 // Components
 import SessionStore from './components/SessionStore/SessionStore.component';
+import * as culr from './components/Culr/culr.client';
 
 export function startServer() {
   validateConfig();
   const app = new Koa();
   const PORT = CONFIG.app.port;
+
+  // Initialize CULR
+  culr.init();
 
   // Initialize knex.
   const knex = Knex(CONFIG.postgres);
