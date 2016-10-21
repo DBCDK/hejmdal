@@ -47,13 +47,17 @@ export const CONFIG = {
       seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400  // 31 * 24 * 60 * 60
     }
   },
+  borchk: {
+    uri: process.env.BORCHK_URI
+  },
   smaug: {
     uri: process.env.SMAUG_URI
   },
   mock_externals: {
     ticket: process.env.MOCK_TICKET_STORAGE || false,
     consent: process.env.MOCK_CONSENT_STORAGE || false,
-    smaug: process.env.MOCK_SMAUG !== '0'
+    smaug: process.env.MOCK_SMAUG !== '0',
+    borchk: process.env.MOCK_BORCHK !== '0'
   }
 };
 
