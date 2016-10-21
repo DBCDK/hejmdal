@@ -4,47 +4,48 @@
  */
 
 import * as culr from './culr.client';
+import {log} from '../../utils/logging.util';
 
-export function getCulrAttributes(ctx, next) { // eslint-disable-line
+export async function getCulrAttributes(ctx, next) { // eslint-disable-line
   const userId = ctx.getUser().userId || null;
-  const culrAttributes = getUserAttributesFromCulr(userId);
+  let culrAttributes = {};
+
+  if (userId) {
+    culrAttributes = await getUserAttributesFromCulr(userId);
+  }
   ctx.setState({culr: culrAttributes});
   next();
 }
-
 
 /**
  * Dummy method that fakes retrieval of user from CULR webservice
  *
  * @param userId
- * @return {{error: null, attributes: null}}
+ * @return {{}}
  */
 async function getUserAttributesFromCulr(userId) {
-  const result = {
-    error: null,
-    attributes: null
-  };
-
-  let accounts = null;
+  let attributes = {};
+  let response = null;
 
   try {
-    accounts = await culr.getAccounts({userIdType: 'CPR', userIdValue: ''});
+    response = await culr.getAccounts({userIdValue: userId});
   }
-  catch (e){
-    console.log('catch', e);
-  }
-
-  const responseCode = accounts.result.responseStatus.responseCode;
-  console.log('responseCode: ', responseCode);
-
-  if(responseCode === 'OK200') {
-    console.log('accounts.result', accounts.result.Account);
-    result.attributes = accounts.result.Account;
-  } else if(responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
-    result.error = 'brugeren findes ikke';
-  } else {
-    result.error = 'fejl';
+  catch (e) {
+    log.error('Response to CULR failed', {error: e.message, stack: e.stack});
   }
 
-  return result;
+  const responseCode = response.result.responseStatus.responseCode;
+
+  if (responseCode === 'OK200') {
+    attributes.accounts = response.result.Account;
+    attributes.municipalityNumber = response.result.MunicipalityNo || null;
+  }
+  else if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
+    log.info('Brugeren blev ikke fundet');
+  }
+  else {
+    log.error('Der skete en fejl i kommuikationen med CULR', {response: response});
+  }
+
+  return attributes;
 }

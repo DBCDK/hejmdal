@@ -15,24 +15,25 @@ const CULR_AUTH_CREDENTIALS = {
   profileName: CONFIG.culr.profileName
 };
 
-export function getAccounts({userIdType, userIdValue}) {
+export function getAccounts({userIdValue}) {
   const params = {
     userCredentials: {
-      userIdType: userIdType, //'CPR',
-      userIdValue: userIdValue, //'5555666677'
+      userIdType: 'CPR',
+      userIdValue: userIdValue
     },
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
   return new Promise((resolve, reject) => {
     CulrClient.getAccounts(params, (err, result) => {
-      if(err){
+      if (err) {
         reject(err);
-      } else {
+      }
+      else {
         resolve(result);
       }
     });
-  })
+  });
 }
 
 export function init() {
@@ -53,7 +54,7 @@ export function init() {
       log.debug('A request was made to CULR', request);
     });
 
-    client.on('resppnse', (response) => {
+    client.on('response', (response) => {
       log.debug('A response was received from CULR', response);
     });
 

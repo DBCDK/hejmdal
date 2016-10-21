@@ -18,7 +18,7 @@ export const CONFIG = {
     userIdAut: process.env.CULR_USER_ID_AUT,
     groupIdAut: process.env.CULR_GROUP_ID_AUT,
     passwordAut: process.env.CULR_PASSWORD_AUT,
-    profileName: process.env.CULR_PROFILE_NAME,
+    profileName: process.env.CULR_PROFILE_NAME
   },
   garbageCollect: {
     ticket: {
@@ -85,7 +85,7 @@ export function validateConfig(config = CONFIG, k = '') {
         throw Error(`${k}${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
       if (typeof config[key] === 'number' && Number.isNaN(config[key])) {
-        throw Error(`${k}${key} in ${k}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler`);
+        throw Error(`${k}${key}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler`);
       }
     }
   }

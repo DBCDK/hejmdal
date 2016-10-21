@@ -11,7 +11,7 @@ import ctxdump from '../components/ctxdump.component.js';
 
 const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
-router.get('/', setDefaultState, getAttributes, authenticate, mapAttributesToTicket, storeTicket, ctxdump);
+router.get('/', setDefaultState, getAttributes, authenticate, Consent.retrieveUserConsent, mapAttributesToTicket, storeTicket, ctxdump);
 router.get('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, ctxdump);
 router.get('/consent', Consent.giveConsentUI, ctxdump);
 router.post('/consentsubmit', Consent.consentSubmit, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, ctxdump);
