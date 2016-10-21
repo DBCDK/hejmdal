@@ -6,7 +6,13 @@
 import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 
-export async function getCulrAttributes(ctx, next) { // eslint-disable-line
+/**
+ * If a userId is found a request will be submitted to CULR otherwise an empty object is returned.
+ *
+ * @param {object} ctx
+ * @param {function} next
+ */
+export async function getCulrAttributes(ctx, next) {
   const userId = ctx.getUser().userId || null;
   let culrAttributes = {};
 
@@ -18,9 +24,9 @@ export async function getCulrAttributes(ctx, next) { // eslint-disable-line
 }
 
 /**
- * Dummy method that fakes retrieval of user from CULR webservice
+ * Retrieval of user from CULR webservice
  *
- * @param userId
+ * @param {string} userId
  * @return {{}}
  */
 async function getUserAttributesFromCulr(userId) {

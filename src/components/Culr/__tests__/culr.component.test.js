@@ -20,20 +20,10 @@ describe('Unittesting methods in culr.component:', () => {
       initState(ctx, () => {});
     });
 
-    it('should return error', () => {
+    it('should return empty object', () => {
       getCulrAttributes(ctx, next);
 
-      assert.isNull(ctx.getState().culr.user);
-      assert.equal(ctx.getState().culr.error, 'brugeren findes ikke');
-    });
-
-    it('should also return error', () => {
-      const userId = '0123456789';
-      ctx.setUser({userId: userId});
-      getCulrAttributes(ctx, next);
-
-      assert.isNull(ctx.getState().culr.error);
-      assert.equal(ctx.getState().culr.attributes.userId, userId);
+      assert.deepEqual(ctx.getState().culr, {});
     });
   });
 });
