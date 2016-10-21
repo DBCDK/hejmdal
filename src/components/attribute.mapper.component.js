@@ -17,7 +17,7 @@ export default function mapAttributesToTicket(ctx, next) {
   if (state && state.serviceClient && state.culr) {
     const ticketAttributes = state.ticket.attributes || {};
     const serviceAttributes = state.serviceClient.attributes;
-    const culr = state.culr.culr;
+    const culr = state.culr.attributes;
     serviceAttributes.forEach((attr) => {
       if (culr[attr]) {
         ticketAttributes[attr] = culr[attr];

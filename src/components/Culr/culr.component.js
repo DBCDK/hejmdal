@@ -26,7 +26,7 @@ function getUserAttributesFromCulr(userId) {
     result.error = 'brugeren findes ikke';
   }
   else {
-    result.culr = {
+    result.attributes = {
       patronId: 'abcdefghij',
       userId: userId,
       libraries: {}
