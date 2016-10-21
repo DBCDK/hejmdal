@@ -26,5 +26,5 @@ export async function getClient(token) {
     return JSON.parse(response.body);
   }
 
-  throw new TokenError(response.message);
+  throw new TokenError(response.statusMessage);
 }
