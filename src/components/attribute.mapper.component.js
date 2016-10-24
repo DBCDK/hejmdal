@@ -14,16 +14,56 @@
  */
 export default function mapAttributesToTicket(ctx, next) {
   const state = ctx.getState();
+
   if (state && state.serviceClient && state.culr) {
-    const ticketAttributes = state.ticket.attributes || {};
     const serviceAttributes = state.serviceClient.attributes;
-    const culr = state.culr.attributes;
-    serviceAttributes.forEach((attr) => {
-      if (culr[attr]) {
-        ticketAttributes[attr] = culr[attr];
-      }
-    });
+    const culr = state.culr;
+
+    const ticketAttributes = mapCulrResponse(culr, serviceAttributes);
+
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
+
   return next();
+}
+
+/**
+ * Maps the response from CULR according to the given array of fields
+ *
+ * @param {object} culr The CULR reponse object
+ * @param {Array} fields The array of fields defined in Smaug
+ * @return {{}}
+ */
+function mapCulrResponse(culr, fields) {
+  let mapped = {};
+
+  let cpr = null;
+  let libraries = [];
+
+  if (culr.accounts && Array.isArray(culr.accounts)) {
+    culr.accounts.forEach((account) => {
+      if (account.userIdType === 'CPR' && !cpr) {
+        cpr = account.userIdValue;
+      }
+
+      libraries.push({
+        libraryid: account.provider,
+        loanerid: account.userIdValue
+      });
+    });
+  }
+
+  if (fields.includes('cpr')) {
+    mapped.cpr = cpr;
+  }
+
+  if (fields.includes('libraries')) {
+    mapped.libraries = libraries;
+  }
+
+  if (fields.includes('municipality')) {
+    mapped.municipality = culr.municipalityNumber || null;
+  }
+
+  return mapped;
 }
