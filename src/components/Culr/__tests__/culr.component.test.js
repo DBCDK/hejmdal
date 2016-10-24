@@ -11,17 +11,46 @@ import {mockContext} from '../../../utils/test.util';
 
 describe('Unittesting methods in culr.component:', () => {
   let ctx = mockContext();
+  const noop = () => {};
 
   describe('getCulrAttributes', () => {
-    const next = () => {};
+    const next = noop;
 
     beforeEach(() => {
       ctx.query = {};
-      initState(ctx, () => {});
+      initState(ctx, noop);
     });
 
-    it('should return empty object', () => {
-      getCulrAttributes(ctx, next);
+    it('should return empty object when no userId is given', async() => {
+      await getCulrAttributes(ctx, next);
+
+      assert.deepEqual(ctx.getState().culr, {});
+    });
+
+    it('should return culr object -- OK200', async() => {
+      ctx.setUser({userId: '1234567890'});
+      await getCulrAttributes(ctx, next);
+
+      assert.deepEqual(ctx.getState().culr, {
+        accounts: [
+          {
+            provider: '790900',
+            userIdType: 'CPR',
+            userIdValue: '5555666677'
+          },
+          {
+            provider: '100800',
+            userIdType: 'LOCAL-1',
+            userIdValue: '456456'
+          }
+        ],
+        municipalityNumber: '909'
+      });
+    });
+
+    it('should return empty object -- ACCOUNT_DOES_NOT_EXIST', async() => {
+      ctx.setUser({userId: 'not_existing_user'});
+      await getCulrAttributes(ctx, next);
 
       assert.deepEqual(ctx.getState().culr, {});
     });

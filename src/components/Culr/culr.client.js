@@ -7,7 +7,7 @@ import soap from 'soap';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
-let CulrClient;
+let CulrClient = null;
 const CULR_AUTH_CREDENTIALS = {
   userIdAut: CONFIG.culr.userIdAut,
   groupIdAut: CONFIG.culr.groupIdAut,
@@ -15,6 +15,16 @@ const CULR_AUTH_CREDENTIALS = {
   profileName: CONFIG.culr.profileName
 };
 
+if (!CulrClient) {
+  init();
+}
+
+/**
+ * Invokes the getAccount CULR method
+ *
+ * @param userIdValue CPR of the given user
+ * @return {Promise}
+ */
 export function getAccounts({userIdValue}) {
   const params = {
     userCredentials: {
@@ -25,6 +35,9 @@ export function getAccounts({userIdValue}) {
   };
 
   return new Promise((resolve, reject) => {
+    if (!CulrClient) {
+      throw new Error('CULR client is not initialised');
+    }
     CulrClient.getAccounts(params, (err, result) => {
       if (err) {
         reject(err);
@@ -36,6 +49,10 @@ export function getAccounts({userIdValue}) {
   });
 }
 
+/**
+ * Initializes the CULR webservice. If MOCK_CULR (CONFIG.mock_externals.culr) is true a mock of the webservice will be
+ * created.
+ */
 export function init() {
   const options = {
     ignoredNamespaces: {
@@ -44,20 +61,29 @@ export function init() {
     }
   };
 
-  soap.createClient(CONFIG.culr.uri, options, (err, client) => {
-    if (err) {
-      log.error('Error when creating CULR client', {error: err});
-      return false;
-    }
+  if (CONFIG.mock_externals.culr) {
+    setMockClient();
+  }
+  else {
+    soap.createClient(CONFIG.culr.uri, options, (err, client) => {
+      if (err) {
+        log.error('Error when creating CULR client', {error: err});
+        return false;
+      }
 
-    client.on('request', (request) => {
-      log.debug('A request was made to CULR', request);
+      client.on('request', (request) => {
+        log.debug('A request was made to CULR', request);
+      });
+
+      client.on('response', (response) => {
+        log.debug('A response was received from CULR', response);
+      });
+
+      CulrClient = client;
     });
+  }
+}
 
-    client.on('response', (response) => {
-      log.debug('A response was received from CULR', response);
-    });
-
-    CulrClient = client;
-  });
+function setMockClient() {
+  CulrClient = require('./culr.client.mock').CulrMockClient;
 }

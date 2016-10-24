@@ -19,6 +19,7 @@ export async function getCulrAttributes(ctx, next) {
   if (userId) {
     culrAttributes = await getUserAttributesFromCulr(userId);
   }
+
   ctx.setState({culr: culrAttributes});
   next();
 }
