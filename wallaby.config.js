@@ -27,7 +27,7 @@ module.exports = function(wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'HASH_SHARED=12345;MOCK_TICKET_STORAGE=memory;MOCK_CONSENT_STORAGE=memory' // @see https://wallabyjs.com/docs/config/runner.html
+        env: 'HASH_SHARED=12345;MOCK_TICKET_STORAGE=memory;MOCK_CONSENT_STORAGE=memory;MOCK_CULR=1' // @see https://wallabyjs.com/docs/config/runner.html
       }
     },
 
