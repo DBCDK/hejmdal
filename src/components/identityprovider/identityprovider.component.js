@@ -6,6 +6,7 @@ import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
+import {validateUserInLibrary} from '../borchk/borchk.component';
 
 const templates = {index, borchk, nemlogin, unilogin};
 
@@ -67,12 +68,13 @@ export function borchkCallback(ctx, next) {
     return next();
   }
   ctx.setUser({
-    userId: ctx.query.id,
+    userId: ctx.query.userId,
     userType: 'borchk',
     identityProviders: ['borchk'],
-    libraryId: 'libraryId',
-    pincode: 'pincode'
+    libraryId: ctx.query.libraryId,
+    pincode: ctx.query.pincode
   });
+  return validateUserInLibrary(ctx, next);
 }
 
 /**

@@ -14,10 +14,10 @@ import {log} from '../../utils/logging.util';
  */
 export async function validateUserInLibrary(ctx, next) {
   try {
-    const user = ctx.getState().user;
-    const response = await getClient(user.library, user.userId, user.pinCode);
+    const user = ctx.getUser();
+    const response = await getClient(user.libraryId, user.userId, user.pincode);
     user.userValidate = extractInfo(response);
-    ctx.setState({user: user});
+    ctx.setUser(user);
     return next();
   }
   catch (err) {

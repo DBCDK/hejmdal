@@ -58,6 +58,7 @@ describe('test identityProviderCallback method', () => {
 
   it('Should add library user to context', () => {
     ctx.params.type = 'borchk';
+    ctx.query= {userId: 'testId', pincode: 'pincode', libraryId: 'libraryId'};
     const expected = {
       userId: 'testId',
       userType: 'borchk',
