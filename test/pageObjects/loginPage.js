@@ -1,5 +1,5 @@
 import Page from './page';
-import querystring from 'querystring'
+import querystring from 'querystring';
 
 class LoginPage extends Page {
   open(qs) {

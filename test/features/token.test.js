@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
+
 import LoginPage from '../pageObjects/loginPage';
-import {assert} from 'chai';
 
 describe('Test Smaug tokens', () => {
   it('should show forbidden when invalid token', () => {
