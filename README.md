@@ -118,7 +118,7 @@ Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle an
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
 
 - `SMAUG_URI` : `https adresse`  
-Adressen på den aktuelle version at smaug servicen
+Adressen på den aktuelle version af smaug servicen
 
 # Dokumentation
 ## Endpoints
