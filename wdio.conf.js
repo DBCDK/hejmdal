@@ -44,7 +44,7 @@ exports.config = {
     // 5 instance gets started at a time.
     maxInstances: 5,
     browserName: 'chrome',
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER || 'local',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     name: 'integration',
     build: process.env.TRAVIS_BUILD_NUMBER || 'local'
 
@@ -71,7 +71,7 @@ exports.config = {
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.
-  baseUrl: 'http://localhost:3010/v0', // @todo set from env params
+  baseUrl: 'http://localhost:3011/v0', // @todo set from env params
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -105,7 +105,12 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  services: ['selenium-standalone'],
+  // services: ['selenium-standalone'],
+  services: ['sauce'],
+  user: process.env.SAUCE_USERNAME,
+  key: process.env.SAUCE_ACCESS_KEY,
+  sauceConnect: true,
+
   //
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
@@ -141,8 +146,9 @@ exports.config = {
   // resolved to continue.
   //
   // Gets executed once before all workers get launched.
-  // onPrepare: function (config, capabilities) {
-  // },
+  onPrepare: function () {
+    require('./src/main.js');
+  },
   //
   // Gets executed before test execution begins. At this point you can access all global
   // variables, such as `browser`. It is the perfect place to define custom commands.
