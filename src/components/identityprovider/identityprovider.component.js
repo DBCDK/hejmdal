@@ -16,7 +16,7 @@ const templates = {index, borchk, nemlogin, unilogin};
  * @param next
  * @returns {*}
  */
-export function authenticate(ctx, next) {
+export async function authenticate(ctx, next) {
   try {
     if (!ctx.hasUser()) {
       const state = ctx.getState();
@@ -33,7 +33,7 @@ export function authenticate(ctx, next) {
     ctx.status = 404;
   }
 
-  next();
+  await next();
 }
 
 /**

@@ -4,7 +4,6 @@
  */
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import {VERSION_PREFIX} from '../utils/version.util';
-import ctxdump from '../components/ctxdump.component.js';
 
 
 const router = new Router({prefix: VERSION_PREFIX});
@@ -25,6 +24,6 @@ router.get('/logud', async (ctx, next) => {
   }
 
   await next();
-}, ctxdump);
+});
 
 export default router;

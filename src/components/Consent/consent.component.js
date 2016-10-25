@@ -47,7 +47,7 @@ export async function consentSubmit(ctx, next) {
     consentRejected(ctx, next);
   }
   else {
-    storeUserConsent(ctx);
+    await storeUserConsent(ctx);
     await next();
   }
 }
@@ -77,9 +77,9 @@ async function getConsentResponse(ctx) {
  * @param {object} ctx
  * @param {function} next
  */
-export function consentRejected(ctx, next) {
+export async function consentRejected(ctx, next) {
   ctx.body = 'Consent rejected. What to do...?';
-  next();
+  await next();
 }
 
 /**
