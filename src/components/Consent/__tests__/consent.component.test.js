@@ -48,7 +48,7 @@ describe('Unittesting methods in consent.component.test', () => {
       const nextSpy = sandbox.stub();
 
       giveConsentUI(ctx, nextSpy);
-      assert.equal(ctx.body, consentTemplate({service: ctx.session.state.serviceClient.id}));
+      assert.equal(ctx.body, consentTemplate({versionPrefix: VERSION_PREFIX, service: ctx.session.state.serviceClient.id}));
       assert.isTrue(nextSpy.called);
     });
   });

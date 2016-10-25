@@ -4,6 +4,10 @@ export let mockData = {
   app: {
     orderpolicyrequester: '190101',
     clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f'
+  },
+  urls: {
+    success: '/thumbsup',
+    error: '/thumbsdown'
   }
 };
 
