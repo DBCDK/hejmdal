@@ -36,7 +36,7 @@ Der logges til `stdout` med de levels der er specificeret i afsnittet om [enviro
 
 ##Environment variabler
 - `BORCHK_URI` : `borchk.uri`  
-URL til BORCHK webservice
+Adressen på den aktuelle version at borchk servicen
 
 - `CULR_WSDL_URI` : `culr.hash`  
 URL til CULR WSDL
@@ -52,6 +52,18 @@ CULR autentificerings password
 
 - `CULR_PROFILE_NAME` : `culr.profileName`  
 CULR profilnavn
+
+- `GC_SESSION_DIVISOR` : `divisor`  
+Den reciprokke værdi for hvor ofte sessions bliver garbage collected. Væredien 1 vil garbage collecte sessions for hver forespørgsel
+
+- `GC_SESSION_SECONDS` : `seconds`  
+Antal sekunder en session skal være ældre end for at blive garbage collected. Der defaultes til 3600 (1 time)
+
+- `GC_TICKET_DIVISOR` : `divisor`  
+Den reciprokke værdi for hvor ofte tickets bliver garbage collected. Væredien 1 vil garbage collecte tickets for hver forespørgsel
+
+- `GC_TICKET_SECONDS` : `seconds`  
+Antal sekunder en ticket skal være ældre end for at blive garbage collected. Der defaultes til 2678400 (31 dage)
 
 - `HASH_SHARED` : `hash.shared`  
 Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
@@ -78,6 +90,9 @@ Password til hejmdal database bruger
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
 
+- `MOCK_BORCHK`: `borchk`
+Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle andre værdier vil resultere i at borchk mockes.
+
 - `MOCK_CONSENT_STORAGE` : `mock_external.consent`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
@@ -101,6 +116,9 @@ Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle an
  
 - `SESSION_LIFE_TIME` : `session.life_time`  
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
+
+- `SMAUG_URI` : `https adresse`  
+Adressen på den aktuelle version af smaug servicen
 
 # Dokumentation
 ## Endpoints
