@@ -37,11 +37,11 @@ function getNumericalLogLevel(logLevel) {
 /**
  * Log as JSON to stdout
  *
- * @param level log level
- * @param msg message to log
- * @param args map of additional key/values to log
+ * @param {string} level log level
+ * @param {string} msg message to log
+ * @param {object} args map of additional key/values to log
  */
-function doLog(level, msg, args) {
+function doLog(level, msg, args = {}) {
   const currentNumericalLogLevel = getNumericalLogLevel(getCurrentLogLevel());
   const targetNumericalLogLevel = getNumericalLogLevel(level);
 

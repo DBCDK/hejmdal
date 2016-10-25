@@ -21,13 +21,13 @@ describe('Unittesting methods in culr.component:', () => {
       initState(ctx, noop);
     });
 
-    it('should return empty object when no userId is given', async() => {
+    it('remain undefined when no userId is given', async() => {
       await getCulrAttributes(ctx, next);
 
-      assert.deepEqual(ctx.getState().culr, {});
+      assert.isUndefined(ctx.getState().culr);
     });
 
-    it('should return culr object -- OK200', async() => {
+    it('should set culr object on state -- OK200', async() => {
       ctx.setUser({userId: '1234567890'});
       await getCulrAttributes(ctx, next);
 

@@ -36,7 +36,8 @@ export async function storeTicket(ctx, next) {
     storage.garbageCollect(CONFIG.garbageCollect.ticket.divisor, CONFIG.garbageCollect.ticket.seconds);
     ctx.setState({ticket: ticket});
   }
-  return next();
+
+  await next();
 }
 
 /**
@@ -58,5 +59,5 @@ export async function getTicket(ctx, next) {
   }
   ctx.setState({ticket: ticket});
 
-  return next();
+  next();
 }

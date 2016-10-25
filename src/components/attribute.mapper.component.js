@@ -12,7 +12,7 @@
  * @param next
  * @returns {*}
  */
-export default function mapAttributesToTicket(ctx, next) {
+export default async function mapAttributesToTicket(ctx, next) {
   const state = ctx.getState();
 
   if (state && state.serviceClient && state.culr) {
@@ -24,7 +24,7 @@ export default function mapAttributesToTicket(ctx, next) {
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
 
-  return next();
+  await next();
 }
 
 /**

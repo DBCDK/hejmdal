@@ -14,14 +14,15 @@ import {log} from '../../utils/logging.util';
  */
 export async function getCulrAttributes(ctx, next) {
   const userId = ctx.getUser().userId || null;
+
   let culrAttributes = {};
 
   if (userId) {
     culrAttributes = await getUserAttributesFromCulr(userId);
+    ctx.setState({culr: culrAttributes});
   }
 
-  ctx.setState({culr: culrAttributes});
-  next();
+  await next();
 }
 
 /**

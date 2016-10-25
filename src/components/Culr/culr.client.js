@@ -25,7 +25,7 @@ if (!CulrClient) {
  * @param userIdValue CPR of the given user
  * @return {Promise}
  */
-export function getAccounts({userIdValue}) {
+export async function getAccounts({userIdValue}) {
   const params = {
     userCredentials: {
       userIdType: 'CPR',
@@ -72,11 +72,11 @@ export function init() {
       }
 
       client.on('request', (request) => {
-        log.debug('A request was made to CULR', request);
+        log.debug('A request was made to CULR', {request: request});
       });
 
       client.on('response', (response) => {
-        log.debug('A response was received from CULR', response);
+        log.debug('A response was received from CULR', {response: response});
       });
 
       CulrClient = client;
