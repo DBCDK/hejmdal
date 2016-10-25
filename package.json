@@ -63,6 +63,7 @@
     "postcss-cli": "^2.6.0",
     "postcss-import": "^8.1.2",
     "sinon": "^1.17.6",
+    "wdio": "^0.3.3",
     "wdio-junit-reporter": "^0.1.0",
     "wdio-mocha-framework": "^0.4.3",
     "wdio-selenium-standalone-service": "0.0.7"
