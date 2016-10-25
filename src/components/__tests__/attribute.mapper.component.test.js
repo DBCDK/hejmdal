@@ -12,7 +12,7 @@ describe('Attribute mapper unittest', () => {
     accounts: [{
       provider: '000111',
       userIdType: 'CPR',
-      userIdValue: '0123456789'
+      userIdValue: '0102456789'
     },
       {
         provider: '111222',
@@ -33,7 +33,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: culr,
       serviceClient: {
-        attributes: ['cpr', 'libraries', 'municipality']
+        attributes: ['birthDate', 'birthYear', 'gender', 'cpr', 'libraries', 'municipality']
       },
       ticket: {}
     });
@@ -41,12 +41,48 @@ describe('Attribute mapper unittest', () => {
     mapAttributesToTicket(ctx, next);
 
     assert.deepEqual(ctx.session.state.ticket.attributes, {
-      cpr: '0123456789',
+      birthDate: '010245',
+      birthYear: '45',
+      gender: 'm',
+      cpr: '0102456789',
       libraries: [
-        {libraryid: '000111', loanerid: '0123456789'},
+        {libraryid: '000111', loanerid: '0102456789'},
         {libraryid: '111222', loanerid: '222333'}
       ],
       municipality: '333'
+    });
+  });
+
+  it('map gender', () => {
+    const ctx = mockContext();
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
+      serviceClient: {
+        attributes: ['gender']
+      },
+      ticket: {}
+    });
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {
+      gender: 'f'
+    });
+  });
+
+  it('map invalid cpr', () => {
+    const ctx = mockContext();
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0123456789'}]},
+      serviceClient: {
+        attributes: ['birthDate', 'birthYear', 'gender', 'cpr']
+      },
+      ticket: {}
+    });
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {
+      birthDate: null,
+      birthYear: null,
+      gender: null,
+      cpr: '0123456789'
     });
   });
 
@@ -63,7 +99,7 @@ describe('Attribute mapper unittest', () => {
     mapAttributesToTicket(ctx, next);
     assert.deepEqual(ctx.session.state.ticket.attributes, {
       libraries: [
-        {libraryid: '000111', loanerid: '0123456789'},
+        {libraryid: '000111', loanerid: '0102456789'},
         {libraryid: '111222', loanerid: '222333'}
       ]
     });
@@ -85,10 +121,25 @@ describe('Attribute mapper unittest', () => {
     mapAttributesToTicket(ctx, next);
     assert.deepEqual(ctx.session.state.ticket.attributes, {
       libraries: [
-        {libraryid: '000111', loanerid: '0123456789'},
+        {libraryid: '000111', loanerid: '0102456789'},
         {libraryid: '111222', loanerid: '222333'}
       ],
       municipality: null
     });
   });
+
+  it('log an error for unknown attribute', () => {
+    const ctx = mockContext();
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
+      serviceClient: {
+        attributes: ['notThere']
+      },
+      ticket: {}
+    });
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {});
+    // TODO Vodden testes at der er logget?
+  });
+
 });
