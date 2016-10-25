@@ -32,7 +32,12 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
-      attributes: ['cpr', 'libraries', 'municipality']
+      attributes: ['cpr', 'libraries', 'municipality'],
+      urls: {
+        host: 'http://localhost:3010',
+        success: '/thumbsup',
+        error: '/thumbsdown'
+      }
     });
   });
 
@@ -43,7 +48,12 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: [],
-      attributes: []
+      attributes: [],
+      urls: {
+        host: 'http://localhost:3010',
+        success: '/thumbsup',
+        error: '/thumbsdown'
+      }
     });
   });
 

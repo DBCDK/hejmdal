@@ -4,7 +4,13 @@
  */
 
 import {assert} from 'chai';
-import {giveConsentUI, consentSubmit, retrieveUserConsent, checkForExistingConsent, storeUserConsent} from '../consent.component';
+import {
+  giveConsentUI,
+  consentSubmit,
+  retrieveUserConsent,
+  checkForExistingConsent,
+  storeUserConsent
+} from '../consent.component';
 import sinon from 'sinon';
 
 import consentTemplate from '../templates/consent.template';
@@ -27,62 +33,110 @@ describe('Unittesting methods in consent.component.test', () => {
     sandbox.restore();
   });
 
-  it('should redirect if state is unavailable on ctx.session object', () => {
-    ctx.redirect = sandbox.stub();
+  describe('giveConsentUI()', () => {
+    it('should redirect if state is unavailable on ctx.session object', () => {
+      ctx.redirect = sandbox.stub();
 
-    giveConsentUI(ctx, next);
-    assert.isTrue(ctx.redirect.called);
-    assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
+      giveConsentUI(ctx, next);
+      assert.isTrue(ctx.redirect.called);
+      assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
+    });
+
+    it('should render html to ctx.body and call next', () => {
+      ctx.redirect = sandbox.stub();
+      ctx.session.state.serviceClient.id = 'testing...';
+      const nextSpy = sandbox.stub();
+
+      giveConsentUI(ctx, nextSpy);
+      assert.equal(ctx.body, consentTemplate({versionPrefix: VERSION_PREFIX, service: ctx.session.state.serviceClient.id}));
+      assert.isTrue(nextSpy.called);
+    });
   });
 
-  it('should render html to ctx.body and call next', () => {
-    ctx.redirect = sandbox.stub();
-    ctx.session.state.serviceClient.id = 'testing...';
-    const nextSpy = sandbox.stub();
+  describe('consentSubmit()', () => {
+    it('should redirect to error url on calling service', async () => {
+      ctx.redirect = sandbox.stub();
+      ctx.req = {
+        headers: {}
+      };
+      ctx.setState({serviceClient: {urls: {host: 'https://test.url.dk', error: '/errorurl'}}});
 
-    giveConsentUI(ctx, nextSpy);
-    assert.equal(ctx.body, consentTemplate({service: ctx.session.state.serviceClient.id}));
-    assert.isTrue(nextSpy.called);
+      await consentSubmit(ctx, next);
+      assert.isTrue(ctx.redirect.called);
+      assert.equal(ctx.redirect.args[0], `${ctx.getState().serviceClient.urls.host}${ctx.getState().serviceClient.urls.error}?message=consent%20was%20rejected`);
+    });
   });
 
-  it('should display consent rejected information', async() => {
-    ctx.req = {headers: {
+  describe('retrieveUserConsent()', () => {
+    it('should  call next when no user or serviceClient.id is found', async() => {
+      const _next = sandbox.stub();
 
-    }};
-    const nextSpy = sandbox.stub();
+      await retrieveUserConsent(ctx, _next);
+      assert.isTrue(_next.called);
+    });
 
-    await consentSubmit(ctx, nextSpy);
-    assert.equal(ctx.body, 'Consent rejected. What to do...?');
-    assert.isTrue(nextSpy.called);
+    it('should redirect when no consent is found', async() => {
+      ctx.redirect = sandbox.stub();
+      const serviceClientId = Date.now();
+      const userId = 'testuser';
+
+      ctx.setUser({userId: userId});
+      ctx.setState({
+        serviceClient: {
+          id: serviceClientId
+        }
+      });
+
+      await retrieveUserConsent(ctx, next);
+      assert.isTrue(ctx.redirect.called);
+    });
+
+    it('should add consent to state and invoke next when consent is found', async() => {
+      ctx.redirect = sandbox.stub();
+      const _next = sandbox.stub();
+      const serviceClientId = Date.now();
+      const userId = 'testuser';
+
+      ctx.setUser({userId: userId});
+      ctx.setState({
+        serviceClient: {
+          id: serviceClientId
+        }
+      });
+
+      await storeUserConsent(ctx);
+      await retrieveUserConsent(ctx, _next);
+
+      assert.isFalse(ctx.redirect.called);
+      assert.isTrue(_next.called);
+      assert.deepEqual(ctx.getState().consents, {[serviceClientId]: {}});
+    });
   });
 
-  it('should redirect to /login/consent', async() => {
-    ctx.redirect = sandbox.stub();
+  describe('checkForExistingConsent()', () => {
+    it('should return false', async() => {
+      const consent = await checkForExistingConsent({userId: null, serviceClientId: 10});
 
-    await retrieveUserConsent(ctx, next);
-    assert.isTrue(ctx.redirect.called);
-    assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/login/consent`);
-  });
+      assert.isFalse(consent);
+    });
 
-  it('should return false', async() => {
-    const consent = await checkForExistingConsent(ctx);
-    assert.isFalse(consent);
-  });
+    it('should retrieve consent form memory storage', async() => {
+      const serviceClientId = Date.now();
+      const userId = 'testuser';
 
-  it('should return null', async() => {
-    ctx.session.user = null;
-    const consent = await checkForExistingConsent(ctx);
-    assert.isNull(consent);
-  });
+      ctx.setUser({userId: userId});
+      ctx.setState({
+        serviceClient: {
+          id: serviceClientId
+        }
+      });
 
-  it('should retrieve consent form memory storage', async() => {
-    const serviceClientId = Date.now();
-    ctx.session.state.serviceClient.id = serviceClientId;
+      await storeUserConsent(ctx);
 
-    await storeUserConsent(ctx);
+      const consent = await checkForExistingConsent({userId: userId, serviceClientId: serviceClientId});
 
-    const consent = await checkForExistingConsent(ctx);
-    assert.isObject(consent);
-    assert.isObject(ctx.session.state.consents[serviceClientId]);
+      assert.isObject(consent);
+      assert.isObject(ctx.session.state.consents[serviceClientId]);
+    });
   });
 });

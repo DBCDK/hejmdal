@@ -7,7 +7,7 @@
  * @param next
  * @returns {*}
  */
-export function initState(ctx, next) {
+export async function initState(ctx, next) {
   // this is a hardcoded state object for development
   ctx.session = Object.assign({
     state: {
@@ -22,5 +22,5 @@ export function initState(ctx, next) {
 
   ctx.ticket = {};  // ticketId (id) and ticketToken (token) and/or attributes object
 
-  next();
+  await next();
 }

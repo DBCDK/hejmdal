@@ -16,7 +16,7 @@ const templates = {index, borchk, nemlogin, unilogin};
  * @param next
  * @returns {*}
  */
-export function authenticate(ctx, next) {
+export async function authenticate(ctx, next) {
   try {
     if (!ctx.hasUser()) {
       const state = ctx.getState();
@@ -29,11 +29,11 @@ export function authenticate(ctx, next) {
     }
   }
   catch (e) {
-    log.error(e);
+    log.error('Error in autheticate method', {error: e.message, stack: e.stack});
     ctx.status = 404;
   }
 
-  return next();
+  await next();
 }
 
 /**
@@ -99,19 +99,19 @@ export function nemloginCallback(ctx, next) {
  * @param ctx
  * @param next
  */
-export function identityProviderCallback(ctx, next) {
+export async function identityProviderCallback(ctx, next) {
   try {
     if (!validateHash(ctx.params.token, ctx.getState().smaugToken)) {
       ctx.status = 403;
-      return next();
+      await next();
     }
 
     compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx, next);
   }
   catch (e) {
-    log.error(e);
+    log.error('Error in identotyProviderCallback', {error: e.message, stack: e.stack});
     ctx.status = 500;
   }
 
-  next();
+  await next();
 }

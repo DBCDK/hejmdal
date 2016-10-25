@@ -20,6 +20,7 @@ import {LoggerMiddleware} from './middlewares/logger.middleware';
 import {SetVersionHeader} from './middlewares/headers.middleware';
 import {SessionMiddleware} from './middlewares/session.middleware';
 import {stateMiddleware} from './middlewares/state.middleware';
+import ctxdump from './middlewares/ctxdump.middleware';
 
 // Utils
 import {CONFIG, validateConfig} from './utils/config.util';
@@ -46,7 +47,6 @@ export function startServer() {
     .catch((e) => {
       log.error('Query failed', {error: e.message, stack: e.stack});
     });
-
 
   app.use(session({
     store: new SessionStore(),
@@ -77,6 +77,9 @@ export function startServer() {
   app.use(convert(serve('./static')));
 
   app.use(router);
+  if (CONFIG.app.env !== 'production') {
+    app.use(ctxdump);
+  }
 
   app.on('error', (err) => {
     log.error('Server error', {error: err.message, stack: err.stack});

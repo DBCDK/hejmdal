@@ -10,9 +10,9 @@
  * @param {object} ctx
  * @param {function} next
  */
-export function stateMiddleware(ctx, next) {
+export async function stateMiddleware(ctx, next) {
   Object.assign(ctx, {getState, setState, getUser, setUser, hasUser});
-  next();
+  await next();
 }
 
 /**
@@ -21,7 +21,7 @@ export function stateMiddleware(ctx, next) {
  * @param ctx
  * @param next
  */
-export function setDefaultState(ctx, next) {
+export async function setDefaultState(ctx, next) {
   ctx.session.state = {
     consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
     smaugToken: ctx.query.token || null,
@@ -32,7 +32,7 @@ export function setDefaultState(ctx, next) {
 
   ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
 
-  next();
+  await next();
 }
 
 
