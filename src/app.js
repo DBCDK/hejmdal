@@ -48,7 +48,6 @@ export function startServer() {
       log.error('Query failed', {error: e.message, stack: e.stack});
     });
 
-
   app.use(session({
     store: new SessionStore(),
     key: 'sid',
@@ -78,7 +77,7 @@ export function startServer() {
   app.use(convert(serve('./static')));
 
   app.use(router);
-  if(CONFIG.app.env !== 'production'){
+  if (CONFIG.app.env !== 'production') {
     app.use(ctxdump);
   }
 
