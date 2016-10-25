@@ -28,10 +28,11 @@ describe('Test smaug component', () => {
 
   it('should add client token', async() => {
     await smaug.getAttributes(ctx, () => {});
+
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
-      attributes: ['cpr', 'name', 'libraries', 'patronId', 'muncipality']
+      attributes: ['cpr', 'libraries', 'municipality']
     });
   });
 
