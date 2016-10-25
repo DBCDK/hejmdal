@@ -54,15 +54,16 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   describe('consentSubmit()', () => {
-    it('should display consent rejected information', async() => {
+    it('should redirect to error url on calling service', async () => {
+      ctx.redirect = sandbox.stub();
       ctx.req = {
         headers: {}
       };
-      const nextSpy = sandbox.stub();
+      ctx.setState({serviceClient: {urls: {host: 'https://test.url.dk', error: '/errorurl'}}});
 
-      await consentSubmit(ctx, nextSpy);
-      assert.equal(ctx.body, 'Consent rejected. What to do...?');
-      assert.isTrue(nextSpy.called);
+      await consentSubmit(ctx, next);
+      assert.isTrue(ctx.redirect.called);
+      assert.equal(ctx.redirect.args[0], `${ctx.getState().serviceClient.urls.host}${ctx.getState().serviceClient.urls.error}?message=consent%20was%20rejected`);
     });
   });
 

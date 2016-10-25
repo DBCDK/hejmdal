@@ -1,4 +1,4 @@
-export let mockData = {
+export const mockData = {
   identityProviders: ['nemlogin', 'borchk', 'unilogin'],
   attributes: ['cpr', 'libraries', 'municipality'],
   app: {
@@ -6,6 +6,7 @@ export let mockData = {
     clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f'
   },
   urls: {
+    host: 'http://localhost:3010',
     success: '/thumbsup',
     error: '/thumbsdown'
   }

@@ -78,8 +78,8 @@ async function getConsentResponse(ctx) {
  * @param {function} next
  */
 export async function consentRejected(ctx, next) {
-  console.log(ctx.getState());
-  ctx.body = 'Consent rejected. What to do...?';
+  const serviceClient = ctx.getState().serviceClient;
+  ctx.redirect(`${serviceClient.urls.host}${serviceClient.urls.error}?message=consent%20was%20rejected`);
   await next();
 }
 

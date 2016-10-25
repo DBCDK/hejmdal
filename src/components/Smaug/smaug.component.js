@@ -33,7 +33,8 @@ function extractClientInfo(client) {
     return {
       id: client.app.clientId,
       identityProviders: client.identityProviders || [],
-      attributes: client.attributes || []
+      attributes: client.attributes || [],
+      urls: client.urls || {}
     };
   }
 
