@@ -1,3 +1,7 @@
+require('babel-register');
+
+const VERSION_PREFIX = require('./src/utils/version.util').VERSION_PREFIX;
+
 exports.config = {
 
   //
@@ -45,8 +49,7 @@ exports.config = {
     maxInstances: 5,
     browserName: 'chrome',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    name: 'integration',
-    build: process.env.TRAVIS_BUILD_NUMBER || 'local'
+    build: process.env.TRAVIS_BUILD_NUMBER
 
   }],
   //
@@ -71,7 +74,7 @@ exports.config = {
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.
-  baseUrl: 'http://localhost:3011/v0', // @todo set from env params
+  baseUrl: `${process.env.HOST}:${process.env.PORT}${VERSION_PREFIX}`,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -109,7 +112,7 @@ exports.config = {
   services: ['sauce'],
   user: process.env.SAUCE_USERNAME,
   key: process.env.SAUCE_ACCESS_KEY,
-  sauceConnect: true,
+  sauceConnect: process.env.CI && false || true,
 
   //
   // Framework you want to run your specs with.
