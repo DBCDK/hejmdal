@@ -1,8 +1,8 @@
 require('babel-register');
 
-const VERSION_PREFIX = require('./src/utils/version.util').VERSION_PREFIX;
+const VERSION_PREFIX = require('./../../src/utils/version.util.js').VERSION_PREFIX;
 
-exports.config = {
+let config = {
 
   //
   // ==================
@@ -150,7 +150,7 @@ exports.config = {
   //
   // Gets executed once before all workers get launched.
   onPrepare: function () {
-    require('./src/main.js');
+    require('./../../src/main.js');
   },
   //
   // Gets executed before test execution begins. At this point you can access all global
@@ -158,7 +158,7 @@ exports.config = {
   // before: function (capabilities, specs) {
   // },
   before: function () {
-    require('./test/bootstrap.js');
+    require('./../bootstrap.js');
   }
   //
   // Hook that gets executed before the suite starts
@@ -205,3 +205,10 @@ exports.config = {
   // onComplete: function(exitCode) {
   // }
 };
+
+// Override config with setup for local selenium server
+if (process.env.TEST_ENV == 'local') {
+  config = Object.assign(config, require('./local.conf').default);
+}
+
+exports.config = config;

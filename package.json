@@ -12,7 +12,8 @@
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js",
     "test": ". ./env.test && mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
-    "test:integration": ". ./env.test && wdio ./wdio.conf.js",
+    "test:integration": ". ./env.test && wdio ./test/config/wdio.conf.js",
+    "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./test/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
     "start": "npm run serve"
