@@ -28,7 +28,7 @@ export async function giveConsentUI(ctx, next) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({service: state.serviceClient.id});
+    ctx.body = consentTemplate({versionPrefix: VERSION_PREFIX, service: state.serviceClient.id});
     await next();
   }
 }
@@ -78,6 +78,7 @@ async function getConsentResponse(ctx) {
  * @param {function} next
  */
 export async function consentRejected(ctx, next) {
+  console.log(ctx.getState());
   ctx.body = 'Consent rejected. What to do...?';
   await next();
 }
