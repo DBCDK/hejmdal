@@ -122,8 +122,8 @@ Adressen på den aktuelle version af smaug servicen
 
 # Dokumentation
 ## Endpoints
-- `/login?token=ABC_123` 
-Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl.
+- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
+Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl. returnurl indeholder den relative url som login resultatet skal sendes til
 - `/logud` eller `/logud?redirect=URL` 
 En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en kort besked om at brugeren er logget ud. 
 
