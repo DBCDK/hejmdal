@@ -63,9 +63,12 @@ export async function uniloginCallback(ctx) {
  * @returns {*}
  */
 export async function borchkCallback(ctx) {
+  let validated = false;
   const response = await getBorchkResponse(ctx);
   if (response && response.userId && response.libraryId && response.pincode) {
-    const validated = await validateUserInLibrary(ctx, response);
+    validated = await validateUserInLibrary(ctx, response);
+  }
+  if (validated) {
     ctx.setUser({
       userId: response.userId,
       userType: 'borchk',
@@ -74,6 +77,10 @@ export async function borchkCallback(ctx) {
       pincode: response.pincode,
       userValidated: validated
     });
+  }
+  else {
+    const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
+    ctx.setState({startOver: startOver});
   }
   return ctx;
 }
@@ -134,6 +141,9 @@ export async function identityProviderCallback(ctx, next) {
           break;
         default:
           break;
+      }
+      if (ctx.getState().startOver) {                // IdentityProvider failed in user authentication
+        ctx.redirect(ctx.getState().startOver);
       }
     }
   }
