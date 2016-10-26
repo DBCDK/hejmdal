@@ -118,11 +118,12 @@ export async function retrieveUserConsent(ctx, next) {
  * Checks the storage for an existing consent which is added to the session if found. Otherwise false is returned.
  * Exported only to make testable.
  *
- * @param {object} ctx
- * @return {object|null|boolean}
+ * @param {string} userId
+ * @param {string} serviceClientId
+ * @return {object|boolean}
  */
 export async function checkForExistingConsent({userId, serviceClientId}) {
-  let consent = null;
+  let consent = false;
 
   try {
     consent = await store.read(`${userId}:${serviceClientId}`);
