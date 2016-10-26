@@ -32,7 +32,21 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
-      attributes: ['cpr', 'libraries', 'municipality'],
+      attributes: [{
+        key: 'cpr',
+        name: 'CPR-nummer',
+        description: 'En brugers CPR nummer'
+      },
+        {
+          key: 'libraries',
+          name: 'Biblioteker',
+          description: 'En liste over de biblioteker en bruger er tilknyttet'
+        },
+        {
+          key: 'municipality',
+          name: 'Kommunenumer',
+          description: 'Nummer på den kommune hvori en bruger er hjemmehørende'
+        }],
       urls: {
         host: 'http://localhost:3010',
         success: '/thumbsup',
@@ -45,6 +59,7 @@ describe('Test smaug component', () => {
     delete mockData.identityProviders;
     delete mockData.attributes;
     await smaug.getAttributes(ctx, () => {});
+
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: [],
