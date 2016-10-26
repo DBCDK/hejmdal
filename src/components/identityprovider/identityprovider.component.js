@@ -3,7 +3,6 @@
  *
  */
 import {form} from 'co-body';
-import compose from 'koa-compose';
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {VERSION_PREFIX} from '../../utils/version.util';
@@ -49,13 +48,12 @@ export async function authenticate(ctx, next) {
  * @returns {*}
  */
 export async function uniloginCallback(ctx) {
-  if (ctx.params.type === 'unilogin') {
-    ctx.setUser({
-      userId: ctx.query.id,
-      userType: 'unilogin',
-      identityProviders: ['unilogin']
-    });
-  }
+  ctx.setUser({
+    userId: ctx.query.id,
+    userType: 'unilogin',
+    identityProviders: ['unilogin']
+  });
+  return ctx;
 }
 
 /**
@@ -65,20 +63,19 @@ export async function uniloginCallback(ctx) {
  * @returns {*}
  */
 export async function borchkCallback(ctx) {
-  if (ctx.params.type === 'borchk') {
-    const response = await getBorchkResponse(ctx);
-    if (response && response.userId && response.libraryId && response.pincode) {
-      const validated = await validateUserInLibrary(ctx, response);
-      ctx.setUser({
-        userId: response.userId,
-        userType: 'borchk',
-        identityProviders: ['borchk'],
-        libraryId: response.libraryId,
-        pincode: response.pincode,
-        userValidated: validated
-      });
-    }
+  const response = await getBorchkResponse(ctx);
+  if (response && response.userId && response.libraryId && response.pincode) {
+    const validated = await validateUserInLibrary(ctx, response);
+    ctx.setUser({
+      userId: response.userId,
+      userType: 'borchk',
+      identityProviders: ['borchk'],
+      libraryId: response.libraryId,
+      pincode: response.pincode,
+      userValidated: validated
+    });
   }
+  return ctx;
 }
 
 /**
@@ -88,13 +85,12 @@ export async function borchkCallback(ctx) {
  * @returns {*}
  */
 export async function nemloginCallback(ctx) {
-  if (ctx.params.type === 'nemlogin') {
-    ctx.setUser({
-      userId: ctx.query.id,
-      userType: 'nemlogin',
-      identityProviders: ['nemlogin']
-    });
-  }
+  ctx.setUser({
+    userId: ctx.query.id,
+    userType: 'nemlogin',
+    identityProviders: ['nemlogin']
+  });
+  return ctx;
 }
 
 /**
@@ -106,7 +102,7 @@ export async function nemloginCallback(ctx) {
 async function getBorchkResponse(ctx) {
   let response = null;
   try {
-    response = await form(ctx);
+    response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
   }
   catch (e) {
     log.error('Could not retrieve borchk response', {error: e.message, stack: e.stack});
@@ -126,7 +122,19 @@ export async function identityProviderCallback(ctx, next) {
       ctx.status = 403;
     }
     else {
-      await compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx);
+      switch (ctx.params.type) {
+        case 'borchk':
+          await borchkCallback(ctx);
+          break;
+        case 'nemlogin':
+          await nemloginCallback(ctx);
+          break;
+        case 'unilogin':
+          await uniloginCallback(ctx);
+          break;
+        default:
+          break;
+      }
     }
   }
   catch (e) {

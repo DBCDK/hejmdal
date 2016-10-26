@@ -15,21 +15,19 @@ describe('Test borchk component', () => {
     CONFIG.mock_externals.borchk = _BORCHK_CONFIG;
   });
 
-  const next = () => {
-  };
   const ctx = mockContext();
 
   it('Lookup a known user', () => {
-    ctx.setUser({libraryId: '710100', userId: '1234567890'});
-    return validateUserInLibrary(ctx, next).then(() => {
-      assert.isTrue(ctx.getUser().userValidate);
+    const user = {libraryId: '710100', userId: '1234567890', pincode: ''};
+    return validateUserInLibrary(ctx, user).then((result) => {
+      assert.isTrue(result);
     });
   });
 
   it('Lookup a unknown user', () => {
-    ctx.setUser({libraryId: '761500', userId: '1234567890'});
-    return validateUserInLibrary(ctx, next).then(() => {
-      assert.isFalse(ctx.getUser().userValidate);
+    const user = {libraryId: '761500', userId: '1234567890', pincode: ''};
+    return validateUserInLibrary(ctx, user).then((result) => {
+      assert.isFalse(result);
     });
   });
 

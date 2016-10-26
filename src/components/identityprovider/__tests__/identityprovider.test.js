@@ -56,17 +56,20 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.getUser(), expected);
   });
 
-  it('Should add library user to context', () => {
+/*  How to set post parameters in test */
+  it('Should add borchk user to context', () => {
     ctx.params.type = 'borchk';
-    ctx.query= {userId: 'testId', pincode: 'pincode', libraryId: 'libraryId'};
+    ctx.fakeBorchkPost= {userId: 'testId', pincode: 'testPincode', libraryId: 'testLibraryId'};
     const expected = {
       userId: 'testId',
       userType: 'borchk',
-      libraryId: 'libraryId',
-      pincode: 'pincode',
-      identityProviders: ['borchk']
+      libraryId: 'testLibraryId',
+      pincode: 'testPincode',
+      identityProviders: ['borchk'],
+      userValidated: false
     };
-    identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.getUser(), expected);
+    return identityProviderCallback(ctx, next).then(() => {
+      assert.deepEqual(ctx.getUser(), expected);
+    });
   });
 });
