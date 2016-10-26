@@ -14,6 +14,7 @@ yarn.lock
 # ==========
 # REPORTS #
 # ==========
+reports
 report.xml
 static/*.css
 
@@ -21,3 +22,4 @@ static/*.css
 # ENV #
 # ==========
 *.env
+
