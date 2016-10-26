@@ -158,7 +158,7 @@ let config = {
   // before: function (capabilities, specs) {
   // },
   before() {
-    require('./../bootstrap.js');
+    require('./../customMethods');
   }
   //
   // Hook that gets executed before the suite starts

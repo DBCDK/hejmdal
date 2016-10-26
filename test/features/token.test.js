@@ -1,10 +1,24 @@
 /* eslint-disable no-undef */
+const assert = require('chai').assert;
 
 import LoginPage from '../pageObjects/loginPage';
 
-describe('Test Smaug tokens', () => {
-  it('should show forbidden when invalid token', () => {
-    LoginPage.open({token: 'invalid_token', returnurl: 'some_url'});
-    browser.contains('Forbidden');
+describe('Test Smaug tokens', function () {
+  const loginPage = new LoginPage();
+
+  it('should set state with valid token', function () {
+    loginPage.open({token: 'invalid_token', returnurl: 'some_url'});
+    browser.include('Forbidden');
+  });
+
+  it('should show login with valid token', function () {
+    loginPage.open({token: 'valid_token', returnurl: 'some_url'});
+    browser.include('Log ind');
+  });
+
+  it('should set state with valid token', function () {
+    loginPage.open({token: 'valid_token', returnurl: 'some_url'});
+    const session = browser.getSession();
+    assert.equal(session.state.smaugToken, 'valid_token');
   });
 });
