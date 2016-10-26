@@ -17,18 +17,14 @@ describe('Test borchk component', () => {
 
   const ctx = mockContext();
 
-  it('Lookup a known user', () => {
+  it('Lookup a known user', async () => {
     const user = {libraryId: '710100', userId: '1234567890', pincode: ''};
-    return validateUserInLibrary(ctx, user).then((result) => {
-      assert.isTrue(result);
-    });
+    assert.isTrue(await validateUserInLibrary(ctx, user));
   });
 
-  it('Lookup a unknown user', () => {
+  it('Lookup a unknown user', async () => {
     const user = {libraryId: '761500', userId: '1234567890', pincode: ''};
-    return validateUserInLibrary(ctx, user).then((result) => {
-      assert.isFalse(result);
-    });
+    assert.isFalse(await validateUserInLibrary(ctx, user));
   });
 
 /* call to external service

@@ -57,7 +57,7 @@ describe('test identityProviderCallback method', () => {
   });
 
 /*  How to set post parameters in test */
-  it('Should add borchk user to context', () => {
+  it('Should add borchk user to context', async () => {
     ctx.params.type = 'borchk';
     ctx.fakeBorchkPost= {userId: 'testId', pincode: 'testPincode', libraryId: 'testLibraryId'};
     const expected = {
@@ -68,8 +68,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['borchk'],
       userValidated: false
     };
-    return identityProviderCallback(ctx, next).then(() => {
-      assert.deepEqual(ctx.getUser(), expected);
-    });
+    await identityProviderCallback(ctx, next);
+    assert.deepEqual(ctx.getUser(), expected);
   });
 });
