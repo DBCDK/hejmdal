@@ -26,10 +26,16 @@ For at installere de seneste database opdateringer køres `npm run migrate:lates
 I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.  
 
 ##Tests
+
+### Unittests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
 Skal der testes i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`  
 Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
+
+### Integrationstests
+Integrationstests afvikles med commandoen `npm run test:integration`. Som default afvikles tests via saucelabs og kræver at `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` er sat.  
+Testene kan også afvikles via en lokal seleniumserver med kommandoen `npm run test:integration:local` som sætter `TEST_ENV=local`
 
 ##Logning
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
