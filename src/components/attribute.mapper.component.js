@@ -84,7 +84,7 @@ function mapCulrResponse(culr, fields) {
 
 function mapFromCpr(cpr) {
   const ret = {};
-  if (isNumeric(cpr) && isValidDate(cpr)) {
+  if (isNumeric(cpr) && isValidDate(cpr) && cpr.length === 10) {
     ret.birthDate = cpr.substr(0, 6);
     ret.birthYear = cpr.substr(4, 2);
     ret.gender = cpr.substr(9, 1) % 2 ? 'm' : 'f';
