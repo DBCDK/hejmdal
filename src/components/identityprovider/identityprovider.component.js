@@ -46,10 +46,9 @@ export async function authenticate(ctx, next) {
  * Parses the callback parameters for unilogin.
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export async function uniloginCallback(ctx, next) {
+export async function uniloginCallback(ctx) {
   if (ctx.params.type === 'unilogin') {
     ctx.setUser({
       userId: ctx.query.id,
@@ -63,10 +62,9 @@ export async function uniloginCallback(ctx, next) {
  * Parses the callback parameters for borchk. Parameters from form comes as post
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export async function borchkCallback(ctx, next) {
+export async function borchkCallback(ctx) {
   if (ctx.params.type === 'borchk') {
     const response = await getBorchkResponse(ctx);
     if (response && response.userId && response.libraryId && response.pincode) {
@@ -87,10 +85,9 @@ export async function borchkCallback(ctx, next) {
  * Parses the callback parameters for nemlogin.
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export async function nemloginCallback(ctx, next) {
+export async function nemloginCallback(ctx) {
   if (ctx.params.type === 'nemlogin') {
     ctx.setUser({
       userId: ctx.query.id,
@@ -129,11 +126,11 @@ export async function identityProviderCallback(ctx, next) {
       ctx.status = 403;
     }
     else {
-      await compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx, next);
+      await compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx);
     }
   }
   catch (e) {
-    log.error('Error in identotyProviderCallback', {error: e.message, stack: e.stack});
+    log.error('Error in identityProviderCallback', {error: e.message, stack: e.stack});
     ctx.status = 500;
   }
 

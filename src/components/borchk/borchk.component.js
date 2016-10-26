@@ -9,19 +9,20 @@ import {log} from '../../utils/logging.util';
 
 /**
  * @param ctx
- * @param next
+ * @param user
  * @returns {*}
  */
 export async function validateUserInLibrary(ctx, user) {
+  let userValidate = false;
   try {
     const response = await getClient(user.libraryId, user.userId, user.pincode);
-    const userValidate = extractInfo(response);
-    return userValidate;
+    userValidate = extractInfo(response);
   }
   catch (err) {
     log.error('Invalid service call', err);
     ctx.status = 403;
   }
+  return userValidate;
 }
 
 /**
