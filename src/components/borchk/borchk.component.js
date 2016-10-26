@@ -12,13 +12,11 @@ import {log} from '../../utils/logging.util';
  * @param next
  * @returns {*}
  */
-export async function validateUserInLibrary(ctx, next) {
+export async function validateUserInLibrary(ctx, user) {
   try {
-    const user = ctx.getUser();
     const response = await getClient(user.libraryId, user.userId, user.pincode);
-    user.userValidate = extractInfo(response);
-    ctx.setUser(user);
-    return next();
+    const userValidate = extractInfo(response);
+    return userValidate;
   }
   catch (err) {
     log.error('Invalid service call', err);
