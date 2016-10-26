@@ -14,7 +14,7 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    './test/**/*.test.js'
+    './selenium/**/*.test.js'
   ],
   // Patterns to exclude.
   exclude: [
@@ -158,7 +158,7 @@ let config = {
   // before: function (capabilities, specs) {
   // },
   before() {
-    require('./../bootstrap.js');
+    require('./../customMethods');
   }
   //
   // Hook that gets executed before the suite starts

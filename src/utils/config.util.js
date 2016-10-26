@@ -42,7 +42,8 @@ export const CONFIG = {
     consent: process.env.MOCK_CONSENT_STORAGE || false,
     culr: process.env.MOCK_CULR === '1',
     smaug: process.env.MOCK_SMAUG !== '0',
-    ticket: process.env.MOCK_TICKET_STORAGE || false
+    ticket: process.env.MOCK_TICKET_STORAGE || false,
+    session: process.env.MOCK_SESSION_STORAGE && true || false
   },
   postgres: {
     client: 'postgresql',

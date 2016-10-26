@@ -12,5 +12,5 @@ export default async function ctxdump(ctx, next) {
 }
 
 function preDump(obj, txt) {
-  return '<pre>\n' + txt + ':\n' + JSON.stringify(obj, null, 2) + '</pre>';
+  return '<h3>' + txt + '</h3><pre id="dump-' + txt + '">' + JSON.stringify(obj, null, 2) + '</pre>';
 }
