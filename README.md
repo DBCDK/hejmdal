@@ -97,7 +97,7 @@ Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
 - `MOCK_CULR` : `mock_external.culr`  
-Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
 - `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage

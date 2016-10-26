@@ -14,7 +14,7 @@ export async function getAttributes(ctx, next) {
     const smaugToken = ctx.getState().smaugToken;
     const client = await getClient(smaugToken);
     ctx.setState({serviceClient: extractClientInfo(client)});
-    return next();
+    await next();
   }
   catch (err) {
     log.error('Invalid Token', err);
