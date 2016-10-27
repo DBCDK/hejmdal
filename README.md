@@ -26,10 +26,16 @@ For at installere de seneste database opdateringer køres `npm run migrate:lates
 I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.  
 
 ##Tests
+
+### Unittests
 Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
 Skal der testes i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`  
 Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
+
+### Integrationstests
+Integrationstests køres med selenium ligger i selenium/tests. Testene afvikles med commandoen `npm run test:integration`. De afvikles via saucelabs og kræver at `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` er sat.  
+Testene kan også afvikles på en lokal seleniumserver med kommandoen `npm run test:integration:local` som sætter `TEST_ENV=local`. 
 
 ##Logning
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
@@ -97,7 +103,7 @@ Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
 - `MOCK_CULR` : `mock_external.culr`  
-Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
 - `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
@@ -120,10 +126,20 @@ Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal
 - `SMAUG_URI` : `https adresse`  
 Adressen på den aktuelle version af smaug servicen
 
+- `SAUCE_USERNAME` : `brugernavn`  
+Gyldig brugernavn til saucelabs
+
+- `SAUCE_ACCESS_KEY` : `access key`  
+Gyldig access key til saucelabs
+
+- `TEST_ENV` : `local`  
+sættes til local for at afvikle selenium lokalt. Default er saucelabs.
+
+
 # Dokumentation
 ## Endpoints
-- `/login?token=ABC_123` 
-Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl.
+- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
+Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl. returnurl indeholder den relative url som login resultatet skal sendes til
 - `/logud` eller `/logud?redirect=URL` 
 En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en kort besked om at brugeren er logget ud. 
 

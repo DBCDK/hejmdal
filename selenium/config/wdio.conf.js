@@ -14,7 +14,7 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    './test/**/*.test.js'
+    './selenium/**/*.test.js'
   ],
   // Patterns to exclude.
   exclude: [
@@ -158,7 +158,7 @@ let config = {
   // before: function (capabilities, specs) {
   // },
   before() {
-    require('./../bootstrap.js');
+    require('./../customMethods');
   }
   //
   // Hook that gets executed before the suite starts
@@ -207,7 +207,7 @@ let config = {
 };
 
 // Override config with setup for local selenium server
-if (process.env.TEST_ENV == 'local') {
+if (process.env.TEST_ENV === 'local') {
   config = Object.assign(config, require('./local.conf').default);
 }
 

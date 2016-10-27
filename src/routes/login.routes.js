@@ -12,6 +12,7 @@ const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
 router.get('/', setDefaultState, getAttributes, authenticate, Consent.retrieveUserConsent, mapAttributesToTicket, storeTicket);
 router.get('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket);
+router.post('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket);
 router.get('/consent', Consent.giveConsentUI);
 router.post('/consentsubmit', Consent.consentSubmit, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket);
 

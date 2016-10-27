@@ -1,4 +1,8 @@
-import compose from 'koa-compose';
+/**
+ * @file
+ *
+ */
+import {form} from 'co-body';
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {VERSION_PREFIX} from '../../utils/version.util';
@@ -6,6 +10,7 @@ import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
+import {validateUserInLibrary} from '../borchk/borchk.component';
 
 const templates = {index, borchk, nemlogin, unilogin};
 
@@ -40,59 +45,78 @@ export async function authenticate(ctx, next) {
  * Parses the callback parameters for unilogin.
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export function uniloginCallback(ctx, next) {
-  if (ctx.params.type !== 'unilogin') {
-    return next();
-  }
-
+export async function uniloginCallback(ctx) {
   ctx.setUser({
     userId: ctx.query.id,
     userType: 'unilogin',
     identityProviders: ['unilogin']
   });
+  return ctx;
 }
 
 /**
- * Parses the callback parameters for borchk.
+ * Parses the callback parameters for borchk. Parameters from form comes as post
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export function borchkCallback(ctx, next) {
-  if (ctx.params.type !== 'borchk') {
-    return next();
+export async function borchkCallback(ctx) {
+  let validated = false;
+  const response = await getBorchkResponse(ctx);
+  if (response && response.userId && response.libraryId && response.pincode) {
+    validated = await validateUserInLibrary(ctx, response);
   }
-  ctx.setUser({
-    userId: ctx.query.id,
-    userType: 'borchk',
-    identityProviders: ['borchk'],
-    libraryId: 'libraryId',
-    pincode: 'pincode'
-  });
+  if (validated) {
+    ctx.setUser({
+      userId: response.userId,
+      userType: 'borchk',
+      identityProviders: ['borchk'],
+      libraryId: response.libraryId,
+      pincode: response.pincode,
+      userValidated: validated
+    });
+  }
+  else {
+    const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
+    ctx.setState({startOver: startOver});
+  }
+  return ctx;
 }
 
 /**
  * Parses the callback parameters for nemlogin.
  *
  * @param ctx
- * @param next
  * @returns {*}
  */
-export function nemloginCallback(ctx, next) {
-  if (ctx.params.type !== 'nemlogin') {
-    return next();
-  }
+export async function nemloginCallback(ctx) {
   ctx.setUser({
     userId: ctx.query.id,
     userType: 'nemlogin',
     identityProviders: ['nemlogin']
   });
+  return ctx;
 }
 
+/**
+ * Retrieving borchk response through co-body module
+ *
+ * @param ctx
+ * @return {{}}
+ */
+async function getBorchkResponse(ctx) {
+  let response = null;
+  try {
+    response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
+  }
+  catch (e) {
+    log.error('Could not retrieve borchk response', {error: e.message, stack: e.stack});
+  }
+
+  return response;
+}
 /**
  * Callback function from external identityproviders
  *
@@ -103,13 +127,28 @@ export async function identityProviderCallback(ctx, next) {
   try {
     if (!validateHash(ctx.params.token, ctx.getState().smaugToken)) {
       ctx.status = 403;
-      await next();
     }
-
-    compose([borchkCallback, uniloginCallback, nemloginCallback])(ctx, next);
+    else {
+      switch (ctx.params.type) {
+        case 'borchk':
+          await borchkCallback(ctx);
+          break;
+        case 'nemlogin':
+          await nemloginCallback(ctx);
+          break;
+        case 'unilogin':
+          await uniloginCallback(ctx);
+          break;
+        default:
+          break;
+      }
+      if (ctx.getState().startOver) {                // IdentityProvider failed in user authentication
+        ctx.redirect(ctx.getState().startOver);
+      }
+    }
   }
   catch (e) {
-    log.error('Error in identotyProviderCallback', {error: e.message, stack: e.stack});
+    log.error('Error in identityProviderCallback', {error: e.message, stack: e.stack});
     ctx.status = 500;
   }
 
