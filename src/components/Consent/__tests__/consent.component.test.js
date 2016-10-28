@@ -110,7 +110,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       assert.isFalse(ctx.redirect.called);
       assert.isTrue(_next.called);
-      assert.deepEqual(ctx.getState().consents, {[serviceClientId]: {}});
+      assert.deepEqual(ctx.getState().consents, {[serviceClientId]: {keys: []}});
     });
   });
 

@@ -33,10 +33,11 @@ export default async function mapAttributesToTicket(ctx, next) {
  * Maps the response from CULR according to the given array of fields
  *
  * @param {object} culr The CULR reponse object
- * @param {Array} fields The array of fields defined in Smaug
+ * @param {object} attributes The attributes object defined in Smaug
+ * @see ATTRIBUTES
  * @return {{}}
  */
-function mapCulrResponse(culr, fields) {
+function mapCulrResponse(culr, attributes) {
   let mapped = {};
 
   let cpr = null;
@@ -57,6 +58,7 @@ function mapCulrResponse(culr, fields) {
     });
   }
 
+  const fields = Object.keys(attributes);
   fields.forEach((field) => {
     switch (field) {
       case 'birthDate':

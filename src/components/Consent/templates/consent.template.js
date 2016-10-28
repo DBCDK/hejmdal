@@ -32,8 +32,11 @@ export default ({attributes, versionPrefix, service}) => {
 
 function renderAttributes(attributes) {
   let str = '';
-  attributes.forEach((attr) => {
-    str += `<li>${attr.name}</li>`;
+  const keys = Object.keys(attributes);
+
+  keys.forEach((key) => {
+    const attribute = attributes[key];
+    str += `<li>${attribute.name}</li>`;
   });
 
   return str;

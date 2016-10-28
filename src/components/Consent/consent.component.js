@@ -143,9 +143,9 @@ export async function checkForExistingConsent({userId, serviceClientId}) {
  * @return {*}
  */
 export async function storeUserConsent(ctx) {
-  console.log(ctx.getState().serviceClient);
-  return;
-  const consent = {}; // TODO retrieve from SMAUG
+  const attributes = ctx.getState().serviceClient.attributes || {};
+  const consent = {keys: Object.keys(attributes)};
+
   const user = ctx.getUser();
   const state = ctx.getState();
 

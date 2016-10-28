@@ -32,23 +32,26 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
-      attributes: [
-        {
-          key: 'cpr',
-          name: 'CPR-nummer',
-          description: 'En brugers CPR nummer'
+      attributes: {
+        cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
+        birthDate: {
+          name: 'Fødselsdato',
+          description: 'Fødselsdato - 6 første cifre af CPR-nummer'
         },
-        {
-          key: 'libraries',
+        birthYear: {
+          name: 'Fødselsår',
+          description: '4 cifret fødselsår - taget fra CPR-nummer'
+        },
+        gender: {
+          name: 'Køn',
+          description: 'Brugerens køn, m (for male) eller f (for female)'
+        },
+        libraries: {
           name: 'Biblioteker',
-          description: 'En liste over de biblioteker en bruger er tilknyttet'
+          description: 'En liste over de biblioteker som kender brugeren'
         },
-        {
-          key: 'municipality',
-          name: 'Kommunenumer',
-          description: 'Nummer på den kommune hvori en bruger er hjemmehørende'
-        }
-      ],
+        municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'}
+      },
       urls: {
         host: 'http://localhost:3010',
         success: '/thumbsup',
