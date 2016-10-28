@@ -33,7 +33,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: culr,
       serviceClient: {
-        attributes: {birthDate:{}, birthYear:{}, gender:{}, cpr:{}, libraries: {}, municipality: {}}
+        attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}, libraries: {}, municipality: {}}
       },
       ticket: {}
     });
@@ -58,7 +58,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102030788'}]},
       serviceClient: {
-        attributes: {birthYear:{}}
+        attributes: {birthYear: {}}
       }
     });
     mapAttributesToTicket(ctx, next);
@@ -87,7 +87,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
       serviceClient: {
-        attributes: {gender:{}}
+        attributes: {gender: {}}
       },
       ticket: {}
     });
@@ -102,7 +102,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0123456789'}]},
       serviceClient: {
-        attributes: {birthDate:{}, birthYear:{}, gender:{}, cpr:{}}
+        attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}}
       },
       ticket: {}
     });
@@ -120,7 +120,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: culr,
       serviceClient: {
-        attributes: {libraries:{}}
+        attributes: {libraries: {}}
       },
       ticket: {}
     });
@@ -142,7 +142,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: _culr,
       serviceClient: {
-        attributes: {libraries:{}, municipality:{}}
+        attributes: {libraries: {}, municipality: {}}
       },
       ticket: {}
     });
@@ -162,7 +162,7 @@ describe('Attribute mapper unittest', () => {
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
       serviceClient: {
-        attributes: {notThere:{}}
+        attributes: {notThere: {}}
       },
       ticket: {}
     });
