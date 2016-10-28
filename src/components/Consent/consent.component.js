@@ -28,7 +28,7 @@ export async function giveConsentUI(ctx, next) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({versionPrefix: VERSION_PREFIX, service: state.serviceClient.id});
+    ctx.body = consentTemplate({attributes: state.serviceClient.attributes, versionPrefix: VERSION_PREFIX, service: state.serviceClient.id});
     await next();
   }
 }
@@ -143,6 +143,8 @@ export async function checkForExistingConsent({userId, serviceClientId}) {
  * @return {*}
  */
 export async function storeUserConsent(ctx) {
+  console.log(ctx.getState().serviceClient);
+  return;
   const consent = {}; // TODO retrieve from SMAUG
   const user = ctx.getUser();
   const state = ctx.getState();

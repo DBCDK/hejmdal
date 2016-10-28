@@ -45,10 +45,11 @@ describe('Unittesting methods in consent.component.test', () => {
     it('should render html to ctx.body and call next', () => {
       ctx.redirect = sandbox.stub();
       ctx.session.state.serviceClient.id = 'testing...';
+      ctx.session.state.serviceClient.attributes = [{test:'hest'}];
       const nextSpy = sandbox.stub();
 
       giveConsentUI(ctx, nextSpy);
-      assert.equal(ctx.body, consentTemplate({versionPrefix: VERSION_PREFIX, service: ctx.session.state.serviceClient.id}));
+      assert.equal(ctx.body, consentTemplate({attributes: ctx.session.state.serviceClient.attributes, versionPrefix: VERSION_PREFIX, service: ctx.session.state.serviceClient.id}));
       assert.isTrue(nextSpy.called);
     });
   });
