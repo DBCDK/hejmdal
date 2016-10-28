@@ -1,5 +1,38 @@
 # Change Log
 
+## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
+
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...HEAD)
+
+**Closed issues:**
+
+- Mapper komponenten skal skabe attributterne fødselsdag, fødselsår og køn [\#113](https://github.com/DBCDK/hejmdal/issues/113)
+- Brug borchk-component som identity provider [\#110](https://github.com/DBCDK/hejmdal/issues/110)
+- SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
+- En liste over hvilke attributter en service kan abonnere på. [\#88](https://github.com/DBCDK/hejmdal/issues/88)
+- Consent: Afvisning af consent skal håndteres [\#86](https://github.com/DBCDK/hejmdal/issues/86)
+- Implementere CULR operationer mod en test CULR [\#68](https://github.com/DBCDK/hejmdal/issues/68)
+- Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
+- Attribut Mapper Komponent [\#18](https://github.com/DBCDK/hejmdal/issues/18)
+- Testframework [\#4](https://github.com/DBCDK/hejmdal/issues/4)
+
+**Merged pull requests:**
+
+- \#88: smaug ATTRIBUTES description [\#123](https://github.com/DBCDK/hejmdal/pull/123) ([fvsdbc](https://github.com/fvsdbc))
+- \#110 : redirect when failed borchk [\#122](https://github.com/DBCDK/hejmdal/pull/122) ([fvsdbc](https://github.com/fvsdbc))
+- Adds seleniumtests and updated selenium setup [\#121](https://github.com/DBCDK/hejmdal/pull/121) ([vibjerg](https://github.com/vibjerg))
+- Issue 110 fvs [\#119](https://github.com/DBCDK/hejmdal/pull/119) ([fvsdbc](https://github.com/fvsdbc))
+- \#86: Consent: Afvisning af consent skal håndteres [\#118](https://github.com/DBCDK/hejmdal/pull/118) ([hrmoller](https://github.com/hrmoller))
+- \#113: generate birthDate, birthYear and gender \(f or m\) [\#117](https://github.com/DBCDK/hejmdal/pull/117) ([fvsdbc](https://github.com/fvsdbc))
+- Setup for basic webdriverio test framework [\#116](https://github.com/DBCDK/hejmdal/pull/116) ([vibjerg](https://github.com/vibjerg))
+- Add GC info in README [\#114](https://github.com/DBCDK/hejmdal/pull/114) ([fvsdbc](https://github.com/fvsdbc))
+- CULR integration [\#112](https://github.com/DBCDK/hejmdal/pull/112) ([hrmoller](https://github.com/hrmoller))
+- Issue 64 fvs [\#111](https://github.com/DBCDK/hejmdal/pull/111) ([fvsdbc](https://github.com/fvsdbc))
+- \#85: Change test to use get/set State/User [\#109](https://github.com/DBCDK/hejmdal/pull/109) ([fvsdbc](https://github.com/fvsdbc))
+- Compose goodness :\) [\#108](https://github.com/DBCDK/hejmdal/pull/108) ([hyatt03](https://github.com/hyatt03))
+- \#18: Mapper component and use set/get State/User [\#107](https://github.com/DBCDK/hejmdal/pull/107) ([fvsdbc](https://github.com/fvsdbc))
+- Use state and user methods on consent component [\#106](https://github.com/DBCDK/hejmdal/pull/106) ([vibjerg](https://github.com/vibjerg))
+
 ## [0.2.0](https://github.com/DBCDK/hejmdal/tree/0.2.0) (2016-10-20)
 [Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.1.0...0.2.0)
 
