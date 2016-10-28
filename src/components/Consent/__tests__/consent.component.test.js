@@ -17,6 +17,7 @@ import consentTemplate from '../templates/consent.template';
 import {initState} from '../../../utils/state.util';
 import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockContext} from '../../../utils/test.util';
+import {ATTRIBUTES} from '../../../utils/attributes.util';
 
 describe('Unittesting methods in consent.component.test', () => {
   let ctx;
@@ -34,6 +35,7 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   describe('giveConsentUI()', () => {
+
     it('should redirect if state is unavailable on ctx.session object', () => {
       ctx.redirect = sandbox.stub();
 
@@ -59,6 +61,7 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   describe('consentSubmit()', () => {
+
     it('should redirect to error url on calling service', async() => {
       ctx.redirect = sandbox.stub();
       ctx.req = {
@@ -73,6 +76,7 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   describe('retrieveUserConsent()', () => {
+
     it('should  call next when no user or serviceClient.id is found', async() => {
       const _next = sandbox.stub();
 
@@ -116,9 +120,47 @@ describe('Unittesting methods in consent.component.test', () => {
       assert.isTrue(_next.called);
       assert.deepEqual(ctx.getState().consents, {[serviceClientId]: {keys: []}});
     });
+
+    it('should delete old consent and redirect user to consent page', async() => {
+      ctx.redirect = sandbox.stub();
+      const serviceClientId = Date.now();
+      const userId = 'testUser';
+
+      ctx.setUser({userId: userId});
+      ctx.setState({
+        serviceClient: {
+          id: serviceClientId,
+          attributes: ATTRIBUTES
+        }
+      });
+
+      // first we store the consent object and verify it has been stored
+      await storeUserConsent(ctx);
+      const consent = await checkForExistingConsent({userId: userId, serviceClientId: serviceClientId});
+      const consent_expected = {keys: ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality']};
+      assert.deepEqual(consent, consent_expected, 'consent was stored as expected');
+
+      // then we create sets a new attributes object and makes a request for the users consent.
+      // The check between the old and the consent objekt is implicitly part of the retrival process.
+      const newAttrbutes = Object.assign({}, ATTRIBUTES);
+      delete newAttrbutes.cpr;
+      ctx.setState({
+        serviceClient: {
+          id: serviceClientId,
+          attributes: newAttrbutes
+        }
+      });
+
+      await retrieveUserConsent(ctx, next);
+
+      // ensuring the user is redirected to the consent page
+      assert.isTrue(ctx.redirect.called);
+      assert.equal(ctx.redirect.args[0], `${VERSION_PREFIX}/login/consent`);
+    });
   });
 
   describe('checkForExistingConsent()', () => {
+
     it('should return false', async() => {
       const consent = await checkForExistingConsent({userId: null, serviceClientId: 10});
 
