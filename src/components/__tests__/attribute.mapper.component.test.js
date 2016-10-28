@@ -42,7 +42,7 @@ describe('Attribute mapper unittest', () => {
 
     assert.deepEqual(ctx.session.state.ticket.attributes, {
       birthDate: '010245',
-      birthYear: '45',
+      birthYear: '2045',
       gender: 'm',
       cpr: '0102456789',
       libraries: [
@@ -51,6 +51,35 @@ describe('Attribute mapper unittest', () => {
       ],
       municipality: '333'
     });
+  });
+
+  it('map to correct milenium in birthYear', () => {
+    const ctx = mockContext();
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102030788'}]},
+      serviceClient: {
+        attributes: ['birthYear']
+      }
+    });
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1903'});
+
+    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}});
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '2036'});
+
+    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}});
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1937'});
+
+    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}});
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '2057'});
+
+    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}});
+    mapAttributesToTicket(ctx, next);
+    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1858'});
+
   });
 
   it('map gender', () => {
