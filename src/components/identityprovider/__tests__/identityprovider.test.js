@@ -2,7 +2,6 @@ import {assert} from 'chai';
 import {authenticate, identityProviderCallback} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
-import getWayfMockData from '../../Wayf/mock/wayf.mock';
 
 describe('test authenticate method', () => {
   const next = () => {
@@ -48,7 +47,6 @@ describe('test identityProviderCallback method', () => {
 
   it('Should add nemlogin user to context', async () => {
     ctx.params.type = 'nemlogin';
-    ctx.fakeWayfPost = getWayfMockData();
     const expected = {
       userId: '0102030405',
       userType: 'nemlogin',

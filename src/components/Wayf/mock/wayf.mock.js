@@ -12,6 +12,6 @@ const mockDataOk = {
   }
 };
 
-export default function getWayfMockData() {
+export default function getWayfMock() {
   return mockDataOk;
 }

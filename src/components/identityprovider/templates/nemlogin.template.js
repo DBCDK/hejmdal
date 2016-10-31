@@ -4,5 +4,5 @@
  */
 
 export default () => `
-<a href="/login/identityProviderCallback/nemlogin/qwerty?id=5555666677">NEM-login</a>
+<a href="/login/identityProviderCallback/nemlogin/qwerty?eduPersonTargetedID=WAYF-DK-16028a572f83fd83cb0728aab8a6cc0685933a04">NEM-login</a>
 `;

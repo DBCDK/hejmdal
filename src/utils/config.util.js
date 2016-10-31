@@ -43,7 +43,8 @@ export const CONFIG = {
     culr: process.env.MOCK_CULR === '1',
     smaug: process.env.MOCK_SMAUG !== '0',
     ticket: process.env.MOCK_TICKET_STORAGE || false,
-    session: process.env.MOCK_SESSION_STORAGE && true || false
+    session: process.env.MOCK_SESSION_STORAGE && true || false,
+    wayf: process.env.MOCK_WAYF !== '0'
   },
   postgres: {
     client: 'postgresql',

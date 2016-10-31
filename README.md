@@ -111,6 +111,9 @@ Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory 
 - `MOCK_SMAUG` : `mock_external.smaug`  
 Sættes værdien til `0` (`MOCK_SMAUG=0`) vil Smaug ikke blive mocket ud. Alle andre værdier vil resultere i at Smaug mockes.
  
+- `MOCK_WAYF` : `mock_external.wayf`  
+Sættes værdien til `0` (`MOCK_WAYF=0`) vil WAYF ikke blive mocket ud. Alle andre værdier vil resultere i at WAYF mockes.
+ 
 - `NODE_ENV` : `app.env`  
 Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production`
  
