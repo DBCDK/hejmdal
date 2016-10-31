@@ -69,9 +69,10 @@ describe('Unittesting methods in consent.component.test', () => {
       };
       ctx.setState({serviceClient: {urls: {host: 'https://test.url.dk', error: '/errorurl'}}});
 
+      const expectedUrl = `${ctx.getState().serviceClient.urls.host}${ctx.getState().serviceClient.urls.error}?message=consent%20was%20rejected`;
       await consentSubmit(ctx, next);
       assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0], `${ctx.getState().serviceClient.urls.host}${ctx.getState().serviceClient.urls.error}?message=consent%20was%20rejected`);
+      assert.equal(ctx.redirect.args[0], expectedUrl);
     });
   });
 

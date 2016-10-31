@@ -8,12 +8,6 @@ describe('Test Smaug tokens', () => {
 
   it('should login user with UNIlogin', () => {
     loginPage.loginWithUNIlogin();
-    const session = browser.getSession();
-    console.log(session.state);
-    assert.deepEqual(session.user, {
-      userId: '5555666677',
-      userType: 'unilogin',
-      identityProviders: ['unilogin']
-    });
+    browser.assertUniLoginUser();
   });
 });

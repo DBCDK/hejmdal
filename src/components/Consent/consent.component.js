@@ -81,10 +81,10 @@ async function getConsentResponse(ctx) {
  * @param {object} ctx
  * @param {function} next
  */
-export async function consentRejected(ctx, next) {
+export async function consentRejected(ctx) {
   const serviceClient = ctx.getState().serviceClient;
+  ctx.session = null;
   ctx.redirect(`${serviceClient.urls.host}${serviceClient.urls.error}?message=consent%20was%20rejected`);
-  await next();
 }
 
 /**

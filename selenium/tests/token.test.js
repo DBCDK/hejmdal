@@ -7,7 +7,7 @@ describe('Test Smaug tokens', function() {
   this.timeout(30000);
   const loginPage = new LoginPage();
 
-  it('should set state with valid token', () => {
+  it('should set state with invalid token', () => {
     loginPage.open({token: 'invalid_token', returnurl: 'some_url'});
     browser.include('Forbidden');
   });

@@ -15,13 +15,13 @@ export default ({attributes, versionPrefix, service}) => {
   <body>
     <div id="content">
       Ved tryk på Acceptér, acceptere du at dele nedenståene informationer med ${service}
-      <ul>
+      <ul id="consent-attributes">
         ${renderAttributes(attributes)}
       </ul>
-      <div>
+      <div id="consent-actions">
         <form action="${versionPrefix}/login/consentsubmit" method="post">
-          <button type="submit" value="1" name="userconsent" >Acceptér</button>
-          <button type="submit" value="0" name="userconsent" >Afvis</button>
+          <button id="consent-actions-accept" type="submit" value="1" name="userconsent">Acceptér</button>
+          <button id="consent-actions-reject" type="submit" value="0" name="userconsent">Afvis</button>
         </form>
       </div>
       </div>

@@ -1,4 +1,6 @@
 import {ATTRIBUTES} from '../../../utils/attributes.util';
+import {VERSION_PREFIX} from '../../../utils/version.util';
+import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
   identityProviders: ['nemlogin', 'borchk', 'unilogin'],
@@ -8,7 +10,7 @@ export const mockData = {
     clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f'
   },
   urls: {
-    host: 'http://localhost:3010',
+    host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
     success: '/thumbsup',
     error: '/thumbsdown'
   }
