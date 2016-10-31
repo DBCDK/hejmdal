@@ -2,9 +2,9 @@
  * @file
  */
 
-const mockDataOk = '{"borrowerCheckResponse":{"userId":{"$":"1510970053"},"requestStatus":{"$":"ok"}},"@namespaces":null}';
+const mockDataOk = '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"ok"}},"@namespaces":null}';
 
-const mockDataNotFound = '{"borrowerCheckResponse":{"userId":{"$":"1510970053"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
+const mockDataNotFound = '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
 
 export default function getMockClient(library) {
   return {
