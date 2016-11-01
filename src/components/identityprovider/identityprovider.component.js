@@ -2,7 +2,6 @@
  * @file
  *
  */
-import {form} from 'co-body';
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {VERSION_PREFIX} from '../../utils/version.util';
@@ -10,7 +9,8 @@ import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
-import {validateUserInLibrary} from '../borchk/borchk.component';
+import {validateUserInLibrary, getBorchkResponse} from '../borchk/borchk.component';
+import {getWayfResponse} from '../Wayf/wayf.component';
 
 const templates = {index, borchk, nemlogin, unilogin};
 
@@ -92,31 +92,15 @@ export async function borchkCallback(ctx) {
  * @returns {*}
  */
 export async function nemloginCallback(ctx) {
+  const response = await getWayfResponse(ctx);
   ctx.setUser({
-    userId: ctx.query.id,
+    userId: response.userId,
     userType: 'nemlogin',
     identityProviders: ['nemlogin']
   });
   return ctx;
 }
 
-/**
- * Retrieving borchk response through co-body module
- *
- * @param ctx
- * @return {{}}
- */
-async function getBorchkResponse(ctx) {
-  let response = null;
-  try {
-    response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
-  }
-  catch (e) {
-    log.error('Could not retrieve borchk response', {error: e.message, stack: e.stack});
-  }
-
-  return response;
-}
 /**
  * Callback function from external identityproviders
  *

@@ -1,13 +1,15 @@
 /**
  * @file
  *
- * Validate a user against a given library, using the borchk service
  *
  */
+import {form} from 'co-body';
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 
 /**
+ * Validate a user against a given library, using the borchk service
+ *
  * @param ctx
  * @param user
  * @returns {*}
@@ -23,6 +25,24 @@ export async function validateUserInLibrary(ctx, user) {
     ctx.status = 403;
   }
   return userValidate;
+}
+
+/**
+ * Retrieving borchk response through co-body module
+ *
+ * @param ctx
+ * @return {{}}
+ */
+export async function getBorchkResponse(ctx) {
+  let response = null;
+  try {
+    response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
+  }
+  catch (e) {
+    log.error('Could not retrieve borchk response', {error: e.message, stack: e.stack});
+  }
+
+  return response;
 }
 
 /**
