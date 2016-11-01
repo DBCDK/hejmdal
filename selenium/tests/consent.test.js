@@ -29,7 +29,7 @@ describe('Test Consent part of authetication flow', () => {
 
   it('should render message to user', () => {
     const content = browser.getText('#content');
-    const expected = 'Ved tryk på Acceptér, acceptere du at dele nedenståene informationer med';
+    const expected = 'Ved tryk på Acceptér, accepterer du at dele nedenståene informationer med';
 
     assert.isTrue(content.startsWith(expected));
   });
