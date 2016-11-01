@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
+import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
 import {mockContext} from '../../../utils/test.util';
@@ -53,7 +54,7 @@ describe('Test smaug component', () => {
         municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'}
       },
       urls: {
-        host: 'http://localhost:3010',
+        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
         success: '/thumbsup',
         error: '/thumbsdown'
       }
@@ -64,13 +65,12 @@ describe('Test smaug component', () => {
     delete mockData.identityProviders;
     delete mockData.attributes;
     await smaug.getAttributes(ctx, () => {});
-
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: [],
       attributes: [],
       urls: {
-        host: 'http://localhost:3010',
+        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
         success: '/thumbsup',
         error: '/thumbsdown'
       }
