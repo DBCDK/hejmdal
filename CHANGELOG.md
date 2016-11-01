@@ -9,15 +9,19 @@
 - Mapper komponenten skal skabe attributterne fødselsdag, fødselsår og køn [\#113](https://github.com/DBCDK/hejmdal/issues/113)
 - Brug borchk-component som identity provider [\#110](https://github.com/DBCDK/hejmdal/issues/110)
 - SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
+- Consent: Opdatering af consent [\#100](https://github.com/DBCDK/hejmdal/issues/100)
 - En liste over hvilke attributter en service kan abonnere på. [\#88](https://github.com/DBCDK/hejmdal/issues/88)
 - Consent: Afvisning af consent skal håndteres [\#86](https://github.com/DBCDK/hejmdal/issues/86)
 - Implementere CULR operationer mod en test CULR [\#68](https://github.com/DBCDK/hejmdal/issues/68)
 - Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
+- konfiguration [\#41](https://github.com/DBCDK/hejmdal/issues/41)
 - Attribut Mapper Komponent [\#18](https://github.com/DBCDK/hejmdal/issues/18)
+- tilpas pipeline med prod maskiner [\#16](https://github.com/DBCDK/hejmdal/issues/16)
 - Testframework [\#4](https://github.com/DBCDK/hejmdal/issues/4)
 
 **Merged pull requests:**
 
+- Wayf mock fvs [\#125](https://github.com/DBCDK/hejmdal/pull/125) ([fvsdbc](https://github.com/fvsdbc))
 - \#88: smaug ATTRIBUTES description [\#123](https://github.com/DBCDK/hejmdal/pull/123) ([fvsdbc](https://github.com/fvsdbc))
 - \#110 : redirect when failed borchk [\#122](https://github.com/DBCDK/hejmdal/pull/122) ([fvsdbc](https://github.com/fvsdbc))
 - Adds seleniumtests and updated selenium setup [\#121](https://github.com/DBCDK/hejmdal/pull/121) ([vibjerg](https://github.com/vibjerg))
