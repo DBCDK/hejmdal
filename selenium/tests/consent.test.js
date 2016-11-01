@@ -120,7 +120,7 @@ describe('Test Consent part of authetication flow', () => {
     const culr = state.culr.accounts;
     assert.deepEqual(culr, [
       {
-        provider: '790901',
+        provider: '790900',
         userIdType: 'CPR',
         userIdValue: '5555666677'
       },
