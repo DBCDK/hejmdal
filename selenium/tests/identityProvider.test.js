@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-const assert = require('chai').assert;
-
 import LoginPage from '../pageObjects/loginPage';
 
 describe('Test Smaug tokens', () => {

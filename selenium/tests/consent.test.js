@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * Mainly testing the consent page. When the flow is finished a consent will be stored in memory on the testuser
