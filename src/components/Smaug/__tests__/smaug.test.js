@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
+import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
 import {mockContext} from '../../../utils/test.util';
@@ -32,9 +33,28 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
-      attributes: ['cpr', 'libraries', 'municipality'],
+      attributes: {
+        cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
+        birthDate: {
+          name: 'Fødselsdato',
+          description: 'Fødselsdato - 6 første cifre af CPR-nummer'
+        },
+        birthYear: {
+          name: 'Fødselsår',
+          description: '4 cifret fødselsår - taget fra CPR-nummer'
+        },
+        gender: {
+          name: 'Køn',
+          description: 'Brugerens køn, m (for male) eller f (for female)'
+        },
+        libraries: {
+          name: 'Biblioteker',
+          description: 'En liste over de biblioteker som kender brugeren'
+        },
+        municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'}
+      },
       urls: {
-        host: 'http://localhost:3010',
+        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
         success: '/thumbsup',
         error: '/thumbsdown'
       }
@@ -50,7 +70,7 @@ describe('Test smaug component', () => {
       identityProviders: [],
       attributes: [],
       urls: {
-        host: 'http://localhost:3010',
+        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
         success: '/thumbsup',
         error: '/thumbsdown'
       }

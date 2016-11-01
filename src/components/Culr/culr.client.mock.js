@@ -12,7 +12,7 @@ export const CulrMockClient = {
    * @param {function} cb
    */
   getAccounts: (params, cb) => {
-    const response = params.userCredentials.userIdValue === '1234567890' ? OK200() : ACCOUNT_DOES_NOT_EXIST();
+    const response = params.userCredentials.userIdValue === '5555666677' ? OK200() : ACCOUNT_DOES_NOT_EXIST();
     cb(null, response);
   }
 };

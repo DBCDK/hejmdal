@@ -23,4 +23,12 @@ static/*.css
 # ==========
 *.env
 
+# ==========
+# SELENIUM #
+# ==========
 errorShots
+
+# ==========
+# ESLINT #
+# ==========
+.eslintcache

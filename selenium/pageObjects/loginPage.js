@@ -5,9 +5,11 @@ import querystring from 'querystring';
 
 export default class LoginPage extends Page {
   validToken = 'valid_token';
+
   open(qs) {
     super.open(`login?${querystring.stringify(qs)}`);
   }
+
   loginWithUNIlogin() {
     this.open({token: this.validToken});
     browser.click('*=UNI');

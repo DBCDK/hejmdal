@@ -12,7 +12,7 @@ import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 import {log} from '../../utils/logging.util';
 
-const store = CONFIG.mock_externals.consent === 'memory' ?
+const consentStore = CONFIG.mock_externals.consent === 'memory' ?
   new KeyValueStorage(new MemoryStorage()) :
   new KeyValueStorage(new PersistentConsentStorage());
 
@@ -28,7 +28,11 @@ export async function giveConsentUI(ctx, next) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({versionPrefix: VERSION_PREFIX, service: state.serviceClient.id});
+    ctx.body = consentTemplate({
+      attributes: state.serviceClient.attributes,
+      versionPrefix: VERSION_PREFIX,
+      service: state.serviceClient.id
+    });
     await next();
   }
 }
@@ -77,10 +81,10 @@ async function getConsentResponse(ctx) {
  * @param {object} ctx
  * @param {function} next
  */
-export async function consentRejected(ctx, next) {
+export async function consentRejected(ctx) {
   const serviceClient = ctx.getState().serviceClient;
+  ctx.session = null;
   ctx.redirect(`${serviceClient.urls.host}${serviceClient.urls.error}?message=consent%20was%20rejected`);
-  await next();
 }
 
 /**
@@ -95,18 +99,14 @@ export async function retrieveUserConsent(ctx, next) {
   const serviceClient = ctx.getState().serviceClient;
 
   if (user.userId && serviceClient.id) {
-    try {
-      const consent = await checkForExistingConsent({userId: user.userId, serviceClientId: serviceClient.id});
-      if (consent) {
-        addConsentToState(ctx, consent);
-        await next();
-      }
-      else {
-        ctx.redirect(`${VERSION_PREFIX}/login/consent`);
-      }
+    const consent = await getConsent(ctx);
+
+    if (consent) {
+      addConsentToState(ctx, consent);
+      await next();
     }
-    catch (e) {
-      log.error('Error while retrieving user consent', {error: e.message, stack: e.stack});
+    else {
+      ctx.redirect(`${VERSION_PREFIX}/login/consent`);
     }
   }
   else {
@@ -118,14 +118,15 @@ export async function retrieveUserConsent(ctx, next) {
  * Checks the storage for an existing consent which is added to the session if found. Otherwise false is returned.
  * Exported only to make testable.
  *
- * @param {object} ctx
- * @return {object|null|boolean}
+ * @param {string} userId
+ * @param {string} serviceClientId
+ * @return {object|boolean}
  */
 export async function checkForExistingConsent({userId, serviceClientId}) {
-  let consent = null;
+  let consent = false;
 
   try {
-    consent = await store.read(`${userId}:${serviceClientId}`);
+    consent = await consentStore.read(`${userId}:${serviceClientId}`);
   }
   catch (e) {
     log.error('Failed check for existing consent', {error: e.message, stack: e.stack});
@@ -142,7 +143,8 @@ export async function checkForExistingConsent({userId, serviceClientId}) {
  * @return {*}
  */
 export async function storeUserConsent(ctx) {
-  const consent = {}; // TODO retrieve from SMAUG
+  const consent = createConsentObject(ctx);
+
   const user = ctx.getUser();
   const state = ctx.getState();
 
@@ -161,7 +163,7 @@ export async function storeUserConsent(ctx) {
   addConsentToState(ctx, consent);
 
   try {
-    await store.insert(consentid, consent);
+    await consentStore.insert(consentid, consent);
   }
   catch (e) {
     log.error('Failed saving of user consent', {error: e.message, stack: e.stack});
@@ -178,4 +180,31 @@ function addConsentToState(ctx, consent) {
   const state = ctx.getState();
   const consents = Object.assign({}, state.consents, {[state.serviceClient.id]: consent});
   ctx.setState({consents});
+}
+
+async function getConsent(ctx) {
+  const user = ctx.getUser();
+  const serviceClient = ctx.getState().serviceClient;
+  let consent = false;
+  try {
+    consent = await checkForExistingConsent({userId: user.userId, serviceClientId: serviceClient.id});
+    if (consent && JSON.stringify(consent) !== JSON.stringify(createConsentObject(ctx))) {
+      await removeConsent(user.userId, serviceClient.id);
+      consent = false;
+    }
+  }
+  catch (e) {
+    log.error('Error while retrieving user consent', {error: e.message, stack: e.stack});
+  }
+
+  return consent;
+}
+
+async function removeConsent(userId, serviceClientId) {
+  await consentStore.delete(`${userId}:${serviceClientId}`);
+}
+
+function createConsentObject(ctx) {
+  const attributes = ctx.getState().serviceClient.attributes || {};
+  return {keys: Object.keys(attributes)};
 }

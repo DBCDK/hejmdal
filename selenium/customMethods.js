@@ -16,4 +16,18 @@ browser.getSession = () => {
   return JSON.parse(sessionString);
 };
 
+browser.getState = () => {
+  const sessionString = browser.element('#dump-session').getText();
+  return JSON.parse(sessionString).state;
+};
+
+browser.assertUniLoginUser = () => {
+  const session = browser.getSession();
+  assert.deepEqual(session.user, {
+    userId: '5555666677',
+    userType: 'unilogin',
+    identityProviders: ['unilogin']
+  });
+};
+
 

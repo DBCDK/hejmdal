@@ -9,9 +9,10 @@ describe('test store and get ticket', () => {
   const next = () => {
   };
 
-  it('should return false for nonexisting ticket', () => {
+  it('should return false for nonexisting ticket', async() => {
     ctx.setState({ticket: {attributes: null, id: 'foo', token: 'bar'}});
-    getTicket(ctx, next);
+    ctx.params = {};
+    await getTicket(ctx, next);
     assert.isFalse(ctx.getState().ticket.attributes);
   });
 

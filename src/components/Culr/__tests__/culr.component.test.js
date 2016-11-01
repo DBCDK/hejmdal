@@ -28,7 +28,7 @@ describe('Unittesting methods in culr.component:', () => {
     });
 
     it('should set culr object on state -- OK200', async() => {
-      ctx.setUser({userId: '1234567890'});
+      ctx.setUser({userId: '5555666677'});
       await getCulrAttributes(ctx, next);
 
       assert.deepEqual(ctx.getState().culr, {

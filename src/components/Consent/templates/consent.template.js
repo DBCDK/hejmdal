@@ -4,7 +4,8 @@
  * @param {string} service Name of service
  */
 
-export default ({versionPrefix, service}) => `
+export default ({attributes, versionPrefix, service}) => {
+  return `
 <!DOCTYPE html>
 <html>
   <head>
@@ -13,14 +14,30 @@ export default ({versionPrefix, service}) => `
   </head>
   <body>
     <div id="content">
-        Vil du dele alt med ${service}
-        <div>
-          <form action="${versionPrefix}/login/consentsubmit" method="post">
-            <button type="submit" value="1" name="userconsent" >Acceptér</button>
-            <button type="submit" value="0" name="userconsent" >Afvis</button>
-          </form>
-        </div>
+      Ved tryk på Acceptér, accepterer du at dele nedenståene informationer med ${service}
+      <ul id="consent-attributes">
+        ${renderAttributes(attributes)}
+      </ul>
+      <div id="consent-actions">
+        <form action="${versionPrefix}/login/consentsubmit" method="post">
+          <button id="consent-actions-accept" type="submit" value="1" name="userconsent">Acceptér</button>
+          <button id="consent-actions-reject" type="submit" value="0" name="userconsent">Afvis</button>
+        </form>
+      </div>
       </div>
   </body>
 </html>
 `;
+};
+
+function renderAttributes(attributes) {
+  let str = '';
+  const keys = Object.keys(attributes);
+
+  keys.forEach((key) => {
+    const attribute = attributes[key];
+    str += `<li>${attribute.name}</li>`;
+  });
+
+  return str;
+}
