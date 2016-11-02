@@ -13,8 +13,8 @@ import * as Culr from '../components/Culr/culr.component';
 const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
 router.get('/', setDefaultState, getAttributes, authenticate, Consent.retrieveUserConsent, mapAttributesToTicket, storeTicket, redirectToClient);
-router.get('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient);
-router.post('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient);
+router.get('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient); // eslint-disable-line max-len
+router.post('/identityProviderCallback/:type/:token', identityProviderCallback, Consent.retrieveUserConsent, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient); // eslint-disable-line max-len
 router.get('/consent', Consent.giveConsentUI);
 router.post('/consentsubmit', Consent.consentSubmit, Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient);
 
