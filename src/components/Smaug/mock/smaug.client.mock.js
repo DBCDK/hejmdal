@@ -1,5 +1,4 @@
 import {ATTRIBUTES} from '../../../utils/attributes.util';
-import {VERSION_PREFIX} from '../../../utils/version.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
@@ -10,7 +9,7 @@ export const mockData = {
     clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f'
   },
   urls: {
-    host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
+    host: `http://localhost:${CONFIG.app.port}`,
     success: '/example/example.html',
     error: '/thumbsdown'
   }
