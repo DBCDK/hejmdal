@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {storeTicket, getTicket} from '../ticket.component.js';
+import {storeTicket, getTicket} from '../Ticket/ticket.component.js';
 import {mockContext} from '../../utils/test.util';
 
 describe('test store and get ticket', () => {

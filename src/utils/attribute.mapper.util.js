@@ -5,7 +5,7 @@
  *
  */
 
-import {log} from '../utils/logging.util';
+import {log} from './logging.util';
 
 /**
  * Attribute mapper

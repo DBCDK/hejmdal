@@ -6,21 +6,23 @@
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import {VERSION_PREFIX} from '../utils/version.util';
 
+import {renderFrontPage} from '../components/FrontPage/frontpage.component';
+
 const router = new Router({prefix: VERSION_PREFIX});
 
-router.get('/', (ctx, next) => {
-  ctx.body = 'Hejmdal!';
-  next();
+router.get('/', async (ctx, next) => {
+  ctx.body = renderFrontPage();
+  await next();
 });
 
-router.get('/health', (ctx, next) => {
+router.get('/health', async (ctx, next) => {
   ctx.body = 'OK!';
-  next();
+  await next();
 });
 
-router.get('/fejl', (ctx, next) => {
+router.get('/fejl', async (ctx, next) => {
   ctx.body = 'Fejl!';
-  next();
+  await next();
 });
 
 export default router;

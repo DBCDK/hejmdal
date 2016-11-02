@@ -9,7 +9,7 @@ import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
 import unilogin from './templates/unilogin.template';
-import {validateUserInLibrary, getBorchkResponse} from '../borchk/borchk.component';
+import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
 
 const templates = {index, borchk, nemlogin, unilogin};

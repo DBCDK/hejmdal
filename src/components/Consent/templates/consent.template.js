@@ -14,7 +14,7 @@ export default ({attributes, versionPrefix, service}) => {
   </head>
   <body>
     <div id="content">
-      Ved tryk på Acceptér, accepterer du at dele nedenståene informationer med ${service}
+      Ved tryk på Acceptér, accepterer du at dele nedenstående informationer med ${service}
       <ul id="consent-attributes">
         ${renderAttributes(attributes)}
       </ul>

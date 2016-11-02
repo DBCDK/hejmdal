@@ -39,7 +39,8 @@ async function getUserAttributesFromCulr(userId) {
     response = await culr.getAccounts({userIdValue: userId});
   }
   catch (e) {
-    log.error('Response to CULR failed', {error: e.message, stack: e.stack});
+    log.error('Request to CULR failed', {error: e.message, stack: e.stack});
+    return attributes;
   }
 
   const responseCode = response.result.responseStatus.responseCode;

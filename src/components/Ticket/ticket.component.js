@@ -10,11 +10,11 @@
  *
  */
 
-import {CONFIG} from '../utils/config.util';
-import {createHash, validateHash} from '../utils/hash.utils';
-import KeyValueStorage from '../models/keyvalue.storage.model';
-import PersistentTicketStorage from '../models/Ticket/ticket.persistent.storage.model';
-import MemoryStorage from '../models/memory.storage.model';
+import {CONFIG} from '../../utils/config.util';
+import {createHash, validateHash} from '../../utils/hash.utils';
+import KeyValueStorage from '../../models/keyvalue.storage.model';
+import PersistentTicketStorage from '../../models/Ticket/ticket.persistent.storage.model';
+import MemoryStorage from '../../models/memory.storage.model';
 
 const storage = CONFIG.mock_externals.ticket === 'memory' ?
   new KeyValueStorage(new MemoryStorage()) :

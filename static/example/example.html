@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting started with DDB Adgangsplatform</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="./example.js"></script>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      label, input {
+        width: 100%;
+      }
+
+      #example {
+        display: inline-block;
+        font-family: "Open Sans", sans-serif;
+        text-align: left;
+        max-width: 600px;
+      }
+
+      .input-pair {
+        margin-bottom: 10px;
+      }
+
+      #currenturl {
+        margin-top: 5px;
+        color: #000000;
+        font-weight: 600;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="example">
+      <h3>Adgangsplatformen - login.bib.dk - eksempelside</h3>
+      <p>Udfyld felterne herunder og click på login for at teste oplysningerne</p>
+
+      <div class="input-pair">
+        <label for="input-login-url">URL til login.bib.dk:</label>
+        <input id="input-login-url" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
+      </div>
+
+      <div class="input-pair">
+        <label for="input-login-token">Token fra Den åbne platform</label><br/>
+        <input id="input-login-token" type="text" value="valid_token" size="50" oninput="onChange({key: 'token', val: this.value})"/>
+      </div>
+
+
+      <button onclick="onClick()">Login</button>
+      <button style="float:right;" onclick="resetToDefault()">Reset</button>
+      <div id="currenturl"></div>
+
+    </div>
+    <script>init()</script>
+  </body>
+</html>

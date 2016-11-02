@@ -11,7 +11,7 @@ export const mockData = {
   },
   urls: {
     host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
-    success: '/thumbsup',
+    success: '/example/example.html',
     error: '/thumbsdown'
   }
 };

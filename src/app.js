@@ -24,6 +24,7 @@ import ctxdump from './middlewares/ctxdump.middleware';
 
 // Utils
 import {CONFIG, validateConfig} from './utils/config.util';
+import {VERSION_PREFIX} from './utils/version.util';
 import {log} from './utils/logging.util';
 
 // Components
@@ -74,7 +75,7 @@ export function startServer() {
   // trust ip-addresses from X-Forwarded-By header, and log requests
   app.proxy = true;
 
-  app.use(convert(serve('./static')));
+  app.use(convert(serve('./static', {version: VERSION_PREFIX})));
 
   app.use(router);
   if (CONFIG.app.env !== 'production') {

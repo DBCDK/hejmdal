@@ -55,7 +55,7 @@ describe('Test smaug component', () => {
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
-        success: '/thumbsup',
+        success: '/example/example.html',
         error: '/thumbsdown'
       }
     });
@@ -71,7 +71,7 @@ describe('Test smaug component', () => {
       attributes: [],
       urls: {
         host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
-        success: '/thumbsup',
+        success: '/example/example.html',
         error: '/thumbsdown'
       }
     });
