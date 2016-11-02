@@ -206,5 +206,6 @@ async function removeConsent(userId, serviceClientId) {
 
 function createConsentObject(ctx) {
   const attributes = ctx.getState().serviceClient.attributes || {};
-  return {keys: Object.keys(attributes)};
+  const keys = Object.keys(attributes);
+  return {keys: keys.sort()};
 }
