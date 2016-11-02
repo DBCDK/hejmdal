@@ -13,21 +13,37 @@
         width: 100%;
       }
 
+      .bold {
+        font-weight: 600;
+      }
+
       #example {
         display: inline-block;
         font-family: "Open Sans", sans-serif;
         text-align: left;
-        max-width: 600px;
+        width: 900px;
       }
 
       .input-pair {
         margin-bottom: 10px;
       }
 
-      #currenturl {
+      .info {
+        padding: 10px;
+        font-size: 14px;
         margin-top: 5px;
         color: #000000;
-        font-weight: 600;
+        background-color: #f9f9f9;
+      }
+
+      .code {
+        font-family: monospace;
+        white-space: pre;
+        /*font-size: 12px;*/
+      }
+
+      .hide {
+        display: none;
       }
 
     </style>
@@ -36,6 +52,7 @@
     <div id="example">
       <h3>Adgangsplatformen - login.bib.dk - eksempelside</h3>
       <p>Udfyld felterne herunder og click på login for at teste oplysningerne</p>
+      <p>Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Et sådan token fås ved at [...]. Se mere her: [URL]</p>
 
       <div class="input-pair">
         <label for="input-login-url">URL til login.bib.dk:</label>
@@ -49,9 +66,37 @@
 
 
       <button onclick="onClick()">Login</button>
-      <button style="float:right;" onclick="resetToDefault()">Reset</button>
-      <div id="currenturl"></div>
+      <button onclick="resetToDefault()">Reset</button>
+      <div class="info">
+        <span id="currenturl">&nbsp;</span>
+      </div>
+      <p>
+        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til clienten med to parametre sat i URLen: et token parameter og et id: <span class="code">?tickettoken=TOKEN&id=ID</span>.
+        Ved at indløse disse på <span class="code">/getTicket/TOKEN/ID</span> kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
+      </p>
 
+      <div id="post-success" class="hide" >
+        <div class="info">
+          <span class="bold">Token:</span>
+          <span id="tickettoken">&nbsp;</span>
+        </div>
+        <div class="info">
+          <span class="bold">ID:</span>
+          <span id="ticketid">&nbsp;</span>
+        </div>
+
+        <p>
+          Med ovenstående token og id konstrueres følgende URL hvorfra den endelige ticket kan hentes.
+          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket kun være gyldig i X dage.
+        </p>
+        <div class="info" id="ticketurl">&nbsp;</div>
+        <button onclick="getTicket()">Hent ticket</button>
+        <button onclick="openTicket()">Åben i nyt vindue</button>
+        <div id="ticketcontainer" class="info hide" >
+          <p class="bold">Ticket:</p>
+          <p class="code" id="ticket"></p>
+        </div>
+      </div>
     </div>
     <script>init()</script>
   </body>

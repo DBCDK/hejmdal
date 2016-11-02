@@ -10,19 +10,19 @@ import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 
 const router = new Router({prefix: VERSION_PREFIX});
 
-router.get('/', async (ctx, next) => {
+router.get('/', (ctx, next) => {
   ctx.body = renderFrontPage();
-  await next();
+  next();
 });
 
-router.get('/health', async (ctx, next) => {
+router.get('/health', (ctx, next) => {
   ctx.body = 'OK!';
-  await next();
+  next();
 });
 
-router.get('/fejl', async (ctx, next) => {
+router.get('/fejl', (ctx, next) => {
   ctx.body = 'Fejl!';
-  await next();
+  next();
 });
 
 export default router;

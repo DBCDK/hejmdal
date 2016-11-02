@@ -59,5 +59,10 @@ export async function getTicket(ctx, next) {
   }
   ctx.setState({ticket: ticket});
 
-  next();
+  ctx.body = JSON.stringify(ticket);
+
+  // Set debug param in url to get the ctx dump
+  if (ctx.query.debug === '1') {
+    await next();
+  }
 }
