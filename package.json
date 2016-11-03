@@ -16,6 +16,7 @@
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
+    "precommit": "npm run lint && npm run test && npm run test:integration:local",
     "start": "npm run serve"
   },
   "repository": {
