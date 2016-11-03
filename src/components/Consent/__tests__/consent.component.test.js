@@ -138,7 +138,7 @@ describe('Unittesting methods in consent.component.test', () => {
       // first we store the consent object and verify it has been stored
       await storeUserConsent(ctx);
       const consent = await checkForExistingConsent({userId: userId, serviceClientId: serviceClientId});
-      const consent_expected = {keys: ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality']};
+      const consent_expected = {keys: ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'wayfId']};
       assert.deepEqual(consent, consent_expected, 'consent was stored as expected');
 
       // then we create sets a new attributes object and makes a request for the users consent.

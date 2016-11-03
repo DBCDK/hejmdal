@@ -51,7 +51,11 @@ describe('Test smaug component', () => {
           name: 'Biblioteker',
           description: 'En liste over de biblioteker som kender brugeren'
         },
-        municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'}
+        municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'},
+        wayfId: {
+          name: 'WAYF id',
+          description: 'Brugerens identifikation hos WAYF'
+        }
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
