@@ -158,7 +158,8 @@ let config = {
   // before: function (capabilities, specs) {
   // },
   before() {
-    require('./../customMethods');
+    require('./../CustomMethods/assertions');
+    require('./../CustomMethods/utils');
   }
   //
   // Hook that gets executed before the suite starts

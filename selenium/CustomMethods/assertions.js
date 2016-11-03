@@ -1,4 +1,4 @@
-const assert = require('chai').assert;
+import {assert} from 'chai';
 /* eslint-disable */
 
 
@@ -9,16 +9,6 @@ browser.include = (value, selector = 'body') => {
 
 browser.notInclude = (value, selector = 'body') => {
   assert.notInclude(browser.element(selector).getText(), value);
-};
-
-browser.getSession = () => {
-  const sessionString = browser.element('#dump-session').getText();
-  return JSON.parse(sessionString);
-};
-
-browser.getState = () => {
-  const sessionString = browser.element('#dump-session').getText();
-  return JSON.parse(sessionString).state;
 };
 
 browser.assertUniLoginUser = () => {

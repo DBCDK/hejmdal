@@ -27,6 +27,7 @@ static/*.css
 # SELENIUM #
 # ==========
 errorShots
+selenium/*.png
 
 # ==========
 # ESLINT #

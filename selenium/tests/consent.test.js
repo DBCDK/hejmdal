@@ -80,30 +80,21 @@ describe('Test Consent part of authetication flow', () => {
     assert.isUndefined(session.user);
   });
 
-  xit('should redirect to /consentsubmit and set session appropriately', () => {
+  it('should redirect to /example/', () => {
     browser.click('#consent-actions-accept');
+    browser.click('#get-ticket-button');
 
     const url = browser.getUrl();
-    const expected = '/example/example.html';
-    console.log(url);
+    const expected = '/example/?token=';
 
-    const state = browser.getState();
-    // const serviceClientId = state.serviceClient.id;
-    // const consentKeys = state.consents[serviceClientId].keys;
-    // const expectedConsentKeys = Object.keys(state.serviceClient.attributes);
-    //
-    // browser.assertUniLoginUser();
-    //
-    // assert.isTrue(url.includes(expected));
-    // assert.sameMembers(consentKeys, expectedConsentKeys);
-    //
-    // assertTicket();
-    // assertCulr();
+    const ticket = browser.getTicketOnExamplePage();
+    assert.isTrue(url.includes(expected));
+    assertTicket();
   });
 
   function assertTicket() {
-    const state = browser.getState();
-    const ticketAttributes = state.ticket.attributes;
+    const ticket = browser.getTicketOnExamplePage();
+    const ticketAttributes = ticket.attributes;
     assert.deepEqual(ticketAttributes, {
       cpr: '5555666677',
       birthDate: null,
@@ -115,22 +106,5 @@ describe('Test Consent part of authetication flow', () => {
       ],
       municipality: '909'
     });
-  }
-
-  function assertCulr() {
-    const state = browser.getState();
-    const culr = state.culr.accounts;
-    assert.deepEqual(culr, [
-      {
-        provider: '790900',
-        userIdType: 'CPR',
-        userIdValue: '5555666677'
-      },
-      {
-        provider: '100800',
-        userIdType: 'LOCAL-1',
-        userIdValue: '456456'
-      }
-    ]);
   }
 });

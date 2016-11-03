@@ -1,5 +1,5 @@
 window.hejmdal = {
-  host: 'http://localhost:3010/v0',
+  host: `${window.location.origin}/v0`,
   token: 'valid_token',
   tickettoken: null,
   ticketid: null,
@@ -47,7 +47,7 @@ function openTicket() {
 
 function resetToDefault(){
   window.localStorage.removeItem('hejmdal');
-  window.location = `${window.hejmdal.host}/logud?redirect=/example/example.html`;
+  window.location = `${window.hejmdal.host}/logud?redirect=/example/`;
 }
 
 /**
@@ -115,5 +115,4 @@ function init() {
   }
 
   setState();
-  console.log(window.hejmdal);
 }

@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Getting started with DDB Adgangsplatform</title>
+    <title>Eksempelapplikation -- Adgangsplatformen -- login.bib.dk</title>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="./example.js"></script>
     <style>
@@ -39,7 +39,6 @@
       .code {
         font-family: monospace;
         white-space: pre;
-        /*font-size: 12px;*/
       }
 
       .hide {
@@ -50,12 +49,15 @@
   </head>
   <body>
     <div id="example">
-      <h3>Adgangsplatformen - login.bib.dk - eksempelside</h3>
-      <p>Udfyld felterne herunder og click på login for at teste oplysningerne</p>
-      <p>Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Et sådan token fås ved at [...]. Se mere her: [URL]</p>
+      <h3>eksempelside -- Adgangsplatformen -- login.bib.dk</h3>
+      <p>Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne</p>
+      <p>
+        Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Et sådan token fås ved at [...].
+        Se mere her: [URL]
+      </p>
 
       <div class="input-pair">
-        <label for="input-login-url">URL til login.bib.dk:</label>
+        <label for="input-login-url">Login-URL på adgangsplatformen</label>
         <input id="input-login-url" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
       </div>
 
@@ -66,16 +68,23 @@
 
 
       <button onclick="onClick()">Login</button>
-      <button onclick="resetToDefault()">Reset</button>
+      <button onclick="resetToDefault()">Reset (og log ud)</button>
       <div class="info">
         <span id="currenturl">&nbsp;</span>
       </div>
       <p>
-        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til clienten med to parametre sat i URLen: et token parameter og et id: <span class="code">?tickettoken=TOKEN&id=ID</span>.
-        Ved at indløse disse på <span class="code">/getTicket/TOKEN/ID</span> kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
+        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til klienten med to GET parametre sat i URLen - et
+        <span class="code">token</span> og et <span class="code">id</span>:
+        <span class="code">?token=TOKEN&id=ID</span>.
+        Dette callback konfigureres for den enkelte klient i den åbne platform.
+      </p>
+      <p>
+        Ved at indløse <span>token</span> og <span>id</span> på <span class="code">/getTicket/TOKEN/ID</span>
+        kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
+        Ligeledes er dette noget der konfigureres i Den åbne platform.
       </p>
 
-      <div id="post-success" class="hide" >
+      <div id="post-success" class="hide">
         <div class="info">
           <span class="bold">Token:</span>
           <span id="tickettoken">&nbsp;</span>
@@ -86,13 +95,15 @@
         </div>
 
         <p>
-          Med ovenstående token og id konstrueres følgende URL hvorfra den endelige ticket kan hentes.
-          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket kun være gyldig i X dage.
+          Med token og id konstrueres en ny URL (<span class="code">/getTicket/TOKEN/ID</span>) som den
+          herunder hvorfra den endelige ticket kan hentes.
+          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket
+          kun være gyldig i X dage.
         </p>
         <div class="info" id="ticketurl">&nbsp;</div>
-        <button onclick="getTicket()">Hent ticket</button>
+        <button id="get-ticket-button" onclick="getTicket()">Hent ticket</button>
         <button onclick="openTicket()">Åben i nyt vindue</button>
-        <div id="ticketcontainer" class="info hide" >
+        <div id="ticketcontainer" class="info hide">
           <p class="bold">Ticket:</p>
           <p class="code" id="ticket"></p>
         </div>
