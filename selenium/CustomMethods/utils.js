@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const path = require('path');
 
 browser.getSession = () => {
@@ -10,7 +11,7 @@ browser.getState = () => {
   return JSON.parse(sessionString).state;
 };
 
-browser.getTicketOnExamplePage = () => {
+browser.getTicketOnExamplePage = () => {
   const sessionString = browser.element('#ticket').getText();
   return JSON.parse(sessionString);
 };
@@ -21,7 +22,5 @@ browser.screendump = (name, where) => {
   const filepath = where || './selenium/';
 
   const fullpath = path.join(filepath, filename + '.png');
-  console.log(fullpath);
-  console.log(path.resolve(fullpath));
   browser.saveScreenshot(fullpath);
 };

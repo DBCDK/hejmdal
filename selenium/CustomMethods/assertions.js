@@ -1,5 +1,5 @@
+/* eslint-disable no-undef */
 import {assert} from 'chai';
-/* eslint-disable */
 
 
 /* Assertions */
