@@ -1,3 +1,4 @@
+/* eslint-disable */
 window.hejmdal = {
   host: `${window.location.origin}/v0`,
   token: 'valid_token',
