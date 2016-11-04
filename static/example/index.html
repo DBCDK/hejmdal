@@ -57,8 +57,12 @@
       </p>
 
       <div class="input-pair">
-        <label for="input-login-url">Login-URL på adgangsplatformen</label>
-        <input id="input-login-url" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
+        <label for="input-login-host">Host URL</label>
+        <input id="input-login-host" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
+      </div>
+      <div class="input-pair">
+        <label for="input-login-path">Login path</label>
+        <input id="input-login-path" type="text" value="" size="50" oninput="onChange({key: 'path', val: this.value})"/>
       </div>
 
       <div class="input-pair">
@@ -67,8 +71,10 @@
       </div>
 
 
-      <button onclick="onClick()">Login</button>
-      <button onclick="resetToDefault()">Reset (og log ud)</button>
+      <div class="input-pair">
+        <button onclick="onClick()">Login</button>
+        <button onclick="resetToDefault()">Reset (og log ud)</button>
+      </div>
       <div class="info">
         <span id="currenturl">&nbsp;</span>
       </div>
@@ -79,7 +85,8 @@
         Dette callback konfigureres for den enkelte klient i den åbne platform.
       </p>
       <p>
-        Ved at indløse <span>token</span> og <span>id</span> på <span class="code">/getTicket/TOKEN/ID</span>
+        Ved at indløse <span>token</span> og <span>id</span> på
+        <span class="code">/getTicket/TOKEN/ID</span>
         kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
         Ligeledes er dette noget der konfigureres i Den åbne platform.
       </p>

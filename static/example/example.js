@@ -1,6 +1,7 @@
 /* eslint-disable */
 window.hejmdal = {
   host: `${window.location.origin}/v0`,
+  path: `/login`,
   token: 'valid_token',
   tickettoken: null,
   ticketid: null,
@@ -13,6 +14,7 @@ const queryObj = parseQueryString();
  * OnChange callback for inputfields
  */
 function onChange({key, val}) {
+  console.log(key, val);
   window.hejmdal[key] = val;
   setState();
 }
@@ -32,7 +34,7 @@ function getTicket() {
   const url = document.getElementById('ticketurl').innerHTML;
   xhr.open('GET', url, true);
   xhr.onreadystatechange = () => {
-    if(xhr.statusText === 'OK' && xhr.status === 200 && xhr.responseText.length){
+    if (xhr.statusText === 'OK' && xhr.status === 200 && xhr.responseText.length) {
       window.hejmdal.ticket = xhr.responseText;
       setState();
     }
@@ -46,7 +48,7 @@ function openTicket() {
   window.open(url, '_blank');
 }
 
-function resetToDefault(){
+function resetToDefault() {
   window.localStorage.removeItem('hejmdal');
   window.location = `${window.hejmdal.host}/logud?redirect=/example/`;
 }
@@ -56,7 +58,7 @@ function resetToDefault(){
  *
  * @return {{}}
  */
-function parseQueryString(){
+function parseQueryString() {
   const qObj = {};
   const queries = window.location.search.substring(1).split('&');
   queries.forEach((query) => {
@@ -70,21 +72,24 @@ function parseQueryString(){
 /**
  * Updates the UI based on the current state
  */
-function setState(){
-  document.getElementById('input-login-url').value = window.hejmdal.host + '/login';
+function setState() {
+  document.getElementById('input-login-host').value = window.hejmdal.host;
+  document.getElementById('input-login-path').value = window.hejmdal.path;
   document.getElementById('input-login-token').value = window.hejmdal.token;
 
-  document.getElementById('currenturl').textContent = `${window.hejmdal.host}/login?token=${window.hejmdal.token}`;
+  document.getElementById('currenturl').textContent = `${window.hejmdal.host}${window.hejmdal.path}?token=${window.hejmdal.token}`;
 
   document.getElementById('tickettoken').innerHTML = window.hejmdal.tickettoken || '&nbsp;';
   document.getElementById('ticketid').innerHTML = window.hejmdal.ticketid || '&nbsp;';
   document.getElementById('post-success').className = window.hejmdal.tickettoken ? '' : 'hide';
-  document.getElementById('ticketurl').innerHTML = window.hejmdal.tickettoken ? `${window.hejmdal.host}/getTicket/${window.hejmdal.tickettoken}/${window.hejmdal.ticketid}` : '&nbsp;';
+  document.getElementById('ticketurl').innerHTML = window.hejmdal.tickettoken ?
+    `${window.hejmdal.host}/getTicket/${window.hejmdal.tickettoken}/${window.hejmdal.ticketid}` :
+    '&nbsp;';
 
   // Ticket
-  if(window.hejmdal.ticket) {
+  if (window.hejmdal.ticket) {
     // if ticket has been stored in localStorage it will be a string and JSON.stringify will fail
-    if(typeof window.hejmdal.ticket === 'string') {
+    if (typeof window.hejmdal.ticket === 'string') {
       window.hejmdal.ticket = JSON.parse(window.hejmdal.ticket);
     }
     document.getElementById('ticketcontainer').classList.remove('hide');
@@ -101,16 +106,16 @@ function setState(){
 function init() {
   const storage = window.localStorage.getItem('hejmdal');
 
-  if(storage){
-    try{
+  if (storage) {
+    try {
       window.hejmdal = JSON.parse(storage)
     }
-    catch (e){
+    catch (e) {
       console.error('Could not object from localStorage', e);
     }
   }
 
-  if(queryObj.token) {
+  if (queryObj.token) {
     window.hejmdal.tickettoken = queryObj.token;
     window.hejmdal.ticketid = queryObj.id;
   }
