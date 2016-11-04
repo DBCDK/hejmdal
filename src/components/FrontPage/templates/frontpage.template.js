@@ -9,7 +9,7 @@ export function template() {
       <body>
         <div id="content">
           <p>Velkommen til hejmdal!</p>
-          <p><a href="/example/">Eksempelside</a></p>
+          <p><a id="example-page-login" href="/example/">Eksempelside</a></p>
         </div>
       </body>
     </html>
