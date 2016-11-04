@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {assert} from 'chai';
 
 describe('Testing the Example appliction', () => {
