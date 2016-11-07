@@ -4,11 +4,14 @@
  *
  */
 
+import {registerStore} from '../utils/test.util';
+
 export default class MemoryStorage {
 
   constructor() {
     this.sequence = 1;
     this.storage = {};
+    registerStore(this);
   }
 
   /**
@@ -85,6 +88,10 @@ export default class MemoryStorage {
       return delete this.storage[key];
     }
     return false;
+  }
+
+  wipeout(){
+    this.storage = {};
   }
 
   /**

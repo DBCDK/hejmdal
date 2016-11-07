@@ -17,7 +17,6 @@ browser.getTicketOnExamplePage = () => {
 };
 
 browser.screendump = (name, where) => {
-
   const filename = name || Date.now();
   const filepath = where || './selenium/';
 

@@ -36,7 +36,7 @@ let config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -160,7 +160,7 @@ let config = {
   before() {
     require('./../CustomMethods/assertions');
     require('./../CustomMethods/utils');
-  }
+  },
   //
   // Hook that gets executed before the suite starts
   // beforeSuite: function (suite) {
@@ -193,8 +193,9 @@ let config = {
   // },
   //
   // Hook that gets executed after the suite has ended
-  // afterSuite: function (suite) {
-  // },
+  afterSuite: function (suite) {
+    browser.url('/test');
+  },
   //
   // Gets executed after all tests are done. You still have access to all global variables from
   // the test.

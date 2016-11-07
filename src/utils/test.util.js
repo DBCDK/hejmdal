@@ -1,5 +1,7 @@
 import {setDefaultState, stateMiddleware} from '../middlewares/state.middleware';
 
+const stores = [];
+
 /**
  * create mock context for tests
  *
@@ -16,4 +18,14 @@ export function mockContext(token = 'qwerty', returnurl='some_url', overrides = 
     ctx[key] = Object.assign(ctx[key] || {}, overrides[key]);
   });
   return ctx;
+}
+
+export function registerStore(store) {
+  stores.push(store);
+}
+
+export function wipeStores(){
+  stores.forEach((store) => {
+    store.wipeout();
+  });
 }
