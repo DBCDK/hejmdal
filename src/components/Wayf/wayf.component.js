@@ -15,6 +15,7 @@ import getWayfMock from './mock/wayf.mock';
  */
 export async function getWayfResponse(ctx) {
   let cpr = null;
+  let wayfId = null;
   try {
     const match = ':CPR:';
     const wayfObj = CONFIG.mock_externals.wayf ? getWayfMock() : await form(ctx);
@@ -24,11 +25,14 @@ export async function getWayfResponse(ctx) {
         cpr = wayfObj.schacPersonalUniqueID[0].substr(cprPos + match.length);
       }
     }
+    if (Array.isArray(wayfObj.eduPersonTargetedID)) {
+      wayfId = wayfObj.eduPersonTargetedID[0];
+    }
   }
   catch (e) {
     log.error('Could not retrieve wayf response', {error: e.message, stack: e.stack});
   }
 
-  return {userId: cpr};
+  return {userId: cpr, wayfId: wayfId};
 
 }
