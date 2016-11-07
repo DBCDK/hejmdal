@@ -32,5 +32,9 @@ export const ATTRIBUTES = {
   municipality: {
     name: 'Kommunenummer',
     description: '3 cifret kommunenummer'    // http://www.linking.dk/lokalportaler/kommuner.html
+  },
+  wayfId: {
+    name: 'WAYF id',
+    description: 'Brugerens identifikation hos WAYF'
   }
 };
