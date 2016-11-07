@@ -4,6 +4,7 @@
  *
  */
 
+import {CONFIG} from '../utils/config.util';
 import {registerStore} from '../utils/test.util';
 
 export default class MemoryStorage {
@@ -11,7 +12,10 @@ export default class MemoryStorage {
   constructor() {
     this.sequence = 1;
     this.storage = {};
-    registerStore(this);
+
+    if (CONFIG.app.env === 'test') {
+      registerStore(this);
+    }
   }
 
   /**
@@ -90,8 +94,10 @@ export default class MemoryStorage {
     return false;
   }
 
-  wipeout(){
-    this.storage = {};
+  wipeout() {
+    if (CONFIG.app.env === 'test') {
+      this.storage = {};
+    }
   }
 
   /**
