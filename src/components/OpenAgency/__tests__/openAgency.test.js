@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import {suggestLibraryList} from '../openAgency.client';
-import {mockContext} from '../../../utils/test.util';
 
 describe('Test openAgency component', () => {
 
@@ -13,8 +12,6 @@ describe('Test openAgency component', () => {
   afterEach(() => {
     CONFIG.mock_externals.openAgency = _SAVE_CONFIG;
   });
-
-  const ctx = mockContext();
 
   it('Lookup a library', async() => {
     const list = [
