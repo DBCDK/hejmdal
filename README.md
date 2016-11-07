@@ -105,6 +105,9 @@ Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory 
 - `MOCK_CULR` : `mock_external.culr`  
 Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
+- `MOCK_OPENAGENCY`: `openAgency`
+Sættes værdien til `0` (`MOCK_OPENAGENCY=0`) vil openAgency ikke blive mocket ud. Alle andre værdier vil resultere i at openAgency mockes.
+
 - `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
@@ -117,6 +120,9 @@ Sættes værdien til `0` (`MOCK_WAYF=0`) vil WAYF ikke blive mocket ud. Alle and
 - `NODE_ENV` : `app.env`  
 Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production`
  
+- `OPENAGENCY_URI` : `openAgency.uri`  
+Adressen på den aktuelle version at openAgency servicen
+
 - `PORT` : `app.port`  
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
 
