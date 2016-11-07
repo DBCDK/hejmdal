@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('babel-register');
 
 const VERSION_PREFIX = require('./../../src/utils/version.util.js').VERSION_PREFIX;
@@ -14,9 +15,9 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
+  // Patterns to exclude.
     './selenium/**/*.test.js'
   ],
-  // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
   ],
@@ -50,7 +51,6 @@ let config = {
     browserName: 'chrome',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER
-
   }],
   //
   // ===================
@@ -193,9 +193,9 @@ let config = {
   // },
   //
   // Hook that gets executed after the suite has ended
-  afterSuite: function (suite) {
+  afterSuite: function(suite) {
     browser.url('/test');
-  },
+  }
   //
   // Gets executed after all tests are done. You still have access to all global variables from
   // the test.
