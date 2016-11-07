@@ -23,7 +23,10 @@ I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin
 ###Migrering###
 For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang.
  
-I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.  
+I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.
+  
+##Eksempelapplikation
+Fra forsiden linkes der til en eksempelapplikation der kan demonstrere flowet via adgangsplatformen. I felterne indsættes den nødvendige information (URL, sti og token) hvorefter forespørgslen kan sendes afsted. Ved successfuldt login er det muligt at få vist den pågøldene ticket i browseren.
 
 ##Tests
 
