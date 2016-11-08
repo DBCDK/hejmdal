@@ -9,7 +9,8 @@
 [Wikipedia](https://da.wikipedia.org/wiki/Hejmdal)
 
 ##Releases
-Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.
+Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.  
+Værktøjet brugt til at lave changeloggen med er [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) og den genereres med kommandoen `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- hvis den brokker sig skal du muligivis give den et validt github token.
 
 ##Opstart
 ###Udvikling
