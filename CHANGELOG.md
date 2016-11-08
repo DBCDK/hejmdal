@@ -1,10 +1,12 @@
 # Change Log
 
 ## [0.3.0](https://github.com/DBCDK/hejmdal/tree/0.3.0) (2016-11-08)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.19...0.3.0)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...0.3.0)
 
 **Closed issues:**
 
+- SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
+- Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
 - Eksempelapplikation [\#128](https://github.com/DBCDK/hejmdal/issues/128)
 - Mapper komponenten skal skabe attributterne fødselsdag, fødselsår og køn [\#113](https://github.com/DBCDK/hejmdal/issues/113)
 - Brug borchk-component som identity provider [\#110](https://github.com/DBCDK/hejmdal/issues/110)
@@ -20,34 +22,9 @@
 
 **Merged pull requests:**
 
-- Eksempelapplikaton [\#130](https://github.com/DBCDK/hejmdal/pull/130) ([hrmoller](https://github.com/hrmoller))
-- Consent: Opdatering af consent [\#120](https://github.com/DBCDK/hejmdal/pull/120) ([hrmoller](https://github.com/hrmoller))
-- CULR integration [\#112](https://github.com/DBCDK/hejmdal/pull/112) ([hrmoller](https://github.com/hrmoller))
-
-## [0.19](https://github.com/DBCDK/hejmdal/tree/0.19) (2016-11-08)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.18...0.19)
-
-**Merged pull requests:**
-
 - \#138: first shot at openAgency findLibrary [\#143](https://github.com/DBCDK/hejmdal/pull/143) ([fvsdbc](https://github.com/fvsdbc))
-
-## [0.18](https://github.com/DBCDK/hejmdal/tree/0.18) (2016-11-07)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.17...0.18)
-
-**Merged pull requests:**
-
 - Add wayf id fvs [\#132](https://github.com/DBCDK/hejmdal/pull/132) ([fvsdbc](https://github.com/fvsdbc))
-
-## [0.17](https://github.com/DBCDK/hejmdal/tree/0.17) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...0.17)
-
-**Closed issues:**
-
-- SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
-- Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
-
-**Merged pull requests:**
-
+- Eksempelapplikaton [\#130](https://github.com/DBCDK/hejmdal/pull/130) ([hrmoller](https://github.com/hrmoller))
 - Wayf mock fvs [\#125](https://github.com/DBCDK/hejmdal/pull/125) ([fvsdbc](https://github.com/fvsdbc))
 - \#88: smaug ATTRIBUTES description [\#123](https://github.com/DBCDK/hejmdal/pull/123) ([fvsdbc](https://github.com/fvsdbc))
 - \#110 : redirect when failed borchk [\#122](https://github.com/DBCDK/hejmdal/pull/122) ([fvsdbc](https://github.com/fvsdbc))
@@ -62,6 +39,8 @@
 - Compose goodness :\) [\#108](https://github.com/DBCDK/hejmdal/pull/108) ([hyatt03](https://github.com/hyatt03))
 - \#18: Mapper component and use set/get State/User [\#107](https://github.com/DBCDK/hejmdal/pull/107) ([fvsdbc](https://github.com/fvsdbc))
 - Use state and user methods on consent component [\#106](https://github.com/DBCDK/hejmdal/pull/106) ([vibjerg](https://github.com/vibjerg))
+- Consent: Opdatering af consent [\#120](https://github.com/DBCDK/hejmdal/pull/120) ([hrmoller](https://github.com/hrmoller))
+- CULR integration [\#112](https://github.com/DBCDK/hejmdal/pull/112) ([hrmoller](https://github.com/hrmoller))
 
 ## [0.2.0](https://github.com/DBCDK/hejmdal/tree/0.2.0) (2016-10-20)
 [Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.1.0...0.2.0)
