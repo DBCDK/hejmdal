@@ -1,7 +1,13 @@
 /* eslint-disable */
 import {assert} from 'chai';
 
-describe('Testing the Example appliction', () => {
+describe('Testing the Example appliction', function() {
+  this.timeout(30000);
+
+  after(() => {
+    browser.url('/wipestores');
+  });
+
   it('should display ticket data in example application', () => {
     browser.url('/');
     browser.click('#example-page-login');
@@ -57,6 +63,5 @@ describe('Testing the Example appliction', () => {
 
     assert.equal(JSON.stringify(ticket), expected);
     browser.click('#reset-to-default');
-    assert.isTrue(true);
   });
 });

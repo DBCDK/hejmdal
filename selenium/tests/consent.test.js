@@ -23,6 +23,10 @@ describe('Test Consent part of authetication flow', () => {
     browser.url('/test');
   });
 
+  after(() => {
+    browser.url('/wipestores');
+  });
+
   it('should send user to consent page', () => {
     // assert URL ends with 'login/consent'
     assert.isTrue(browser.getUrl().endsWith('login/consent'));
