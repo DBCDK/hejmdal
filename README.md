@@ -105,22 +105,22 @@ Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), 
 - `MOCK_BORCHK`: `borchk`
 Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle andre værdier vil resultere i at borchk mockes.
 
-- `MOCK_CONSENT_STORAGE` : `mock_external.consent`  
+- `MOCK_CONSENT_STORAGE` : `mock_externals.consent`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
-- `MOCK_CULR` : `mock_external.culr`  
+- `MOCK_CULR` : `mock_externals.culr`  
 Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
-- `MOCK_OPENAGENCY`: `mock_external.openAgency`
+- `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Sættes værdien til `0` (`MOCK_OPENAGENCY=0`) vil openAgency ikke blive mocket ud. Alle andre værdier vil resultere i at openAgency mockes.
 
-- `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
+- `MOCK_TICKET_STORAGE` : `mock_externals.ticket`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
-- `MOCK_SMAUG` : `mock_external.smaug`  
+- `MOCK_SMAUG` : `mock_externals.smaug`  
 Sættes værdien til `0` (`MOCK_SMAUG=0`) vil Smaug ikke blive mocket ud. Alle andre værdier vil resultere i at Smaug mockes.
  
-- `MOCK_WAYF` : `mock_external.wayf`  
+- `MOCK_WAYF` : `mock_externals.wayf`  
 Sættes værdien til `0` (`MOCK_WAYF=0`) vil WAYF ikke blive mocket ud. Alle andre værdier vil resultere i at WAYF mockes.
  
 - `NODE_ENV` : `app.env`  
