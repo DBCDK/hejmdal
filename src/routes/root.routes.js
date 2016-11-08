@@ -29,6 +29,7 @@ router.get('/fejl', (ctx, next) => {
 });
 
 if (CONFIG.app.env === 'test') {
+  // Endpoint that only will be exposed while NODE_ENV=test.
   router.get('/wipestores', (ctx, next) => {
     wipeStores();
     ctx.body = 'Stores was wiped!';
