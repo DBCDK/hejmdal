@@ -41,10 +41,14 @@ export const CONFIG = {
     borchk: process.env.MOCK_BORCHK !== '0',
     consent: process.env.MOCK_CONSENT_STORAGE || false,
     culr: process.env.MOCK_CULR === '1',
+    openAgency: process.env.MOCK_OPENAGENCY !== '0',
     smaug: process.env.MOCK_SMAUG !== '0',
     ticket: process.env.MOCK_TICKET_STORAGE || false,
     session: process.env.MOCK_SESSION_STORAGE && true || false,
     wayf: process.env.MOCK_WAYF !== '0'
+  },
+  openAgency: {
+    uri: process.env.OPENAGENCY_URI
   },
   postgres: {
     client: 'postgresql',
