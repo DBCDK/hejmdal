@@ -32,29 +32,14 @@
 - \#138: first shot at openAgency findLibrary [\#143](https://github.com/DBCDK/hejmdal/pull/143) ([fvsdbc](https://github.com/fvsdbc))
 
 ## [0.18](https://github.com/DBCDK/hejmdal/tree/0.18) (2016-11-07)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-11...0.18)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.17...0.18)
 
 **Merged pull requests:**
 
 - Add wayf id fvs [\#132](https://github.com/DBCDK/hejmdal/pull/132) ([fvsdbc](https://github.com/fvsdbc))
 
-## [jenkins-adgangsplatform-05-deploy-prod1-11](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-11) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-12...jenkins-adgangsplatform-05-deploy-prod1-11)
-
-## [jenkins-adgangsplatform-05-deploy-prod1-12](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-12) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.17...jenkins-adgangsplatform-05-deploy-prod1-12)
-
 ## [0.17](https://github.com/DBCDK/hejmdal/tree/0.17) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-8...0.17)
-
-## [jenkins-adgangsplatform-05-deploy-prod1-8](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-8) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-9...jenkins-adgangsplatform-05-deploy-prod1-8)
-
-## [jenkins-adgangsplatform-05-deploy-prod1-9](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-9) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-10...jenkins-adgangsplatform-05-deploy-prod1-9)
-
-## [jenkins-adgangsplatform-05-deploy-prod1-10](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-10) (2016-11-01)
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...jenkins-adgangsplatform-05-deploy-prod1-10)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...0.17)
 
 **Closed issues:**
 
