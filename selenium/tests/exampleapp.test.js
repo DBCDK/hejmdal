@@ -2,10 +2,6 @@
 import {assert} from 'chai';
 
 describe('Testing the Example appliction', () => {
-  // after(() => {
-  //   browser.url('/test');
-  // });
-
   it('should display ticket data in example application', () => {
     browser.url('/');
     browser.click('#example-page-login');
@@ -61,5 +57,6 @@ describe('Testing the Example appliction', () => {
 
     assert.equal(JSON.stringify(ticket), expected);
     browser.click('#reset-to-default');
+    assert.isTrue(true);
   });
 });

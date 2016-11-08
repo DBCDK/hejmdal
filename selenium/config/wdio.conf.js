@@ -196,7 +196,7 @@ let config = {
   //
   // Hook that gets executed after the suite has ended
   afterSuite: function(suite) {
-    browser.url('/test');
+    browser.url('/wipestores');
   }
   //
   // Gets executed after all tests are done. You still have access to all global variables from

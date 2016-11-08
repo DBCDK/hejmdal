@@ -29,9 +29,9 @@ router.get('/fejl', (ctx, next) => {
 });
 
 if (CONFIG.app.env === 'test') {
-  router.get('/test', (ctx, next) => {
+  router.get('/wipestores', (ctx, next) => {
     wipeStores();
-    ctx.body = 'Tesh';
+    ctx.body = 'Stores was wiped!';
     next();
   });
 }
