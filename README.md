@@ -105,7 +105,7 @@ Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory 
 - `MOCK_CULR` : `mock_external.culr`  
 Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
-- `MOCK_OPENAGENCY`: `openAgency`
+- `MOCK_OPENAGENCY`: `mock_external.openAgency`
 Sættes værdien til `0` (`MOCK_OPENAGENCY=0`) vil openAgency ikke blive mocket ud. Alle andre værdier vil resultere i at openAgency mockes.
 
 - `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
