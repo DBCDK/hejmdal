@@ -17,7 +17,7 @@ describe('Testing the Example appliction', function() {
     assert.isTrue(examplePageUrl.includes('/example/'));
 
     // Click login button on axample page
-    browser.click('#login-buttons');
+    browser.click('#login-button');
     // Click UNI-Login on IdentityProvider select page
     browser.click('*=UNI');
     // Click on accept consent button
@@ -63,5 +63,49 @@ describe('Testing the Example appliction', function() {
 
     assert.equal(JSON.stringify(ticket), expected);
     browser.click('#reset-to-default');
+  });
+
+  it('Should create new ticket if user is logged in alreay', () => {
+    browser.url('/');
+    browser.click('#example-page-login');
+
+    const examplePageUrl = browser.getUrl();
+
+    assert.isTrue(examplePageUrl.includes('/example/'));
+
+    // Click login button on axample page
+    browser.click('#login-button');
+
+    // Click UNI-Login on IdentityProvider select page
+    browser.click('*=UNI');
+
+    const ticket = browser.getText('#tickettoken');
+    assert.isOk(ticket);
+
+    const ticketId = browser.getText('#ticketid');
+    assert.isOk(ticketId);
+
+    // Repeating the above steps as we're now logged in
+    browser.url('/');
+    browser.click('#example-page-login');
+
+    const examplePageUrl2 = browser.getUrl();
+
+    assert.isTrue(examplePageUrl2.includes('/example/'));
+
+    // Click login button on axample page
+    browser.click('#login-button');
+
+    // at this point above we clicked the UNI-Login button but since we're now logged
+    // in we should skip this step be sent straight back to our origin with a new
+    // ticket and ticket id
+    const ticket2 = browser.getText('#tickettoken');
+    assert.isOk(ticket2);
+
+    const ticketId2 = browser.getText('#ticketid');
+    assert.isOk(ticketId2);
+
+    assert.notEqual(ticket, ticket2);
+    assert.isAbove(ticketId2, ticketId);
   });
 });
