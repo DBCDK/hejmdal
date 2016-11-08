@@ -27,7 +27,7 @@ I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil s
   
 ##Eksempelapplikation
 Fra forsiden linkes der til en eksempelapplikation, som kan demonstrere flowet ifm. login via adgangsplatformen.  
-I felterne indsættes den nødvendige information (URL, sti og token) hvorefter forespørgslen kan sendes afsted. Ved successfuldt login er det muligt at få vist den pågøldene ticket i browseren.
+I felterne indsættes den nødvendige information (URL, sti og token) hvorefter forespørgslen kan sendes afsted. Ved successfuldt login er det muligt at få vist den pågældende ticket i browseren.
 
 ##Tests
 
