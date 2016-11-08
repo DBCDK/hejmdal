@@ -32,6 +32,7 @@ import SessionStore from './components/SessionStore/SessionStore.component';
 export function startServer() {
   validateConfig();
   const app = new Koa();
+  app.name = 'Adgangsplatformen';
   const PORT = CONFIG.app.port;
 
   // Initialize knex.
@@ -74,9 +75,11 @@ export function startServer() {
   // trust ip-addresses from X-Forwarded-By header, and log requests
   app.proxy = true;
 
+
   app.use(convert(serve('./static')));
 
   app.use(router);
+
   if (CONFIG.app.env !== 'production') {
     app.use(ctxdump);
   }

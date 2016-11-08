@@ -4,11 +4,18 @@
  *
  */
 
+import {CONFIG} from '../utils/config.util';
+import {registerStore} from '../utils/test.util';
+
 export default class MemoryStorage {
 
   constructor() {
     this.sequence = 1;
     this.storage = {};
+
+    if (CONFIG.app.env === 'test') {
+      registerStore(this);
+    }
   }
 
   /**
@@ -85,6 +92,12 @@ export default class MemoryStorage {
       return delete this.storage[key];
     }
     return false;
+  }
+
+  wipeout() {
+    if (CONFIG.app.env === 'test') {
+      this.storage = {};
+    }
   }
 
   /**

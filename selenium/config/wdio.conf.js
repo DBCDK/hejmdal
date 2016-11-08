@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('babel-register');
 
 const VERSION_PREFIX = require('./../../src/utils/version.util.js').VERSION_PREFIX;
@@ -14,9 +15,9 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
+  // Patterns to exclude.
     './selenium/**/*.test.js'
   ],
-  // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
   ],
@@ -36,7 +37,7 @@ let config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -48,9 +49,10 @@ let config = {
     // 5 instance gets started at a time.
     maxInstances: 5,
     browserName: 'chrome',
+    platform: 'OS X 10.11',
+    version: 'latest',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     build: process.env.TRAVIS_BUILD_NUMBER
-
   }],
   //
   // ===================
@@ -158,8 +160,9 @@ let config = {
   // before: function (capabilities, specs) {
   // },
   before() {
-    require('./../customMethods');
-  }
+    require('./../CustomMethods/assertions');
+    require('./../CustomMethods/utils');
+  },
   //
   // Hook that gets executed before the suite starts
   // beforeSuite: function (suite) {
@@ -192,8 +195,8 @@ let config = {
   // },
   //
   // Hook that gets executed after the suite has ended
-  // afterSuite: function (suite) {
-  // },
+  // afterSuite: function(suite) {
+  // }
   //
   // Gets executed after all tests are done. You still have access to all global variables from
   // the test.

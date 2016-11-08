@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Eksempelapplikation -- Adgangsplatformen -- login.bib.dk</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="./example.js"></script>
+    <style>
+      body {
+        text-align: center;
+      }
+
+      label, input {
+        width: 100%;
+      }
+
+      .bold {
+        font-weight: 600;
+      }
+
+      #example {
+        display: inline-block;
+        font-family: "Open Sans", sans-serif;
+        text-align: left;
+        width: 900px;
+      }
+
+      .input-pair {
+        margin-bottom: 10px;
+      }
+
+      .info {
+        padding: 10px;
+        font-size: 14px;
+        margin-top: 5px;
+        color: #000000;
+        background-color: #f9f9f9;
+      }
+
+      .code {
+        font-family: monospace;
+        white-space: pre;
+      }
+
+      .hide {
+        display: none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="example">
+      <h3>eksempelside -- Adgangsplatformen -- login.bib.dk</h3>
+      <p>Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne</p>
+      <p>
+        Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Et sådan token fås ved at [...].
+        Se mere her: [URL]
+      </p>
+
+      <div class="input-pair">
+        <label for="input-login-host">Host URL</label>
+        <input id="input-login-host" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
+      </div>
+      <div class="input-pair">
+        <label for="input-login-path">Login path</label>
+        <input id="input-login-path" type="text" value="" size="50" oninput="onChange({key: 'path', val: this.value})"/>
+      </div>
+
+      <div class="input-pair">
+        <label for="input-login-token">Token fra Den åbne platform</label><br/>
+        <input id="input-login-token" type="text" value="valid_token" size="50" oninput="onChange({key: 'token', val: this.value})"/>
+      </div>
+
+
+      <div class="input-pair">
+        <button id="login-buttons" onclick="onClick()">Login</button>
+        <button id="reset-to-default" onclick="resetToDefault()">Reset (og log ud)</button>
+      </div>
+      <div class="info">
+        <span id="currenturl">&nbsp;</span>
+      </div>
+      <p>
+        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til klienten med to GET parametre sat i URLen - et
+        <span class="code">token</span> og et <span class="code">id</span>:
+        <span class="code">?token=TOKEN&id=ID</span>.
+        Dette callback konfigureres for den enkelte klient i den åbne platform.
+      </p>
+      <p>
+        Ved at indløse <span>token</span> og <span>id</span> på
+        <span class="code">/getTicket/TOKEN/ID</span>
+        kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
+        Ligeledes er dette noget der konfigureres i Den åbne platform.
+      </p>
+
+      <div id="post-success" class="hide">
+        <div class="info">
+          <span class="bold">Token:</span>
+          <span id="tickettoken">&nbsp;</span>
+        </div>
+        <div class="info">
+          <span class="bold">ID:</span>
+          <span id="ticketid">&nbsp;</span>
+        </div>
+
+        <p>
+          Med token og id konstrueres en ny URL (<span class="code">/getTicket/TOKEN/ID</span>) som den
+          herunder hvorfra den endelige ticket kan hentes.
+          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket
+          kun være gyldig i X dage.
+        </p>
+        <div class="info" id="ticketurl">&nbsp;</div>
+        <button id="get-ticket-button" onclick="getTicket()">Hent ticket</button>
+        <button onclick="openTicket()">Åben i nyt vindue</button>
+        <div id="ticketcontainer" class="info hide">
+          <p class="bold">Ticket:</p>
+          <p class="code" id="ticket"></p>
+        </div>
+      </div>
+    </div>
+    <script>init()</script>
+  </body>
+</html>

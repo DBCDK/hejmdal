@@ -10,11 +10,11 @@
  *
  */
 
-import {CONFIG} from '../utils/config.util';
-import {createHash, validateHash} from '../utils/hash.utils';
-import KeyValueStorage from '../models/keyvalue.storage.model';
-import PersistentTicketStorage from '../models/Ticket/ticket.persistent.storage.model';
-import MemoryStorage from '../models/memory.storage.model';
+import {CONFIG} from '../../utils/config.util';
+import {createHash, validateHash} from '../../utils/hash.utils';
+import KeyValueStorage from '../../models/keyvalue.storage.model';
+import PersistentTicketStorage from '../../models/Ticket/ticket.persistent.storage.model';
+import MemoryStorage from '../../models/memory.storage.model';
 
 const storage = CONFIG.mock_externals.ticket === 'memory' ?
   new KeyValueStorage(new MemoryStorage()) :
@@ -59,5 +59,10 @@ export async function getTicket(ctx, next) {
   }
   ctx.setState({ticket: ticket});
 
-  next();
+  ctx.body = JSON.stringify(ticket);
+
+  // Set debug param in url to get the ctx dump
+  if (ctx.query.debug === '1') {
+    await next();
+  }
 }

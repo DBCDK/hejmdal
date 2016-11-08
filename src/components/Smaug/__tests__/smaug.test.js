@@ -1,6 +1,5 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
-import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
 import {mockContext} from '../../../utils/test.util';
@@ -58,8 +57,8 @@ describe('Test smaug component', () => {
         }
       },
       urls: {
-        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
-        success: '/thumbsup',
+        host: `http://localhost:${CONFIG.app.port}`,
+        success: '/example/',
         error: '/thumbsdown'
       }
     });
@@ -74,8 +73,8 @@ describe('Test smaug component', () => {
       identityProviders: [],
       attributes: [],
       urls: {
-        host: `http://localhost:${CONFIG.app.port}${VERSION_PREFIX}`,
-        success: '/thumbsup',
+        host: `http://localhost:${CONFIG.app.port}`,
+        success: '/example/',
         error: '/thumbsdown'
       }
     });

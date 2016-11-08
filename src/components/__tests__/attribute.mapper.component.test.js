@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import mapAttributesToTicket from '../attribute.mapper.component.js';
+import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
 import {mockContext} from '../../utils/test.util';
 
 describe('Attribute mapper unittest', () => {

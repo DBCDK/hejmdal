@@ -1,11 +1,14 @@
 import {setDefaultState, stateMiddleware} from '../middlewares/state.middleware';
+import {CONFIG} from './config.util';
+
+const stores = [];
 
 /**
  * create mock context for tests
  *
  * @returns {{}}
  */
-export function mockContext(token = 'qwerty', returnurl='some_url', overrides = {}) {
+export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides = {}) {
   const ctx = {
     query: {token, returnurl},
     session: {}
@@ -16,4 +19,18 @@ export function mockContext(token = 'qwerty', returnurl='some_url', overrides = 
     ctx[key] = Object.assign(ctx[key] || {}, overrides[key]);
   });
   return ctx;
+}
+
+export function registerStore(store) {
+  if (CONFIG.app.env === 'test') {
+    stores.push(store);
+  }
+}
+
+export function wipeStores() {
+  if (CONFIG.app.env === 'test') {
+    stores.forEach((store) => {
+      store.wipeout();
+    });
+  }
 }

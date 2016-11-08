@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable */
 /**
  * @file
  * Mainly testing the consent page. When the flow is finished a consent will be stored in memory on the testuser
@@ -20,6 +20,11 @@ describe('Test Consent part of authetication flow', () => {
 
   afterEach(() => {
     browser.deleteCookie();
+    browser.url('/test');
+  });
+
+  after(() => {
+    browser.url('/wipestores');
   });
 
   it('should send user to consent page', () => {
@@ -29,8 +34,7 @@ describe('Test Consent part of authetication flow', () => {
 
   it('should render message to user', () => {
     const content = browser.getText('#content');
-    const expected = 'Ved tryk på Acceptér, accepterer du at dele nedenståene informationer med';
-
+    const expected = 'Ved tryk på Acceptér, accepterer du at dele nedenstående informationer med';
     assert.isTrue(content.startsWith(expected));
   });
 
@@ -80,29 +84,21 @@ describe('Test Consent part of authetication flow', () => {
     assert.isUndefined(session.user);
   });
 
-  it('should redirect to /consentsubmit and set session appropriately', () => {
+  it('should redirect to /example/', () => {
     browser.click('#consent-actions-accept');
+    browser.click('#get-ticket-button');
 
     const url = browser.getUrl();
-    const expected = '/login/consentsubmit';
+    const expected = '/example/?token=';
 
-    const state = browser.getState();
-    const serviceClientId = state.serviceClient.id;
-    const consentKeys = state.consents[serviceClientId].keys;
-    const expectedConsentKeys = Object.keys(state.serviceClient.attributes);
-
-    browser.assertUniLoginUser();
-
+    const ticket = browser.getTicketOnExamplePage();
     assert.isTrue(url.includes(expected));
-    assert.sameMembers(consentKeys, expectedConsentKeys);
-
     assertTicket();
-    assertCulr();
   });
 
   function assertTicket() {
-    const state = browser.getState();
-    const ticketAttributes = state.ticket.attributes;
+    const ticket = browser.getTicketOnExamplePage();
+    const ticketAttributes = ticket.attributes;
     assert.deepEqual(ticketAttributes, {
       cpr: '5555666677',
       birthDate: null,
@@ -114,22 +110,5 @@ describe('Test Consent part of authetication flow', () => {
       ],
       municipality: '909'
     });
-  }
-
-  function assertCulr() {
-    const state = browser.getState();
-    const culr = state.culr.accounts;
-    assert.deepEqual(culr, [
-      {
-        provider: '790900',
-        userIdType: 'CPR',
-        userIdValue: '5555666677'
-      },
-      {
-        provider: '100800',
-        userIdType: 'LOCAL-1',
-        userIdValue: '456456'
-      }
-    ]);
   }
 });

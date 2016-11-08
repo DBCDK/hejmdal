@@ -7,6 +7,10 @@ describe('Test Smaug tokens', function() {
   this.timeout(30000);
   const loginPage = new LoginPage();
 
+  after(() => {
+    browser.url('/wipestores');
+  });
+
   it('should set state with invalid token', () => {
     loginPage.open({token: 'invalid_token', returnurl: 'some_url'});
     browser.include('Forbidden');
