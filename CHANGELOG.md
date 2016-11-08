@@ -1,23 +1,65 @@
 # Change Log
 
-## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
-
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...HEAD)
+## [0.3.0](https://github.com/DBCDK/hejmdal/tree/0.3.0) (2016-11-08)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.19...0.3.0)
 
 **Closed issues:**
 
+- Eksempelapplikation [\#128](https://github.com/DBCDK/hejmdal/issues/128)
 - Mapper komponenten skal skabe attributterne fødselsdag, fødselsår og køn [\#113](https://github.com/DBCDK/hejmdal/issues/113)
 - Brug borchk-component som identity provider [\#110](https://github.com/DBCDK/hejmdal/issues/110)
-- SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
 - Consent: Opdatering af consent [\#100](https://github.com/DBCDK/hejmdal/issues/100)
 - En liste over hvilke attributter en service kan abonnere på. [\#88](https://github.com/DBCDK/hejmdal/issues/88)
 - Consent: Afvisning af consent skal håndteres [\#86](https://github.com/DBCDK/hejmdal/issues/86)
+- Salt der bruges til at hashe med skal sættes i en env var [\#83](https://github.com/DBCDK/hejmdal/issues/83)
 - Implementere CULR operationer mod en test CULR [\#68](https://github.com/DBCDK/hejmdal/issues/68)
-- Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
 - konfiguration [\#41](https://github.com/DBCDK/hejmdal/issues/41)
 - Attribut Mapper Komponent [\#18](https://github.com/DBCDK/hejmdal/issues/18)
 - tilpas pipeline med prod maskiner [\#16](https://github.com/DBCDK/hejmdal/issues/16)
 - Testframework [\#4](https://github.com/DBCDK/hejmdal/issues/4)
+
+**Merged pull requests:**
+
+- Eksempelapplikaton [\#130](https://github.com/DBCDK/hejmdal/pull/130) ([hrmoller](https://github.com/hrmoller))
+- Consent: Opdatering af consent [\#120](https://github.com/DBCDK/hejmdal/pull/120) ([hrmoller](https://github.com/hrmoller))
+- CULR integration [\#112](https://github.com/DBCDK/hejmdal/pull/112) ([hrmoller](https://github.com/hrmoller))
+
+## [0.19](https://github.com/DBCDK/hejmdal/tree/0.19) (2016-11-08)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.18...0.19)
+
+**Merged pull requests:**
+
+- \#138: first shot at openAgency findLibrary [\#143](https://github.com/DBCDK/hejmdal/pull/143) ([fvsdbc](https://github.com/fvsdbc))
+
+## [0.18](https://github.com/DBCDK/hejmdal/tree/0.18) (2016-11-07)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-11...0.18)
+
+**Merged pull requests:**
+
+- Add wayf id fvs [\#132](https://github.com/DBCDK/hejmdal/pull/132) ([fvsdbc](https://github.com/fvsdbc))
+
+## [jenkins-adgangsplatform-05-deploy-prod1-11](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-11) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-12...jenkins-adgangsplatform-05-deploy-prod1-11)
+
+## [jenkins-adgangsplatform-05-deploy-prod1-12](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-12) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.17...jenkins-adgangsplatform-05-deploy-prod1-12)
+
+## [0.17](https://github.com/DBCDK/hejmdal/tree/0.17) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-8...0.17)
+
+## [jenkins-adgangsplatform-05-deploy-prod1-8](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-8) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-9...jenkins-adgangsplatform-05-deploy-prod1-8)
+
+## [jenkins-adgangsplatform-05-deploy-prod1-9](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-9) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/jenkins-adgangsplatform-05-deploy-prod1-10...jenkins-adgangsplatform-05-deploy-prod1-9)
+
+## [jenkins-adgangsplatform-05-deploy-prod1-10](https://github.com/DBCDK/hejmdal/tree/jenkins-adgangsplatform-05-deploy-prod1-10) (2016-11-01)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...jenkins-adgangsplatform-05-deploy-prod1-10)
+
+**Closed issues:**
+
+- SessionStore skal implementere garbageCollect [\#102](https://github.com/DBCDK/hejmdal/issues/102)
+- Implementere Borchk som identityprovider [\#64](https://github.com/DBCDK/hejmdal/issues/64)
 
 **Merged pull requests:**
 
@@ -30,7 +72,6 @@
 - \#113: generate birthDate, birthYear and gender \(f or m\) [\#117](https://github.com/DBCDK/hejmdal/pull/117) ([fvsdbc](https://github.com/fvsdbc))
 - Setup for basic webdriverio test framework [\#116](https://github.com/DBCDK/hejmdal/pull/116) ([vibjerg](https://github.com/vibjerg))
 - Add GC info in README [\#114](https://github.com/DBCDK/hejmdal/pull/114) ([fvsdbc](https://github.com/fvsdbc))
-- CULR integration [\#112](https://github.com/DBCDK/hejmdal/pull/112) ([hrmoller](https://github.com/hrmoller))
 - Issue 64 fvs [\#111](https://github.com/DBCDK/hejmdal/pull/111) ([fvsdbc](https://github.com/fvsdbc))
 - \#85: Change test to use get/set State/User [\#109](https://github.com/DBCDK/hejmdal/pull/109) ([fvsdbc](https://github.com/fvsdbc))
 - Compose goodness :\) [\#108](https://github.com/DBCDK/hejmdal/pull/108) ([hyatt03](https://github.com/hyatt03))
@@ -42,7 +83,6 @@
 
 **Closed issues:**
 
-- Salt der bruges til at hashe med skal sættes i en env var [\#83](https://github.com/DBCDK/hejmdal/issues/83)
 - Implementere SMAUG operationer mod en test instans af SMAUG [\#69](https://github.com/DBCDK/hejmdal/issues/69)
 - Metoder til at sætte og hente state.  [\#85](https://github.com/DBCDK/hejmdal/issues/85)
 - Opgrader node version [\#84](https://github.com/DBCDK/hejmdal/issues/84)
