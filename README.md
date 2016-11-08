@@ -46,6 +46,7 @@ Testene kan også afvikles på en lokal seleniumserver med kommandoen `npm run t
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
 
 ##Environment variabler
+Først variables navn og derefter (efter :) det variabled mappes til i det interne config objekt. Sidstnævne er det der refereres i til eventuelle error logs ved opstart.  
 - `BORCHK_URI` : `borchk.uri`  
 Adressen på den aktuelle version at borchk servicen
 
