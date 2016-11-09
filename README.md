@@ -9,7 +9,8 @@
 [Wikipedia](https://da.wikipedia.org/wiki/Hejmdal)
 
 ##Releases
-Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.
+Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.  
+Værktøjet brugt til at lave changeloggen med er [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) og den genereres med kommandoen `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- hvis den brokker sig skal du muligivis give den et validt github token.
 
 ##Opstart
 ###Udvikling
@@ -45,6 +46,7 @@ Testene kan også afvikles på en lokal seleniumserver med kommandoen `npm run t
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
 
 ##Environment variabler
+Først variables navn og derefter (efter :) det variabled mappes til i det interne config objekt. Sidstnævne er det der refereres i til eventuelle error logs ved opstart.  
 - `BORCHK_URI` : `borchk.uri`  
 Adressen på den aktuelle version at borchk servicen
 
@@ -103,22 +105,22 @@ Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), 
 - `MOCK_BORCHK`: `borchk`
 Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle andre værdier vil resultere i at borchk mockes.
 
-- `MOCK_CONSENT_STORAGE` : `mock_external.consent`  
+- `MOCK_CONSENT_STORAGE` : `mock_externals.consent`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
-- `MOCK_CULR` : `mock_external.culr`  
+- `MOCK_CULR` : `mock_externals.culr`  
 Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
 
-- `MOCK_OPENAGENCY`: `mock_external.openAgency`
+- `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Sættes værdien til `0` (`MOCK_OPENAGENCY=0`) vil openAgency ikke blive mocket ud. Alle andre værdier vil resultere i at openAgency mockes.
 
-- `MOCK_TICKET_STORAGE` : `mock_external.ticket`  
+- `MOCK_TICKET_STORAGE` : `mock_externals.ticket`  
 Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
 
-- `MOCK_SMAUG` : `mock_external.smaug`  
+- `MOCK_SMAUG` : `mock_externals.smaug`  
 Sættes værdien til `0` (`MOCK_SMAUG=0`) vil Smaug ikke blive mocket ud. Alle andre værdier vil resultere i at Smaug mockes.
  
-- `MOCK_WAYF` : `mock_external.wayf`  
+- `MOCK_WAYF` : `mock_externals.wayf`  
 Sættes værdien til `0` (`MOCK_WAYF=0`) vil WAYF ikke blive mocket ud. Alle andre værdier vil resultere i at WAYF mockes.
  
 - `NODE_ENV` : `app.env`  
