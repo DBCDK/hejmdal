@@ -97,6 +97,7 @@ export default class MemoryStorage {
   wipeout() {
     if (CONFIG.app.env === 'test') {
       this.storage = {};
+      this.sequence = 1;
     }
   }
 
