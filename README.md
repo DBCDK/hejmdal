@@ -50,7 +50,7 @@ Først variables navn og derefter (efter :) det variabled mappes til i det inter
 - `BORCHK_URI` : `borchk.uri`  
 Adressen på den aktuelle version at borchk servicen
 
-- `CULR_WSDL_URI` : `culr.hash`  
+- `CULR_WSDL_URI` : `culr.uri`  
 URL til CULR WSDL
 
 - `CULR_USER_ID_AUT` : `culr.userIdAut`  
@@ -65,63 +65,66 @@ CULR autentificerings password
 - `CULR_PROFILE_NAME` : `culr.profileName`  
 CULR profilnavn
 
-- `GC_SESSION_DIVISOR` : `divisor`  
-Den reciprokke værdi for hvor ofte sessions bliver garbage collected. Væredien 1 vil garbage collecte sessions for hver forespørgsel
+- `GC_SESSION_DIVISOR` : `garbageCollect.session.divisor`  
+Den reciprokke værdi for hvor ofte sessions bliver garbage collected. Værdien 1 vil garbage collecte sessions for hver forespørgsel
 
-- `GC_SESSION_SECONDS` : `seconds`  
+- `GC_SESSION_SECONDS` : `garbageCollect.session.seconds`  
 Antal sekunder en session skal være ældre end for at blive garbage collected. Der defaultes til 3600 (1 time)
 
-- `GC_TICKET_DIVISOR` : `divisor`  
-Den reciprokke værdi for hvor ofte tickets bliver garbage collected. Væredien 1 vil garbage collecte tickets for hver forespørgsel
+- `GC_TICKET_DIVISOR` : `garbageCollect.ticket.divisor`  
+Den reciprokke værdi for hvor ofte tickets bliver garbage collected. Værdien 1 vil garbage collecte tickets for hver forespørgsel
 
-- `GC_TICKET_SECONDS` : `seconds`  
+- `GC_TICKET_SECONDS` : `garbageCollect.ticket.seconds`  
 Antal sekunder en ticket skal være ældre end for at blive garbage collected. Der defaultes til 2678400 (31 dage)
 
 - `HASH_SHARED` : `hash.shared`  
 Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
 
-- `HEJMDAL_DB_CONNECTIONS_POOL_MAX` : `max`  
+- `HEJMDAL_DB_CONNECTIONS_POOL_MAX` : `postgres.pool.max`  
 Maximum connections in pool
 
-- `HEJMDAL_DB_CONNECTIONS_POOL_MIN` : `min`  
+- `HEJMDAL_DB_CONNECTIONS_POOL_MIN` : `postgres.pool.min`  
 Minimum connections in pool
 
-- `HEJMDAL_DB_HOST` : `host`  
+- `HEJMDAL_DB_HOST` : `postgres.connection.host`  
 Database host
 
-- `HEJMDAL_DB_NAME` : `database`  
+- `HEJMDAL_DB_NAME` : `postgres.connection.database`  
 Navn på hejmdals database
 
-- `HEJMDAL_DB_USER` : `user`    
+- `HEJMDAL_DB_USER` : `postgres.connection.user`    
 Database bruger
 
-- `HEJMDAL_DB_USER_PASSWORD` : `password`  
+- `HEJMDAL_DB_USER_PASSWORD` : `postgres.connection.password`  
 Password til hejmdal database bruger
 
-- `LOG_LEVEL` : `level`  
+- `LOG_LEVEL` : `log.level`  
 Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
 Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
 
-- `MOCK_BORCHK`: `borchk`
-Sættes værdien til `0` (`MOCK_BORCHK=0`) vil borchk ikke blive mocket ud. Alle andre værdier vil resultere i at borchk mockes.
+- `MOCK_BORCHK`: `mock_externals.borchk`
+Sættes værdien til `1` (`MOCK_BORCHK=1`) vil borchk blive mocket ud.
 
-- `MOCK_CONSENT_STORAGE` : `mock_externals.consent`  
-Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+- `MOCK_CONSENT_STORAGE` : `mock_storage.consent`  
+Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
 
 - `MOCK_CULR` : `mock_externals.culr`  
-Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud. Alle andre værdier vil resultere i at CULR ikke mockes.
+Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud.
 
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
-Sættes værdien til `0` (`MOCK_OPENAGENCY=0`) vil openAgency ikke blive mocket ud. Alle andre værdier vil resultere i at openAgency mockes.
+Sættes værdien til `1` (`MOCK_OPENAGENCY=1`) vil openAgency blive mocket ud.
 
-- `MOCK_TICKET_STORAGE` : `mock_externals.ticket`  
-Sættes til 'memory' hvis det ønskes at mocke persistent storage ud med memory storage
+- `MOCK_SESSION_STORAGE` : `mock_storage.session`  
+Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
+
+- `MOCK_TICKET_STORAGE` : `mock_storage.ticket`  
+Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
-Sættes værdien til `0` (`MOCK_SMAUG=0`) vil Smaug ikke blive mocket ud. Alle andre værdier vil resultere i at Smaug mockes.
+Sættes værdien til `1` (`MOCK_SMAUG=1`) vil Smaug blive mocket ud.
  
 - `MOCK_WAYF` : `mock_externals.wayf`  
-Sættes værdien til `0` (`MOCK_WAYF=0`) vil WAYF ikke blive mocket ud. Alle andre værdier vil resultere i at WAYF mockes.
+Sættes værdien til `1` (`MOCK_WAYF=1`) vil WAYF blive mocket ud.
  
 - `NODE_ENV` : `app.env`  
 Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production`
@@ -132,13 +135,13 @@ Adressen på den aktuelle version at openAgency servicen
 - `PORT` : `app.port`  
 Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
 
-- `PRETTY_LOG` : `pretty`  
+- `PRETTY_LOG` : `log.pretty`  
 Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje.
  
 - `SESSION_LIFE_TIME` : `session.life_time`  
 Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
 
-- `SMAUG_URI` : `https adresse`  
+- `SMAUG_URI` : `smaug.uri`  
 Adressen på den aktuelle version af smaug servicen
 
 - `SAUCE_USERNAME` : `brugernavn`  
