@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
-import {suggestLibraryList} from '../openAgency.client';
+import {libraryListFromName, libraryListFromPosition} from '../openAgency.client';
 
 describe('Test openAgency component', () => {
 
@@ -13,7 +13,7 @@ describe('Test openAgency component', () => {
     CONFIG.mock_externals.openAgency = _SAVE_CONFIG;
   });
 
-  it('Lookup a library', async() => {
+  it('Lookup a library from name', async() => {
     const list = [
       {
         id: '761500',
@@ -36,11 +36,32 @@ describe('Test openAgency component', () => {
         address: '',
         type: 'Forskningsbibliotek'
       }];
-    assert.deepEqual(list, await suggestLibraryList('horsen?'));
+    assert.deepEqual(list, await libraryListFromName('horsen?'));
+  });
+
+  it('Lookup a library from position', async() => {
+    const list = [
+      {
+        id: '715100',
+        branchId: '715100',
+        name: 'Ballerup Bibliotek',
+        address: 'Hovedbiblioteket Banegårdspladsen 1',
+        type: 'Folkebibliotek',
+        distance: '1237'
+      },
+      {
+        id: '724000',
+        branchId: '724000',
+        name: 'Smørum Bibliotek',
+        address: 'Flodvej 68 Smørumnedre',
+        type: 'Folkebibliotek',
+        distance: '2905'
+      }];
+    assert.deepEqual(list, await libraryListFromPosition('55.72', '12.35'));
   });
 
   it('Lookup a library not there', async() => {
     const empty = [];
-    assert.deepEqual(empty, await suggestLibraryList('notFound'));
+    assert.deepEqual(empty, await libraryListFromName('notFound'));
   });
 });
