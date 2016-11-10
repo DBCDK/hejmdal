@@ -10,11 +10,17 @@ import {promiseRequest} from '../../utils/request.util';
 /**
  * Retreives if a user is known on a given library
  *
- * @param {String} token
+ * @param library
+ * @param userId
+ * @param pinCode
+ * @param serviceName
  * @return {Object}
  * @throws {Error|TokenError}
  */
-export async function getClient(library, userId, pinCode) {
+/**
+ *
+ */
+export async function getClient(library, userId, pinCode, serviceRequester) {
   let response;
 
   // for test and development
@@ -25,6 +31,7 @@ export async function getClient(library, userId, pinCode) {
     response = await promiseRequest('get', {
       uri: CONFIG.borchk.uri,
       qs: {
+        serviceRequester: serviceRequester,
         libraryCode: 'DK-' + library,
         userId: userId,
         userPincode: pinCode
