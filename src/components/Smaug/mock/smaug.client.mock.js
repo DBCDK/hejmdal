@@ -6,10 +6,12 @@ export const mockData = {
   attributes: ATTRIBUTES,
   app: {
     orderpolicyrequester: '190101',
-    clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f'
+    clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
+    borchkServiceName: 'bibliotek.dk'
   },
   urls: {
     host: `http://localhost:${CONFIG.app.port}`,
+    // TODO maybe success and error path, should be given in the login request. Would allow services to refactor
     success: '/example/',
     error: '/thumbsdown'
   }
