@@ -14,17 +14,17 @@ Værktøjet brugt til at lave changeloggen med er [github_changelog_generator](h
 
 ##Opstart
 ###Udvikling
-Efter repositortiet er bevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikre genstart af applikationen når kode er ændres.
+Efter repositortiet er blevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikrer genstart af applikationen når koden ændres.
 
 For at køre med en lokal database installeres postgres. Bruger, password og database sættes via environment variabler.
 
 ###Produktion
-I produktion vil opstarten afhænge af hvilke værktøjer der benyttes men i sin reneste form kan applikationen startes med `node src/main.js` fra roden af projektet. 
+I produktion vil opstarten afhænge af hvilke værktøjer der benyttes, men i sin reneste form kan applikationen startes med `node src/main.js` fra roden af projektet. 
 
 ###Migrering###
 For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang.
  
-I et udviklingsmiljø kan køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.
+I et udviklingsmiljø køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.
   
 ##Eksempelapplikation
 Fra forsiden linkes der til en eksempelapplikation, som kan demonstrere flowet ifm. login via adgangsplatformen.  
@@ -39,14 +39,14 @@ Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning 
 Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
 ### Integrationstests
-Integrationstests køres med selenium ligger i selenium/tests. Testene afvikles med commandoen `npm run test:integration`. De afvikles via saucelabs og kræver at `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` er sat.  
+Integrationstests der køres med selenium findes i selenium/tests. Testene afvikles med commandoen `npm run test:integration`. De afvikles via saucelabs og kræver at `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` er sat.  
 Testene kan også afvikles på en lokal seleniumserver med kommandoen `npm run test:integration:local` som sætter `TEST_ENV=local`. 
 
 ##Logning
 Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
 
 ##Environment variabler
-Først variables navn og derefter (efter :) det variabled mappes til i det interne config objekt. Sidstnævne er det der refereres i til eventuelle error logs ved opstart.  
+Først variables navn og derefter (efter :) det variabled mappes til i det interne config objekt. Sidstnævnte er det der refereres i til eventuelle error logs ved opstart.  
 - `BORCHK_URI` : `borchk.uri`  
 Adressen på den aktuelle version at borchk servicen
 
@@ -159,5 +159,5 @@ sættes til local for at afvikle selenium lokalt. Default er saucelabs.
 - `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
 Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl. returnurl indeholder den relative url som login resultatet skal sendes til
 - `/logud` eller `/logud?redirect=URL` 
-En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en kort besked om at brugeren er logget ud. 
+En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en besked om at brugeren er logget ud. 
 
