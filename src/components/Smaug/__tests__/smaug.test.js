@@ -4,7 +4,7 @@ import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
 import {mockContext} from '../../../utils/test.util';
 
-describe('Test smaug component', () => {
+describe('Test Smaug component', () => {
 
   // Save original config so it can be restored
   const _SMAUG_CONFIG = CONFIG.mock_externals.smaug;
