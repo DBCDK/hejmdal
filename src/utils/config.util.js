@@ -38,14 +38,16 @@ export const CONFIG = {
     pretty: process.env.PRETTY_LOG === '1'
   },
   mock_externals: {
-    borchk: process.env.MOCK_BORCHK !== '0',
-    consent: process.env.MOCK_CONSENT_STORAGE || false,
+    borchk: process.env.MOCK_BORCHK === '1',
     culr: process.env.MOCK_CULR === '1',
-    openAgency: process.env.MOCK_OPENAGENCY !== '0',
-    smaug: process.env.MOCK_SMAUG !== '0',
-    ticket: process.env.MOCK_TICKET_STORAGE || false,
-    session: process.env.MOCK_SESSION_STORAGE && true || false,
-    wayf: process.env.MOCK_WAYF !== '0'
+    openAgency: process.env.MOCK_OPENAGENCY === '1',
+    smaug: process.env.MOCK_SMAUG === '1',
+    wayf: process.env.MOCK_WAYF === '1'
+  },
+  mock_storage: {
+    consent: process.env.MOCK_CONSENT_STORAGE === '1',
+    ticket: process.env.MOCK_TICKET_STORAGE === '1',
+    session: process.env.MOCK_SESSION_STORAGE === '1'
   },
   openAgency: {
     uri: process.env.OPENAGENCY_URI

@@ -58,7 +58,7 @@ describe('Testing the Example appliction', function() {
         "municipality": "909"
       },
       "id": 1,
-      "token": "dd79eabe560b5d980dff864ad7983b8fb9d3762b8546819c79188983b68ebe5f"
+      "token": "5fc9b591842fed38c6d1549ce85ee51280e353a56c9a2fb3c40e3a1e2011006a"
     });
 
     assert.equal(JSON.stringify(ticket), expected);

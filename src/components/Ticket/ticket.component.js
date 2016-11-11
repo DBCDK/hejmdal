@@ -16,7 +16,7 @@ import KeyValueStorage from '../../models/keyvalue.storage.model';
 import PersistentTicketStorage from '../../models/Ticket/ticket.persistent.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 
-const storage = CONFIG.mock_externals.ticket === 'memory' ?
+const storage = CONFIG.mock_storage.ticket ?
   new KeyValueStorage(new MemoryStorage()) :
   new KeyValueStorage(new PersistentTicketStorage());
 
