@@ -4,7 +4,7 @@ import {mockData} from '../mock/smaug.client.mock';
 import * as smaug from '../smaug.component';
 import {mockContext} from '../../../utils/test.util';
 
-describe('Test smaug component', () => {
+describe('Test Smaug component', () => {
 
   // Save original config so it can be restored
   const _SMAUG_CONFIG = CONFIG.mock_externals.smaug;
@@ -32,6 +32,7 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
+      borchkServiceName: 'bibliotek.dk',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
         birthDate: {
@@ -71,6 +72,7 @@ describe('Test smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       identityProviders: [],
+      borchkServiceName: 'bibliotek.dk',
       attributes: [],
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,

@@ -14,10 +14,11 @@ import {log} from '../../utils/logging.util';
  * @param user
  * @returns {*}
  */
-export async function validateUserInLibrary(ctx, user) {
+export async function validateUserInLibrary(ctx, userInput) {
   let userValidate = false;
   try {
-    const response = await getClient(user.libraryId, user.userId, user.pincode);
+    const requester = ctx.getState().serviceClient.borchkServiceName;
+    const response = await getClient(userInput.libraryId, userInput.userId, userInput.pincode, requester);
     userValidate = extractInfo(response);
   }
   catch (err) {
@@ -65,7 +66,18 @@ export async function getBorchkResponse(ctx) {
  */
 function extractInfo(response) {
   if (response && response.borrowerCheckResponse && response.borrowerCheckResponse.requestStatus) {
-    return response.borrowerCheckResponse.requestStatus.$ === 'ok';
+    switch (response.borrowerCheckResponse.requestStatus.$) {
+      case 'ok':
+        return true;
+      case 'no_user_in_request':
+        throw new Error('Invalid borchk request. Missing user');
+      case 'error_in_request':
+        throw new Error('Invalid borchk request');
+      case 'library_not_found':
+        throw new Error('Unknown borchk library');
+      default:
+        return false;
+    }
   }
 
   throw new Error('Invalid borchk response', response);
