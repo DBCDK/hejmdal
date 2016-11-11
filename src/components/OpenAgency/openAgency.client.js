@@ -14,7 +14,7 @@ import {promiseRequest} from '../../utils/request.util';
  * @returns {Array}
  * @throws {OpenAgencyError}
  */
-export async function suggestLibraryList(text) {
+export async function libraryListFromName(text) {
   let response;
 
   // for test and development
@@ -38,6 +38,32 @@ export async function suggestLibraryList(text) {
   throw new OpenAgencyError(response.statusMessage);
 }
 
+export async function libraryListFromPosition(latitude, longitude, distance = '') {
+  let response;
+
+  // for test and development
+  if (CONFIG.mock_externals.openAgency) {
+    response = getMockClient(latitude + '-' + longitude);
+  }
+  else {
+    response = await promiseRequest('get', {
+      uri: CONFIG.openAgency.uri,
+      qs: {
+        latitude: latitude,
+        longitude: longitude,
+        distance: distance,
+        sort: 'distance'
+      }
+    });
+  }
+
+  if (response.statusCode === 200) {
+    return parseFindLibraryResponse(JSON.parse(response.body));
+  }
+
+  throw new OpenAgencyError(response.statusMessage);
+}
+
 /**
  * Parse findLibrary repsonse and extract the few data needed
  *
@@ -48,13 +74,17 @@ function parseFindLibraryResponse(response) {
   const libraryList = [];
   if (response.findLibraryResponse && Array.isArray(response.findLibraryResponse.pickupAgency)) {
     response.findLibraryResponse.pickupAgency.forEach((agency) => {
-      libraryList.push({
+      let item = {
         id: getAgencyField(agency, 'agencyId'),
         branchId: getAgencyField(agency, 'branchId'),
         name: getAgencyField(agency, 'branchName'),
         address: getAgencyField(agency, 'postalAddress'),
         type: getAgencyField(agency, 'agencyType')
-      });
+      };
+      if (agency.geolocation) {
+        item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
+      }
+      libraryList.push(item);
     });
   }
   return libraryList;
