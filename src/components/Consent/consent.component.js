@@ -12,7 +12,7 @@ import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 import {log} from '../../utils/logging.util';
 
-const consentStore = CONFIG.mock_externals.consent === 'memory' ?
+const consentStore = CONFIG.mock_storage.consent ?
   new KeyValueStorage(new MemoryStorage()) :
   new KeyValueStorage(new PersistentConsentStorage());
 

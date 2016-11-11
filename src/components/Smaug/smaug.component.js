@@ -34,6 +34,7 @@ function extractClientInfo(client) {
       id: client.app.clientId,
       identityProviders: client.identityProviders || [],
       attributes: client.attributes || [],
+      borchkServiceName: client.borchkServiceName || null,
       urls: client.urls || {}
     };
   }
