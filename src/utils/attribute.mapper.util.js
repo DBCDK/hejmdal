@@ -16,12 +16,13 @@ import {log} from './logging.util';
  */
 export default async function mapAttributesToTicket(ctx, next) {
   const state = ctx.getState();
+  const user = ctx.getUser();
 
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
 
-    const ticketAttributes = mapCulrResponse(culr, serviceAttributes);
+    const ticketAttributes = mapCulrResponse(culr, serviceAttributes, user);
 
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
@@ -37,7 +38,7 @@ export default async function mapAttributesToTicket(ctx, next) {
  * @see ATTRIBUTES
  * @return {{}}
  */
-function mapCulrResponse(culr, attributes) {
+function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
 
   let cpr = null;
@@ -74,6 +75,9 @@ function mapCulrResponse(culr, attributes) {
         break;
       case 'municipality':
         mapped.municipality = culr.municipalityNumber || null;
+        break;
+      case 'uniloginId':
+        mapped.uniloginId = user.userType === 'unilogin' && user.userId ? user.userId : null;
         break;
       default:
         log.error('Cannot map attribute: ' + field);

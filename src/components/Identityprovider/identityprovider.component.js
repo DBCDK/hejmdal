@@ -48,20 +48,23 @@ export async function authenticate(ctx, next) {
  * @param ctx
  * @returns {*}
  */
-export async function uniloginCallback(ctx) {
+export function uniloginCallback(ctx) {
   // TODO validate unilogin callback
-  if(!CONFIG.mock_externals.unilogin){
-    console.log(ctx.query);
-    console.log(validateUniloginTicket(ctx.query));
+  let userId = null;
+  if (CONFIG.mock_externals.unilogin) {
+    userId = ctx.query.id;
+  }
+  else if (validateUniloginTicket(ctx.query)) {
+    userId = ctx.query.user;
   }
 
+  console.log('userId: ', userId);
+
   ctx.setUser({
-    userId: ctx.query.id,
+    userId: userId,
     userType: 'unilogin',
     identityProviders: ['unilogin']
   });
-
-  console.log(ctx.getUser());
 
   return ctx;
 }

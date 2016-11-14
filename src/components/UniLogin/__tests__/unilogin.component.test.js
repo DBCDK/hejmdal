@@ -15,7 +15,7 @@ describe('Unittesting methods in unilogin.component', () => {
 
   beforeEach(() => {
     const user = 'test1234';
-    const timestamp = moment().format('YYYYMMDDHHmmss');
+    const timestamp = moment().utc().format('YYYYMMDDHHmmss');
     const auth = md5(timestamp + CONFIG.unilogin.secret + user);
     ticket = {
       auth: auth,

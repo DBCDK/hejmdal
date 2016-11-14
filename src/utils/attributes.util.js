@@ -33,6 +33,10 @@ export const ATTRIBUTES = {
     name: 'Kommunenummer',
     description: '3 cifret kommunenummer'    // http://www.linking.dk/lokalportaler/kommuner.html
   },
+  uniloginId: {
+    name: 'UNI-login brugernavn',
+    description: 'Brugerens identifikation hos UNI-Login'
+  },
   wayfId: {
     name: 'WAYF id',
     description: 'Brugerens identifikation hos WAYF'

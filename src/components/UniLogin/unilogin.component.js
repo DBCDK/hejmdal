@@ -31,7 +31,6 @@ export function getUniloginURL(token) {
  * @return {boolean} boolean that indicates if the ticket was successfully validated
  */
 export function validateUniloginTicket({auth, timestamp, user}) {
-
   return validateTicketAge({timestamp}) && validateTicketFingerPrint(auth, timestamp, user);
 }
 
@@ -60,7 +59,7 @@ function validateTicketFingerPrint(auth, timestamp, user) {
  * @return {boolean}
  */
 function validateTicketAge(ticket) {
-  const timestamp = moment(ticket.timestamp, 'YYYYMMDDHHmmss').format('X');
+  const timestamp = moment.utc(ticket.timestamp, 'YYYYMMDDHHmmss').format('X');
   const now = moment().utc().format('X');
   const age = parseInt(now, 10) - parseInt(timestamp, 10);
   return age <= CONFIG.unilogin.maxTicketAge;
