@@ -1,7 +1,7 @@
 /* eslint-disable */
 import {assert} from 'chai';
 
-describe('Testing the Example appliction', function() {
+describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
 
   after(() => {
@@ -41,21 +41,13 @@ describe('Testing the Example appliction', function() {
     const ticket = JSON.parse(browser.getText('#ticket'));
     const expected = JSON.stringify({
       "attributes": {
-        "cpr": "5555666677",
+        "cpr": null,
         "birthDate": null,
         "birthYear": null,
         "gender": null,
-        "libraries": [
-          {
-            "libraryid": "790900",
-            "loanerid": "5555666677"
-          },
-          {
-            "libraryid": "100800",
-            "loanerid": "456456"
-          }
-        ],
-        "municipality": "909"
+        "libraries": [],
+        "municipality": null,
+        "uniloginId": "test1234"
       },
       "id": 1,
       "token": "5fc9b591842fed38c6d1549ce85ee51280e353a56c9a2fb3c40e3a1e2011006a"

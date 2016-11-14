@@ -51,7 +51,14 @@ describe('Test Smaug component', () => {
           name: 'Biblioteker',
           description: 'En liste over de biblioteker som kender brugeren'
         },
-        municipality: {name: 'Kommunenummer', description: '3 cifret kommunenummer'},
+        municipality: {
+          name: 'Kommunenummer',
+          description: '3 cifret kommunenummer'
+        },
+        uniloginId: {
+          name: 'UNI-login brugernavn',
+          description: 'Brugerens identifikation hos UNI-Login'
+        },
         wayfId: {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'

@@ -33,7 +33,7 @@ describe('Testing the getTicket endpoint', () => {
     browser.url(`/getTicket/${ticketToken}/${ticketId}`);
 
     const body = browser.getText('body');
-    const expectedValidTicket = `{"attributes":{"cpr":"5555666677","birthDate":null,"birthYear":null,"gender":null,"libraries":[{"libraryid":"790900","loanerid":"5555666677"},{"libraryid":"100800","loanerid":"456456"}],"municipality":"909"},"id":${ticketId},"token":"${ticketToken}"}`;
+    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"libraries":[],"municipality":null,"uniloginId":"test1234"},"id":${ticketId},"token":"${ticketToken}"}`;
 
     // ensure the ticket is as expected
     assert.equal(body, expectedValidTicket);

@@ -3,9 +3,11 @@
  *
  */
 
-export default (version, token) => `
+import {VERSION_PREFIX} from '../../../utils/version.util';
+
+export default (token) => `
 <div id="borchk">
-  <form action="${version}/login/identityProviderCallback/borchk/${token}" method="post">
+  <form action="${VERSION_PREFIX}/login/identityProviderCallback/borchk/${token}" method="post">
     <h3>Log ind med Biblioteksnummer</h3>
     <input type="text" name="libraryId" placeholder="Biblioteksnummer"/>
     <input type="text" name="userId" placeholder="Bruger ID "/>

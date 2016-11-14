@@ -8,14 +8,14 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
-import unilogin from './templates/unilogin.template';
+import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
 
-const templates = {index, borchk, nemlogin, unilogin};
+const templates = {index, borchk, nemlogin, unilogin: getUniloginURL};
 
 /**
- * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
+ * Returns Identityprovider screen if user is not logged in.
  *
  * @param ctx
  * @param next
@@ -27,7 +27,7 @@ export async function authenticate(ctx, next) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = state.serviceClient.identityProviders;
-      const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
+      const content = identityProviders.map(value => templates[value](authToken)).join('');
 
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
@@ -47,12 +47,21 @@ export async function authenticate(ctx, next) {
  * @param ctx
  * @returns {*}
  */
-export async function uniloginCallback(ctx) {
+export function uniloginCallback(ctx) {
+  let userId = null;
+  if (validateUniloginTicket(ctx.query)) {
+    userId = ctx.query.user;
+  }
+  else {
+    idenityProviderValidationFailed(ctx);
+  }
+
   ctx.setUser({
-    userId: ctx.query.id,
+    userId: userId,
     userType: 'unilogin',
     identityProviders: ['unilogin']
   });
+
   return ctx;
 }
 
@@ -79,9 +88,9 @@ export async function borchkCallback(ctx) {
     });
   }
   else {
-    const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
-    ctx.setState({startOver: startOver});
+    idenityProviderValidationFailed(ctx);
   }
+
   return ctx;
 }
 
@@ -93,11 +102,13 @@ export async function borchkCallback(ctx) {
  */
 export async function nemloginCallback(ctx) {
   const response = await getWayfResponse(ctx);
+
   ctx.setUser({
     userId: response.userId,
     userType: 'nemlogin',
     identityProviders: ['nemlogin']
   });
+
   return ctx;
 }
 
@@ -121,13 +132,10 @@ export async function identityProviderCallback(ctx, next) {
           await nemloginCallback(ctx);
           break;
         case 'unilogin':
-          await uniloginCallback(ctx);
+          uniloginCallback(ctx);
           break;
         default:
           break;
-      }
-      if (ctx.getState().startOver) {                // IdentityProvider failed in user authentication
-        ctx.redirect(ctx.getState().startOver);
       }
     }
   }
@@ -137,4 +145,9 @@ export async function identityProviderCallback(ctx, next) {
   }
 
   await next();
+}
+
+function idenityProviderValidationFailed(ctx) {
+  const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
+  ctx.redirect(startOver);
 }

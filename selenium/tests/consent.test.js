@@ -96,15 +96,13 @@ describe('Test Consent part of authetication flow', () => {
     const ticket = browser.getTicketOnExamplePage();
     const ticketAttributes = ticket.attributes;
     assert.deepEqual(ticketAttributes, {
-      cpr: '5555666677',
+      cpr: null,
       birthDate: null,
       birthYear: null,
       gender: null,
-      libraries: [
-        {libraryid: '790900', loanerid: '5555666677'},
-        {libraryid: '100800', loanerid: '456456'}
-      ],
-      municipality: '909'
+      libraries: [],
+      municipality: null,
+      uniloginId: 'test1234'
     });
   }
 });

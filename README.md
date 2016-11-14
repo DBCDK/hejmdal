@@ -120,6 +120,9 @@ Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
 set to `1` (`MOCK_SMAUG=1`) to mock Smaug and use a predefined response
+
+- `MOCK_UNILOGIN` : `mock_externals.unilogin`  
+set to `1` (`MOCK_UNILOGIN=1`) to mock UNI-Login and use a predefined response
  
 - `MOCK_WAYF` : `mock_externals.wayf`  
 set to `1` (`MOCK_WAYF=1`) to mock WAYF and use a predefined response
@@ -148,9 +151,21 @@ Saucelabs user name
 - `SAUCE_ACCESS_KEY` : `access key`  
 Saucelabs user access key
 
+- `UNI_LOGIN_ID` : `unilogin.id`  
+UNI-Login ID
+
+- `UNI_LOGIN_SECRET` : `unilogin.secret`  
+UNI-Login Secret
+
+- `UNI_LOGIN_URL` : `unilogin.uniloginBasePath`  
+UNI-Login base URL (`https://sso.emu.dk/unilogin/login.cgi`)
+
+- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`
+  Max age of the ticket returned from UNI-Login upon successful authetication.  
+  UNI-Loing recommends this value to be set to 60 seconds which is default in Hejmdal.
+
 - `TEST_ENV` : `local`  
 Set to `local` to run selenium tests locally. Defaults to `saucelabs`
-
 
 # Dokumentation
 ## Endpoints
