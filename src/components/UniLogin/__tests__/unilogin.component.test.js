@@ -5,9 +5,9 @@
 
 import {assert} from 'chai';
 import {validateUniloginTicket} from '../unilogin.component.js';
-import {md5} from "../../../utils/hash.utils";
-import {CONFIG} from "../../../utils/config.util";
-import moment from "moment";
+import {md5} from '../../../utils/hash.utils';
+import {CONFIG} from '../../../utils/config.util';
+import moment from 'moment';
 
 describe('Unittesting methods in unilogin.component', () => {
 
@@ -20,7 +20,7 @@ describe('Unittesting methods in unilogin.component', () => {
     ticket = {
       auth: auth,
       timestamp: timestamp,
-      user: user,
+      user: user
     };
   });
 

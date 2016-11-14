@@ -11,7 +11,6 @@ import nemlogin from './templates/nemlogin.template';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
-import {CONFIG} from "../../utils/config.util";
 
 const templates = {index, borchk, nemlogin, unilogin: getUniloginURL};
 
@@ -49,16 +48,13 @@ export async function authenticate(ctx, next) {
  * @returns {*}
  */
 export function uniloginCallback(ctx) {
-  // TODO validate unilogin callback
   let userId = null;
-  if (CONFIG.mock_externals.unilogin) {
-    userId = ctx.query.id;
-  }
-  else if (validateUniloginTicket(ctx.query)) {
+  if (validateUniloginTicket(ctx.query)) {
     userId = ctx.query.user;
   }
-
-  console.log('userId: ', userId);
+  else {
+    idenityProviderValidationFailed(ctx);
+  }
 
   ctx.setUser({
     userId: userId,
@@ -92,9 +88,9 @@ export async function borchkCallback(ctx) {
     });
   }
   else {
-    const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
-    ctx.setState({startOver: startOver});
+    idenityProviderValidationFailed(ctx);
   }
+
   return ctx;
 }
 
@@ -106,11 +102,13 @@ export async function borchkCallback(ctx) {
  */
 export async function nemloginCallback(ctx) {
   const response = await getWayfResponse(ctx);
+
   ctx.setUser({
     userId: response.userId,
     userType: 'nemlogin',
     identityProviders: ['nemlogin']
   });
+
   return ctx;
 }
 
@@ -134,13 +132,10 @@ export async function identityProviderCallback(ctx, next) {
           await nemloginCallback(ctx);
           break;
         case 'unilogin':
-          await uniloginCallback(ctx);
+          uniloginCallback(ctx);
           break;
         default:
           break;
-      }
-      if (ctx.getState().startOver) {                // IdentityProvider failed in user authentication
-        ctx.redirect(ctx.getState().startOver);
       }
     }
   }
@@ -150,4 +145,9 @@ export async function identityProviderCallback(ctx, next) {
   }
 
   await next();
+}
+
+function idenityProviderValidationFailed(ctx) {
+  const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
+  ctx.redirect(startOver);
 }

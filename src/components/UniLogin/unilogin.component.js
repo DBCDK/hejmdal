@@ -66,7 +66,11 @@ function validateTicketAge(ticket) {
 }
 
 function getMockedUniloginUrl(token) {
-  return `${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}?id=5555666677`
+  const user = 'test1234';
+  const timestamp = moment().utc().format('YYYYMMDDHHmmss');
+  const auth = md5(timestamp + CONFIG.unilogin.secret + user);
+
+  return `${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}?auth=${auth}&timestamp=${timestamp}&user=${user}`;
 }
 
 /**

@@ -14,7 +14,7 @@ browser.notInclude = (value, selector = 'body') => {
 browser.assertUniLoginUser = () => {
   const session = browser.getSession();
   assert.deepEqual(session.user, {
-    userId: '5555666677',
+    userId: 'test1234',
     userType: 'unilogin',
     identityProviders: ['unilogin']
   });

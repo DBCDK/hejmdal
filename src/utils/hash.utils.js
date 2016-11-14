@@ -39,7 +39,7 @@ export function createHash(toHash, hashSecret = 'shared') {
  *
  * @param {string} str
  */
-export function md5(str){
+export function md5(str) {
   return crypto
     .createHash('md5')
     .update(str)
