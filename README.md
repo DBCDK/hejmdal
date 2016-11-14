@@ -122,6 +122,9 @@ Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory stora
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
 Sættes værdien til `1` (`MOCK_SMAUG=1`) vil Smaug blive mocket ud.
+
+- `MOCK_UNILOGIN` : `mock_externals.unilogin`  
+Sættes værdien til `1` (`MOCK_UNILOGIN=1`) vil Unilogin blive mocket ud.
  
 - `MOCK_WAYF` : `mock_externals.wayf`  
 Sættes værdien til `1` (`MOCK_WAYF=1`) vil WAYF blive mocket ud.
@@ -150,9 +153,20 @@ Gyldig brugernavn til saucelabs
 - `SAUCE_ACCESS_KEY` : `access key`  
 Gyldig access key til saucelabs
 
+- `UNI_LOGIN_ID` : `unilogin.id`  
+ID hos UNI-Login
+
+- `UNI_LOGIN_SECRET` : `unilogin.secret`  
+Secret hos UNI-Login
+
+- `UNI_LOGIN_URL` : `unilogin.uniloginBasePath`  
+Base URL til UNI-Login. (`https://sso.emu.dk/unilogin/login.cgi`)
+
+- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`  
+Max alder i sekunder på den ticket man får retur fra UNI-Login (default = 60)
+
 - `TEST_ENV` : `local`  
 sættes til local for at afvikle selenium lokalt. Default er saucelabs.
-
 
 # Dokumentation
 ## Endpoints
