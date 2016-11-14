@@ -5,80 +5,78 @@
 [![Build Status](https://travis-ci.org/DBCDK/hejmdal.svg?branch=master)](https://travis-ci.org/DBCDK/hejmdal)
 
 # hejmdal
-*Heimdall eller Hejmdal (norrønt: Heimdallr) [...] har en fantastisk hørelse, og optræder af den grund i myterne som gudernes vagtmand, der sidder ved enden af Bifrost og overvåger, at ingen jætter sniger sig ind i Asgård.*
-[Wikipedia](https://da.wikipedia.org/wiki/Hejmdal)
+*Heimdall (Hejmdal in danish, Heimdallr in Norrønt) is attested as possessing foreknowledge, keen eyesight and hearing, is described as "the whitest of the gods" and keeps watch for the onset of Ragnarök while drinking fine mead in his dwelling Himinbjörg, located where the burning rainbow bridge Bifröst meets heaven*
+[Wikipedia](https://en.wikipedia.org/wiki/Heimdallr)
 
 ##Releases
-Releases findes på GitHub under [/releases](https://github.com/DBCDK/hejmdal/releases), hvor der under hver enkelt release linkes til en changelog for den givne release. Desuden findes der en samlet changlog i filen [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) i roden af projektet.  
-Værktøjet brugt til at lave changeloggen med er [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) og den genereres med kommandoen `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- hvis den brokker sig skal du muligivis give den et validt github token.
+Releases are found at GitHub [/releases](https://github.com/DBCDK/hejmdal/releases). Each containing a link to the changelog for the given release. A consolidated changelog for all releases is found at [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) in the project root.  
+The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- you may need a valid github token to run the command.
 
-##Opstart
-###Udvikling
-Efter repositortiet er blevet klonet og afhængigheder er blevet installeret med `npm install` kan applikationen startes med `npm run dev`. Denne kommando starter applikationen med [nodemon](https://www.npmjs.com/package/nodemon) der sikrer genstart af applikationen når koden ændres.
+##Start
+###Development
+After cloning the repository, run `npm install` to install dependencies. Copy env.test to env.env and set the environment variables (see below) to you need/liking. The application is started with `npm run dev`, which include [nodemon](https://www.npmjs.com/package/nodemon) in order to restart the application, when the code is changed.
 
-For at køre med en lokal database installeres postgres. Bruger, password og database sættes via environment variabler.
+To use a local database, postgres has to be installed. User, password and database are set through environment variables - see [Migration](https://github.com/DBCDK/hejmdal#migration) below.
 
-###Produktion
-I produktion vil opstarten afhænge af hvilke værktøjer der benyttes, men i sin reneste form kan applikationen startes med `node src/main.js` fra roden af projektet. 
+###Production
+You can start the application with `node src/main.js` from the project root after setting the environment variables.
 
-###Migrering###
-For at installere de seneste database opdateringer køres `npm run migrate:latest`. Denne kommando skal også køres, når man installerer projektet første gang.
- 
-I et udviklingsmiljø køres `npm run migrate:latest:dev` som samtidig vil source en env.env fil.
+###Migration
+To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
+
+For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
   
-##Eksempelapplikation
-Fra forsiden linkes der til en eksempelapplikation, som kan demonstrere flowet ifm. login via adgangsplatformen.  
-I felterne indsættes de nødvendige informationer (URL, sti og token) hvorefter forespørgslen kan sendes afsted. Ved successfuldt login er det muligt at få vist den pågældende ticket i browseren.
+##Example applikation
+The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
 
 ##Tests
 
 ### Unittests
-Testsuiterne afvikles generelt med kommandoen `npm run test` der er specificeret i `package.json`.  
-Skal der testes i et CI miljø på f.eks. Jenkins skal environment variablen `JUNIT_REPORT_PATH` sættes til den ønskede destination. F.eks. `JUNIT_REPORT_PATH=/report.xml npm run test`  
-Bemærk at `npm run test` køres med `LOG_LEVEL=OFF` hvilket betyder at logning er slået fra under test.  
-Se iøvrigt [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
+The tests are run by `npm run test` - specifications can be found in `package.json`.  
+To test in a CI environment, like Jenkins, the environment variable `JUNIT_REPORT_PATH` must be set, like `JUNIT_REPORT_PATH=/report.xml npm run test`  
+Note then `npm run test` sets `LOG_LEVEL=OFF` to disable logging during the tests.  
+See [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
-### Integrationstests
-Integrationstests der køres med selenium findes i selenium/tests. Testene afvikles med commandoen `npm run test:integration`. De afvikles via saucelabs og kræver at `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` er sat.  
-Testene kan også afvikles på en lokal seleniumserver med kommandoen `npm run test:integration:local` som sætter `TEST_ENV=local`. 
+### Integration tests
+Integration tests run with [selenium](http://docs.seleniumhq.org/) are located in selenium/tests and are run with `npm run test:integration`. The tests use [saucelabs](https://saucelabs.com/) and require that the environment variable `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` are set.  
 
-##Logning
-Der logges til `stdout` med de levels der er specificeret i afsnittet om [environment variabler](https://github.com/DBCDK/hejmdal#environment-variabler) herunder.
+##Logging
+Logging use `stdout` and the levels specified in [environment variables](https://github.com/DBCDK/hejmdal#environment-variables) below.
 
-##Environment variabler
-Først variables navn og derefter (efter :) det variabled mappes til i det interne config objekt. Sidstnævnte er det der refereres i til eventuelle error logs ved opstart.  
+##Environment variables
+The variables are specified at the form `name : internal config object`. References in the log from the startup, will use the internal config object.
 - `BORCHK_URI` : `borchk.uri`  
-Adressen på den aktuelle version at borchk servicen
+The address of the borchk service
 
 - `CULR_WSDL_URI` : `culr.uri`  
-URL til CULR WSDL
+URL to CULR WSDL
 
 - `CULR_USER_ID_AUT` : `culr.userIdAut`  
-CULR autentificerings ID
+CULR autentification ID
 
 - `CULR_GROUP_ID_AUT` : `culr.groupIdAut`  
-CULR autentificerings gruppe ID
+CULR autentification group ID
 
 - `CULR_PASSWORD_AUT` : `culr.passwordAut`  
-CULR autentificerings password
+CULR autentification password
 
 - `CULR_PROFILE_NAME` : `culr.profileName`  
-CULR profilnavn
+CULR profile name
 
 - `GC_SESSION_DIVISOR` : `garbageCollect.session.divisor`  
-Den reciprokke værdi for hvor ofte sessions bliver garbage collected. Værdien 1 vil garbage collecte sessions for hver forespørgsel
+Defines the probability that sessions are garbage collected on every request. The probability is calculated as  1/GC_SESSION_DIVISOR.
 
 - `GC_SESSION_SECONDS` : `garbageCollect.session.seconds`  
-Antal sekunder en session skal være ældre end for at blive garbage collected. Der defaultes til 3600 (1 time)
+Number of seconds a session has lived in order to be a garbage collected. Defaults to 2678400 (31 days)
 
 - `GC_TICKET_DIVISOR` : `garbageCollect.ticket.divisor`  
-Den reciprokke værdi for hvor ofte tickets bliver garbage collected. Værdien 1 vil garbage collecte tickets for hver forespørgsel
+Defines the probability that tickets are garbage collected on every request. The probability is calculated as  1/GC_TICKET_DIVISOR.
 
 - `GC_TICKET_SECONDS` : `garbageCollect.ticket.seconds`  
-Antal sekunder en ticket skal være ældre end for at blive garbage collected. Der defaultes til 2678400 (31 dage)
+Number of seconds a ticket has lived in order to be a garbage collected. Defaults to 3600 (1 hour)
 
 - `HASH_SHARED` : `hash.shared`  
-Hash salt secret, som bruges generelt til at danne (og tjekke) hash nøgler
+Hash salt secret. Generally used to generate and check hash keys
 
 - `HEJMDAL_DB_CONNECTIONS_POOL_MAX` : `postgres.pool.max`  
 Maximum connections in pool
@@ -90,88 +88,89 @@ Minimum connections in pool
 Database host
 
 - `HEJMDAL_DB_NAME` : `postgres.connection.database`  
-Navn på hejmdals database
+Name of hejmdals database
 
 - `HEJMDAL_DB_USER` : `postgres.connection.user`    
-Database bruger
+Database user
 
 - `HEJMDAL_DB_USER_PASSWORD` : `postgres.connection.password`  
-Password til hejmdal database bruger
+hejmdal database password
 
 - `LOG_LEVEL` : `log.level`  
-Specificere hvilket maximum loglevel applikationen skal bruge. Default: `INFO`
-Følgende levels kan bruges: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
+Specifies the log level used by the application. Defaults to `INFO`
+Log level constants supported:: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
 
 - `MOCK_BORCHK`: `mock_externals.borchk`
-Sættes værdien til `1` (`MOCK_BORCHK=1`) vil borchk blive mocket ud.
+Set to `1` (`MOCK_BORCHK=1`) to mock borchk and use a predefined response
 
 - `MOCK_CONSENT_STORAGE` : `mock_storage.consent`  
-Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
+Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_CULR` : `mock_externals.culr`  
-Sættes værdien til `1` (`MOCK_CULR=1`) vil CULR blive mocket ud.
+Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
-Sættes værdien til `1` (`MOCK_OPENAGENCY=1`) vil openAgency blive mocket ud.
+Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
 - `MOCK_SESSION_STORAGE` : `mock_storage.session`  
-Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
+Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_TICKET_STORAGE` : `mock_storage.ticket`  
-Sættes til '1' hvis det ønskes at mocke persistent storage ud med memory storage
+Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
-Sættes værdien til `1` (`MOCK_SMAUG=1`) vil Smaug blive mocket ud.
+set to `1` (`MOCK_SMAUG=1`) to mock Smaug and use a predefined response
 
 - `MOCK_UNILOGIN` : `mock_externals.unilogin`  
-Sættes værdien til `1` (`MOCK_UNILOGIN=1`) vil Unilogin blive mocket ud.
+set to `1` (`MOCK_UNILOGIN=1`) to mock UNI-Login and use a predefined response
  
 - `MOCK_WAYF` : `mock_externals.wayf`  
-Sættes værdien til `1` (`MOCK_WAYF=1`) vil WAYF blive mocket ud.
+set to `1` (`MOCK_WAYF=1`) to mock WAYF and use a predefined response
  
 - `NODE_ENV` : `app.env`  
-Når applikationen køres i produktion bør `NODE_ENV` sættes til `production`: `NODE_ENV=production`
+When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
  
 - `OPENAGENCY_URI` : `openAgency.uri`  
-Adressen på den aktuelle version at openAgency servicen
+The address to the openAgency service
 
 - `PORT` : `app.port`  
-Specificere hvilken port applikatioen skal være tilgængelig på. Default: `3010`
+Specifies the port to expose the application. Default: `3010`
 
 - `PRETTY_LOG` : `log.pretty`  
-Sættes værdien til "1" (`PRETTY_LOG=1`) pretty printes log statements. Alle andre værdier vil resultere i at logstatements printes enkeltvis på én linje.
+Set to `1` (`PRETTY_LOG=1`) for pretty printed log statements. Any other setting, will result in one-line log statements.
  
 - `SESSION_LIFE_TIME` : `session.life_time`  
-Specificere en brugers sessions levetid. Default er 24 timer. Værdien er et tal og skal angives i millisekunder f.eks. er 24 timer = 86400000 (60 * 60 * 24 * 1000)
+The lifetime for a user session in milliseconds. Defaults to 86400000 (24 hours: 24 * 60 * 60 * 1000 = 86400000)
 
 - `SMAUG_URI` : `smaug.uri`  
-Adressen på den aktuelle version af smaug servicen
+The address of the Smaug service
 
 - `SAUCE_USERNAME` : `brugernavn`  
-Gyldig brugernavn til saucelabs
+Saucelabs user name
 
 - `SAUCE_ACCESS_KEY` : `access key`  
-Gyldig access key til saucelabs
+Saucelabs user access key
 
 - `UNI_LOGIN_ID` : `unilogin.id`  
-ID hos UNI-Login
+UNI-Login ID
 
 - `UNI_LOGIN_SECRET` : `unilogin.secret`  
-Secret hos UNI-Login
+UNI-Login Secret
 
 - `UNI_LOGIN_URL` : `unilogin.uniloginBasePath`  
-Base URL til UNI-Login. (`https://sso.emu.dk/unilogin/login.cgi`)
+UNI-Login base URL (`https://sso.emu.dk/unilogin/login.cgi`)
 
-- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`  
-Max alder i sekunder på den ticket man får retur fra UNI-Login (default = 60)
+- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`
+  Max age of the ticket returned from UNI-Login upon successful authetication.  
+  UNI-Loing recommends this value to be set to 60 seconds which is default in Hejmdal.
 
 - `TEST_ENV` : `local`  
-sættes til local for at afvikle selenium lokalt. Default er saucelabs.
+Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 
 # Dokumentation
 ## Endpoints
 - `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
-Login URL. Hvis token parameteren ikke er sat bliver der smidt en `403` fejl. returnurl indeholder den relative url som login resultatet skal sendes til
-- `/logud` eller `/logud?redirect=URL` 
-En brugers session på login.bib.dk fjernes og hvis `?redirect` parameteren er sat redirected browseren til den givne URL. Alternativt bliver browseren på login.bib.dk og der vises en besked om at brugeren er logget ud. 
+Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service
+- `/logud` eller `/logud?redirect=someRelativeCallBackUrl` 
+The users session is removed. The redirect contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
 
