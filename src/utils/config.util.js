@@ -8,7 +8,8 @@
 export const CONFIG = {
   app: {
     env: process.env.NODE_ENV,
-    port: Number(process.env.PORT)
+    port: Number(process.env.PORT),
+    host: process.env.HOST
   },
   borchk: {
     uri: process.env.BORCHK_URI
@@ -42,6 +43,7 @@ export const CONFIG = {
     culr: process.env.MOCK_CULR === '1',
     openAgency: process.env.MOCK_OPENAGENCY === '1',
     smaug: process.env.MOCK_SMAUG === '1',
+    unilogin: process.env.MOCK_UNILOGIN === '1',
     wayf: process.env.MOCK_WAYF === '1'
   },
   mock_storage: {
@@ -74,6 +76,12 @@ export const CONFIG = {
   },
   smaug: {
     uri: process.env.SMAUG_URI
+  },
+  unilogin: {
+    id: process.env.UNI_LOGIN_ID,
+    secret: process.env.UNI_LOGIN_SECRET,
+    uniloginBasePath: process.env.UNI_LOGIN_URL,
+    maxTicketAge: process.env.UNI_LOGIN_MAX_TICKET_AGE || 60
   }
 };
 

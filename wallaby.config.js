@@ -27,12 +27,19 @@ module.exports = function(wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: '' +
-        'HASH_SHARED=12345;' +
-        'MOCK_TICKET_STORAGE=memory;' +
-        'MOCK_CONSENT_STORAGE=memory;' +
+        env: // @see https://wallabyjs.com/docs/config/runner.html
         'PORT=3011;' +
-        'MOCK_CULR=1' // @see https://wallabyjs.com/docs/config/runner.html
+        'HASH_SHARED=test-me-hash-shared;' +
+        'MOCK_TICKET_STORAGE=1;' +
+        'MOCK_CONSENT_STORAGE=1;' +
+        'MOCK_SESSION_STORAGE=1;' +
+        'MOCK_CULR=1;' +
+        'MOCK_BORCHK=1;' +
+        'MOCK_OPENAGENCY=1;' +
+        'MOCK_SMAUG=1;' +
+        'MOCK_WAYF=1;' +
+        'MOCK_UNILOGIN=1;' +
+        'LOG_LEVEL=OFF;'
       }
     },
 

@@ -35,6 +35,18 @@ export function createHash(toHash, hashSecret = 'shared') {
 }
 
 /**
+ * MD5 hashes the given string and returns the result
+ *
+ * @param {string} str
+ */
+export function md5(str){
+  return crypto
+    .createHash('md5')
+    .update(str)
+    .digest('hex');
+}
+
+/**
  * Verify if a hash is generated from an identical string
  *
  * @param hashedString

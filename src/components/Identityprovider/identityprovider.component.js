@@ -8,14 +8,15 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import index from './templates/index.template';
 import borchk from './templates/borchk.template';
 import nemlogin from './templates/nemlogin.template';
-import unilogin from './templates/unilogin.template';
+import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
+import {CONFIG} from "../../utils/config.util";
 
-const templates = {index, borchk, nemlogin, unilogin};
+const templates = {index, borchk, nemlogin, unilogin: getUniloginURL};
 
 /**
- * Returns Identityprovider screen if user is not logged in.  TODO: in its own component???
+ * Returns Identityprovider screen if user is not logged in.
  *
  * @param ctx
  * @param next
@@ -27,7 +28,7 @@ export async function authenticate(ctx, next) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = state.serviceClient.identityProviders;
-      const content = identityProviders.map(value => templates[value](VERSION_PREFIX, authToken)).join('');
+      const content = identityProviders.map(value => templates[value](authToken)).join('');
 
       ctx.body = index({title: 'Log ind via ...', content});
       ctx.status = 200;
@@ -48,11 +49,20 @@ export async function authenticate(ctx, next) {
  * @returns {*}
  */
 export async function uniloginCallback(ctx) {
+  // TODO validate unilogin callback
+  if(!CONFIG.mock_externals.unilogin){
+    console.log(ctx.query);
+    console.log(validateUniloginTicket(ctx.query));
+  }
+
   ctx.setUser({
     userId: ctx.query.id,
     userType: 'unilogin',
     identityProviders: ['unilogin']
   });
+
+  console.log(ctx.getUser());
+
   return ctx;
 }
 
