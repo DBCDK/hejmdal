@@ -147,29 +147,29 @@ export async function identityProviderCallback(ctx, next) {
  * @param {string} authToken
  * @return {{borchk: null}}
  */
-function getIdentityProviders(identityProviders, authToken){
+function getIdentityProviders(identityProviders, authToken) {
   let providers = {
     borchk: null,
     unilogin: null,
     nemlogin: null
   };
 
-  if(identityProviders.includes('borchk')){
+  if (identityProviders.includes('borchk')) {
     providers.borchk = {
       action: `${VERSION_PREFIX}/login/identityProviderCallback/borchk/${authToken}`
-    }
+    };
   }
 
-  if(identityProviders.includes('unilogin')){
+  if (identityProviders.includes('unilogin')) {
     providers.unilogin = {
       link: getUniloginURL(authToken)
-    }
+    };
   }
 
-  if(identityProviders.includes('nemlogin')){
+  if (identityProviders.includes('nemlogin')) {
     providers.nemlogin = {
       link: `${VERSION_PREFIX}/login/identityProviderCallback/nemlogin/${authToken}?eduPersonTargetedID=WAYF-DK-16028a572f83fd83cb0728aab8a6cc0685933a04`
-    }
+    };
   }
 
   return providers;
