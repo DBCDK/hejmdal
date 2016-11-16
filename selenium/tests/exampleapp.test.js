@@ -19,7 +19,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click login button on axample page
     browser.click('#login-button');
     // Click UNI-Login on IdentityProvider select page
-    browser.click('*=UNI');
+    browser.click('#unilogin-btn');
     // Click on accept consent button
     browser.click('#consent-actions-accept');
 
@@ -69,7 +69,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     browser.click('#login-button');
 
     // Click UNI-Login on IdentityProvider select page
-    browser.click('*=UNI');
+    browser.click('#unilogin-btn');
 
     const ticket = browser.getText('#tickettoken');
     assert.isOk(ticket);
