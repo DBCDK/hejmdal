@@ -9,6 +9,7 @@ import serve from 'koa-static';
 import router from './routes/index.routes';
 import cors from 'koa-cors'; // @see https://github.com/evert0n/koa-cors
 import convert from 'koa-convert';
+import Pug from 'koa-pug';
 import responseTime from 'koa-response-time';
 import session from 'koa-session2';
 import Knex from 'knex';
@@ -37,6 +38,16 @@ export function startServer() {
 
   // Initialize knex.
   const knex = Knex(CONFIG.postgres);
+
+  // Add pug
+  const pug = new Pug({
+    viewPath: 'src/Templates',
+    debug: true,
+    compileDebug: true,
+    noCache: true,
+    pretty: CONFIG.app.env !== 'production'
+  });
+  pug.use(app);
 
   // Bind all Models to a knex instance. If you only have one database in
   // your server this is all you have to do. For multi database systems, see
