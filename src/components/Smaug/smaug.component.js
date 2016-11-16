@@ -32,6 +32,7 @@ function extractClientInfo(client) {
   if (client.app.clientId) {
     return {
       id: client.app.clientId,
+      name: client.app.clientName,
       identityProviders: client.identityProviders || [],
       attributes: client.attributes || [],
       borchkServiceName: client.borchkServiceName || null,

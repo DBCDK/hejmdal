@@ -1,0 +1,21 @@
+div#borchk
+  form(action=identityProviders.borchk.action method="post")
+    div.form-group
+      label(for="libraryid-input")
+        strong Bibliotek
+      input(type="text" class="form-control" id="libraryid-input" name="libraryId" placeholder="")
+
+    div.form-group
+      label(for="userid-input")
+        strong CPR eller lånerkortnummer
+      input(type="tel" class="form-control" id="userid-input" name="userId")
+
+    div.form-group
+      label(for="pin-input")
+        strong Pinkode
+      input(type="tel" class="form-control" id="pin-input" name="pincode")
+
+    div.pull-right
+      a(href="#" class="buffer-right-20 link-style")
+        strong Fortryd log ind
+      button(type="submit" class="btn btn-success") Log ind

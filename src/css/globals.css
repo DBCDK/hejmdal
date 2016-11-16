@@ -1,0 +1,20 @@
+.borchk-component {
+  margin-bottom: 50px;
+}
+
+.link-style {
+  color: black;
+  text-decoration: underline;
+}
+
+.link-style:hover {
+  color: black;
+}
+
+#external-providers {
+  margin-bottom: 50px;
+}
+
+.btn-grey {
+  background-color: #7e7c77;
+}

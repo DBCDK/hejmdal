@@ -1,0 +1,61 @@
+:root {
+  --background_color: #d2d0cb;
+  --border_bottom_dark: #616161;
+  --button_green: #007236;
+}
+
+h1 {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+label {
+  font-weight: normal;
+}
+
+@media (min-width: 800px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+.container {
+  background-color: var(--background_color);
+}
+
+.btn-success {
+  background-color: var(--button_green);
+  border-color: var(--button_green);
+}
+
+.form-control {
+  font-size: 18px;
+  font-weight: 700;
+  color: black;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 0;
+  border-bottom: 2px solid var(--border_bottom_dark);
+  padding-left: 0;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  /*border-color: rgba(19, 33, 255, 0.8);*/
+  box-shadow: none;
+}
