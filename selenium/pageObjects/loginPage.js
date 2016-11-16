@@ -12,6 +12,6 @@ export default class LoginPage extends Page {
 
   loginWithUNIlogin() {
     this.open({token: this.validToken});
-    browser.click('*=UNI');
+    browser.click('#unilogin-btn');
   }
 }
