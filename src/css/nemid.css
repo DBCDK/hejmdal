@@ -1,0 +1,10 @@
+@svg-load unilogin url(svg/nem-id.svg) {
+  fill: white;
+}
+
+.nemid-img {
+  display: block;
+  background: svg-inline(unilogin) no-repeat center;
+  width: 80px;
+  height: 23px;
+}

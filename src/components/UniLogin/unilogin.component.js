@@ -18,8 +18,7 @@ import template from './unilogin.template';
  * @return {string}
  */
 export function getUniloginURL(token) {
-  const url = CONFIG.mock_externals.unilogin ? getMockedUniloginUrl(token) : getLiveUniloginUrl(token);
-  return template(url);
+  return CONFIG.mock_externals.unilogin ? getMockedUniloginUrl(token) : getLiveUniloginUrl(token);
 }
 
 /**

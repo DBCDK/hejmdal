@@ -1,0 +1,11 @@
+@svg-load unilogin url(svg/uni-login.svg) {
+  fill: white;
+}
+
+.unilogin-img {
+  display: block;
+  margin-top: 3px;
+  background: svg-inline(unilogin) no-repeat center;
+  width: 80px;
+  height: 20px;
+}
