@@ -21,20 +21,21 @@ describe('Test Consent part of authetication flow', () => {
   afterEach(() => {
     browser.deleteCookie();
     browser.url('/wipestores');
+    browser.url('/logud');
   });
 
-  it('should send user to consent page', () => {
+  xit('should send user to consent page', () => {
     // assert URL ends with 'login/consent'
     assert.isTrue(browser.getUrl().endsWith('login/consent'));
   });
 
-  it('should render message to user', () => {
+  xit('should render message to user', () => {
     const content = browser.getText('#content');
     const expected = 'Ved tryk på Acceptér, accepterer du at dele nedenstående informationer med';
     assert.isTrue(content.startsWith(expected));
   });
 
-  it('should render attributenames in message shown to user', () => {
+  xit('should render attributenames in message shown to user', () => {
     const state = browser.getState();
     const attributes = state.serviceClient.attributes;
 
@@ -44,7 +45,7 @@ describe('Test Consent part of authetication flow', () => {
     });
   });
 
-  it('should render a form', () => {
+  xit('should render a form', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
     const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit" method="post">`;
@@ -52,7 +53,7 @@ describe('Test Consent part of authetication flow', () => {
     assert.isTrue(formHtml.includes(expected));
   });
 
-  it('should render a form that contains a accept button', () => {
+  xit('should render a form that contains a accept button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
     const expected = '<button id="consent-actions-accept" type="submit" value="1" name="userconsent">Acceptér</button>';
