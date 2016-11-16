@@ -9,7 +9,6 @@ import {md5} from '../../utils/hash.utils';
 import {CONFIG} from '../../utils/config.util';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import {log} from '../../utils/logging.util';
-import template from './unilogin.template';
 
 /**
  * Genereates and returns a url to be used for login using UNI-Login
