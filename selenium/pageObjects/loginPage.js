@@ -8,6 +8,7 @@ export default class LoginPage extends Page {
 
   open(qs) {
     super.open(`login?${querystring.stringify(qs)}`);
+    browser.refresh();
   }
 
   loginWithUNIlogin() {

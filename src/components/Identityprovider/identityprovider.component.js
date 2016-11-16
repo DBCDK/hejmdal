@@ -41,7 +41,7 @@ export async function authenticate(ctx, next) {
  * @param ctx
  * @returns {*}
  */
-export function uniloginCallback(ctx) {
+export async function uniloginCallback(ctx) {
   let userId = null;
   if (validateUniloginTicket(ctx.query)) {
     userId = ctx.query.user;
@@ -126,7 +126,7 @@ export async function identityProviderCallback(ctx, next) {
           await nemloginCallback(ctx);
           break;
         case 'unilogin':
-          uniloginCallback(ctx);
+          await uniloginCallback(ctx);
           break;
         default:
           break;
@@ -134,7 +134,7 @@ export async function identityProviderCallback(ctx, next) {
     }
   }
   catch (e) {
-    log.error('Error in identityProviderCallback', {error: e.message, stack: e.stack});
+    log.error('Error in identityProviderCallback', {error: e.message, stack: e.stack, params: ctx.params, state: ctx.getState()});
     ctx.status = 500;
   }
 
@@ -176,6 +176,7 @@ function getIdentityProviders(identityProviders, authToken) {
 }
 
 function idenityProviderValidationFailed(ctx) {
+  console.log('failed');
   const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
   ctx.redirect(startOver);
 }
