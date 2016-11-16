@@ -15,7 +15,6 @@ describe('Test Smaug component', () => {
   beforeEach(() => {
     CONFIG.mock_externals.smaug = true;
     ctx = mockContext('valid_token');
-
   });
 
   afterEach(() => {
@@ -31,6 +30,7 @@ describe('Test Smaug component', () => {
 
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
+      name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin'],
       borchkServiceName: 'bibliotek.dk',
       attributes: {
@@ -78,6 +78,7 @@ describe('Test Smaug component', () => {
     await smaug.getAttributes(ctx, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
+      name: 'Test Service',
       identityProviders: [],
       borchkServiceName: 'bibliotek.dk',
       attributes: [],
