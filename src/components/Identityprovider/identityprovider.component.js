@@ -5,20 +5,15 @@
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {VERSION_PREFIX} from '../../utils/version.util';
-import index from './templates/index.template';
-import borchk from './templates/borchk.template';
-import nemlogin from './templates/nemlogin.template';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
 
-const templates = {index, borchk, nemlogin, unilogin: getUniloginURL};
-
 /**
  * Returns Identityprovider screen if user is not logged in.
  *
- * @param ctx
- * @param next
+ * @param {object} ctx
+ * @param {function} next
  * @returns {*}
  */
 export async function authenticate(ctx, next) {
@@ -26,10 +21,9 @@ export async function authenticate(ctx, next) {
     if (!ctx.hasUser()) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
-      const identityProviders = state.serviceClient.identityProviders;
-      const content = identityProviders.map(value => templates[value](authToken)).join('');
+      const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
 
-      ctx.body = index({title: 'Log ind via ...', content});
+      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX});
       ctx.status = 200;
     }
   }
@@ -145,6 +139,40 @@ export async function identityProviderCallback(ctx, next) {
   }
 
   await next();
+}
+
+/**
+ *
+ * @param {Array} identityProviders
+ * @param {string} authToken
+ * @return {{borchk: null}}
+ */
+function getIdentityProviders(identityProviders, authToken){
+  let providers = {
+    borchk: null,
+    unilogin: null,
+    nemlogin: null
+  };
+
+  if(identityProviders.includes('borchk')){
+    providers.borchk = {
+      action: `${VERSION_PREFIX}/login/identityProviderCallback/borchk/${authToken}`
+    }
+  }
+
+  if(identityProviders.includes('unilogin')){
+    providers.unilogin = {
+      link: getUniloginURL(authToken)
+    }
+  }
+
+  if(identityProviders.includes('nemlogin')){
+    providers.nemlogin = {
+      link: `${VERSION_PREFIX}/login/identityProviderCallback/nemlogin/${authToken}?eduPersonTargetedID=WAYF-DK-16028a572f83fd83cb0728aab8a6cc0685933a04`
+    }
+  }
+
+  return providers;
 }
 
 function idenityProviderValidationFailed(ctx) {

@@ -1,4 +1,5 @@
 import {assert} from 'chai';
+import sinon from 'sinon';
 import {authenticate, identityProviderCallback} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
@@ -12,11 +13,12 @@ describe('test authenticate method', () => {
   const ctx = mockContext();
 
   it('Should return content page', () => {
+    const sandbox = sinon.sandbox.create();
     ctx.setState({serviceClient: {identityProviders: ['borchk', 'unilogin']}});
+    ctx.render = sandbox.mock();
     authenticate(ctx, next);
     assert.equal(ctx.status, 200);
-    assert.include(ctx.body, 'id="borchk"');
-    assert.notInclude(ctx.body, 'id="nemlogin"');
+    sandbox.restore();
   });
 
   it('Should return error', () => {
