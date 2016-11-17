@@ -47,6 +47,7 @@ export function startServer() {
     noCache: true,
     pretty: CONFIG.app.env !== 'production'
   });
+
   pug.use(app);
 
   // Bind all Models to a knex instance. If you only have one database in

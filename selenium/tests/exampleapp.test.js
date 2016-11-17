@@ -18,6 +18,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
     // Click login button on axample page
     browser.click('#login-button');
+    browser.refresh();
+
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
     // Click on accept consent button
@@ -67,6 +69,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
     // Click login button on axample page
     browser.click('#login-button');
+    browser.refresh();
 
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');

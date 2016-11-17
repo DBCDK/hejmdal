@@ -13,6 +13,7 @@ export default class LoginPage extends Page {
 
   loginWithUNIlogin() {
     this.open({token: this.validToken});
+    browser.refresh();
     browser.click('#unilogin-btn');
   }
 }

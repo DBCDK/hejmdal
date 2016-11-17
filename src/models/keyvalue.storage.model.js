@@ -9,11 +9,10 @@ import {log} from '../utils/logging.util';
 
 export default class KeyValueStorage {
   /**
-   * Constructor should have the CRUD storage class as parameter
+   * Constructor should have the CRUD store class as parameter
    */
-  constructor(storage = () => {
-  }) {
-    this.storage = storage;
+  constructor(store) {
+    this.store = store;
   }
 
   /**
@@ -22,10 +21,10 @@ export default class KeyValueStorage {
    * @param {object} object
    * @returns {string} key to stored object
    */
-  insertNext(object) {
+  async insertNext(object) {
     let objectKey = false;
     try {
-      objectKey = this.storage.insertNext(object);
+      objectKey = await this.store.insertNext(object);
     }
     catch (e) {
       log.error('Write object', {error: e.message, stack: e.stack});
@@ -41,11 +40,11 @@ export default class KeyValueStorage {
    * @param {object} object
    * @returns {boolean} Returns true if succesfully stored otherwise false
    */
-  insert(key, object) {
+  async insert(key, object) {
     let success = false;
 
     try {
-      success = this.storage.insert(key, object);
+      success = await this.store.insert(key, object);
     }
     catch (e) {
       log.error('Write object with key', {error: e.message, stack: e.stack});
@@ -55,15 +54,15 @@ export default class KeyValueStorage {
   }
 
   /**
-   * Read an on object from storage
+   * Read an on object from store
    *
    * @param {string} objectKey
    * @returns {boolean}
    */
-  read(objectKey) {
+  async read(objectKey) {
     let object = false;
     try {
-      object = this.storage.read(objectKey);
+      object = await this.store.read(objectKey);
     }
     catch (e) {
       log.error('Read object', {error: e.message, stack: e.stack});
@@ -72,15 +71,15 @@ export default class KeyValueStorage {
   }
 
   /**
-   * Delete an object in storage
+   * Delete an object in store
    *
    * @param {string} objectKey
    * @returns {boolean}
    */
-  delete(objectKey) {
+  async delete(objectKey) {
     let success = false;
     try {
-      success = this.storage.delete(objectKey);
+      success = await this.store.delete(objectKey);
     }
     catch (e) {
       log.error('Delete object', {error: e.message, stack: e.stack});
@@ -95,10 +94,10 @@ export default class KeyValueStorage {
    * @param expires - seconds
    * @returns {*}
    */
-  garbageCollect(probability, expires) {
+  async garbageCollect(probability, expires) {
     if (!Math.floor(Math.random() * probability)) {
       try {
-        return this.storage.garbageCollect(expires);
+        return await this.store.garbageCollect(expires);
       }
       catch (e) {
         log.error('Garbage Collect', {error: e.message, stack: e.stack});

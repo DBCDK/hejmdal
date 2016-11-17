@@ -176,7 +176,6 @@ function getIdentityProviders(identityProviders, authToken) {
 }
 
 function idenityProviderValidationFailed(ctx) {
-  console.log('failed');
   const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
   ctx.redirect(startOver);
 }
