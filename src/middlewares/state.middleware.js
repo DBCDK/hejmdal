@@ -3,7 +3,6 @@
  * Add methods for handling the state object
  */
 
-
 /**
  * Adds the get- and setState methods to the context object
  *
@@ -34,7 +33,6 @@ export async function setDefaultState(ctx, next) {
 
   await next();
 }
-
 
 /**
  * Set new values on State object

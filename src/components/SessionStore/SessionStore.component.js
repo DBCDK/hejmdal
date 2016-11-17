@@ -29,7 +29,8 @@ export default class SessionStore extends Store {
    * @return {undefined|object}
    */
   async get(sid) {
-    return await this.Store.read(sid);
+    const session = await this.Store.read(sid);
+    return session;
   }
 
   /**
