@@ -25,10 +25,13 @@ import ctxdump from './middlewares/ctxdump.middleware';
 
 // Utils
 import {CONFIG, validateConfig} from './utils/config.util';
+import {VERSION} from './utils/version.util';
 import {log} from './utils/logging.util';
+import {cacheAgencies} from './utils/agencies.util';
 
 // Components
 import SessionStore from './components/SessionStore/SessionStore.component';
+import {libraryListFromName} from "./components/OpenAgency/openAgency.client";
 
 export function startServer() {
   validateConfig();
@@ -44,8 +47,11 @@ export function startServer() {
     viewPath: 'src/Templates',
     debug: true,
     compileDebug: true,
-    noCache: true,
-    pretty: CONFIG.app.env !== 'production'
+    noCache: CONFIG.app.env !== 'production',
+    pretty: CONFIG.app.env !== 'production',
+    locals: {
+      version: VERSION
+    }
   });
 
   pug.use(app);
@@ -69,7 +75,10 @@ export function startServer() {
     path: '/',
     httpOnly: true
   }));
-  app.use(convert(serve('./static')));
+
+  app.use(convert(serve('./static', {
+    maxage: CONFIG.app.env !== 'production' ? 0 : 2628000000 // one month
+  })));
 
   app.use(SessionMiddleware);
   app.use(stateMiddleware);
@@ -87,6 +96,8 @@ export function startServer() {
 
   // trust ip-addresses from X-Forwarded-By header, and log requests
   app.proxy = true;
+
+  cacheAgencies();
 
   app.use(router);
 

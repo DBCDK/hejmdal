@@ -8,6 +8,7 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
+import {getListOfAgenciesForFrontend} from "../../utils/agencies.util";
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -22,8 +23,9 @@ export async function authenticate(ctx, next) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
-
-      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX});
+      const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
+      console.log(agencies[0]);
+      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX, agencies: agencies.splice(0, 10)});
       ctx.status = 200;
     }
   }
@@ -134,7 +136,13 @@ export async function identityProviderCallback(ctx, next) {
     }
   }
   catch (e) {
-    log.error('Error in identityProviderCallback', {error: e.message, stack: e.stack, params: ctx.params, state: ctx.getState()});
+    log.error('Error in identityProviderCallback', {
+      error: e.message,
+      stack: e.stack,
+      params: ctx.params,
+      state: ctx.getState()
+    });
+
     ctx.status = 500;
   }
 
