@@ -88,8 +88,6 @@ export function startServer() {
   // trust ip-addresses from X-Forwarded-By header, and log requests
   app.proxy = true;
 
-
-
   app.use(router);
 
   if (CONFIG.app.env !== 'production') {
