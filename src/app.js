@@ -69,6 +69,7 @@ export function startServer() {
     path: '/',
     httpOnly: true
   }));
+  app.use(convert(serve('./static')));
 
   app.use(SessionMiddleware);
   app.use(stateMiddleware);
@@ -88,7 +89,6 @@ export function startServer() {
   app.proxy = true;
 
 
-  app.use(convert(serve('./static')));
 
   app.use(router);
 
