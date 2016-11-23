@@ -5,3 +5,7 @@
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
+
+.hide {
+  display: none;
+}
