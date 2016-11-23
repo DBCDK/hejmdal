@@ -31,7 +31,6 @@ import {cacheAgencies} from './utils/agencies.util';
 
 // Components
 import SessionStore from './components/SessionStore/SessionStore.component';
-import {libraryListFromName} from "./components/OpenAgency/openAgency.client";
 
 export function startServer() {
   validateConfig();

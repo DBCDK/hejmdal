@@ -51,7 +51,6 @@ const mockFindLibrary = {
   notFound: '{"findLibraryRepsonse":{}}'
 };
 
-
 export default function getMockClient(mock = 'notFound') {
   return {
     statusCode: 200,

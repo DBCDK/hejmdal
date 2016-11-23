@@ -8,7 +8,7 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getWayfResponse} from '../Wayf/wayf.component';
-import {getListOfAgenciesForFrontend} from "../../utils/agencies.util";
+import {getListOfAgenciesForFrontend} from '../../utils/agencies.util';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -24,7 +24,12 @@ export async function authenticate(ctx, next) {
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
-      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX, agencies: agencies});
+      ctx.render('Login', {
+        serviceClient: state.serviceClient.name,
+        identityProviders,
+        VERSION_PREFIX,
+        agencies: agencies
+      });
       ctx.status = 200;
     }
   }
