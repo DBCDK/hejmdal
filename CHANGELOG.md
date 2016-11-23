@@ -1,5 +1,36 @@
 # Change Log
 
+## [0.4.0](https://github.com/DBCDK/hejmdal/tree/0.4.0) (2016-11-21)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.3.0...0.4.0)
+
+**Closed issues:**
+
+- borchk som multipel identity provider [\#136](https://github.com/DBCDK/hejmdal/issues/136)
+- Oprette endpoint til autentifikation [\#70](https://github.com/DBCDK/hejmdal/issues/70)
+- Lukning af milestone 0.4.0 [\#155](https://github.com/DBCDK/hejmdal/issues/155)
+- Udvidelse af borchk med brug af det servicenavn der kommer fra Smaug [\#142](https://github.com/DBCDK/hejmdal/issues/142)
+- Udvidelse af Smaug med borchk information [\#141](https://github.com/DBCDK/hejmdal/issues/141)
+- Udvidelse af session store med borchk informationer [\#140](https://github.com/DBCDK/hejmdal/issues/140)
+- openAgency komponent [\#138](https://github.com/DBCDK/hejmdal/issues/138)
+- Flow for en indlogget bruger der blive sendt til Hejmdal skal fikses [\#133](https://github.com/DBCDK/hejmdal/issues/133)
+- IdentityProvider-specifikke attributter skal udleveres til klienterne [\#131](https://github.com/DBCDK/hejmdal/issues/131)
+- Integrationstest af /getTicket [\#129](https://github.com/DBCDK/hejmdal/issues/129)
+- https url'er til stg og prod [\#126](https://github.com/DBCDK/hejmdal/issues/126)
+- Ensretning af mock-switche i env og config [\#124](https://github.com/DBCDK/hejmdal/issues/124)
+- implementere UNIlogin som identity provider [\#63](https://github.com/DBCDK/hejmdal/issues/63)
+
+**Merged pull requests:**
+
+- Version bumped to 0.4.0 [\#156](https://github.com/DBCDK/hejmdal/pull/156) ([hrmoller](https://github.com/hrmoller))
+- \#63: implementere UNIlogin som identity provider [\#151](https://github.com/DBCDK/hejmdal/pull/151) ([hrmoller](https://github.com/hrmoller))
+- \#124: README in english [\#150](https://github.com/DBCDK/hejmdal/pull/150) ([fvsdbc](https://github.com/fvsdbc))
+- \#142: use borchkServiceName in borchk request [\#149](https://github.com/DBCDK/hejmdal/pull/149) ([fvsdbc](https://github.com/fvsdbc))
+- \#141: add borchkServiceName [\#148](https://github.com/DBCDK/hejmdal/pull/148) ([fvsdbc](https://github.com/fvsdbc))
+- \#124: Refactor mock env switches [\#147](https://github.com/DBCDK/hejmdal/pull/147) ([fvsdbc](https://github.com/fvsdbc))
+- \#138: agency list from geo position [\#146](https://github.com/DBCDK/hejmdal/pull/146) ([fvsdbc](https://github.com/fvsdbc))
+- Tester /getTicket endpoint [\#145](https://github.com/DBCDK/hejmdal/pull/145) ([hrmoller](https://github.com/hrmoller))
+- Flow for en indlogget bruger der blive sendt til Hejmdal skal fikses [\#144](https://github.com/DBCDK/hejmdal/pull/144) ([hrmoller](https://github.com/hrmoller))
+
 ## [0.3.0](https://github.com/DBCDK/hejmdal/tree/0.3.0) (2016-11-08)
 [Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.2.0...0.3.0)
 
