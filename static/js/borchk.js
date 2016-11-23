@@ -1,38 +1,47 @@
 document.addEventListener("DOMContentLoaded", function() {
-  const libraryInput = document.getElementById('libraryid-input');
-  const librariesDropdown = document.getElementById('libraries-dropdown-container');
-  const agencies = document.agencies;
-  let currentValue = libraryInput.value;
+ var libraryInput = document.getElementById('libraryid-input');
+ var librariesDropdown = document.getElementById('libraries-dropdown-container');
+ var allAgencies = document.getElementsByClassName('agency');
+ var currentSeacrhValue = libraryInput.value;
 
   libraryInput.addEventListener('keyup', function() {
-    currentValue = libraryInput.value;
+    currentSeacrhValue = libraryInput.value;
     toggleBorchkDropdown();
-    renderDropdownContent();
+    toggleVisibles();
   });
 
   function toggleBorchkDropdown() {
-    const display = currentValue.length >= 1;
+    var display = currentSeacrhValue.length >= 2;
 
-    if(display){
+    if (display) {
       librariesDropdown.classList.add('open');
-    } else {
+    }
+    else {
       librariesDropdown.classList.remove('open');
     }
   }
 
-  function renderDropdownContent() {
-    if(!currentValue.length){
-      return;
+  function toggleVisibles() {
+    for (var i = 0; i < allAgencies.length; i++) {
+      var item = allAgencies.item(i);
+      item.classList.toggle('hide', !allAgencies.item(i).textContent.toLowerCase().includes(currentSeacrhValue.toLowerCase()))
     }
-
-    const newContent =  agencies.filter(function(agency) {
-      return agency.name.toLowerCase().includes(currentValue.toLowerCase());
-    });
-
-    console.log('newContent', newContent);
   }
-
-  toggleBorchkDropdown();
-  renderDropdownContent();
 });
 
+/**
+ * Callback function for dropdown items
+ *
+ * @param {Node} element The element that has been clicked
+ */
+function OnClick(element) {
+  var branchName = element.textContent;
+  var branchId = element.dataset.aid;
+  var libraryInput = document.getElementById('libraryid-input');
+  var librariesDropdown = document.getElementById('libraries-dropdown-container');
+
+  libraryInput.setAttribute('data-aid', branchId);
+  libraryInput.value = branchName;
+  librariesDropdown.classList.remove('open');
+  document.getElementById('userid-input').focus()
+}
