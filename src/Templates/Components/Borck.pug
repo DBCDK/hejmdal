@@ -3,13 +3,13 @@ div#borchk
     div.form-group
       label(for="libraryid-input")
         strong Bibliotek
-      input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="", value="bib")
+      input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="")
       if agencies
-        div.dropdown.open#libraries-dropdown-container
+        div.dropdown#libraries-dropdown-container
           ul(class="dropdown-menu libraries-dropdown")
             each agency in agencies
               li
-                a(href="" class="agency" data-aid=agency.branchId) #{agency.name}
+                a(class="agency" data-aid=agency.branchId onclick='OnClick(this)') #{agency.name}
 
     div.form-group
       label(for="userid-input")
@@ -25,7 +25,3 @@ div#borchk
       a(href="#" class="buffer-right-20 link-style")
         strong Fortryd log ind
       button(type="submit" class="btn btn-success") Log ind
-
-script.
-  document.agencies =!{JSON.stringify(agencies)}
-  console.log(document.agencies);
