@@ -9,7 +9,7 @@ div#borchk
           ul(class="dropdown-menu libraries-dropdown")
             each agency in agencies
               li
-                a(class="agency" data-aid=agency.branchId onclick='OnClick(this)') #{agency.name}
+                a(class="agency" data-aid=agency.branchId onclick='OnClick(this)' autocomplete="false") #{agency.name}
 
     div.form-group
       label(for="userid-input")
