@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
- var libraryInput = document.getElementById('libraryid-input');
- var librariesDropdown = document.getElementById('libraries-dropdown-container');
- var allAgencies = document.getElementsByClassName('agency');
- var currentSeacrhValue = libraryInput.value;
+document.addEventListener('DOMContentLoaded', function() {
+  var libraryInput = document.getElementById('libraryid-input');
+  var librariesDropdown = document.getElementById('libraries-dropdown-container');
+  var allAgencies = document.getElementsByClassName('agency');
+  var currentSeacrhValue = libraryInput.value;
 
   libraryInput.addEventListener('keyup', function() {
     currentSeacrhValue = libraryInput.value;
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function toggleVisibles() {
     for (var i = 0; i < allAgencies.length; i++) {
       var item = allAgencies.item(i);
-      item.classList.toggle('hide', !allAgencies.item(i).textContent.toLowerCase().includes(currentSeacrhValue.toLowerCase()))
+      item.classList.toggle('hide', !allAgencies.item(i).textContent.toLowerCase().includes(currentSeacrhValue.toLowerCase()));
     }
   }
 });
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
  *
  * @param {Node} element The element that has been clicked
  */
-function OnClick(element) {
+function OnClick(element) { // eslint-disable-line no-unused-vars
   var branchName = element.textContent;
   var branchId = element.dataset.aid;
   var libraryInput = document.getElementById('libraryid-input');
@@ -43,5 +43,5 @@ function OnClick(element) {
   libraryInput.setAttribute('data-aid', branchId);
   libraryInput.value = branchName;
   librariesDropdown.classList.remove('open');
-  document.getElementById('userid-input').focus()
+  document.getElementById('userid-input').focus();
 }
