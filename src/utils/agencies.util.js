@@ -29,7 +29,7 @@ export async function getListOfAgenciesForFrontend() {
 
   if (!uiList || !uiList.length) {
     uiList = AgencyList.map((agency) => {
-      return {branchId: agency.branchId, name: agency.name}
+      return {branchId: agency.branchId, name: agency.name};
     });
   }
 

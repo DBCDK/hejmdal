@@ -12,11 +12,11 @@ describe('test authenticate method', () => {
   };
   const ctx = mockContext();
 
-  it('Should return content page', () => {
+  it('Should return content page', async() => {
     const sandbox = sinon.sandbox.create();
     ctx.setState({serviceClient: {identityProviders: ['borchk', 'unilogin']}});
     ctx.render = sandbox.mock();
-    authenticate(ctx, next);
+    await authenticate(ctx, next);
     assert.equal(ctx.status, 200);
     sandbox.restore();
   });
