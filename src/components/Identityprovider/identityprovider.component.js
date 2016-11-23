@@ -24,8 +24,7 @@ export async function authenticate(ctx, next) {
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
-      console.log(agencies[0]);
-      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX, agencies: agencies.splice(0, 10)});
+      ctx.render('Login', {serviceClient: state.serviceClient.name, identityProviders, VERSION_PREFIX, agencies: agencies});
       ctx.status = 200;
     }
   }
