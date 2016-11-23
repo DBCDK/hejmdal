@@ -8,7 +8,7 @@
     "build:css:dev": "postcss --watch --map --use postcss-import --use autoprefixer --use cssnano --use postcss-inline-svg --use postcss-custom-properties src/css/*.css --dir static/css/",
     "build:css:prod": "postcss --use postcss-import --use autoprefixer --use cssnano src/**/*.css --dir static/css/",
     "clean:errorShots": "rm -rf ./errorShots/*.png",
-    "lint": "eslint ./src ./selenium --cache",
+    "lint": "eslint ./src ./selenium ./static/js/borchk.js --cache",
     "lint:checkstyle": "eslint ./src ./selenium -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js --ignore ./static/example",
