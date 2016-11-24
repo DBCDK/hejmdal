@@ -1,3 +1,8 @@
+/**
+ * @file
+ * This file provides the necessary functionality to provide a smooth user experience using the Borchk serviceprovider.
+ */
+
 document.addEventListener('DOMContentLoaded', function() {
   var libraryInput = document.getElementById('libraryid-input');
   var librariesDropdown = document.getElementById('libraries-dropdown-container');
@@ -15,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   libraryInput.addEventListener('keydown', function(e) {
-    console.log(e.key);
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
       e.preventDefault();
       navigateDropDown(e.key);
@@ -31,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   /**
+   * Hides the dropdown if it's open
    *
    * @param {KeyboardEvent} e
    */
@@ -41,8 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  function toggleBorchkDropdown(toggle = null) {
-    var display = toggle !== null ? toggle : currentSeacrhValue.length >= 2;
+  /**
+   * Toggles the dropdown. If the content of the library input field contains two or more characters the droipdown will
+   * be shown, otherwise it will be closed.
+   */
+  function toggleBorchkDropdown() {
+    var display = currentSeacrhValue.length >= 2;
 
     if (display) {
       librariesDropdown.classList.add('open');
@@ -52,6 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  /**
+   * Based on the value of the library input field the items in the list of agencies will be toggled hidden/shown.
+   * If the given library name contains the current value of the library input field it will  be shown otherwise hidden.
+   */
   function toggleVisibles() {
     currentlyVisibleAgencies = [];
 
@@ -68,6 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  /**
+   * Based on the given string the currently highligted library in the dropdown will be set simply by adding the
+   * 'selected' class.
+   *
+   * @param {String} key
+   */
   function navigateDropDown(key) {
     if (!librariesDropdown.classList.contains('open')) {
       return;
@@ -103,6 +122,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  /**
+   * Selects the currently hightligted item in the dropdown list.
+   *
+   * @param {KeyboardEvent} e
+   */
   function selectHighlighted(e) {
     var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
