@@ -6,7 +6,7 @@ import querystring from 'querystring';
 export default class LoginPage extends Page {
   validToken = 'valid_token';
 
-  constructor(){
+  constructor() {
     super();
     this.open({token: this.validToken});
   }

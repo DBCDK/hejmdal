@@ -9,7 +9,7 @@ import {assert} from 'chai';
 import LoginPage from '../pageObjects/loginPage';
 
 describe('Test Borchk component', () => {
-  let loginPage;
+  let loginPage; // eslint-disable-line no-unused-vars
 
   beforeEach(() => {
     loginPage = new LoginPage();
@@ -34,7 +34,7 @@ describe('Test Borchk component', () => {
     browser.addValue('#libraryid-input', 'n');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
-// keydown: https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
+  // keydown: https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
   it('shuld display two out of four options', () => {
     browser.addValue('#libraryid-input', 'rin');
     const agencies = browser.elements('.agency');
@@ -45,9 +45,10 @@ describe('Test Borchk component', () => {
     // Iterate through the agenices in the dropdown and count visible/hidden items
     agencies.value.forEach((element) => {
       const isVisible = browser.elementIdDisplayed(element.ELEMENT).value;
-      if(isVisible){
+      if (isVisible) {
         visible++;
-      } else {
+      }
+      else {
         hidden++;
       }
     });

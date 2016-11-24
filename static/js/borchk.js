@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
    * @param {KeyboardEvent} e
    */
   function escapeWasPressed(e) {
-    if(librariesDropdown.classList.contains('open')){
+    if (librariesDropdown.classList.contains('open')) {
       e.preventDefault();
       librariesDropdown.classList.remove('open');
     }
