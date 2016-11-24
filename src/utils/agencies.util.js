@@ -14,8 +14,8 @@ let uiList = [];
 /**
  *
  */
-export async function cacheAgencies() {
-  AgencyList = await libraryListFromName('');
+export async function cacheAgencies(name = '') {
+  AgencyList = await libraryListFromName(name);
 }
 
 /**

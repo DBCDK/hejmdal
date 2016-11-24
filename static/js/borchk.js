@@ -14,6 +14,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  libraryInput.addEventListener('keydown', function(e) {
+    console.log(e.key);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      navigateDropDown(e.key);
+    }
+
+    if (e.key === 'Tab' || e.key === 'Enter') {
+      selectHighlighted(e);
+    }
+  });
+
   function toggleBorchkDropdown() {
     var display = currentSeacrhValue.length >= 2;
 
@@ -41,13 +53,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  $(window).keydown(function(e) { // eslint-disable-line no-undef
-    if (e.which !== 40 && e.which !== 38) {
+  function navigateDropDown(key) {
+    if (!librariesDropdown.classList.contains('open')) {
       return;
     }
 
-    e.preventDefault();
-    if (e.which === 40) {
+    if (key === 'ArrowDown') {
       if (currentlySelectedIndex >= 0) {
         currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
         currentlySelectedIndex++;
@@ -61,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
     }
-    else if (e.which === 38) {
+    else if (key === 'ArrowUp') {
       if (currentlySelectedIndex >= 0) {
         currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
         currentlySelectedIndex--;
@@ -75,7 +86,20 @@ document.addEventListener('DOMContentLoaded', function() {
       }
       currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
     }
-  });
+  }
+
+  function selectHighlighted(e) {
+    var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
+
+    if (currentlySelected && librariesDropdown.classList.contains('open')) {
+      e.preventDefault();
+      OnClick(currentlyVisibleAgencies[currentlySelectedIndex]);
+    }
+    else if (librariesDropdown.classList.contains('open')) {
+      e.preventDefault();
+      navigateDropDown('ArrowDown');
+    }
+  }
 });
 
 /**
