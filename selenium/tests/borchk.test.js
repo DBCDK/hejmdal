@@ -74,7 +74,7 @@ describe('Test Borchk component', () => {
 
     assert.equal(selectedElementText, inputValue);
 
-    //Assert that the userid input field have focus
+    // Assert that the userid input field have focus
     assert.isTrue(browser.hasFocus('#userid-input'));
   });
 
@@ -95,7 +95,7 @@ describe('Test Borchk component', () => {
 
     assert.equal(selectedElementText, inputValue);
 
-    //Assert that the userid input field have focus
+    // Assert that the userid input field have focus
     assert.isTrue(browser.hasFocus('#userid-input'));
   });
 
