@@ -24,10 +24,25 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.key === 'Tab' || e.key === 'Enter') {
       selectHighlighted(e);
     }
+
+    if (e.key === 'Escape') {
+      escapeWasPressed(e);
+    }
   });
 
-  function toggleBorchkDropdown() {
-    var display = currentSeacrhValue.length >= 2;
+  /**
+   *
+   * @param {KeyboardEvent} e
+   */
+  function escapeWasPressed(e) {
+    if(librariesDropdown.classList.contains('open')){
+      e.preventDefault();
+      librariesDropdown.classList.remove('open');
+    }
+  }
+
+  function toggleBorchkDropdown(toggle = null) {
+    var display = toggle !== null ? toggle : currentSeacrhValue.length >= 2;
 
     if (display) {
       librariesDropdown.classList.add('open');
