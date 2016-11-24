@@ -34,7 +34,7 @@ describe('Test Borchk component', () => {
     browser.addValue('#libraryid-input', 'n');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
-  // keydown: https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
+
   it('shuld display two out of four options', () => {
     browser.addValue('#libraryid-input', 'rin');
     const agencies = browser.elements('.agency');
@@ -55,5 +55,56 @@ describe('Test Borchk component', () => {
 
     assert.equal(visible, 2);
     assert.equal(hidden, 2);
+  });
+
+  it('should select current selected element, close dropdown and focus next input field when tab is pressed', () => {
+    browser.addValue('#libraryid-input', 'rin');
+
+    // Pressing ArrowDown key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
+    browser.keys('\uE015');
+
+    // Get text of currently selected item in dropdrown
+    const selectedElementText = browser.element('.selected').getText();
+
+    // Pressing Tab key
+    browser.keys('\uE004');
+
+    // Get value of library input field
+    const inputValue = browser.element('#libraryid-input').getValue();
+
+    assert.equal(selectedElementText, inputValue);
+
+    //Assert that the userid input field have focus
+    assert.isTrue(browser.hasFocus('#userid-input'));
+  });
+
+  it('should select current selected element, close dropdown and focus next input field when enter is pressed', () => {
+    browser.addValue('#libraryid-input', 'rin');
+
+    // Pressing ArrowDown key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
+    browser.keys('\uE015');
+
+    // Get text of currently selected item in dropdrown
+    const selectedElementText = browser.element('.selected').getText();
+
+    // Pressing Tab key
+    browser.keys('\uE007');
+
+    // Get value of library input field
+    const inputValue = browser.element('#libraryid-input').getValue();
+
+    assert.equal(selectedElementText, inputValue);
+
+    //Assert that the userid input field have focus
+    assert.isTrue(browser.hasFocus('#userid-input'));
+  });
+
+  it('should close dropwdown on escape', () => {
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
+    browser.addValue('#libraryid-input', 'rin');
+    assert.isTrue(browser.isVisible('#libraries-dropdown'));
+    // Pressing escape key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
+    browser.keys('\uE00C');
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
   });
 });
