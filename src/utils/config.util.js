@@ -41,6 +41,7 @@ export const CONFIG = {
   mock_externals: {
     borchk: process.env.MOCK_BORCHK === '1',
     culr: process.env.MOCK_CULR === '1',
+    nemlogin: process.env.MOCK_NEMLOGIN === '1',
     openAgency: process.env.MOCK_OPENAGENCY === '1',
     smaug: process.env.MOCK_SMAUG === '1',
     unilogin: process.env.MOCK_UNILOGIN === '1',
@@ -82,6 +83,13 @@ export const CONFIG = {
     secret: process.env.UNI_LOGIN_SECRET,
     uniloginBasePath: process.env.UNI_LOGIN_URL,
     maxTicketAge: process.env.UNI_LOGIN_MAX_TICKET_AGE || 60
+  },
+  gatewayf: {
+    uri: process.env.GATEWAYF_URI,
+    idp: {
+      nemlogin: 'nemlogin',
+      wayf: 'wayf'
+    }
   }
 };
 
