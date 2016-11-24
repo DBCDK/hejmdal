@@ -1,19 +1,2 @@
-.libraries-dropdown {
-  max-height: 200px;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-.agency:hover{
-  cursor: pointer;
-}
-
-.selected {
-  background-color: #f5f5f5;
-}
-
-.hide {
-  display: none;
-}
+.libraries-dropdown{max-height:200px;width:100%;overflow-y:scroll;overflow-x:hidden;-webkit-overflow-scrolling:touch}.agency:hover{cursor:pointer}.selected{background-color:#f5f5f5}.hide{display:none}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9jc3MvYm9yY2hrLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxvQkFDRSxpQkFBa0IsQUFDbEIsV0FBWSxBQUNaLGtCQUFtQixBQUNuQixrQkFBbUIsQUFDbkIsZ0NBQWtDLENBQ25DLEFBRUQsY0FDRSxjQUFnQixDQUNqQixBQUVELFVBQ0Usd0JBQTBCLENBQzNCLEFBRUQsTUFDRSxZQUFjLENBQ2YiLCJmaWxlIjoiYm9yY2hrLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5saWJyYXJpZXMtZHJvcGRvd24ge1xuICBtYXgtaGVpZ2h0OiAyMDBweDtcbiAgd2lkdGg6IDEwMCU7XG4gIG92ZXJmbG93LXk6IHNjcm9sbDtcbiAgb3ZlcmZsb3cteDogaGlkZGVuO1xuICAtd2Via2l0LW92ZXJmbG93LXNjcm9sbGluZzogdG91Y2g7XG59XG5cbi5hZ2VuY3k6aG92ZXJ7XG4gIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuLnNlbGVjdGVkIHtcbiAgYmFja2dyb3VuZC1jb2xvcjogI2Y1ZjVmNTtcbn1cblxuLmhpZGUge1xuICBkaXNwbGF5OiBub25lO1xufVxuIl19 */
