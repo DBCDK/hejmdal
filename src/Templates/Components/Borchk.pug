@@ -5,8 +5,10 @@ div#borchk
         strong Bibliotek
       input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="Vælg bibliotek" autocomplete="off")
       if agencies
-        div.dropdown#libraries-dropdown-container
+        div.dropdown.open#libraries-dropdown-container
           ul(class="dropdown-menu libraries-dropdown" id="libraries-dropdown")
+            li(class="dropdown-header hide" id="latest") Senest valgte biblioteker
+            li(class="dropdown-header hide" id="alphabetical") Alfabetisk
             each agency in agencies
               li
                 a(class="agency" data-aid=agency.branchId onclick='OnClick(this)') #{agency.name}
