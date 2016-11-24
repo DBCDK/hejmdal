@@ -214,4 +214,8 @@ if (process.env.TEST_ENV === 'local') {
   config = Object.assign(config, require('./local.conf').default);
 }
 
+if (process.env.TEST_ENV === 'saucelabs') {
+  config = Object.assign(config, require('./sauce.conf').default);
+}
+
 exports.config = config;

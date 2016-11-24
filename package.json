@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "dev": ". ./env.env && npm run serve",
+    "dev:test": ". ./env.test && npm run serve",
     "build:css:dev": "postcss --watch --map --use postcss-import --use autoprefixer --use cssnano --use postcss-inline-svg --use postcss-custom-properties src/css/*.css --dir static/css/",
     "build:css:prod": "postcss --use postcss-import --use autoprefixer --use cssnano src/**/*.css --dir static/css/",
     "clean:errorShots": "rm -rf ./errorShots/*.png",
@@ -13,7 +14,7 @@
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js --ignore ./static/example",
     "test": ". ./env.test && mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
-    "test:integration": ". ./env.test && wdio ./selenium/config/wdio.conf.js",
+    "test:integration": ". ./env.test && TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
