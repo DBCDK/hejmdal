@@ -35,7 +35,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
 
-  it('shuld display two out of four options', () => {
+  it('should display two out of four options', () => {
     browser.addValue('#libraryid-input', 'rin');
     const agencies = browser.elements('.agency');
     assert.equal(agencies.value.length, 4, 'A total of 4 agencies is present in the dropdown');
