@@ -34,6 +34,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  if (Storage !== undefined) { // eslint-disable-line no-undefined
+    setRecentlySelectedLibraries();
+  }
+
+  /**
+   * Manipulates the content of the dropdown. If any agencies are found in localStorage they will be rendered at the top
+   * of the dropdown.
+   */
+  function setRecentlySelectedLibraries() {
+    const storedAgencies = localStorage.getItem('agencies');
+    if (!storedAgencies || !storedAgencies.length) {
+      return;
+    }
+
+    const agencies = JSON.parse(storedAgencies);
+
+    const latestHeader = document.getElementById('latest');
+    const alphabeticalHeader = document.getElementById('alphabetical');
+    const librariesDopdown = document.getElementById('libraries-dropdown');
+
+    latestHeader.classList.remove('hide');
+    alphabeticalHeader.classList.remove('hide');
+
+    agencies.forEach(function(agency) {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.classList.add('agency');
+      a.setAttribute('data-aid', agency.branchId);
+      a.setAttribute('onclick', 'OnClick(this)');
+      a.appendChild(document.createTextNode(agency.branchName));
+      li.appendChild(a);
+      librariesDopdown.insertBefore(li, alphabeticalHeader);
+    });
+  }
+
   /**
    * Hides the dropdown if it's open
    *
@@ -156,4 +191,22 @@ function OnClick(element) { // eslint-disable-line no-unused-vars
   libraryInput.value = branchName;
   librariesDropdown.classList.remove('open');
   document.getElementById('userid-input').focus();
+  addElementToLocalStorage({branchName, branchId});
+}
+
+function addElementToLocalStorage({branchName, branchId}) {
+  if (Storage === undefined) { // eslint-disable-line no-undefined
+    return;
+  }
+
+  const storedAgencies = localStorage.getItem('agencies');
+  const agencies = storedAgencies ? JSON.parse(storedAgencies) : [];
+  // TODO mmj check if given item already is stored -- we dont want duplicates
+  agencies.splice(0, 0, {branchName, branchId});
+
+  if (agencies.length >= 7) {
+    agencies.pop();
+  }
+
+  localStorage.setItem('agencies', JSON.stringify(agencies));
 }
