@@ -15,7 +15,7 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-  // Patterns to exclude.
+    // Patterns to exclude.
     './selenium/**/*.test.js'
   ],
   exclude: [
@@ -216,6 +216,7 @@ if (process.env.TEST_ENV === 'local') {
 
 if (process.env.TEST_ENV === 'saucelabs') {
   config = Object.assign(config, require('./sauce.conf').default);
+  console.log(config);
 }
 
 exports.config = config;
