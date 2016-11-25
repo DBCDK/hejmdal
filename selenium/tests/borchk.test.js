@@ -87,7 +87,7 @@ describe('Test Borchk component', () => {
     // Get text of currently selected item in dropdrown
     const selectedElementText = browser.element('.selected').getText();
 
-    // Pressing Tab key
+    // Pressing Enter key
     browser.keys('\uE007');
 
     // Get value of library input field
@@ -106,5 +106,42 @@ describe('Test Borchk component', () => {
     // Pressing escape key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
     browser.keys('\uE00C');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
+  });
+
+  it('should add selected items to "Forslag"', () => {
+    // Empty localStorage
+    browser.localStorage('DELETE', 'agencies');
+    // Refresh browser to make it take effect
+    browser.refresh();
+
+    browser.addValue('#libraryid-input', 'rin');
+
+    // Ensure the two labels in the dropdown are hidden
+    assert.isFalse(browser.isVisible('#latest'));
+    assert.isFalse(browser.isVisible('#alphabetical'));
+
+
+    // Select first item in dropdown -- ArrowDown Enter
+    browser.keys(['\uE015', '\uE007']);
+
+    // We should now have one item with the .recent class set
+    assert.equal(browser.elements('.recent').value.length, 1);
+
+    browser.setValue('#libraryid-input', '');
+    browser.addValue('#libraryid-input', 'rin');
+
+    // Ensure the two labels in the dropdown are now visible
+    assert.isTrue(browser.isVisible('#latest'));
+    assert.isTrue(browser.isVisible('#alphabetical'));
+
+    // ArrowDown ArrowDown ArrowDown Enter
+    browser.keys(['\uE015', '\uE015', '\uE015', '\uE007']);
+
+    browser.setValue('#libraryid-input', '');
+    browser.addValue('#libraryid-input', 'rin');
+
+    // We should now have one item with the .recent class set
+    assert.equal(browser.elements('.recent').value.length, 2);
+    // console.log(browser.elements('.recent').value[0].value);
   });
 });

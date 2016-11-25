@@ -34,7 +34,7 @@ export async function libraryListFromName(text) {
 
   if (response.statusCode === 200) {
     const body = JSON.parse(response.body);
-    if (body.findLibraryResponse.error) {
+    if (body.findLibraryResponse && body.findLibraryResponse.error) {
       const error = body.findLibraryResponse.error.$;
       log.error('Error while retrieving result from OpenAgency', {
         error: error

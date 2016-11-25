@@ -166,6 +166,7 @@ let config = {
   //
   // Hook that gets executed before the suite starts
   // beforeSuite: function (suite) {
+  //
   // },
   //
   // Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
