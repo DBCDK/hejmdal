@@ -8,7 +8,7 @@ import {assert} from 'chai';
 
 import LoginPage from '../pageObjects/loginPage';
 
-describe('Test Borchk component', () => {
+describe('Test Borchk component - non Firefox', () => {
   let loginPage; // eslint-disable-line no-unused-vars
 
   beforeEach(() => {
