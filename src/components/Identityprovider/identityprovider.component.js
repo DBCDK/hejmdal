@@ -24,7 +24,7 @@ export async function authenticate(ctx, next) {
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
-      const selectAgencyName = getSelectedAgencyName(state.serviceAgency, agencies);
+      const selectAgencyName = getAgencyName(state.serviceAgency, agencies);
       ctx.render('Login', {
         serviceClient: state.serviceClient.name,
         identityProviders,
@@ -207,7 +207,7 @@ function idenityProviderValidationFailed(ctx) {
  * @param agencyList
  * @returns {*}
  */
-function getSelectedAgencyName(agencyId, agencyList) {
+export function getAgencyName(agencyId, agencyList) {
   let name = '';
   if (agencyId) {
     name = 'Ukendt bibliotek: ' + agencyId;
