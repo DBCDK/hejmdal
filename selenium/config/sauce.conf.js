@@ -6,7 +6,7 @@ export default {
       browserName: 'chrome',
       platform: 'OS X 10.11',
       version: 'latest',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER + ':chrome',
+      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
       build: process.env.TRAVIS_BUILD_NUMBER
     },
     {
@@ -14,8 +14,11 @@ export default {
       browserName: 'firefox',
       platform: 'OS X 10.11',
       version: '47.0',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER + ':firefox',
-      build: process.env.TRAVIS_BUILD_NUMBER
+      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+      build: process.env.TRAVIS_BUILD_NUMBER,
+      exclude: [
+        './selenium/**/*.nonff.test.js' // excluded due to missing support for Storage and keys in Firefox selenium driver
+      ]
     }
   ]
 };
