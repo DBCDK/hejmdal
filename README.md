@@ -169,8 +169,8 @@ Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 
 # Dokumentation
 ## Endpoints
-- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
-Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service
+- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl&agency=myAgencyId` 
+Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.
 - `/logud` eller `/logud?redirect=someRelativeCallBackUrl` 
 The users session is removed. The redirect contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
 

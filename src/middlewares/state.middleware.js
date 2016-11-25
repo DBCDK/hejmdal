@@ -23,9 +23,10 @@ export async function stateMiddleware(ctx, next) {
 export async function setDefaultState(ctx, next) {
   ctx.session.state = {
     consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
-    smaugToken: ctx.query.token || null,
-    serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
     returnUrl: ctx.query.returnurl || null,
+    serviceAgency: ctx.query.agency || null,
+    serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
+    smaugToken: ctx.query.token || null,
     ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object
   };
 
