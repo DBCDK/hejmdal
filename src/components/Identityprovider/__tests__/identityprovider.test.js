@@ -87,12 +87,15 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.getUser(), expected);
   });
 
-  const agencies = new Array({branchId: '710100', name: 'Hovedbiblioteket, Krystalgade'}, {branchId: '761500', name: 'Horsens Bibliotek'});
-  it ('Should find the library name', async() => {
+  const agencies = [
+    {branchId: '710100', name: 'Hovedbiblioteket, Krystalgade'},
+    {branchId: '761500', name: 'Horsens Bibliotek'}
+  ];
+  it('Should find the library name', async() => {
     assert.equal('Hovedbiblioteket, Krystalgade', getAgencyName('710100', agencies));
-  })
+  });
 
-  it ('Should set unknown library name', async() => {
+  it('Should set unknown library name', async() => {
     assert.equal('Ukendt bibliotek: 710101', getAgencyName('710101', agencies));
-  })
+  });
 });
