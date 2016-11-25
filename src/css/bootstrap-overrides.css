@@ -1,6 +1,6 @@
 :root {
   --background_color: #d2d0cb;
-  --border_bottom_dark: #616161;
+  --dark-grey: #616161;
   --button_green: #007236;
 }
 
@@ -36,7 +36,7 @@ label {
   box-shadow: none;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid var(--border_bottom_dark);
+  border-bottom: 2px solid var(--dark-grey);
   padding-left: 0;
 }
 
@@ -67,5 +67,5 @@ input[type="color"]:focus,
   border: none;
   border-radius: 0;
   background-color: transparent;
-  border-bottom: solid var(--border_bottom_dark) 2px;
+  border-bottom: solid var(--dark-grey) 2px;
 }
