@@ -104,6 +104,24 @@ function toggleBorchkDropdown() {
 }
 
 /**
+ *
+ * @param {string} className
+ * @param {string} glyphId
+ */
+function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-unused-vars
+  var userInputField = document.getElementById(className);
+  var currentType = userInputField.getAttribute('type');
+  var newType = currentType === 'password' ? 'tel' : 'password';
+
+  userInputField.setAttribute('type', newType);
+  var glyph = document.getElementById(glyphId);
+  glyph.classList.toggle('glyphicon-eye-close');
+  glyph.classList.toggle('glyphicon-eye-open');
+
+  userInputField.focus();
+}
+
+/**
  * Toggles the libraries dropdown open/cloesd
  */
 function toggleDropdown(forceOpen = null) {
@@ -117,7 +135,8 @@ function toggleDropdown(forceOpen = null) {
     librariesDropdown.classList.toggle('open');
   }
 
-  librariesDropdown.setAttribute('aria-hidden', !librariesDropdown.classList.contains('open').toString());
+  var ariaHidden = !librariesDropdown.classList.contains('open');
+  librariesDropdown.setAttribute('aria-hidden', ariaHidden.toString());
 }
 
 /**

@@ -177,4 +177,20 @@ describe('Test Borchk component', () => {
     browser.click('#clear-libraries-input-btn');
     assert.equal('', browser.getValue('#libraryid-input'), 'input field is empty');
   });
+
+  it('Should switch type on userid input field', () => {
+    assert.equal(browser.getAttribute('#userid-input', 'type'), 'tel');
+    browser.click('#toggle-userid-input');
+    assert.equal(browser.getAttribute('#userid-input', 'type'), 'password');
+    browser.click('#toggle-userid-input');
+    assert.equal(browser.getAttribute('#userid-input', 'type'), 'tel');
+  });
+
+  it('Should switch type on pin input field', () => {
+    assert.equal(browser.getAttribute('#pin-input', 'type'), 'password');
+    browser.click('#toggle-pin-input');
+    assert.equal(browser.getAttribute('#pin-input', 'type'), 'tel');
+    browser.click('#toggle-pin-input');
+    assert.equal(browser.getAttribute('#pin-input', 'type'), 'password');
+  });
 });
