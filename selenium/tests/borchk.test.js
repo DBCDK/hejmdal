@@ -61,13 +61,13 @@ describe('Test Borchk component', () => {
     browser.addValue('#libraryid-input', 'rin');
 
     // Pressing ArrowDown key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
-    browser.keys('\uE015');
+    browser.keys('ArrowDown');
 
     // Get text of currently selected item in dropdrown
     const selectedElementText = browser.element('.selected').getText();
 
     // Pressing Tab key
-    browser.keys('\uE004');
+    browser.keys('Tab');
 
     // Get value of library input field
     const inputValue = browser.element('#libraryid-input').getValue();
@@ -82,13 +82,13 @@ describe('Test Borchk component', () => {
     browser.addValue('#libraryid-input', 'rin');
 
     // Pressing ArrowDown key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
-    browser.keys('\uE015');
+    browser.keys('ArrowDown');
 
     // Get text of currently selected item in dropdrown
     const selectedElementText = browser.element('.selected').getText();
 
     // Pressing Enter key
-    browser.keys('\uE007');
+    browser.keys('Enter');
 
     // Get value of library input field
     const inputValue = browser.element('#libraryid-input').getValue();
@@ -104,7 +104,7 @@ describe('Test Borchk component', () => {
     browser.addValue('#libraryid-input', 'rin');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
     // Pressing escape key -- https://w3c.github.io/webdriver/webdriver-spec.html#h-keyboard-actions
-    browser.keys('\uE00C');
+    browser.keys('Escape');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
   });
 
@@ -122,7 +122,7 @@ describe('Test Borchk component', () => {
 
 
     // Select first item in dropdown -- ArrowDown Enter
-    browser.keys(['\uE015', '\uE007']);
+    browser.keys(['ArrowDown', 'Enter']);
 
     // We should now have one item with the .recent class set
     assert.equal(browser.elements('.recent').value.length, 1);
@@ -135,7 +135,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#alphabetical'));
 
     // ArrowDown ArrowDown ArrowDown Enter
-    browser.keys(['\uE015', '\uE015', '\uE015', '\uE007']);
+    browser.keys(['ArrowDown', 'ArrowDown', 'ArrowDown', 'Enter']);
 
     browser.setValue('#libraryid-input', '');
     browser.addValue('#libraryid-input', 'rin');
