@@ -59,3 +59,19 @@ input[type="color"]:focus,
   /*border-color: rgba(19, 33, 255, 0.8);*/
   box-shadow: none;
 }
+
+.dropdown-toggle,
+.dropdown-toggle:hover,
+.dropdown-toggle:active,
+.dropdown-toggle:focus {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  border-bottom: solid var(--border_bottom_dark) 2px;
+}
+
+.caret {
+  border-top: 8px dashed;
+  border-right: 6px solid transparent;
+  border-left: 6px solid transparent;
+}

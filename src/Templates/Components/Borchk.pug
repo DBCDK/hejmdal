@@ -3,7 +3,12 @@ div#borchk
     div.form-group
       label(for="libraryid-input")
         strong Bibliotek
-      input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="Vælg bibliotek" autocomplete="off")
+      div.input-group
+        input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="Vælg bibliotek" autocomplete="off")
+        div.input-group-btn
+          button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick='toggleDropdown()')
+            span.caret
+
       if agencies
         div.dropdown#libraries-dropdown-container
           ul(class="dropdown-menu libraries-dropdown" id="libraries-dropdown")

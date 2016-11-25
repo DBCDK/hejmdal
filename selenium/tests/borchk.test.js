@@ -142,6 +142,19 @@ describe('Test Borchk component', () => {
 
     // We should now have one item with the .recent class set
     assert.equal(browser.elements('.recent').value.length, 2);
-    // console.log(browser.elements('.recent').value[0].value);
+  });
+
+  it('Should toggle the libraries button open/closed', () => {
+    // libraries dropdown should be invisible
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
+
+    browser.click('.dropdown-toggle');
+
+    // libraries dropdown should now be visible
+    assert.isTrue(browser.isVisible('#libraries-dropdown'));
+
+    // Clicking the dropdown-toggle button again should hide the dropdown
+    browser.click('.dropdown-toggle');
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
   });
 });

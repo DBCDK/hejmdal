@@ -71,6 +71,13 @@ function toggleBorchkDropdown(shouldOpen = null) {
 }
 
 /**
+ * Toggles the libraries dropdown open/cloesd
+ */
+function toggleDropdown(){
+  librariesDropdown.classList.toggle('open');
+}
+
+/**
  * Based on the value of the library input field the items in the list of agencies will be toggled hidden/shown.
  * If the given library name contains the current value of the library input field it will  be shown otherwise hidden.
  */
