@@ -6,11 +6,13 @@ div#borchk
       div.input-group
         input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="Vælg bibliotek" autocomplete="off")
         div.input-group-btn
-          button(type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick='toggleDropdown()')
-            span.caret
+          button(type="button" class="btn inline-btn-default dropdown-toggle" id="libraries-dropdown-toggle-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick='toggleDropdown()' aria-hidden="false")
+            span(class="glyphicon glyphicon-triangle-bottom")
+          button(type="button" class="btn inline-btn-default hide" id="clear-libraries-input-btn" onclick='clearLibraryInput()' aria-hidden="true")
+            span(class="glyphicon glyphicon-remove")
 
       if agencies
-        div.dropdown#libraries-dropdown-container
+        div(class='dropdown' id='libraries-dropdown-container' aria-hidden="true")
           ul(class="dropdown-menu libraries-dropdown" id="libraries-dropdown")
             li(class="dropdown-header hide" id="latest") Forslag
             li(class="dropdown-header hide" id="alphabetical") Alfabetisk

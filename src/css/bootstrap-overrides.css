@@ -60,18 +60,12 @@ input[type="color"]:focus,
   box-shadow: none;
 }
 
-.dropdown-toggle,
-.dropdown-toggle:hover,
-.dropdown-toggle:active,
-.dropdown-toggle:focus {
+.inline-btn-default,
+.inline-btn-default:hover,
+.inline-btn-default:active,
+.inline-btn-default:focus {
   border: none;
   border-radius: 0;
   background-color: transparent;
   border-bottom: solid var(--border_bottom_dark) 2px;
-}
-
-.caret {
-  border-top: 8px dashed;
-  border-right: 6px solid transparent;
-  border-left: 6px solid transparent;
 }

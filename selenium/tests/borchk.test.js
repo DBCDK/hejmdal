@@ -148,13 +148,33 @@ describe('Test Borchk component', () => {
     // libraries dropdown should be invisible
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
 
-    browser.click('.dropdown-toggle');
+    browser.click('#libraries-dropdown-toggle-btn');
 
     // libraries dropdown should now be visible
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
 
     // Clicking the dropdown-toggle button again should hide the dropdown
-    browser.click('.dropdown-toggle');
+    browser.click('#libraries-dropdown-toggle-btn');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
+  });
+
+  it('Should toggle visibilty of the buttons next to the library input field', () => {
+    assert.isTrue(browser.isVisible('#libraries-dropdown-toggle-btn'));
+    assert.isFalse(browser.isVisible('#clear-libraries-input-btn'));
+
+    browser.addValue('#libraryid-input', 'rin');
+
+    assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
+    assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
+  });
+
+  it('Should empty the libraries input field when clicked', () => {
+    assert.equal('', browser.getValue('#libraryid-input'), 'input field is empty');
+    browser.addValue('#libraryid-input', 'rin');
+
+    assert.equal('rin', browser.getValue('#libraryid-input'));
+
+    browser.click('#clear-libraries-input-btn');
+    assert.equal('', browser.getValue('#libraryid-input'), 'input field is empty');
   });
 });

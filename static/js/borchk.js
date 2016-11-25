@@ -8,9 +8,10 @@ var allAgencies;
 var currentlyVisibleAgencies = [];
 var currentlySelectedIndex = -1;
 var currentSeacrhValue = '';
+var libraryInput;
 
 document.addEventListener('DOMContentLoaded', function() {
-  var libraryInput = document.getElementById('libraryid-input');
+  libraryInput = document.getElementById('libraryid-input');
   currentSeacrhValue = libraryInput.value;
   librariesDropdown = document.getElementById('libraries-dropdown-container');
   allAgencies = document.getElementsByClassName('agency');
@@ -19,8 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (libraryInput.value !== currentSeacrhValue) {
       currentSeacrhValue = libraryInput.value;
       toggleBorchkDropdown();
-      toggleVisibles();
+      toggleVisibleLibraries();
     }
+
+    toggleInputButtons();
   });
 
   libraryInput.addEventListener('keydown', function(e) {
@@ -44,6 +47,38 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
+ * Toggles the visibility of the buttons next to the input field
+ */
+function toggleInputButtons() {
+  var dropDownToggle = document.getElementById('libraries-dropdown-toggle-btn');
+  var clearLibrariesInput = document.getElementById('clear-libraries-input-btn');
+
+  if (libraryInput.value.length) {
+    dropDownToggle.classList.add('hide');
+    dropDownToggle.setAttribute('aria-hidden', true);
+
+    clearLibrariesInput.classList.remove('hide');
+    clearLibrariesInput.setAttribute('aria-hidden', false);
+  }
+  else {
+    dropDownToggle.classList.remove('hide');
+    dropDownToggle.setAttribute('aria-hidden', false);
+
+    clearLibrariesInput.classList.add('hide');
+    clearLibrariesInput.setAttribute('aria-hidden', true);
+  }
+}
+
+/**
+ * Clears the library input field and requests the dropdown to be closed.
+ */
+function clearLibraryInput() { // eslint-disable-line no-unused-vars
+  libraryInput.value = '';
+  toggleInputButtons();
+  toggleDropdown(false);
+}
+
+/**
  * Hides the dropdown if it's open
  *
  * @param {KeyboardEvent} e
@@ -59,29 +94,37 @@ function escapeWasPressed(e) {
  * Toggles the dropdown. If the content of the library input field contains two or more characters the droipdown will
  * be shown, otherwise it will be closed.
  */
-function toggleBorchkDropdown(shouldOpen = null) {
-  var display = shouldOpen !== null ? shouldOpen : currentSeacrhValue.length >= 2;
-
-  if (display) {
-    librariesDropdown.classList.add('open');
+function toggleBorchkDropdown() {
+  if (currentSeacrhValue.length >= 2) {
+    toggleDropdown(true);
   }
   else {
-    librariesDropdown.classList.remove('open');
+    toggleDropdown(false);
   }
 }
 
 /**
  * Toggles the libraries dropdown open/cloesd
  */
-function toggleDropdown(){
-  librariesDropdown.classList.toggle('open');
+function toggleDropdown(forceOpen = null) {
+  if (forceOpen) {
+    librariesDropdown.classList.add('open');
+  }
+  else if (forceOpen === false) {
+    librariesDropdown.classList.remove('open');
+  }
+  else {
+    librariesDropdown.classList.toggle('open');
+  }
+
+  librariesDropdown.setAttribute('aria-hidden', !librariesDropdown.classList.contains('open').toString());
 }
 
 /**
  * Based on the value of the library input field the items in the list of agencies will be toggled hidden/shown.
  * If the given library name contains the current value of the library input field it will  be shown otherwise hidden.
  */
-function toggleVisibles() {
+function toggleVisibleLibraries() {
   currentlyVisibleAgencies = [];
 
   for (var i = 0; i < allAgencies.length; i++) {
@@ -164,11 +207,10 @@ function selectHighlighted(e) {
 function OnClick(element) { // eslint-disable-line no-unused-vars
   var branchName = element.textContent;
   var branchId = element.dataset.aid;
-  var libraryInput = document.getElementById('libraryid-input');
 
   libraryInput.setAttribute('data-aid', branchId);
   libraryInput.value = branchName;
-  toggleBorchkDropdown(false);
+  toggleDropdown(false);
   document.getElementById('userid-input').focus();
   addElementToLocalStorage({branchName, branchId});
 }
