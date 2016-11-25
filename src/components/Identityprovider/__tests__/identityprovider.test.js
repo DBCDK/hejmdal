@@ -71,7 +71,6 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.getUser(), expected);
   });
 
-  /*  How to set post parameters in test */
   it('Should add borchk user to context', async() => {
     ctx.params.type = 'borchk';
     ctx.fakeBorchkPost = {userId: 'testId', pincode: 'testPincode', libraryId: '710100'};
