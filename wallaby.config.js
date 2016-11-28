@@ -35,6 +35,7 @@ module.exports = function(wallaby) {
         'MOCK_SESSION_STORAGE=1;' +
         'MOCK_CULR=1;' +
         'MOCK_BORCHK=1;' +
+        'MOCK_NEMLOGIN=1;' +
         'MOCK_OPENAGENCY=1;' +
         'MOCK_SMAUG=1;' +
         'MOCK_WAYF=1;' +

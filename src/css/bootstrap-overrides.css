@@ -1,6 +1,6 @@
 :root {
   --background_color: #d2d0cb;
-  --border_bottom_dark: #616161;
+  --dark-grey: #616161;
   --button_green: #007236;
 }
 
@@ -21,6 +21,7 @@ label {
 
 .container {
   background-color: var(--background_color);
+  height: 100%;
 }
 
 .btn-success {
@@ -36,7 +37,7 @@ label {
   box-shadow: none;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid var(--border_bottom_dark);
+  border-bottom: 2px solid var(--dark-grey);
   padding-left: 0;
 }
 
@@ -58,4 +59,14 @@ input[type="color"]:focus,
 .uneditable-input:focus {
   /*border-color: rgba(19, 33, 255, 0.8);*/
   box-shadow: none;
+}
+
+.inline-btn-default,
+.inline-btn-default:hover,
+.inline-btn-default:active,
+.inline-btn-default:focus {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  border-bottom: solid var(--dark-grey) 2px;
 }

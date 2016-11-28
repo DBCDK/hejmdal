@@ -1,0 +1,30 @@
+:root {
+  --background_color: #d2d0cb;
+  --dark-grey: #616161;
+  --button_green: #007236;
+}
+
+@svg-load logo url(svg/bibliotekslogin_logo.svg) {
+  fill: white;
+}
+
+.logo-img {
+  display: block;
+  background: svg-inline(logo) no-repeat center;
+  width: 200px;
+  height: 50px;
+  margin-top: 5px;
+}
+
+.topbar-container {
+  display: block;
+  height: 50px;
+  background-color: var(--dark-grey);
+}
+
+.glyphicon-question-sign {
+  color: white;
+  margin-top: 10px;
+  position: relative;
+  font-size: 30px;
+}

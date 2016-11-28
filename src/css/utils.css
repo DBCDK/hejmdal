@@ -2,6 +2,18 @@
   margin-right: 20px;
 }
 
-.buffer-hor-10 {
+.buffer-vertical-5 {
+  margin-bottom: 5px;
+}
+
+.buffer-vertical-10 {
   margin-bottom: 10px;
+}
+
+.align-right{
+  text-align: right;
+}
+
+.center-text {
+  text-align: center;
 }

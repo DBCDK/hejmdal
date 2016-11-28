@@ -15,7 +15,6 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-  // Patterns to exclude.
     './selenium/**/*.test.js'
   ],
   exclude: [
@@ -166,6 +165,7 @@ let config = {
   //
   // Hook that gets executed before the suite starts
   // beforeSuite: function (suite) {
+  //
   // },
   //
   // Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
@@ -212,6 +212,10 @@ let config = {
 // Override config with setup for local selenium server
 if (process.env.TEST_ENV === 'local') {
   config = Object.assign(config, require('./local.conf').default);
+}
+
+if (process.env.TEST_ENV === 'saucelabs') {
+  config = Object.assign(config, require('./sauce.conf').default);
 }
 
 exports.config = config;

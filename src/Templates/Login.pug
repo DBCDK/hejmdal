@@ -1,15 +1,13 @@
 extends Main
 
 block append content
-  div.row
-    h1 Bibliotekslogin
   div
-    div.row.borchk-component
+    div.borchk-component
       if identityProviders.borchk
         include Components/Borchk
 
     if identityProviders.unilogin || identityProviders.nemlogin
-      div.row#external-providers
+      div#external-providers
 
         div.buffer-hor-10
           strong Du kan også logge ind med
@@ -25,3 +23,8 @@ block append content
             include Components/Wayf
 
 
+  div.helptext-container
+    div.center-text.buffer-vertical-5
+      a(class="link-style") Brug for hjælp til at logge ind?
+    div.center-text
+      a(class="link-style") English
