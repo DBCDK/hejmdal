@@ -23,8 +23,9 @@ export async function authenticate(ctx, next) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
-      const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
       const selectAgencyName = await getAgencyName(state.serviceAgency);
+      const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
+
       ctx.render('Login', {
         serviceClient: state.serviceClient.name,
         identityProviders,
@@ -33,6 +34,7 @@ export async function authenticate(ctx, next) {
         selectedAgency: state.serviceAgency || '',
         selectedAgencyName: selectAgencyName
       });
+
       ctx.status = 200;
     }
   }
