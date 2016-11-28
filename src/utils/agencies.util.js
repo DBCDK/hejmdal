@@ -15,8 +15,8 @@ let uiList = [];
  *
  * @return {Array}
  */
-export async function cacheAgencies() {
-  agencyList = await libraryListFromName('');
+export async function cacheAgencies(name = '') {
+  agencyList = await libraryListFromName(name);
 }
 
 /**
@@ -25,7 +25,6 @@ export async function cacheAgencies() {
  */
 export async function getListOfAgenciesForFrontend() {
   await setUiList();
-
   return uiList;
 }
 
