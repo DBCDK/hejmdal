@@ -114,4 +114,11 @@ describe('Test Borchk component', () => {
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
+
+  it('Should display a pre-filled disabled field when &agency= is set', () => {
+    browser.url(browser.getUrl() + '&agency=743001');
+    assert.isFalse(browser.isVisible('#libraryid-input'));
+    assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek');
+  });
 });
