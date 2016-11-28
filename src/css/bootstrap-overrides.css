@@ -41,6 +41,10 @@ label {
   padding-left: 0;
 }
 
+.form-control:disabled {
+  background-color: transparent;
+}
+
 textarea:focus,
 input[type="text"]:focus,
 input[type="password"]:focus,
