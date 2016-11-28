@@ -7,18 +7,18 @@ var librariesDropdown;
 var allAgencies;
 var currentlyVisibleAgencies = [];
 var currentlySelectedIndex = -1;
-var currentSeacrhValue = '';
+var currentSearchValue = '';
 var libraryInput;
 
 document.addEventListener('DOMContentLoaded', function() {
   libraryInput = document.getElementById('libraryid-input');
-  currentSeacrhValue = libraryInput.value;
+  currentSearchValue = libraryInput.value;
   librariesDropdown = document.getElementById('libraries-dropdown-container');
   allAgencies = document.getElementsByClassName('agency');
 
   libraryInput.addEventListener('keyup', function() {
-    if (libraryInput.value !== currentSeacrhValue) {
-      currentSeacrhValue = libraryInput.value;
+    if (libraryInput.value !== currentSearchValue) {
+      currentSearchValue = libraryInput.value;
       toggleBorchkDropdown();
       toggleVisibleLibraries();
     }
@@ -95,7 +95,7 @@ function escapeWasPressed(e) {
  * be shown, otherwise it will be closed.
  */
 function toggleBorchkDropdown() {
-  if (currentSeacrhValue.length >= 2) {
+  if (currentSearchValue.length >= 2) {
     toggleDropdown(true);
   }
   else {
@@ -149,7 +149,7 @@ function toggleVisibleLibraries() {
   for (var i = 0; i < allAgencies.length; i++) {
     var item = allAgencies.item(i);
     item.classList.remove('selected');
-    var shouldHide = !allAgencies.item(i).textContent.toLowerCase().includes(currentSeacrhValue.toLowerCase());
+    var shouldHide = !allAgencies.item(i).textContent.toLowerCase().includes(currentSearchValue.toLowerCase());
     item.classList.toggle('hide', shouldHide);
 
     if (!shouldHide) {
@@ -267,7 +267,7 @@ function addElementToLocalStorage({branchName, branchId}) {
  * of the dropdown.
  */
 function setRecentlySelectedLibraries() {
-  removeExistingRecentlySelcetedLibraries();
+  removeExistingRecentlySelectedLibraries();
   const storedAgencies = localStorage.getItem('agencies');
   if (!storedAgencies || !storedAgencies.length) {
     return;
@@ -295,7 +295,7 @@ function setRecentlySelectedLibraries() {
   });
 }
 
-function removeExistingRecentlySelcetedLibraries() {
+function removeExistingRecentlySelectedLibraries() {
   var elements = document.getElementsByClassName('recent');
   var lis = [];
 
