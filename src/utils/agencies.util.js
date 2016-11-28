@@ -8,14 +8,15 @@ import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
 /**
  * @type {Array}
  */
-let AgencyList = [];
+let agencyList = [];
 let uiList = [];
 
 /**
  *
+ * @return {Array}
  */
 export async function cacheAgencies() {
-  AgencyList = await libraryListFromName('');
+  agencyList = await libraryListFromName('');
 }
 
 /**
@@ -29,10 +30,9 @@ export async function getListOfAgenciesForFrontend() {
 }
 
 /**
- * Return the name of the agency if found in agency list
+ * Return the name of the agency if found in agencyList
  *
  * @param agencyId
- * @param agencyList
  * @returns {*}
  */
 export async function getAgencyName(agencyId) {
@@ -41,7 +41,7 @@ export async function getAgencyName(agencyId) {
   let name = '';
   if (agencyId) {
     name = 'Ukendt bibliotek: ' + agencyId;
-    AgencyList.forEach((agency) => {
+    agencyList.forEach((agency) => {
       if (agency.branchId === agencyId) {
         name = agency.name;
       }
@@ -50,17 +50,23 @@ export async function getAgencyName(agencyId) {
   return name;
 }
 
+/**
+ * agencyList setter
+ */
 async function setAgencyList() {
-  if (!AgencyList || !AgencyList.length) {
+  if (!agencyList || !agencyList.length) {
     await cacheAgencies();
   }
 }
 
+/**
+ * uiList setter
+ */
 async function setUiList() {
   await setAgencyList();
 
   if (!uiList || !uiList.length) {
-    uiList = AgencyList.map((agency) => {
+    uiList = agencyList.map((agency) => {
       return {branchId: agency.branchId, name: agency.name};
     });
   }
