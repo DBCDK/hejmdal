@@ -33,3 +33,8 @@ selenium/*.png
 # ESLINT #
 # ==========
 .eslintcache
+
+# ==========
+# STATICS #
+# ==========
+static/css
