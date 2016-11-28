@@ -27,6 +27,17 @@ export default {
       exclude: [
         './selenium/**/*.nonff.test.js' // excluded due to missing support for Storage and keys in Firefox selenium driver
       ]
+    },
+    {
+      maxInstances: 1,
+      browserName: 'firefox',
+      platform: 'Windows 10',
+      version: '47.0',
+      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+      build: process.env.TRAVIS_BUILD_NUMBER,
+      exclude: [
+        './selenium/**/*.nonff.test.js' // excluded due to missing support for Storage and keys in Firefox selenium driver
+      ]
     }
   ]
 };
