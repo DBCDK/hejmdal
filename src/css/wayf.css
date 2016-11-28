@@ -1,0 +1,10 @@
+@svg-load wayf url(svg/wayf-login.svg) {
+  fill: black;
+}
+
+.wayf-img {
+  display: block;
+  background: svg-inline(wayf) no-repeat center;
+  width: 80px;
+  height: 23px;
+}

@@ -63,6 +63,9 @@ CULR autentification password
 - `CULR_PROFILE_NAME` : `culr.profileName`  
 CULR profile name
 
+- `GATEWAYF_URI` : `gatewayf.uri`  
+The address of the gatewayf service
+
 - `GC_SESSION_DIVISOR` : `garbageCollect.session.divisor`  
 Defines the probability that sessions are garbage collected on every request. The probability is calculated as  1/GC_SESSION_DIVISOR.
 
@@ -109,6 +112,9 @@ Set to `1` to use memory storage instead of persistent storage
 - `MOCK_CULR` : `mock_externals.culr`  
 Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 
+- `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
+set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
+ 
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
@@ -169,8 +175,8 @@ Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 
 # Dokumentation
 ## Endpoints
-- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl` 
-Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service
+- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl&agency=myAgencyId` 
+Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.
 - `/logud` eller `/logud?redirect=someRelativeCallBackUrl` 
 The users session is removed. The redirect contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
 

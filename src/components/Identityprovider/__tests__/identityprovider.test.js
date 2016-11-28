@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {authenticate, identityProviderCallback} from '../identityprovider.component';
+import {authenticate, identityProviderCallback, getAgencyName} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
@@ -71,7 +71,6 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.getUser(), expected);
   });
 
-  /*  How to set post parameters in test */
   it('Should add borchk user to context', async() => {
     ctx.params.type = 'borchk';
     ctx.fakeBorchkPost = {userId: 'testId', pincode: 'testPincode', libraryId: '710100'};
@@ -85,5 +84,17 @@ describe('test identityProviderCallback method', () => {
     };
     await identityProviderCallback(ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
+  });
+
+  const agencies = [
+    {branchId: '710100', name: 'Hovedbiblioteket, Krystalgade'},
+    {branchId: '761500', name: 'Horsens Bibliotek'}
+  ];
+  it('Should find the library name', async() => {
+    assert.equal('Hovedbiblioteket, Krystalgade', getAgencyName('710100', agencies));
+  });
+
+  it('Should set unknown library name', async() => {
+    assert.equal('Ukendt bibliotek: 710101', getAgencyName('710101', agencies));
   });
 });

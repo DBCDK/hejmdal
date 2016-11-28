@@ -3,22 +3,25 @@ div#borchk
     div.form-group
       label(for='libraryid-input')
         strong Bibliotek
-      div.input-group
-        input(type='text' class='form-control' id='libraryid-input' name='libraryId' data-aid='' placeholder='Vælg bibliotek' autocomplete='off')
-        div.input-group-btn
-          button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
-            span(class='glyphicon glyphicon-triangle-bottom')
-          button(type='button' class='btn inline-btn-default hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
-            span(class='glyphicon glyphicon-remove')
-
-      if agencies
-        div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')
-          ul(class='dropdown-menu libraries-dropdown' id='libraries-dropdown')
-            li(class='dropdown-header hide' id='latest') Forslag
-            li(class='dropdown-header hide' id='alphabetical') Alfabetisk
-            each agency in agencies
-              li
-                a(class='agency' data-aid=agency.branchId onclick='OnClick(this);') #{agency.name}
+      if selectedAgency
+        input(type="hidden" value=selectedAgency name="libraryId" id="libraryid-input")
+        input(type="text" disabled value=selectedAgencyName class="form-control" name="libraryName")
+      else
+        div.input-group
+          input(type='text' class='form-control' id='libraryid-input' name='libraryId' data-aid='' placeholder='Vælg bibliotek' autocomplete='off')
+          div.input-group-btn
+            button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
+              span(class='glyphicon glyphicon-triangle-bottom')
+            button(type='button' class='btn inline-btn-default hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
+              span(class='glyphicon glyphicon-remove')
+        if agencies
+          div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')
+            ul(class='dropdown-menu libraries-dropdown' id='libraries-dropdown')
+              li(class='dropdown-header hide' id='latest') Forslag
+              li(class='dropdown-header hide' id='alphabetical') Alfabetisk
+              each agency in agencies
+                li
+                  a(class='agency' data-aid=agency.branchId onclick='OnClick(this);') #{agency.name}
 
     div.form-group
       label(for='userid-input')

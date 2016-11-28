@@ -7,7 +7,7 @@ import {createHash, validateHash} from '../../utils/hash.utils';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
-import {getWayfResponse} from '../Wayf/wayf.component';
+import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
 import {getListOfAgenciesForFrontend} from '../../utils/agencies.util';
 
 /**
@@ -24,11 +24,14 @@ export async function authenticate(ctx, next) {
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
+      const selectAgencyName = getAgencyName(state.serviceAgency, agencies);
       ctx.render('Login', {
         serviceClient: state.serviceClient.name,
         identityProviders,
         VERSION_PREFIX,
-        agencies: agencies
+        agencies: agencies,
+        selectedAgency: state.serviceAgency || '',
+        selectedAgencyName: selectAgencyName
       });
       ctx.status = 200;
     }
@@ -95,13 +98,13 @@ export async function borchkCallback(ctx) {
 }
 
 /**
- * Parses the callback parameters for nemlogin.
+ * Parses the callback parameters for nemlogin (via gatewayf).
  *
  * @param ctx
  * @returns {*}
  */
 export async function nemloginCallback(ctx) {
-  const response = await getWayfResponse(ctx);
+  const response = await getGateWayfResponse(ctx, 'nemlogin');
 
   ctx.setUser({
     userId: response.userId,
@@ -112,6 +115,22 @@ export async function nemloginCallback(ctx) {
   return ctx;
 }
 
+/**
+ * Parses the call parameters for wayf (via gatewayf)
+ * @param ctx
+ * @returns {*}
+ */
+export async function wayfCallback(ctx) {
+  const response = await getGateWayfResponse(ctx, 'wayf');
+
+  ctx.setUser({
+    userId: response.userId,
+    userType: 'wayf',
+    identityProviders: ['wayf']
+  });
+
+  return ctx;
+}
 /**
  * Callback function from external identityproviders
  *
@@ -133,6 +152,9 @@ export async function identityProviderCallback(ctx, next) {
           break;
         case 'unilogin':
           await uniloginCallback(ctx);
+          break;
+        case 'wayf':
+          await wayfCallback(ctx);
           break;
         default:
           break;
@@ -163,7 +185,8 @@ function getIdentityProviders(identityProviders, authToken) {
   let providers = {
     borchk: null,
     unilogin: null,
-    nemlogin: null
+    nemlogin: null,
+    wayf: null
   };
 
   if (identityProviders.includes('borchk')) {
@@ -180,14 +203,46 @@ function getIdentityProviders(identityProviders, authToken) {
 
   if (identityProviders.includes('nemlogin')) {
     providers.nemlogin = {
-      link: `${VERSION_PREFIX}/login/identityProviderCallback/nemlogin/${authToken}?eduPersonTargetedID=WAYF-DK-16028a572f83fd83cb0728aab8a6cc0685933a04`
+      link: getGateWayfUrl('nemlogin', authToken)
+    };
+  }
+
+  if (identityProviders.includes('wayf')) {
+    providers.wayf = {
+      link: getGateWayfUrl('wayf', authToken)
     };
   }
 
   return providers;
 }
 
+/**
+ *
+ * @param ctx
+ */
 function idenityProviderValidationFailed(ctx) {
-  const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl;
+  const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
+  const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl + agencyParameter;
   ctx.redirect(startOver);
 }
+
+/**
+ * Return the name of the agency if found in agency list
+ *
+ * @param agencyId
+ * @param agencyList
+ * @returns {*}
+ */
+export function getAgencyName(agencyId, agencyList) {
+  let name = '';
+  if (agencyId) {
+    name = 'Ukendt bibliotek: ' + agencyId;
+    agencyList.forEach((agency) => {
+      if (agency.branchId === agencyId) {
+        name = agency.name;
+      }
+    });
+  }
+  return name;
+}
+
