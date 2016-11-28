@@ -63,6 +63,9 @@ CULR autentification password
 - `CULR_PROFILE_NAME` : `culr.profileName`  
 CULR profile name
 
+- `GATEWAYF_URI` : `gatewayf.uri`  
+The address of the gatewayf service
+
 - `GC_SESSION_DIVISOR` : `garbageCollect.session.divisor`  
 Defines the probability that sessions are garbage collected on every request. The probability is calculated as  1/GC_SESSION_DIVISOR.
 
@@ -109,6 +112,9 @@ Set to `1` to use memory storage instead of persistent storage
 - `MOCK_CULR` : `mock_externals.culr`  
 Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 
+- `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
+set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
+ 
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 

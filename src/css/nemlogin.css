@@ -1,0 +1,10 @@
+@svg-load nemlogin url(svg/nem-login.svg) {
+  fill: black;
+}
+
+.nemlogin-img {
+  display: block;
+  background: svg-inline(nemlogin) no-repeat center;
+  width: 80px;
+  height: 23px;
+}
