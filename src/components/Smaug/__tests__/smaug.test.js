@@ -31,7 +31,7 @@ describe('Test Smaug component', () => {
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
-      identityProviders: ['nemlogin', 'borchk', 'unilogin'],
+      identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       borchkServiceName: 'bibliotek.dk',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},

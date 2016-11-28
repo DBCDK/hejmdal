@@ -2,7 +2,7 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
-  identityProviders: ['nemlogin', 'borchk', 'unilogin'],
+  identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
   borchkServiceName: 'bibliotek.dk',
   attributes: ATTRIBUTES,
   app: {

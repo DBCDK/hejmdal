@@ -14,9 +14,10 @@ export async function initState(ctx, next) {
     state: {
       consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
       culr: null,
-      smaugToken: ctx.query.token || null,
+      returnUrl: ctx.query.returnurl || null,
+      serviceAgency: ctx.query.agency || null,
       serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
-      returnUrl: ctx.query.returnurl || null
+      smaugToken: ctx.query.token || null
     },
     user: {}  // contains the userId, userIdType, identityProviders
   }, ctx.session || {});
