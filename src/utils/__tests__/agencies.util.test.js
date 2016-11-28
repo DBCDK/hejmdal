@@ -24,10 +24,10 @@ describe('Unittesting methods in agencies.util.js', async() => {
 
   it('should find agency name from id', async() => {
     assert.equal('Hovedbiblioteket, Krystalgade', await getAgencyName('710100'));
-  })
+  });
 
   it('should not find agency name from not defined id', async() => {
     assert.equal('Ukendt bibliotek: 910100', await getAgencyName('910100'));
-  })
+  });
 });
 
