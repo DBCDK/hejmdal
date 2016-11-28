@@ -20,6 +20,7 @@ html(lang='da')
       link(rel='stylesheet', href='/css/bootstrap-overrides.css?' + version)
       link(rel='stylesheet', href='/css/borchk.css?' + version)
       link(rel='stylesheet', href='/css/topbar.css?' + version)
+      link(rel='stylesheet', href='/css/footer.css?' + version )
 
     block scripts
       script(src="/js/jquery-3.1.1.min.js?" + version)
@@ -30,7 +31,8 @@ html(lang='da')
     div.container
       div.row
         include Components/Topbar
-      div.col-sm-10.col-sm-offset-1.content
-        block content
-      div.col-sm-12
+      div.row
+        div.col-sm-10.col-sm-offset-1.content
+          block content
+      div.row
         include Components/Footer

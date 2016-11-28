@@ -21,6 +21,7 @@ label {
 
 .container {
   background-color: var(--background_color);
+  height: 100%;
 }
 
 .btn-success {

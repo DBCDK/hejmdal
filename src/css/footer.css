@@ -1,6 +1,18 @@
+:root {
+  --dark-grey: #616161;
+}
+
 #footer {
-  margin-left: -30px;
-  margin-right: -30px;
-  padding: 10px 10px 0 10px;
-  background-color: #ffffff;
+  border-top: 1px solid var(--dark-grey);
+  font-size: 13px;
+  color: var(--dark-grey);
+}
+
+.footer-container {
+  margin-top: 10px;
+}
+
+.footer-link {
+  color: var(--dark-grey);
+  text-decoration: underline;
 }

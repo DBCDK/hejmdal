@@ -2,12 +2,12 @@ extends Main
 
 block append content
   div
-    div.row.borchk-component
+    div.borchk-component
       if identityProviders.borchk
         include Components/Borchk
 
     if identityProviders.unilogin || identityProviders.nemlogin
-      div.row#external-providers
+      div#external-providers
 
         div.buffer-hor-10
           strong Du kan også logge ind med
