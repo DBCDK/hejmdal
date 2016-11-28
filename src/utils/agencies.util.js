@@ -71,3 +71,12 @@ async function setUiList() {
     });
   }
 }
+
+/**
+ * For testing purposes
+ *
+ * @param list
+ */
+export function mockSetAgencyList(mockList) {
+  agencyList = mockList;
+}
