@@ -8,7 +8,7 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
-import {getListOfAgenciesForFrontend} from '../../utils/agencies.util';
+import {getListOfAgenciesForFrontend, getAgencyName} from '../../utils/agencies.util';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -24,7 +24,7 @@ export async function authenticate(ctx, next) {
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agencies = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null; // TODO mmj add test: null if no borchk otherwise list of agencies
-      const selectAgencyName = getAgencyName(state.serviceAgency, agencies);
+      const selectAgencyName = await getAgencyName(state.serviceAgency);
       ctx.render('Login', {
         serviceClient: state.serviceClient.name,
         identityProviders,
@@ -224,25 +224,5 @@ function idenityProviderValidationFailed(ctx) {
   const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
   const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl + agencyParameter;
   ctx.redirect(startOver);
-}
-
-/**
- * Return the name of the agency if found in agency list
- *
- * @param agencyId
- * @param agencyList
- * @returns {*}
- */
-export function getAgencyName(agencyId, agencyList) {
-  let name = '';
-  if (agencyId) {
-    name = 'Ukendt bibliotek: ' + agencyId;
-    agencyList.forEach((agency) => {
-      if (agency.branchId === agencyId) {
-        name = agency.name;
-      }
-    });
-  }
-  return name;
 }
 

@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {authenticate, identityProviderCallback, getAgencyName} from '../identityprovider.component';
+import {authenticate, identityProviderCallback} from '../identityprovider.component';
 import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
@@ -21,9 +21,9 @@ describe('test authenticate method', () => {
     sandbox.restore();
   });
 
-  it('Should return error', () => {
+  it('Should return error', async() => {
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
-    authenticate(ctx, next);
+    await authenticate(ctx, next);
     assert.equal(ctx.status, 404);
   });
 });
@@ -84,17 +84,5 @@ describe('test identityProviderCallback method', () => {
     };
     await identityProviderCallback(ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
-  });
-
-  const agencies = [
-    {branchId: '710100', name: 'Hovedbiblioteket, Krystalgade'},
-    {branchId: '761500', name: 'Horsens Bibliotek'}
-  ];
-  it('Should find the library name', async() => {
-    assert.equal('Hovedbiblioteket, Krystalgade', getAgencyName('710100', agencies));
-  });
-
-  it('Should set unknown library name', async() => {
-    assert.equal('Ukendt bibliotek: 710101', getAgencyName('710101', agencies));
   });
 });
