@@ -19,14 +19,6 @@ export default {
     },
     {
       maxInstances: 1,
-      browserName: 'MicrosoftEdge',
-      platform: 'Windows 10',
-      version: 'latest',
-      'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-      build: process.env.TRAVIS_BUILD_NUMBER
-    },
-    {
-      maxInstances: 1,
       browserName: 'firefox',
       platform: 'OS X 10.11',
       version: '47.0',
