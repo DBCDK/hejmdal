@@ -232,6 +232,7 @@ function OnClick(element) { // eslint-disable-line no-unused-vars
   toggleDropdown(false);
   document.getElementById('userid-input').focus();
   addElementToLocalStorage({branchName, branchId});
+  toggleInputButtons();
 }
 
 function addElementToLocalStorage({branchName, branchId}) {

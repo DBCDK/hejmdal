@@ -106,4 +106,12 @@ describe('Test Borchk component', () => {
     browser.click('#toggle-pin-input');
     assert.equal(browser.getAttribute('#pin-input', 'type'), 'password');
   });
+
+  it('Should display X when a library in the dropdown is clicked', () => {
+    browser.click('#libraries-dropdown-toggle-btn');
+    browser.click('.agency');
+
+    assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
+    assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
+  });
 });
