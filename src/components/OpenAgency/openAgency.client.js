@@ -6,6 +6,7 @@ import {CONFIG} from '../../utils/config.util';
 import {OpenAgencyError} from './openAgency.errors';
 import getMockClient from './mock/openAgency.client.mock';
 import {promiseRequest} from '../../utils/request.util';
+import {log} from '../../utils/logging.util';
 
 /**
  * Retrieves a list of libraries
@@ -32,6 +33,14 @@ export async function libraryListFromName(text) {
   }
 
   if (response.statusCode === 200) {
+    const body = JSON.parse(response.body);
+    if (body.findLibraryResponse && body.findLibraryResponse.error) {
+      const error = body.findLibraryResponse.error.$;
+      log.error('Error while retrieving result from OpenAgency', {
+        error: error
+      });
+    }
+
     return parseFindLibraryResponse(JSON.parse(response.body));
   }
 

@@ -1,31 +1,47 @@
 div#borchk
-  form(action=identityProviders.borchk.action method="post")
+  form(action=identityProviders.borchk.action method='post')
     div.form-group
-      label(for="libraryid-input")
+      label(for='libraryid-input')
         strong Bibliotek
       if selectedAgency
         input(type="hidden" value=selectedAgency name="libraryId" id="libraryid-input")
         input(type="text" disabled value=selectedAgencyName class="form-control" name="libraryName")
       else
-        input(type="text" class="form-control" id="libraryid-input" name="libraryId" data-aid="" placeholder="")
+        div.input-group
+          input(type='text' class='form-control' id='libraryid-input' name='libraryId' data-aid='' placeholder='Vælg bibliotek' autocomplete='off')
+          div.input-group-btn
+            button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
+              span(class='glyphicon glyphicon-triangle-bottom')
+            button(type='button' class='btn inline-btn-default hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
+              span(class='glyphicon glyphicon-remove')
         if agencies
-          div.dropdown#libraries-dropdown-container
-            ul(class="dropdown-menu libraries-dropdown")
+          div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')
+            ul(class='dropdown-menu libraries-dropdown' id='libraries-dropdown')
+              li(class='dropdown-header hide' id='latest') Forslag
+              li(class='dropdown-header hide' id='alphabetical') Alfabetisk
               each agency in agencies
                 li
-                  a(class="agency" data-aid=agency.branchId onclick='OnClick(this)') #{agency.name}
+                  a(class='agency' data-aid=agency.branchId onclick='OnClick(this);') #{agency.name}
 
     div.form-group
-      label(for="userid-input")
+      label(for='userid-input')
         strong CPR eller lånerkortnummer
-      input(type="tel" class="form-control" id="userid-input" name="userId")
+      div.input-group
+        input(type='tel' class='form-control' id='userid-input' name='userId' pattern='[0-9]*')
+        div.input-group-btn
+          button(type='button' class='btn inline-btn-default' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyp");')
+            span(class='glyphicon glyphicon-eye-close' id='userid-input-glyp')
 
     div.form-group
-      label(for="pin-input")
+      label(for='pin-input')
         strong Pinkode
-      input(type="tel" class="form-control" id="pin-input" name="pincode")
+      div.input-group
+        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*')
+        div.input-group-btn
+          button(type='button' class='btn inline-btn-default' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyp");')
+            span(class='glyphicon glyphicon-eye-open' id='pin-input-glyp')
 
     div.pull-right
-      a(href="#" class="buffer-right-20 link-style")
+      a(href='#' class='buffer-right-20 link-style')
         strong Fortryd log ind
-      button(type="submit" class="btn btn-success") Log ind
+      button(type='submit' class='btn btn-success' id='borchk-submit') Log ind

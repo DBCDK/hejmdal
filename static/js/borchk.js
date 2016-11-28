@@ -1,33 +1,222 @@
+/**
+ * @file
+ * This file provides the necessary functionality to provide a smooth user experience using the Borchk serviceprovider.
+ */
+
+var librariesDropdown;
+var allAgencies;
+var currentlyVisibleAgencies = [];
+var currentlySelectedIndex = -1;
+var currentSearchValue = '';
+var libraryInput;
+
 document.addEventListener('DOMContentLoaded', function() {
-  var libraryInput = document.getElementById('libraryid-input');
-  var librariesDropdown = document.getElementById('libraries-dropdown-container');
-  var allAgencies = document.getElementsByClassName('agency');
-  var currentSeacrhValue = libraryInput.value;
+  libraryInput = document.getElementById('libraryid-input');
+  currentSearchValue = libraryInput.value;
+  librariesDropdown = document.getElementById('libraries-dropdown-container');
+  allAgencies = document.getElementsByClassName('agency');
 
   libraryInput.addEventListener('keyup', function() {
-    currentSeacrhValue = libraryInput.value;
-    toggleBorchkDropdown();
-    toggleVisibles();
+    if (libraryInput.value !== currentSearchValue) {
+      currentSearchValue = libraryInput.value;
+      toggleBorchkDropdown();
+      toggleVisibleLibraries();
+    }
+
+    toggleInputButtons();
   });
 
-  function toggleBorchkDropdown() {
-    var display = currentSeacrhValue.length >= 2;
+  libraryInput.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      navigateDropDown(e.key);
+    }
 
-    if (display) {
-      librariesDropdown.classList.add('open');
+    if (e.key === 'Tab' || e.key === 'Enter') {
+      selectHighlighted(e);
     }
-    else {
-      librariesDropdown.classList.remove('open');
-    }
-  }
 
-  function toggleVisibles() {
-    for (var i = 0; i < allAgencies.length; i++) {
-      var item = allAgencies.item(i);
-      item.classList.toggle('hide', !allAgencies.item(i).textContent.toLowerCase().includes(currentSeacrhValue.toLowerCase()));
+    if (e.key === 'Escape') {
+      escapeWasPressed(e);
     }
+  });
+
+  if (Storage !== undefined) { // eslint-disable-line no-undefined
+    setRecentlySelectedLibraries();
   }
 });
+
+/**
+ * Toggles the visibility of the buttons next to the input field
+ */
+function toggleInputButtons() {
+  var dropDownToggle = document.getElementById('libraries-dropdown-toggle-btn');
+  var clearLibrariesInput = document.getElementById('clear-libraries-input-btn');
+
+  if (libraryInput.value.length) {
+    dropDownToggle.classList.add('hide');
+    dropDownToggle.setAttribute('aria-hidden', true);
+
+    clearLibrariesInput.classList.remove('hide');
+    clearLibrariesInput.setAttribute('aria-hidden', false);
+  }
+  else {
+    dropDownToggle.classList.remove('hide');
+    dropDownToggle.setAttribute('aria-hidden', false);
+
+    clearLibrariesInput.classList.add('hide');
+    clearLibrariesInput.setAttribute('aria-hidden', true);
+  }
+}
+
+/**
+ * Clears the library input field and requests the dropdown to be closed.
+ */
+function clearLibraryInput() { // eslint-disable-line no-unused-vars
+  libraryInput.value = '';
+  toggleInputButtons();
+  toggleDropdown(false);
+}
+
+/**
+ * Hides the dropdown if it's open
+ *
+ * @param {KeyboardEvent} e
+ */
+function escapeWasPressed(e) {
+  if (librariesDropdown.classList.contains('open')) {
+    e.preventDefault();
+    librariesDropdown.classList.remove('open');
+  }
+}
+
+/**
+ * Toggles the dropdown. If the content of the library input field contains two or more characters the droipdown will
+ * be shown, otherwise it will be closed.
+ */
+function toggleBorchkDropdown() {
+  if (currentSearchValue.length >= 2) {
+    toggleDropdown(true);
+  }
+  else {
+    toggleDropdown(false);
+  }
+}
+
+/**
+ *
+ * @param {string} className
+ * @param {string} glyphId
+ */
+function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-unused-vars
+  var userInputField = document.getElementById(className);
+  var currentType = userInputField.getAttribute('type');
+  var newType = currentType === 'password' ? 'tel' : 'password';
+
+  userInputField.setAttribute('type', newType);
+  var glyph = document.getElementById(glyphId);
+  glyph.classList.toggle('glyphicon-eye-close');
+  glyph.classList.toggle('glyphicon-eye-open');
+
+  userInputField.focus();
+}
+
+/**
+ * Toggles the libraries dropdown open/cloesd
+ */
+function toggleDropdown(forceOpen = null) {
+  if (forceOpen) {
+    librariesDropdown.classList.add('open');
+  }
+  else if (forceOpen === false) {
+    librariesDropdown.classList.remove('open');
+  }
+  else {
+    librariesDropdown.classList.toggle('open');
+  }
+
+  var ariaHidden = !librariesDropdown.classList.contains('open');
+  librariesDropdown.setAttribute('aria-hidden', ariaHidden.toString());
+}
+
+/**
+ * Based on the value of the library input field the items in the list of agencies will be toggled hidden/shown.
+ * If the given library name contains the current value of the library input field it will  be shown otherwise hidden.
+ */
+function toggleVisibleLibraries() {
+  currentlyVisibleAgencies = [];
+
+  for (var i = 0; i < allAgencies.length; i++) {
+    var item = allAgencies.item(i);
+    item.classList.remove('selected');
+    var shouldHide = !allAgencies.item(i).textContent.toLowerCase().includes(currentSearchValue.toLowerCase());
+    item.classList.toggle('hide', shouldHide);
+
+    if (!shouldHide) {
+      currentlyVisibleAgencies.push(item);
+      currentlySelectedIndex = -1;
+    }
+  }
+}
+
+/**
+ * Based on the given string the currently highligted library in the dropdown will be set simply by adding the
+ * 'selected' class.
+ *
+ * @param {String} key
+ */
+function navigateDropDown(key) {
+  if (!librariesDropdown.classList.contains('open')) {
+    return;
+  }
+
+  if (key === 'ArrowDown') {
+    if (currentlySelectedIndex >= 0) {
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlySelectedIndex++;
+
+      if (currentlySelectedIndex >= currentlyVisibleAgencies.length) {
+        currentlySelectedIndex = 0;
+      }
+    }
+    else {
+      currentlySelectedIndex = 0;
+    }
+    currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
+  }
+  else if (key === 'ArrowUp') {
+    if (currentlySelectedIndex >= 0) {
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlySelectedIndex--;
+
+      if (currentlySelectedIndex <= -1) {
+        currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
+      }
+    }
+    else {
+      currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
+    }
+    currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
+  }
+}
+
+/**
+ * Selects the currently hightligted item in the dropdown list.
+ *
+ * @param {KeyboardEvent} e
+ */
+function selectHighlighted(e) {
+  var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
+
+  if (currentlySelected && librariesDropdown.classList.contains('open')) {
+    e.preventDefault();
+    OnClick(currentlyVisibleAgencies[currentlySelectedIndex]);
+  }
+  else if (librariesDropdown.classList.contains('open')) {
+    e.preventDefault();
+    navigateDropDown('ArrowDown');
+  }
+}
 
 /**
  * Callback function for dropdown items
@@ -37,11 +226,85 @@ document.addEventListener('DOMContentLoaded', function() {
 function OnClick(element) { // eslint-disable-line no-unused-vars
   var branchName = element.textContent;
   var branchId = element.dataset.aid;
-  var libraryInput = document.getElementById('libraryid-input');
-  var librariesDropdown = document.getElementById('libraries-dropdown-container');
 
   libraryInput.setAttribute('data-aid', branchId);
   libraryInput.value = branchName;
-  librariesDropdown.classList.remove('open');
+  toggleDropdown(false);
   document.getElementById('userid-input').focus();
+  addElementToLocalStorage({branchName, branchId});
+}
+
+function addElementToLocalStorage({branchName, branchId}) {
+  if (Storage === undefined) { // eslint-disable-line no-undefined
+    return;
+  }
+
+  const storedAgencies = localStorage.getItem('agencies');
+  const agencies = storedAgencies ? JSON.parse(storedAgencies) : [];
+  let indexOfExistingItem = -1;
+  agencies.find(function(element, index) {
+    if (element.branchId === branchId) {
+      indexOfExistingItem = index;
+    }
+  });
+
+  if (indexOfExistingItem >= 0) {
+    agencies.splice(indexOfExistingItem, 1);
+  }
+
+  agencies.splice(0, 0, {branchName, branchId});
+
+  if (agencies.length >= 7) {
+    agencies.pop();
+  }
+
+  localStorage.setItem('agencies', JSON.stringify(agencies));
+  setRecentlySelectedLibraries();
+}
+
+/**
+ * Manipulates the content of the dropdown. If any agencies are found in localStorage they will be rendered at the top
+ * of the dropdown.
+ */
+function setRecentlySelectedLibraries() {
+  removeExistingRecentlySelectedLibraries();
+  const storedAgencies = localStorage.getItem('agencies');
+  if (!storedAgencies || !storedAgencies.length) {
+    return;
+  }
+
+  const agencies = JSON.parse(storedAgencies);
+
+  const latestHeader = document.getElementById('latest');
+  const alphabeticalHeader = document.getElementById('alphabetical');
+  const librariesDopdown = document.getElementById('libraries-dropdown');
+
+  latestHeader.classList.remove('hide');
+  alphabeticalHeader.classList.remove('hide');
+
+  agencies.forEach(function(agency) {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.classList.add('agency');
+    a.classList.add('recent');
+    a.setAttribute('data-aid', agency.branchId);
+    a.setAttribute('onclick', 'OnClick(this)');
+    a.appendChild(document.createTextNode(agency.branchName));
+    li.appendChild(a);
+    librariesDopdown.insertBefore(li, alphabeticalHeader);
+  });
+}
+
+function removeExistingRecentlySelectedLibraries() {
+  var elements = document.getElementsByClassName('recent');
+  var lis = [];
+
+  for (var i = 0; i < elements.length; i++) {
+    var li = elements.item(i);
+    lis.push(li);
+  }
+
+  lis.forEach(function(_li) {
+    _li.parentNode.removeChild(_li);
+  });
 }

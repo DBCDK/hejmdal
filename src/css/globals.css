@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .borchk-component {
   margin-bottom: 50px;
 }
@@ -17,4 +21,8 @@
 
 .btn-grey {
   background-color: #f6f6f6
+}
+
+.content {
+  margin-top: 20px;
 }
