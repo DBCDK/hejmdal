@@ -106,4 +106,19 @@ describe('Test Borchk component', () => {
     browser.click('#toggle-pin-input');
     assert.equal(browser.getAttribute('#pin-input', 'type'), 'password');
   });
+
+  it('Should display X when a library in the dropdown is clicked', () => {
+    browser.click('#libraries-dropdown-toggle-btn');
+    browser.click('.agency');
+
+    assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
+    assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
+  });
+
+  it('Should display a pre-filled disabled field when &agency= is set', () => {
+    browser.url(browser.getUrl() + '&agency=743001');
+    assert.isFalse(browser.isVisible('#libraryid-input'));
+    assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek');
+  });
 });

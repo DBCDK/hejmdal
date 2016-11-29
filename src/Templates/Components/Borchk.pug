@@ -1,12 +1,14 @@
 div#borchk
   form(action=identityProviders.borchk.action method='post')
     div.form-group
-      label(for='libraryid-input')
-        strong Bibliotek
       if selectedAgency
-        input(type="hidden" value=selectedAgency name="libraryId" id="libraryid-input")
-        input(type="text" disabled value=selectedAgencyName class="form-control" name="libraryName")
+        label(for='libraryid-input')
+          strong Bibliotek
+        input(type="hidden" value=selectedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
+        input(type="text" disabled value=selectedAgencyName class="form-control" id="libraryid-input-disabled" name="libraryName" aria-hidden='false' aria-disabled='true')
       else
+        label(for='libraryid-input')
+          strong Bibliotek
         div.input-group
           input(type='text' class='form-control' id='libraryid-input' name='libraryId' data-aid='' placeholder='Vælg bibliotek' autocomplete='off')
           div.input-group-btn
