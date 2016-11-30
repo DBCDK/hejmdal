@@ -43,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  if(document.getElementById('error-overlay')){
-    document.getElementById('error-overlay-close-btn').addEventListener('click', function(e){
+  if (document.getElementById('error-overlay')) {
+    document.getElementById('error-overlay-close-btn').addEventListener('click', function(e) {
       e.preventDefault();
       closeErrorOverlay();
     });
 
-    document.getElementById('try-again-btn').addEventListener('click', function(e){
+    document.getElementById('try-again-btn').addEventListener('click', function(e) {
       e.preventDefault();
       closeErrorOverlay();
     });

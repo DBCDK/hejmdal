@@ -6,7 +6,7 @@
 import {form} from 'co-body';
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
-import {ERRORS} from "../../utils/errors.util";
+import {ERRORS} from '../../utils/errors.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -16,8 +16,7 @@ import {ERRORS} from "../../utils/errors.util";
  * @returns {*}
  */
 export async function validateUserInLibrary(ctx, userInput) {
-  console.log(userInput);
-  let userValidate = {error: true, message: 'Unknown message'};
+  let userValidate = {error: true, message: 'unknown_error'};
 
   try {
     const requester = ctx.getState().serviceClient.borchkServiceName;
@@ -95,7 +94,8 @@ function extractInfo(response) {
       default:
         break;
     }
-  } else {
+  }
+  else {
     log.error('Invalid borchk response', {response: response});
     statusResponse.message = 'invalid_borchk_response';
   }

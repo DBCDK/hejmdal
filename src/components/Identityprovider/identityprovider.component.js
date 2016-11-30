@@ -39,7 +39,6 @@ export async function authenticate(ctx, next) {
       });
 
       ctx.status = 200;
-      ctx.setState({error: null});
     }
   }
   catch (e) {
@@ -85,7 +84,7 @@ export async function borchkCallback(ctx) {
   const response = await getBorchkResponse(ctx);
 
   if (response && response.userId && response.libraryId && response.pincode) {
-    validated = await validateUsevrInLibrary(ctx, response);
+    validated = await validateUserInLibrary(ctx, response);
   }
   else {
     validated.message = ERRORS.missing_fields;
