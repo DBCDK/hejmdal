@@ -1,3 +1,8 @@
+/* eslint-disable no-undef */
+/**
+ * @file
+ * Testing the error messages shown to users in the frontend.
+ */
 import {assert} from 'chai';
 import {ERRORS} from '../../src/utils/errors.util';
 import LoginPage from "../pageObjects/loginPage";
