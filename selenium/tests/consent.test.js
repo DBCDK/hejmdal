@@ -21,7 +21,7 @@ describe('Test Consent part of authetication flow', () => {
   afterEach(() => {
     browser.deleteCookie();
     browser.url('/wipestores');
-    browser.url('/logud');
+    browser.url('/logout');
   });
 
   it('should send user to consent page', () => {
