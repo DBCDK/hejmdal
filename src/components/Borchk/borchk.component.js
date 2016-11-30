@@ -94,7 +94,8 @@ function extractInfo(response) {
       default:
         break;
     }
-  } else {
+  }
+  else {
     log.error('Invalid borchk response', {response: response});
     statusResponse.message = 'invalid_borchk_response';
   }
