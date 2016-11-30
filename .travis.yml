@@ -8,10 +8,11 @@ cache:
 branches:
   only:
   - master
-env:
-- TEST_SUITE=lint
-- TEST_SUITE=test
-- TEST_SUITE=test:integration
+matrix:
+  include:
+    - env: TEST_SUITE=lint
+    - env: TEST_SUITE=test
+    - env: TEST_SUITE=test:integration
 script: npm run $TEST_SUITE
 notifications:
   slack:
