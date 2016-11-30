@@ -323,7 +323,7 @@ function removeExistingRecentlySelectedLibraries() {
  * @param {Event} e
  */
 function closeErrorOverlay(e) {
-  if(e){
+  if (e) {
     e.preventDefault();
   }
   document.getElementById('topbar-container').setAttribute('aria-hidden', 'false');
