@@ -11,8 +11,7 @@ div#borchk
           strong Bibliotek
         div.input-group
           input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true')
-          // TODO mmj rename libraryIdd to libraryId
-          input(type="hidden" name="libraryIdd" id="libraryid-input-hidden" aria-hidden='true' )
+          input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' )
           div.input-group-btn
             button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
               span(class='glyphicon glyphicon-triangle-bottom')
