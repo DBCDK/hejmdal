@@ -5,7 +5,7 @@
  */
 import {assert} from 'chai';
 import {ERRORS} from '../../src/utils/errors.util';
-import LoginPage from "../pageObjects/loginPage";
+import LoginPage from '../pageObjects/loginPage';
 
 describe('Testing errors shown in the UI', () => {
   let loginPage;
