@@ -9,11 +9,10 @@ branches:
   only:
   - master
 env:
+- TEST_SUITE=lint
+- TEST_SUITE=test
 - TEST_SUITE=test:integration
-script:
-- npm run lint
-- npm run test
-- npm run $TEST_SUITE
+script: npm run $TEST_SUITE
 notifications:
   slack:
     rooms:
