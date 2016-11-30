@@ -22,6 +22,7 @@ html(lang='da')
       link(rel='stylesheet', href='/css/topbar.css?' + version)
       link(rel='stylesheet', href='/css/footer.css?' + version )
       link(rel='stylesheet', href='/css/login.css?' + version )
+      link(rel='stylesheet', href='/css/error.css?' + version )
 
     block scripts
       script(src="/js/jquery-3.1.1.min.js?" + version)
@@ -30,10 +31,18 @@ html(lang='da')
 
   body
     div.container
-      div.row
+      div(class='row' id='topbar-container' aria-hidden = error ? 'true' : 'false')
         include Components/Topbar
+
       div.row
-        div.col-sm-10.col-sm-offset-1.content
+        div(class='col-sm-10 col-sm-offset-1 content' id='content-container' aria-hidden = error ? 'true' : 'false')
           block content
-      div.row
+
+      div(class='row' id='footer-container'  aria-hidden = error ? 'true' : 'false')
         include Components/Footer
+
+      if error
+        div(class = error ? 'error-overlay' : 'error-overlay hide' id='error-overlay' aria-hidden = !error ? 'true' : 'false')
+          div.container.error-bg
+            div.row
+              include Components/Error

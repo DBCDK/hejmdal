@@ -4,7 +4,7 @@ block append content
   div
     div.borchk-component
       if identityProviders.borchk
-        include Components/Borchk
+          include Components/Borchk
 
     if identityProviders.unilogin || identityProviders.nemlogin
       div#external-providers
@@ -23,8 +23,4 @@ block append content
             include Components/Wayf
 
 
-  div.helptext-container
-    div.center-text.buffer-vertical-5
-      a(class="link-style") Brug for hjælp til at logge ind?
-    div.center-text
-      a(class="link-style") English
+  include Components/Helptext.container.pug

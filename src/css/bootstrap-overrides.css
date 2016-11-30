@@ -2,6 +2,7 @@
   --background_color: #d2d0cb;
   --dark-grey: #616161;
   --button_green: #007236;
+  --error-red: #f2dede;
 }
 
 h1 {
@@ -22,6 +23,10 @@ label {
 .container {
   background-color: var(--background_color);
   height: 100%;
+
+  &.error-bg {
+    background-color: var(--error-red);
+  }
 }
 
 .btn-success {

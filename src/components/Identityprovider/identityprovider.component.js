@@ -9,6 +9,7 @@ import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.compo
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
 import {getListOfAgenciesForFrontend, getAgencyName} from '../../utils/agencies.util';
+import {ERRORS} from '../../utils/errors.util';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -25,8 +26,10 @@ export async function authenticate(ctx, next) {
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const selectAgencyName = await getAgencyName(state.serviceAgency);
       const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
+      const error = ctx.query.error ? ctx.query.error : null;
 
       ctx.render('Login', {
+        error: error,
         serviceClient: state.serviceClient.name,
         identityProviders,
         VERSION_PREFIX,
@@ -36,6 +39,7 @@ export async function authenticate(ctx, next) {
       });
 
       ctx.status = 200;
+      ctx.setState({error: null});
     }
   }
   catch (e) {
@@ -77,23 +81,28 @@ export async function uniloginCallback(ctx) {
  * @returns {*}
  */
 export async function borchkCallback(ctx) {
-  let validated = false;
+  let validated = {error: true, message: 'unknown_eror'};
   const response = await getBorchkResponse(ctx);
+
   if (response && response.userId && response.libraryId && response.pincode) {
-    validated = await validateUserInLibrary(ctx, response);
+    validated = await validateUsevrInLibrary(ctx, response);
   }
-  if (validated) {
+  else {
+    validated.message = ERRORS.missing_fields;
+  }
+
+  if (!validated.error) {
     ctx.setUser({
       userId: response.userId,
       userType: 'borchk',
       identityProviders: ['borchk'],
       libraryId: response.libraryId,
       pincode: response.pincode,
-      userValidated: validated
+      userValidated: true
     });
   }
   else {
-    idenityProviderValidationFailed(ctx);
+    idenityProviderValidationFailed(ctx, validated);
   }
 
   return ctx;
@@ -220,11 +229,13 @@ function getIdentityProviders(identityProviders, authToken) {
 
 /**
  *
- * @param ctx
+ * @param {object} ctx
+ * @param {object} error
  */
-function idenityProviderValidationFailed(ctx) {
+function idenityProviderValidationFailed(ctx, error) {
   const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
-  const startOver = VERSION_PREFIX + '/login?token=' + ctx.getState().smaugToken + '&returnurl=' + ctx.getState().returnUrl + agencyParameter;
+  const errorParameter = error.error ? `&error=${error.message}` : '';
+  const startOver = `${VERSION_PREFIX}/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}`;
   ctx.redirect(startOver);
 }
 
