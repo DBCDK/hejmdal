@@ -1,3 +1,7 @@
+:root {
+  --red: #de3733;
+}
+
 .buffer-right-20 {
   margin-right: 20px;
 }
@@ -10,10 +14,22 @@
   margin-bottom: 10px;
 }
 
-.align-right{
+.buffer-top-5 {
+  margin-top: 5px;
+}
+
+.buffer-top-30 {
+  margin-top: 30px;
+}
+
+.align-right {
   text-align: right;
 }
 
 .center-text {
   text-align: center;
+}
+
+.red {
+  color: var(--red);
 }

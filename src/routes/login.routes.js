@@ -13,10 +13,10 @@ import * as Culr from '../components/Culr/culr.component';
 
 const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
-const identityProviderCallbackRoute = async (ctx, next) => {
+const identityProviderCallbackRoute = async(ctx, next) => {
   await compose([identityProviderCallback, Consent.retrieveUserConsent, culrTicketRoute])(ctx, next);
 };
-const culrTicketRoute = async (ctx, next) => {
+const culrTicketRoute = async(ctx, next) => {
   await compose([Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient])(ctx, next);
 };
 

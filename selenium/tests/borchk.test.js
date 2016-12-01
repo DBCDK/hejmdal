@@ -17,7 +17,8 @@ describe('Test Borchk component', () => {
 
   it('should display the borchk login form and elements', () => {
     assert.isTrue(browser.isVisible('#borchk'));
-    assert.isTrue(browser.isVisible('#libraryid-input'));
+    assert.isTrue(browser.isVisible('#libraryname-input'));
+    assert.isFalse(browser.isVisible('#libraryid-input-hidden'));
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
     assert.isTrue(browser.isVisible('#userid-input'));
     assert.isTrue(browser.isVisible('#pin-input'));
@@ -25,18 +26,18 @@ describe('Test Borchk component', () => {
   });
 
   it('should display dropdown when inputfield has two or more characters', () => {
-    browser.addValue('#libraryid-input', 'r');
+    browser.addValue('#libraryname-input', 'r');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
 
-    browser.addValue('#libraryid-input', 'i');
+    browser.addValue('#libraryname-input', 'i');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
 
-    browser.addValue('#libraryid-input', 'n');
+    browser.addValue('#libraryname-input', 'n');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
 
   it('should display two out of four options', () => {
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
     const agencies = browser.elements('.agency');
     assert.equal(agencies.value.length, 4, 'A total of 4 agencies is present in the dropdown');
 
@@ -75,20 +76,20 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isFalse(browser.isVisible('#clear-libraries-input-btn'));
 
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
 
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
 
   it('Should empty the libraries input field when clicked', () => {
-    assert.equal('', browser.getValue('#libraryid-input'), 'input field is empty');
-    browser.addValue('#libraryid-input', 'rin');
+    assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
+    browser.addValue('#libraryname-input', 'rin');
 
-    assert.equal('rin', browser.getValue('#libraryid-input'));
+    assert.equal('rin', browser.getValue('#libraryname-input'));
 
     browser.click('#clear-libraries-input-btn');
-    assert.equal('', browser.getValue('#libraryid-input'), 'input field is empty');
+    assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
   });
 
   it('Should switch type on userid input field', () => {
@@ -118,6 +119,7 @@ describe('Test Borchk component', () => {
   it('Should display a pre-filled disabled field when &agency= is set', () => {
     browser.url(browser.getUrl() + '&agency=743001');
     assert.isFalse(browser.isVisible('#libraryid-input'));
+    assert.isFalse(browser.isVisible('#libraryname-input'));
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
     assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek');
   });

@@ -1,0 +1,25 @@
+:root {
+  --error-red: #923c39;
+}
+
+.error-overlay {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+
+.close-btn {
+  margin-top: 10px;
+  margin-left: 15px;
+  font-size: 25px;
+}
+
+.error-message {
+  p {
+    font-size: 18px;
+  }
+}

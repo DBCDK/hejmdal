@@ -16,7 +16,7 @@ describe('Test Borchk component - non Firefox', () => {
   });
 
   it('should select current selected element, close dropdown and focus next input field when tab is pressed', () => {
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
 
     // Pressing ArrowDown key -- https://github.com/webdriverio/webdriverio/blob/master/lib/helpers/constants.js#L67
     browser.keys('\uE015');
@@ -28,7 +28,7 @@ describe('Test Borchk component - non Firefox', () => {
     browser.keys('\uE004');
 
     // Get value of library input field
-    const inputValue = browser.element('#libraryid-input').getValue();
+    const inputValue = browser.element('#libraryname-input').getValue();
 
     assert.equal(selectedElementText, inputValue);
 
@@ -37,7 +37,7 @@ describe('Test Borchk component - non Firefox', () => {
   });
 
   it('should select current selected element, close dropdown and focus next input field when enter is pressed', () => {
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
 
     // Pressing ArrowDown key -- https://github.com/webdriverio/webdriverio/blob/master/lib/helpers/constants.js#L67
     browser.keys('\uE015');
@@ -49,7 +49,7 @@ describe('Test Borchk component - non Firefox', () => {
     browser.keys('\uE007');
 
     // Get value of library input field
-    const inputValue = browser.element('#libraryid-input').getValue();
+    const inputValue = browser.element('#libraryname-input').getValue();
 
     assert.equal(selectedElementText, inputValue);
 
@@ -59,10 +59,13 @@ describe('Test Borchk component - non Firefox', () => {
 
   it('should close dropwdown on escape', () => {
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
+    browser.pause(1000);
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
+    browser.pause(1000);
     // Pressing escape key -- https://github.com/webdriverio/webdriverio/blob/master/lib/helpers/constants.js#L67
     browser.keys('\uE00C');
+    browser.pause(1000);
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
   });
 
@@ -72,7 +75,7 @@ describe('Test Borchk component - non Firefox', () => {
     // Refresh browser to make it take effect
     browser.refresh();
 
-    browser.addValue('#libraryid-input', 'rin');
+    browser.addValue('#libraryname-input', 'rin');
 
     // Ensure the two labels in the dropdown are hidden
     assert.isFalse(browser.isVisible('#latest'));
@@ -85,8 +88,8 @@ describe('Test Borchk component - non Firefox', () => {
     // We should now have one item with the .recent class set
     assert.equal(browser.elements('.recent').value.length, 1);
 
-    browser.setValue('#libraryid-input', '');
-    browser.addValue('#libraryid-input', 'rin');
+    browser.setValue('#libraryname-input', '');
+    browser.addValue('#libraryname-input', 'rin');
 
     // Ensure the two labels in the dropdown are now visible
     assert.isTrue(browser.isVisible('#latest'));
@@ -95,8 +98,8 @@ describe('Test Borchk component - non Firefox', () => {
     // ArrowDown ArrowDown ArrowDown Enter
     browser.keys(['\uE015', '\uE015', '\uE015', '\uE007']);
 
-    browser.setValue('#libraryid-input', '');
-    browser.addValue('#libraryid-input', 'rin');
+    browser.setValue('#libraryname-input', '');
+    browser.addValue('#libraryname-input', 'rin');
 
     // We should now have one item with the .recent class set
     assert.equal(browser.elements('.recent').value.length, 2);

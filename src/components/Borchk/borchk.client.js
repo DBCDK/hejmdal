@@ -38,6 +38,7 @@ export async function getClient(library, userId, pinCode, serviceRequester) {
       }
     });
   }
+
   if (response.statusCode === 200) {
     return JSON.parse(response.body);
   }

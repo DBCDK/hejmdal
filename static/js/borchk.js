@@ -9,9 +9,11 @@ var currentlyVisibleAgencies = [];
 var currentlySelectedIndex = -1;
 var currentSearchValue = '';
 var libraryInput;
+var libraryIdInput;
 
 document.addEventListener('DOMContentLoaded', function() {
-  libraryInput = document.getElementById('libraryid-input');
+  libraryInput = document.getElementById('libraryname-input');
+  libraryIdInput = document.getElementById('libraryid-input-hidden');
   currentSearchValue = libraryInput.value;
   librariesDropdown = document.getElementById('libraries-dropdown-container');
   allAgencies = document.getElementsByClassName('agency');
@@ -40,6 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
       escapeWasPressed(e);
     }
   });
+
+  if (document.getElementById('error-overlay')) {
+    document.getElementById('error-overlay-close-btn').addEventListener('click', closeErrorOverlay);
+
+    document.getElementById('try-again-btn').addEventListener('click', closeErrorOverlay);
+  }
 
   if (Storage !== undefined) { // eslint-disable-line no-undefined
     setRecentlySelectedLibraries();
@@ -227,7 +235,7 @@ function OnClick(element) { // eslint-disable-line no-unused-vars
   var branchName = element.textContent;
   var branchId = element.dataset.aid;
 
-  libraryInput.setAttribute('data-aid', branchId);
+  libraryIdInput.value = branchId;
   libraryInput.value = branchName;
   toggleDropdown(false);
   document.getElementById('userid-input').focus();
@@ -308,4 +316,19 @@ function removeExistingRecentlySelectedLibraries() {
   lis.forEach(function(_li) {
     _li.parentNode.removeChild(_li);
   });
+}
+
+/**
+ * Closes the eroroverlay
+ * @param {Event} e
+ */
+function closeErrorOverlay(e) {
+  if (e) {
+    e.preventDefault();
+  }
+  document.getElementById('topbar-container').setAttribute('aria-hidden', 'false');
+  document.getElementById('content-container').setAttribute('aria-hidden', 'false');
+  document.getElementById('footer-container').setAttribute('aria-hidden', 'false');
+  document.getElementById('error-overlay').setAttribute('aria-hidden', 'true');
+  document.getElementById('error-overlay').classList.add('hide');
 }

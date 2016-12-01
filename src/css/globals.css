@@ -1,3 +1,7 @@
+:root {
+  --btn-grey: #999999;
+}
+
 html, body {
   height: 100%;
 }
@@ -20,9 +24,12 @@ html, body {
 }
 
 .btn-grey {
-  background-color: #f6f6f6
+  width: 100px;
+  color: white;
+  background-color: var(--btn-grey);
 }
 
 .content {
   margin-top: 20px;
+  z-index: 1;
 }

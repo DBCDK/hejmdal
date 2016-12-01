@@ -10,7 +10,8 @@ div#borchk
         label(for='libraryid-input')
           strong Bibliotek
         div.input-group
-          input(type='text' class='form-control' id='libraryid-input' name='libraryId' data-aid='' placeholder='Vælg bibliotek' autocomplete='off')
+          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true')
+          input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' )
           div.input-group-btn
             button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
               span(class='glyphicon glyphicon-triangle-bottom')
@@ -29,7 +30,7 @@ div#borchk
       label(for='userid-input')
         strong CPR eller lånerkortnummer
       div.input-group
-        input(type='tel' class='form-control' id='userid-input' name='userId' pattern='[0-9]*')
+        input(type='tel' class='form-control' id='userid-input' name='userId' pattern='[0-9]*' required='true')
         div.input-group-btn
           button(type='button' class='btn inline-btn-default' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyp");')
             span(class='glyphicon glyphicon-eye-close' id='userid-input-glyp')
@@ -38,7 +39,7 @@ div#borchk
       label(for='pin-input')
         strong Pinkode
       div.input-group
-        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*')
+        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true')
         div.input-group-btn
           button(type='button' class='btn inline-btn-default' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyp");')
             span(class='glyphicon glyphicon-eye-open' id='pin-input-glyp')
