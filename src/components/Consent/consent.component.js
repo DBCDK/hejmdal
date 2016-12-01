@@ -6,7 +6,6 @@
 import {form} from 'co-body';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import {CONFIG} from '../../utils/config.util';
-import consentTemplate from './templates/consent.template';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
@@ -24,14 +23,17 @@ const consentStore = CONFIG.mock_storage.consent ?
  */
 export async function giveConsentUI(ctx, next) {
   const state = ctx.getState();
-  if (!state.serviceClient || !state.serviceClient.id) {
+  if (!state || !state.serviceClient || !state.serviceClient.id) {
     ctx.redirect(`${VERSION_PREFIX}/fejl`);
   }
   else {
-    ctx.body = consentTemplate({
-      attributes: state.serviceClient.attributes,
-      versionPrefix: VERSION_PREFIX,
-      service: state.serviceClient.id
+    const returnUrl = state.returnUrl ? state.serviceClient.urls.host + state.returnUrl : '';
+    ctx.render('Consent', {
+      attributes: setConsentAttributes(state.serviceClient.attributes, state.ticket.attributes),
+      consentAction: VERSION_PREFIX + '/login/consentsubmit/' + state.smaugToken,
+      consentFailed: false,
+      returnUrl: returnUrl,
+      serviceName: state.serviceClient.name
     });
     await next();
   }
@@ -48,12 +50,18 @@ export async function consentSubmit(ctx, next) {
   const response = await getConsentResponse(ctx);
 
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
-    consentRejected(ctx, next);
+    const serviceClient = ctx.getState().serviceClient;
+    const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
+    ctx.render('Consent', {
+      consentFailed: true,
+      returnUrl: returnUrl,
+      serviceName: serviceClient.name
+    });
   }
   else {
     await storeUserConsent(ctx);
-    await next();
   }
+  await next();
 }
 
 /**
@@ -144,7 +152,6 @@ export async function checkForExistingConsent({userId, serviceClientId}) {
  */
 export async function storeUserConsent(ctx) {
   const consent = createConsentObject(ctx);
-
   const user = ctx.getUser();
   const state = ctx.getState();
 
@@ -182,6 +189,11 @@ function addConsentToState(ctx, consent) {
   ctx.setState({consents});
 }
 
+/**
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
 async function getConsent(ctx) {
   const user = ctx.getUser();
   const serviceClient = ctx.getState().serviceClient;
@@ -200,12 +212,38 @@ async function getConsent(ctx) {
   return consent;
 }
 
+/**
+ *
+ * @param userId
+ * @param serviceClientId
+ */
 async function removeConsent(userId, serviceClientId) {
   await consentStore.delete(`${userId}:${serviceClientId}`);
 }
 
+/**
+ *
+ * @param ctx
+ * @returns {{keys: Array.<*>}}
+ */
 function createConsentObject(ctx) {
   const attributes = ctx.getState().serviceClient.attributes || {};
   const keys = Object.keys(attributes);
   return {keys: keys.sort()};
+}
+
+/**
+ *
+ * @param definitionAttributes
+ * @param ticketAttributes
+ * @returns {{}}
+ */
+function setConsentAttributes(definitionAttributes, ticketAttributes) {
+  const consentAttributes = {};
+  for (var key in definitionAttributes) {
+    if (ticketAttributes[key] && ticketAttributes[key] !== []) {
+      consentAttributes[key] = definitionAttributes[key];
+    }
+  }
+  return consentAttributes;
 }

@@ -41,7 +41,7 @@ export default async function mapAttributesToTicket(ctx, next) {
 function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
 
-  let cpr = null;
+  let cpr = user.cpr;
   let libraries = [];
   let fromCpr = {};
 
@@ -49,7 +49,6 @@ function mapCulrResponse(culr, attributes, user) {
     culr.accounts.forEach((account) => {
       if (account.userIdType === 'CPR' && !cpr) {
         cpr = account.userIdValue;
-        fromCpr = mapFromCpr(cpr);
       }
 
       libraries.push({
@@ -57,6 +56,9 @@ function mapCulrResponse(culr, attributes, user) {
         loanerid: account.userIdValue
       });
     });
+  }
+  if (cpr) {
+    fromCpr = mapFromCpr(cpr);
   }
 
   const fields = Object.keys(attributes);
@@ -78,6 +80,9 @@ function mapCulrResponse(culr, attributes, user) {
         break;
       case 'uniloginId':
         mapped.uniloginId = user.userType === 'unilogin' && user.userId ? user.userId : null;
+        break;
+      case 'wayfId':
+        mapped.wayfId = user.wayfId ? user.wayfId : null;
         break;
       default:
         log.error('Cannot map attribute: ' + field);

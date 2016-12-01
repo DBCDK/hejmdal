@@ -94,6 +94,7 @@ export async function borchkCallback(ctx) {
   if (!validated.error) {
     ctx.setUser({
       userId: response.userId,
+      cpr: response.userId,
       userType: 'borchk',
       identityProviders: ['borchk'],
       libraryId: response.libraryId,
