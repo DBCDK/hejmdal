@@ -50,7 +50,7 @@ function openTicket() {
 
 function resetToDefault() {
   window.localStorage.removeItem('hejmdal');
-  window.location = `${window.hejmdal.host}/logud?redirect=/example/`;
+  window.location = `${window.hejmdal.host}/logout?returnurl=/example/`;
 }
 
 /**

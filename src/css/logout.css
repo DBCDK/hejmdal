@@ -1,0 +1,14 @@
+@svg-load logout url(svg/lock_open.svg) {
+  fill: black;
+}
+
+.logout-img {
+  display: block;
+  background: svg-inline(logout) no-repeat center;
+  height: 50px;
+  margin-top: 5px;
+}
+
+.buffer-1-1 {
+  font-size: 1.1em;
+}
