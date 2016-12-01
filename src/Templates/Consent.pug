@@ -8,13 +8,14 @@ block append content
       div.h3
         strong Adgang ikke godkendt
       div.buffer-1-1
-        strong #{serviceName} har ikke fået adgang til de ønskede oplysninger
+        strong.italic #{serviceName}
+        strong(id='content')  har ikke fået adgang til de ønskede oplysninger
       div.buffer-1-1
         strong Derfor er du ikke blevet logget ind
     div &nbsp;
     if returnUrl
       div.buffer-vertical-5
-        a(class="link-style" href=returnUrl) Tilbage til #{serviceName}
+        a(class="link-style" id='returnUrl' href=returnUrl) Tilbage til #{serviceName}
   else
     div
       span.consent-img
@@ -23,20 +24,20 @@ block append content
         strong Godkendelse
       div.buffer-1-1
         strong.italic #{serviceName}
-        strong  beder om adgang til disse oplysninger
-      ul.attribute
+        strong(id='content')  beder om adgang til disse oplysninger
+      ul.attributeList
         each attribute in attributes
-          li.attribute(data-toggle="collapse" href="#collapse-" + attribute.name aria-expanded="false" aria-controls="collapseExample") #{attribute.name}
+          li.attribute(data-toggle="collapse" id='attribute' href="#toggle-" + attribute.key aria-expanded="false") #{attribute.name}
             a.right-text
               span(class="glyphicon glyphicon-info-sign" aria-hidden="true")
-          div.collapse(class="italic indent" id="collapse-" + attribute.name) #{attribute.description}
+          div.collapse(class="italic indent" id="toggle-" + attribute.key) #{attribute.description}
         li.attribute
 
-      div.buffer-vertical-10
+      div(id='consent-actions').buffer-vertical-10
         form(action=consentAction method='post')
-          a(href=consentAction class='buffer-right-20 link-style')
+          a(href=consentAction id='consent-action-reject' class='buffer-right-20 link-style')
             strong Godkend ikke
-          button(type='submit' name='userconsent' value='1' class='btn btn-success' id='consent-submit')
+          button(type='submit' name='userconsent' value='1' class='btn btn-success' id='consent-action-accept')
             strong GODKEND
 
   div &nbsp;

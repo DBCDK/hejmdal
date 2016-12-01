@@ -41,7 +41,7 @@ export default async function mapAttributesToTicket(ctx, next) {
 function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
 
-  let cpr = user.cpr;
+  let cpr = user.cpr || null;
   let libraries = [];
   let fromCpr = {};
 

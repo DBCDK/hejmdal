@@ -6,14 +6,14 @@
 import {assert} from 'chai';
 import {
   giveConsentUI,
-  consentSubmit,
+/*  consentSubmit, */
   retrieveUserConsent,
   checkForExistingConsent,
   storeUserConsent
 } from '../consent.component';
 import sinon from 'sinon';
 
-import consentTemplate from '../templates/consent.template';
+/* import consentTemplate from '../templates/consent.template'; */
 import {initState} from '../../../utils/state.util';
 import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockContext} from '../../../utils/test.util';
@@ -44,6 +44,7 @@ describe('Unittesting methods in consent.component.test', () => {
       assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
     });
 
+    /*
     it('should render html to ctx.body and call next', () => {
       ctx.redirect = sandbox.stub();
       ctx.session.state.serviceClient.id = 'testing...';
@@ -58,8 +59,10 @@ describe('Unittesting methods in consent.component.test', () => {
       }));
       assert.isTrue(nextSpy.called);
     });
+    */
   });
 
+  /*
   describe('consentSubmit()', () => {
 
     it('should redirect to error url on calling service', async() => {
@@ -75,6 +78,7 @@ describe('Unittesting methods in consent.component.test', () => {
       assert.equal(ctx.redirect.args[0], expectedUrl);
     });
   });
+  */
 
   describe('retrieveUserConsent()', () => {
 

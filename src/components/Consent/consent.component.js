@@ -52,6 +52,7 @@ export async function consentSubmit(ctx, next) {
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
+    ctx.session = null;   // TODO why is the session cleared. No ticket is created, so why not keep the session
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
@@ -243,6 +244,7 @@ function setConsentAttributes(definitionAttributes, ticketAttributes) {
   for (var key in definitionAttributes) {
     if (ticketAttributes[key] && ticketAttributes[key] !== []) {
       consentAttributes[key] = definitionAttributes[key];
+      consentAttributes[key].key = key;
     }
   }
   return consentAttributes;

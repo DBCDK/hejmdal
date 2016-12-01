@@ -23,7 +23,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
     // Click on accept consent button
-    browser.click('#consent-actions-accept');
+    browser.click('#consent-action-accept');
 
     // Assert that additional information containing a ticket-token and -id is shoen
     assert.isTrue(browser.isVisible('#post-success'));
@@ -49,7 +49,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
         "gender": null,
         "libraries": [],
         "municipality": null,
-        "uniloginId": "test1234"
+        "uniloginId": "test1234",
+        "wayfId": null,
       },
       "id": 1,
       "token": "5fc9b591842fed38c6d1549ce85ee51280e353a56c9a2fb3c40e3a1e2011006a"

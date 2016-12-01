@@ -22,7 +22,7 @@ describe('Testing the getTicket endpoint', () => {
 
   it('Should deliver er valid ticket', () => {
     // accept consent
-    browser.click('#consent-actions-accept');
+    browser.click('#consent-action-accept');
 
     const ticketToken = browser.getText('#tickettoken');
     assert.isOk(ticketToken);
@@ -33,7 +33,7 @@ describe('Testing the getTicket endpoint', () => {
     browser.url(`/getTicket/${ticketToken}/${ticketId}`);
 
     const body = browser.getText('body');
-    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"libraries":[],"municipality":null,"uniloginId":"test1234"},"id":${ticketId},"token":"${ticketToken}"}`;
+    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"libraries":[],"municipality":null,"uniloginId":"test1234","wayfId":null},"id":${ticketId},"token":"${ticketToken}"}`;
 
     // ensure the ticket is as expected
     assert.equal(body, expectedValidTicket);
