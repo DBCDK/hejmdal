@@ -37,7 +37,7 @@ describe('Test Smaug component', () => {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
         birthDate: {
           name: 'Fødselsdato',
-          description: 'Fødselsdato - 6 første cifre af CPR-nummer'
+          description: 'Fødselsdato - 4 første cifre af CPR-nummer'
         },
         birthYear: {
           name: 'Fødselsår',

@@ -41,7 +41,7 @@ describe('Attribute mapper unittest', () => {
     mapAttributesToTicket(ctx, next);
 
     assert.deepEqual(ctx.session.state.ticket.attributes, {
-      birthDate: '010245',
+      birthDate: '0102',
       birthYear: '2045',
       gender: 'm',
       cpr: '0102456789',

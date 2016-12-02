@@ -15,7 +15,7 @@ export const ATTRIBUTES = {
   },
   birthDate: {
     name: 'Fødselsdato',
-    description: 'Fødselsdato - 6 første cifre af CPR-nummer'
+    description: 'Fødselsdato - 4 første cifre af CPR-nummer'
   },
   birthYear: {
     name: 'Fødselsår',

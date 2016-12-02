@@ -6,6 +6,7 @@
  */
 
 import {log} from './logging.util';
+import {mapFromCpr} from './cpr.util';
 
 /**
  * Attribute mapper
@@ -92,50 +93,3 @@ function mapCulrResponse(culr, attributes, user) {
 
   return mapped;
 }
-
-function mapFromCpr(cpr) {
-  const ret = {};
-  if (isNumeric(cpr) && isValidDate(cpr) && cpr.length === 10) {
-    ret.birthDate = cpr.substr(0, 6);
-    ret.birthYear = addMilenium(cpr.substr(4, 2), cpr.substr(6, 1));
-    ret.gender = cpr.substr(9, 1) % 2 ? 'm' : 'f';
-  }
-  return ret;
-}
-
-/**
- *  Add milenium to 2 digit year as specified by https://da.wikipedia.org/wiki/CPR-nummer
- *
- * @param year - 2 digit year
- * @param seven - digit number 7 in the cpr
- */
-function addMilenium(year, seven) {
-  switch (seven) {
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-      return '19' + year;
-    case '4':
-    case '9':
-      return (year >= 37 ? '19' : '20') + year;
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-      return (year >= 58 ? '18' : '20') + year;
-    default:
-      return '??' + year;
-  }
-}
-
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-function isValidDate(ddmmyy) {
-  const mm = ddmmyy.substr(2, 2) || '00';
-  const d = new Date(ddmmyy.substr(4, 2), mm - 1, ddmmyy.substr(0, 2));
-  return d && (d.getMonth() + 1) === parseInt(mm, 10);
-}
-
