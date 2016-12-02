@@ -4,6 +4,7 @@
  */
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
+import {isValidCpr} from '../../utils/cpr.util';
 import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
@@ -94,6 +95,7 @@ export async function borchkCallback(ctx) {
   if (!validated.error) {
     ctx.setUser({
       userId: response.userId,
+      cpr: isValidCpr(response.userId) ? response.userId : null,
       userType: 'borchk',
       identityProviders: ['borchk'],
       libraryId: response.libraryId,

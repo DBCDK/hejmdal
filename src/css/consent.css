@@ -1,0 +1,57 @@
+@svg-load consent url(svg/consent.svg) {
+  fill: black;
+}
+
+@svg-load rejected url(svg/consent-rejected.svg) {
+  fill: black;
+}
+
+.consent-img {
+  background: svg-inline(consent) no-repeat;
+}
+
+.consent-rejected-img {
+  background: svg-inline(rejected) no-repeat;
+}
+
+.banner {
+  display: block;
+  height: 50px;
+  margin: 0.5em 0 0 3em;
+}
+
+.glyphicon-info-sign {
+  color: gray;
+  cursor: pointer;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.indent {
+  padding-left: 1em;
+}
+
+ul.attributeList {
+  margin: 0.5em 0 1em 0;
+  padding: 0;
+  max-width: 30em;
+}
+
+li.attribute {
+  list-style-type: none;
+  border-top: 2px solid gray;
+  font-size: 1.1em;
+  padding: 0.4em 0.7em 0 0.5em;
+  margin: 0.5em 0 0 0;
+}
+
+.right-text {
+  position: relative;
+  float: right;
+}
+
+.buffer-1-1 {
+  font-size: 1.1em;
+}

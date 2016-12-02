@@ -14,16 +14,20 @@ import * as Culr from '../components/Culr/culr.component';
 const router = new Router({prefix: VERSION_PREFIX + '/login'});
 
 const identityProviderCallbackRoute = async(ctx, next) => {
-  await compose([identityProviderCallback, Consent.retrieveUserConsent, culrTicketRoute])(ctx, next);
+  await compose([identityProviderCallback, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute])(ctx, next);
 };
-const culrTicketRoute = async(ctx, next) => {
-  await compose([Culr.getCulrAttributes, mapAttributesToTicket, storeTicket, redirectToClient])(ctx, next);
+const collectAndCreateAttributesRoute = async(ctx, next) => {
+  await compose([Culr.getCulrAttributes, mapAttributesToTicket])(ctx, next);
+};
+const ticketRoute = async(ctx, next) => {
+  await compose([storeTicket, redirectToClient])(ctx, next);
 };
 
-router.get('/', setDefaultState, getAttributes, authenticate, Consent.retrieveUserConsent, culrTicketRoute);
+router.get('/', setDefaultState, getAttributes, authenticate, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute);
 router.get('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
 router.post('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
 router.get('/consent', Consent.giveConsentUI);
-router.post('/consentsubmit', Consent.consentSubmit, culrTicketRoute);
+router.get('/consentsubmit/:token', Consent.consentSubmit);
+router.post('/consentsubmit/:token', Consent.consentSubmit, ticketRoute);
 
 export default router;

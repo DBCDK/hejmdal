@@ -31,24 +31,32 @@ describe('Test Consent part of authetication flow', () => {
 
   it('should render message to user', () => {
     const content = browser.getText('#content');
-    const expected = 'Ved tryk på Acceptér, accepterer du at dele nedenstående informationer med';
+    const expected = 'beder om adgang til disse oplysninger';
     assert.isTrue(content.startsWith(expected));
   });
 
   it('should render attributenames in message shown to user', () => {
-    const state = browser.getState();
-    const attributes = state.serviceClient.attributes;
+    const attributesRendered = browser.elements('#attribute');
+    const formHtml = attributesRendered.getHTML().toString();
+    const attributes = browser.getState().serviceClient.attributes;
 
     Object.keys(attributes).forEach((key) => {
       const name = attributes[key].name;
-      browser.include(name, '#consent-attributes');
+      switch (key) {
+        case 'libraries':
+        case 'uniloginId':
+          assert.isTrue(formHtml.includes(name));
+          break;
+        default:
+          assert.isFalse(formHtml.includes(name));
+      }
     });
   });
 
   it('should render a form', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit" method="post">`;
+    const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit/valid_token" method="post">`;
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -56,7 +64,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a accept button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = '<button id="consent-actions-accept" type="submit" value="1" name="userconsent">Acceptér</button>';
+    const expected = '<button class="btn btn-success" id="consent-action-accept" type="submit" name="userconsent" value="1"><strong>GODKEND</strong></button>';
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -64,25 +72,37 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a reject button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = '<button id="consent-actions-reject" type="submit" value="0" name="userconsent">Afvis</button>';
+    const expected = '<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/valid_token"><strong>Godkend ikke</strong></a>';
 
     assert.isTrue(formHtml.includes(expected));
   });
 
-  it('should clear session and redirect user upon click on reject', () => {
-    browser.click('#consent-actions-reject');
+  it('should clear session and show a reject page including a return url', () => {
+    browser.click('#consent-action-reject');
 
     const url = browser.getUrl();
-    const expected = 'thumbsdown?message=consent%20was%20rejected';
-    const session = browser.getSession();
+    const expectedUrl = 'login/consentsubmit/valid_token';
+    assert.isTrue(url.includes(expectedUrl));
 
-    assert.isTrue(url.includes(expected));
-    assert.isUndefined(session.state);
-    assert.isUndefined(session.user);
+    const session = browser.getSession();
+    assert.deepEqual(session.state.ticket, {});
+
+    const content = browser.getText('#content');
+    const expected = 'har ikke fået adgang til de ønskede oplysninger';
+    assert.isTrue(content.startsWith(expected));
+
+    const returnText = browser.getText('#returnUrl');
+    const expectedReturnText = 'Tilbage til';
+    assert.isTrue(returnText.startsWith(expectedReturnText));
+
+    const returnUrl = browser.elements('#returnUrl');
+    const formHtml = returnUrl.getHTML();
+    const expectedReturnUrl = 'message=consent%20was%20rejected';
+    assert.isTrue(formHtml.includes(expectedReturnUrl));
   });
 
   it('should redirect to /example/', () => {
-    browser.click('#consent-actions-accept');
+    browser.click('#consent-action-accept');
     browser.click('#get-ticket-button');
 
     const url = browser.getUrl();
@@ -103,7 +123,8 @@ describe('Test Consent part of authetication flow', () => {
       gender: null,
       libraries: [],
       municipality: null,
-      uniloginId: 'test1234'
+      uniloginId: 'test1234',
+      wayfId: null
     });
   }
 });

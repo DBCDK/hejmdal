@@ -60,12 +60,9 @@ describe('Test Borchk component - non Firefox', () => {
   it('should close dropwdown on escape', () => {
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
     browser.addValue('#libraryname-input', 'rin');
-    browser.pause(1000);
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
-    browser.pause(1000);
     // Pressing escape key -- https://github.com/webdriverio/webdriverio/blob/master/lib/helpers/constants.js#L67
     browser.keys('\uE00C');
-    browser.pause(1000);
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
   });
 
