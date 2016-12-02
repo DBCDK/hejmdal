@@ -6,7 +6,6 @@
 import {assert} from 'chai';
 import {
   giveConsentUI,
-/*  consentSubmit, */
   retrieveUserConsent,
   checkForExistingConsent,
   storeUserConsent
