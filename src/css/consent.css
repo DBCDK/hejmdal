@@ -6,6 +6,20 @@
   fill: black;
 }
 
+.consent-img {
+  background: svg-inline(consent) no-repeat;
+}
+
+.consent-rejected-img {
+  background: svg-inline(rejected) no-repeat;
+}
+
+.banner {
+  display: block;
+  height: 50px;
+  margin: 0.5em 0 0 3em;
+}
+
 .glyphicon-info-sign {
   color: gray;
   cursor: pointer;
@@ -31,20 +45,6 @@ li.attribute {
   font-size: 1.1em;
   padding: 0.4em 0.7em 0 0.5em;
   margin: 0.5em 0 0 0;
-}
-
-.consent-img {
-  display: block;
-  background: svg-inline(consent) no-repeat;
-  height: 50px;
-  margin: 0.5em 0 0 2em;
-}
-
-.consent-rejected-img {
-  display: block;
-  background: svg-inline(rejected) no-repeat;
-  height: 50px;
-  margin: 0.5em 0 0 2em;
 }
 
 .right-text {

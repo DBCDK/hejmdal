@@ -64,7 +64,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a accept button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = '<button class="btn btn-success" type="submit" name="userconsent" value="1" id="consent-action-accept"><strong>GODKEND</strong></button>';
+    const expected = '<button class="btn btn-success" id="consent-action-accept" type="submit" name="userconsent" value="1"><strong>GODKEND</strong></button>';
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -72,7 +72,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a reject button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = '<a class="buffer-right-20 link-style" href="/v0/login/consentsubmit/valid_token" id="consent-action-reject"><strong>Godkend ikke</strong></a>';
+    const expected = '<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/valid_token"><strong>Godkend ikke</strong></a>';
 
     assert.isTrue(formHtml.includes(expected));
   });
