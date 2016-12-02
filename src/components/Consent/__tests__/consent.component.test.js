@@ -13,7 +13,6 @@ import {
 } from '../consent.component';
 import sinon from 'sinon';
 
-/* import consentTemplate from '../templates/consent.template'; */
 import {initState} from '../../../utils/state.util';
 import {VERSION_PREFIX} from '../../../utils/version.util';
 import {mockContext} from '../../../utils/test.util';
