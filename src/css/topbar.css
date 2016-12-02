@@ -1,9 +1,3 @@
-:root {
-  --background_color: #d2d0cb;
-  --dark-grey: #616161;
-  --button_green: #007236;
-}
-
 @svg-load logo url(svg/bibliotekslogin_logo.svg) {
   fill: white;
 }

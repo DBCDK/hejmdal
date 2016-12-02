@@ -1,7 +1,3 @@
-:root {
-  --error-red: #923c39;
-}
-
 .error-overlay {
   z-index: 10;
   position: absolute;
