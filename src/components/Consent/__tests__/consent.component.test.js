@@ -43,42 +43,8 @@ describe('Unittesting methods in consent.component.test', () => {
       assert.isTrue(ctx.redirect.called);
       assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
     });
-
-    /*
-    it('should render html to ctx.body and call next', () => {
-      ctx.redirect = sandbox.stub();
-      ctx.session.state.serviceClient.id = 'testing...';
-      ctx.session.state.serviceClient.attributes = [{test: 'hest'}];
-      const nextSpy = sandbox.stub();
-
-      giveConsentUI(ctx, nextSpy);
-      assert.equal(ctx.body, consentTemplate({
-        attributes: ctx.session.state.serviceClient.attributes,
-        versionPrefix: VERSION_PREFIX,
-        service: ctx.session.state.serviceClient.id
-      }));
-      assert.isTrue(nextSpy.called);
-    });
-    */
   });
 
-  /*
-  describe('consentSubmit()', () => {
-
-    it('should redirect to error url on calling service', async() => {
-      ctx.redirect = sandbox.stub();
-      ctx.req = {
-        headers: {}
-      };
-      ctx.setState({serviceClient: {urls: {host: 'https://test.url.dk', error: '/errorurl'}}});
-
-      const expectedUrl = `${ctx.getState().serviceClient.urls.host}${ctx.getState().serviceClient.urls.error}?message=consent%20was%20rejected`;
-      await consentSubmit(ctx, next);
-      assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0], expectedUrl);
-    });
-  });
-  */
 
   describe('retrieveUserConsent()', () => {
 
