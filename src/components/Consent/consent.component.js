@@ -52,7 +52,7 @@ export async function consentSubmit(ctx, next) {
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
-    ctx.session = null;   // TODO why is the session cleared. No ticket is created, so why not keep the session
+    ctx.setState({ticket: {}});
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
@@ -81,19 +81,6 @@ async function getConsentResponse(ctx) {
   }
 
   return response;
-}
-
-/**
- * Consent is rejected by user and the flow is halted.
- *
- * TODO Currently a message is displayed to the user but we should probably redirect the user somewhere
- * @param {object} ctx
- * @param {function} next
- */
-export async function consentRejected(ctx) {
-  const serviceClient = ctx.getState().serviceClient;
-  ctx.session = null;
-  ctx.redirect(`${serviceClient.urls.host}${serviceClient.urls.error}?message=consent%20was%20rejected`);
 }
 
 /**

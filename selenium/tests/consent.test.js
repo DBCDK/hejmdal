@@ -85,7 +85,7 @@ describe('Test Consent part of authetication flow', () => {
     assert.isTrue(url.includes(expectedUrl));
 
     const session = browser.getSession();
-    assert.isNull(session);
+    assert.deepEqual(session.state.ticket, {});
 
     const content = browser.getText('#content');
     const expected = 'har ikke fået adgang til de ønskede oplysninger';
