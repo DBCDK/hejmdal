@@ -1,7 +1,7 @@
 /**
  * @file
  *
- * Contains help texts for modal windows i hejmdal
+ * Contains help texts for modal windows in hejmdal
  */
 
 /**
