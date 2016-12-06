@@ -28,3 +28,20 @@
   position: relative;
   font-size: 30px;
 }
+
+.modal-header {
+  border-bottom: 0;
+  padding: 1em 15px 0 15px;
+}
+
+.modal-title, .modal-body {
+  text-align: left;
+}
+
+.modal-close, .modal-title {
+  font-size: 1.5em;
+}
+
+.modal-body {
+  font-size: 1.1em;
+}

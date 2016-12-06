@@ -10,6 +10,7 @@ import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 import {log} from '../../utils/logging.util';
+import {getHelpText} from '../../utils/help.text.util';
 
 const consentStore = CONFIG.mock_storage.consent ?
   new KeyValueStorage(new MemoryStorage()) :
@@ -28,12 +29,14 @@ export async function giveConsentUI(ctx, next) {
   }
   else {
     const returnUrl = state.returnUrl ? state.serviceClient.urls.host + state.returnUrl : '';
+    const helpText = getHelpText('consent', {__SERVICE_CLIENT_NAME__: state.serviceClient.name});
     ctx.render('Consent', {
       attributes: setConsentAttributes(state.serviceClient.attributes, state.ticket.attributes),
       consentAction: VERSION_PREFIX + '/login/consentsubmit/' + state.smaugToken,
       consentFailed: false,
       returnUrl: returnUrl,
-      serviceName: state.serviceClient.name
+      serviceName: state.serviceClient.name,
+      help: helpText
     });
     await next();
   }
@@ -52,11 +55,13 @@ export async function consentSubmit(ctx, next) {
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
+    const helpText = getHelpText('consentReject', {__SERVICE_CLIENT_NAME__: serviceClient.name});
     ctx.setState({ticket: {}});
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
-      serviceName: serviceClient.name
+      serviceName: serviceClient.name,
+      help: helpText
     });
   }
   else {
@@ -228,11 +233,11 @@ function createConsentObject(ctx) {
  */
 function setConsentAttributes(definitionAttributes, ticketAttributes) {
   const consentAttributes = {};
-  for (var key in definitionAttributes) {
+  Object.keys(definitionAttributes).forEach((key) => {
     if (ticketAttributes[key] && ticketAttributes[key] !== []) {
       consentAttributes[key] = definitionAttributes[key];
       consentAttributes[key].key = key;
     }
-  }
+  });
   return consentAttributes;
 }

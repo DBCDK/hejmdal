@@ -3,4 +3,20 @@ div.topbar-container
     div.col-xs-6.col-sm-5.col-sm-offset-1
       span.logo-img
     div.col-xs-6.col-sm-5.align-right
-      span.glyphicon.glyphicon-question-sign
+      span.glyphicon.glyphicon-question-sign(data-toggle="modal" data-target="#helpModal")
+      if (help && help.title && help.sections)
+        div.modal.fade#helpModal(role="dialog" aria-labelledby="helpModalLabel")
+          div.modal-dialog(role="document")
+            div.modal-content
+              div.modal-header
+                button.close(type="button" data-dismiss="modal" aria-label="Close")
+                  span.modal-close(aria-hidden="true") &times;
+                h4.modal-title
+                  strong #{help.title}
+              div.modal-body
+                each section in help.sections
+                  div
+                    strong #{section.header}
+                  each text in section.texts
+                    div !{text}
+                  div &nbsp;

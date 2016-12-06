@@ -7,7 +7,7 @@
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
     "dev:test": ". ./env.test && npm run serve",
-    "build:css:dev": "rm static/css/* && postcss --watch --map --use postcss-import --use precss --use autoprefixer --use cssnano --use postcss-inline-svg --use postcss-custom-properties src/css/*.css --dir static/css",
+    "build:css:dev": "rm -f static/css/* && postcss --watch --map --use postcss-import --use precss --use autoprefixer --use cssnano --use postcss-inline-svg --use postcss-custom-properties src/css/*.css --dir static/css",
     "build:css:prod": "postcss --use postcss-import --use autoprefixer --use cssnano --use postcss-inline-svg --use postcss-custom-properties src/css/*.css --dir static/css/",
     "clean:errorShots": "rm -rf ./errorShots/*.png",
     "lint": "eslint ./src ./selenium ./static/js/borchk.js --cache",
