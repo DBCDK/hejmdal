@@ -106,7 +106,8 @@ export function getHelpText(helpNames, placeHolders = false, prefix = '') {
     if (helpNames.indexOf(key.replace(prefix, '')) !== -1) {
       if (helpObj) {
         helpObj.sections = helpObj.sections.concat(helpTexts[key].sections);
-      } else {
+      }
+      else {
         helpObj = Object.assign({}, helpTexts[key]);
       }
     }
