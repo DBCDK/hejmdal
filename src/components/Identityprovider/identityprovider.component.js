@@ -31,10 +31,7 @@ export async function authenticate(ctx, next) {
       const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(agency);
-      let helpText = getHelpText('login', loginHelpReplacers);
-      state.serviceClient.identityProviders.forEach((idp) => {
-        helpText.sections = helpText.sections.concat(getHelpText('login_' + idp, loginHelpReplacers).sections);
-      });
+      const helpText = getHelpText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
 
       ctx.render('Login', {
         error: error,

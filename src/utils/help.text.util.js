@@ -32,7 +32,7 @@ const helpTexts = {
       }
     ]
   },
-  login: {
+  login_borchk: {
     title: 'Hjælp til login',
     sections: [
       {
@@ -58,6 +58,7 @@ const helpTexts = {
     ]
   },
   login_nemlogin: {
+    title: 'Hjælp til login',
     sections: [
       {
         header: 'Nem ID',
@@ -66,6 +67,7 @@ const helpTexts = {
     ]
   },
   login_unilogin: {
+    title: 'Hjælp til login',
     sections: [
       {
         header: 'UNI Login',
@@ -74,6 +76,7 @@ const helpTexts = {
     ]
   },
   login_wayf: {
+    title: 'Hjælp til login',
     sections: [
       {
         header: 'WAYF',
@@ -88,24 +91,37 @@ const helpTexts = {
 };
 
 /**
+ * Creates the help text object from a list of keys (helpNames)
  *
- * @param name
- * @param placeHolders
- * @returns {helpTexts.default|{title, sections}}
+ * Note that the help object is build using the sequence in helpTexts and not in helpNames
+ *
+ * @param helpNames {Array}
+ * @param placeHolders {Array}
+ * @param prefix {string}
+ * @returns {boolean}
  */
-export function getHelpText(name, placeHolders = false) {
-  let text = helpTexts[name] ? helpTexts[name] : helpTexts.default;
+export function getHelpText(helpNames, placeHolders = false, prefix = '') {
+  let helpObj = false;
+  Object.keys(helpTexts).forEach((key) => {
+    if (helpNames.indexOf(key.replace(prefix, '')) !== -1) {
+      if (helpObj) {
+        helpObj.sections = helpObj.sections.concat(helpTexts[key].sections);
+      } else {
+        helpObj = Object.assign({}, helpTexts[key]);
+      }
+    }
+  });
 
   if (placeHolders) {
-    let helpstr = JSON.stringify(text);
+    let helpstr = JSON.stringify(helpObj);
     if (placeHolders) {
       Object.keys(placeHolders).forEach((key) => {
         helpstr = helpstr.replace(key, placeHolders[key]);
       });
     }
-    text = JSON.parse(helpstr);
+    helpObj = JSON.parse(helpstr);
   }
-  return text;
+  return helpObj;
 }
 
 /**

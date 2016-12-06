@@ -29,7 +29,7 @@ export async function giveConsentUI(ctx, next) {
   }
   else {
     const returnUrl = state.returnUrl ? state.serviceClient.urls.host + state.returnUrl : '';
-    const helpText = getHelpText('consent', {__SERVICE_CLIENT_NAME__: state.serviceClient.name});
+    const helpText = getHelpText(['consent'], {__SERVICE_CLIENT_NAME__: state.serviceClient.name});
     ctx.render('Consent', {
       attributes: setConsentAttributes(state.serviceClient.attributes, state.ticket.attributes),
       consentAction: VERSION_PREFIX + '/login/consentsubmit/' + state.smaugToken,
@@ -55,7 +55,7 @@ export async function consentSubmit(ctx, next) {
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
-    const helpText = getHelpText('consentReject', {__SERVICE_CLIENT_NAME__: serviceClient.name});
+    const helpText = getHelpText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClient.name});
     ctx.setState({ticket: {}});
     ctx.render('Consent', {
       consentFailed: true,
