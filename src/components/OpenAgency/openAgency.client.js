@@ -11,7 +11,7 @@ import {log} from '../../utils/logging.util';
 /**
  * Retrieves a list of libraries
  *
- * @param {text}
+ * @param text
  * @returns {Array}
  * @throws {OpenAgencyError}
  */
@@ -88,7 +88,10 @@ function parseFindLibraryResponse(response) {
         branchId: getAgencyField(agency, 'branchId'),
         name: getAgencyField(agency, 'branchName'),
         address: getAgencyField(agency, 'postalAddress'),
-        type: getAgencyField(agency, 'agencyType')
+        type: getAgencyField(agency, 'agencyType'),
+        registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
+        registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
+        branchEmail: getAgencyField(agency, 'branchEmail')
       };
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
