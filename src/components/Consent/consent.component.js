@@ -43,8 +43,8 @@ export async function giveConsentUI(ctx, next) {
 }
 
 /**
- * Submit handler for consent submission. If consent is rejected consentRejected is invoked. It it's accepted the
- * consent is requested to be saved and the flow is continued.
+ * Submit handler for consent submission. If consent is rejected the session is cleared.
+ * If consent is given, it is saved and the flow continues.
  *
  * @param {object} ctx
  * @param {function} next
@@ -56,7 +56,7 @@ export async function consentSubmit(ctx, next) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
     const helpText = getHelpText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClient.name});
-    ctx.setState({ticket: {}});
+    ctx.session = null;    // clear session to discard identityprovider login
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
