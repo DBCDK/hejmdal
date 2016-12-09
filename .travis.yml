@@ -1,6 +1,8 @@
 language: node_js
 sudo: false
 dist: trusty
+services:
+  - postgresql
 cache:
   bundler: true
   directories:
@@ -12,6 +14,9 @@ env:
 - TEST_SUITE=lint
 - TEST_SUITE=test
 - TEST_SUITE=test:integration
+before_script:
+  - psql -c 'create database hejmdal_test;' -U postgres
+  - npm run migrate:latest
 script: npm run $TEST_SUITE
 notifications:
   slack:
@@ -19,9 +24,4 @@ notifications:
       secure: MKX6a4oN4GLkFiBUyBOP3YZ8B4CC3PFuDgv1mJThTl0+XLVopCGZ0Mz5ywll7gL71XGWA7z9+Ht/GjIQiA7Ps5lZAKAeuiJvHqsXZlUoNR+Sz1XtUS5a0ZYYVTg96+ZpLocOZn/DBONoFxcdLT0I0y0ZZp/oCXtHo1ZtKARIH1OFjTQuacgoal1mFrf1UPi5XK7t9Aqqru16E3rz3j7IRMWxsO1skOCfqTbrdyvBkfui6lSla7h055UrrzrfRG43c1XuO52ygpNxL4owEJPWOigW2b84RNOy77I3N+fIyPBAGBJ0SLEmX9egB2MP3YKu7pzKL/r+xbvSc5/QJ4Qv61tiI0kZzjx1u6SDnCciTmTJE/zqrbOpcwB0c0ge4fM0GvwFC90Xh6fXPJ2ZSae1Ve8ijQFPP+nc+gTc7HweOyC89osvkQ7Fnk9h5xxJyYy92WfkGbR4s2DII5hZNmaN5A9lV2A9lXh3sXBQ784AWkh/NfM0hlV6u0poiKZTtKMum1Xh7QGfXpYeI4PjeLMCjB5+/2SeyKg4oaWctb79KaEP5xcdGimmQgmSdcrLByizaYfN2DxkEVweBJqFhSvpHbragWr9vCHFEJiodX5Dr5qHU6byZ3YYErJy5CFvYtAKyt+HDpafkCSASfSeGYe8CrkLYpeWd8WDvTUq/qNdBeo=
 addons:
   sauce_connect: true
-services:
-  - postgresql
-before_script:
-before_script:
-  - npm run migrate:latest
-  - psql -c 'create database hejmdal_test;' -U postgres
+
