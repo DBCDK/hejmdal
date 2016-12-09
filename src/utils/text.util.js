@@ -157,7 +157,7 @@ const helpTexts = {
  * @param helpNames {Array}
  * @param placeHolders {Array}
  * @param prefix {string}
- * @returns {boolean}
+ * @returns {mixed}
  */
 export function getText(helpNames, placeHolders = false, prefix = '') {
   let helpObj = false;
@@ -187,8 +187,8 @@ export function getText(helpNames, placeHolders = false, prefix = '') {
 /**
  * Set replacers for helpTexts if agency is defines. Defaults to empty strings
  *
- * @param agency
- * @returns {{__CREATE_LIBRARY_USER__: string, __FORGOT_CODE_CONTACT_LIBRARY__: string}}
+ * @param agency {object}
+ * @returns {mixed}
  */
 export function setLoginReplacersFromAgency(agency) {
   const loginHelpReplacers = {
