@@ -29,7 +29,7 @@ browser.screendump = (name, where) => {
 };
 
 browser.wipeStores = () => {
-  browser.knex('consent').truncate().then(e => console.log(e));
-  browser.knex('session').truncate().then(e => console.log(e));
-  browser.knex('ticket').truncate().then(e => console.log(e));
-}
+  browser.knex('consent').truncate().then(() => {/* this is needed to complete promise*/});
+  browser.knex('session').truncate().then(() => {/* this is needed to complete promise*/});
+  browser.knex('ticket').truncate().then(() => {/* this is needed to complete promise*/});
+};

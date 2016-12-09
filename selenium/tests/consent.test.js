@@ -20,7 +20,7 @@ describe('Test Consent part of authetication flow', () => {
 
   afterEach(() => {
     browser.deleteCookie();
-    browser.url('/wipestores');
+   browser.wipeStores();
     browser.url('/logout');
   });
 
