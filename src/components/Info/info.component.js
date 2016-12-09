@@ -13,7 +13,7 @@ import {getText} from '../../utils/text.util';
 export async function showInfo(ctx, next) {
   ctx.render('Info', {
     info: true,
-    help: getText(['cookies'])
+    textObj: getText(['cookies'])
   });
   await next();
 }

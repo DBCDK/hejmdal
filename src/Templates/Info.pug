@@ -5,9 +5,9 @@ block append content
     div.content
       div.header
         h4.title
-          strong #{help.title}
+          strong #{textObj.title}
       div.body
-        each section in help.sections
+        each section in textObj.sections
           div
             strong #{section.header}
           each text in section.texts
