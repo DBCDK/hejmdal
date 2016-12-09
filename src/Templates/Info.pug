@@ -1,0 +1,17 @@
+extends Main
+
+block append content
+  div.dialog(role="document")
+    div.content
+      div.header
+        h4.title
+          strong #{help.title}
+      div.body
+        each section in help.sections
+          div
+            strong #{section.header}
+          each text in section.texts
+            div !{text}
+          div &nbsp;
+
+  div &nbsp;

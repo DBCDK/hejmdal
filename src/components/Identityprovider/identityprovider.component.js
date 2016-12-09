@@ -10,7 +10,7 @@ import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.compo
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
 import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
-import {getHelpText, setLoginReplacersFromAgency} from '../../utils/help.text.util';
+import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import {ERRORS} from '../../utils/errors.util';
 
 /**
@@ -31,7 +31,7 @@ export async function authenticate(ctx, next) {
       const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(agency);
-      const helpText = getHelpText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
+      const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
 
       ctx.render('Login', {
         error: error,
