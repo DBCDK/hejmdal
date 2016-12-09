@@ -1,3 +1,7 @@
 .helptext-container {
   margin-bottom: 20px;
 }
+
+.link-style {
+  cursor: pointer;
+}
