@@ -42,25 +42,34 @@ const helpTexts = {
     title: 'Cookies, formål og relevans',
     sections: [
       {
-        texts: ['Før vi placerer cookies på dit udstyr, beder vi om dit samtykke. ' +
-        'Nødvendige cookies til sikring af funktionalitet og indstillinger kan dog anvendes dog uden dit samtykke.']
+        texts: ['Vi benytter cookies til at gemme information om dine logins.']
       },
       {
-        texts: ['Slet eller slå cookies fra i browseren ']
+        header: 'Valgte biblioteker',
+        texts: ['Vi gemmer information om, hvilke biblioteker, der har været brugt ved login på denne computer, telefon, tablet osv. ' +
+        'Det gør vi for at kunne tilbyde dig en liste over tidligere benyttede biblioteker, når du efterfølgende logger ind. ' +
+        'Dermed kan vi give dig mulighed for et hurtigere login.']
       },
       {
-        texts: ['Du kan altid afvise cookies på din computer ved at ændre indstillingerne i din browser. ' +
-        'Hvor du finder indstillingerne afhænger af, hvilken browser du anvender. ' +
-        'Du skal dog være opmærksom på, at hvis du gør det, er der mange funktioner og services på internettet, du ikke kan bruge. ']
+        header: 'Login',
+        texts: ['Vi gemmer information om, at du er logget ind og hvilket bibliotek, du er logget ind ved, således at du ikke skal logge ind mere end én gang. ' +
+        'Denne information fjernes, når du enten logger ud eller lukker browseren.']
       },
       {
-        texts: ['Alle browsere tillader, at du sletter dine cookies samlet eller enkeltvis. ' +
-        'Hvordan du gør det afhænger af, hvilken browser du anvender. ' +
-        'Husk, at bruger du flere browsere, skal du slette cookies i dem alle.']
+        header: 'Slå cookies fra i browseren ',
+        texts: ['Bibliotekslogin virker ikke uden cookies. Du kan have ændret indstillingerne i din browser, så du ikke accepterer cookies. ' +
+        'I så fald vil du få en fejlside, når du forsøger at benytte Bibliotekslogin.']
       },
       {
-        header: 'Cookies på login.bib.dk',
-        texts: ['Vi bruger cookies til ... ']
+        texts: ['Alle browsere tillader, at du sletter dine cookies. Hvis du gør det, mens du er logget ind, kan du derfor også opleve fejl på siden.']
+      },
+      {
+        header: 'Cookies hos andre hjemmesider',
+        texts: ['Bibliotekslogin benytter ikke andre tjenester, der anvender cookies hos brugeren.']
+      },
+      {
+        header: 'Kontakt',
+        texts: ['Har du spørgsmål vedrørende vores anvendelse af cookies og den måde som hjemmesiden forvaltes på, er du velkommen til at kontakte os.']
       }
     ]
   },
