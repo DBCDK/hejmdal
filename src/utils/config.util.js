@@ -47,11 +47,7 @@ export const CONFIG = {
     unilogin: process.env.MOCK_UNILOGIN === '1',
     wayf: process.env.MOCK_WAYF === '1'
   },
-  mock_storage: {
-    consent: process.env.MOCK_CONSENT_STORAGE === '1',
-    ticket: process.env.MOCK_TICKET_STORAGE === '1',
-    session: process.env.MOCK_SESSION_STORAGE === '1'
-  },
+  mock_storage: process.env.MOCK_STORAGE === '1',
   openAgency: {
     uri: process.env.OPENAGENCY_URI
   },
