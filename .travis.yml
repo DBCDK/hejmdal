@@ -22,4 +22,6 @@ addons:
 services:
   - postgresql
 before_script:
+before_script:
+  - npm run migrate:latest
   - psql -c 'create database hejmdal_test;' -U postgres
