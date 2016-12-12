@@ -17,7 +17,7 @@ export async function getAttributes(ctx, next) {
     await next();
   }
   catch (err) {
-    log.error('Invalid Token', err);
+    log.error('Invalid Token', {error: err.message, stack: err.stack});
     ctx.status = 403;
   }
 }
