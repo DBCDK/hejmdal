@@ -2,21 +2,36 @@
 
 ## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
 
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.4.0...HEAD)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/47-48...HEAD)
 
 **Closed issues:**
 
 - Implementer hjælp info [\#173](https://github.com/DBCDK/hejmdal/issues/173)
 - Sprog abstraktion [\#171](https://github.com/DBCDK/hejmdal/issues/171)
-- Fejlhåndtering og visning af besked til bruger [\#167](https://github.com/DBCDK/hejmdal/issues/167)
 - FrontEnd: Implementer hjælpeside [\#160](https://github.com/DBCDK/hejmdal/issues/160)
+- Grænseflade til Smaug [\#139](https://github.com/DBCDK/hejmdal/issues/139)
+- Dokumentation af adgangsplatformen [\#71](https://github.com/DBCDK/hejmdal/issues/71)
+
+**Merged pull requests:**
+
+- \#160: clear session after reject consent [\#179](https://github.com/DBCDK/hejmdal/pull/179) ([fvsdbc](https://github.com/fvsdbc))
+- \#160: Help text for login and consent [\#178](https://github.com/DBCDK/hejmdal/pull/178) ([fvsdbc](https://github.com/fvsdbc))
+- Update dependencies to enable Greenkeeper 🌴 [\#177](https://github.com/DBCDK/hejmdal/pull/177) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Optimer byg af CSS [\#174](https://github.com/DBCDK/hejmdal/pull/174) ([hrmoller](https://github.com/hrmoller))
+
+## [47-48](https://github.com/DBCDK/hejmdal/tree/47-48) (2016-12-02)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.4.0...47-48)
+
+**Closed issues:**
+
+- Fejlhåndtering og visning af besked til bruger [\#167](https://github.com/DBCDK/hejmdal/issues/167)
 - Implementering af design: Log ud [\#158](https://github.com/DBCDK/hejmdal/issues/158)
 - Implementering af design: Giv consent [\#157](https://github.com/DBCDK/hejmdal/issues/157)
 - wayf som identityprovider [\#153](https://github.com/DBCDK/hejmdal/issues/153)
-- Grænseflade til Smaug [\#139](https://github.com/DBCDK/hejmdal/issues/139)
+- borchk som multipel identity provider [\#136](https://github.com/DBCDK/hejmdal/issues/136)
 - En ServiceClient skal have mulighed for at angive hvilket bibliotek brugeren kommer fra [\#135](https://github.com/DBCDK/hejmdal/issues/135)
 - Implementering af design - Vælg IdentityProvider [\#127](https://github.com/DBCDK/hejmdal/issues/127)
-- Dokumentation af adgangsplatformen [\#71](https://github.com/DBCDK/hejmdal/issues/71)
+- Oprette endpoint til autentifikation [\#70](https://github.com/DBCDK/hejmdal/issues/70)
 - Design af grænseflade til log ud [\#67](https://github.com/DBCDK/hejmdal/issues/67)
 - Design af grænseflade til consent [\#66](https://github.com/DBCDK/hejmdal/issues/66)
 - Design af grænseflade til identityprovidere [\#65](https://github.com/DBCDK/hejmdal/issues/65)
@@ -25,27 +40,21 @@
 
 **Merged pull requests:**
 
-- \#160: clear session after reject consent [\#179](https://github.com/DBCDK/hejmdal/pull/179) ([fvsdbc](https://github.com/fvsdbc))
-- \#160: Help text for login and consent [\#178](https://github.com/DBCDK/hejmdal/pull/178) ([fvsdbc](https://github.com/fvsdbc))
-- Update dependencies to enable Greenkeeper 🌴 [\#177](https://github.com/DBCDK/hejmdal/pull/177) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
-- Optimer byg af CSS [\#174](https://github.com/DBCDK/hejmdal/pull/174) ([hrmoller](https://github.com/hrmoller))
 - Issue 157 fvs [\#170](https://github.com/DBCDK/hejmdal/pull/170) ([fvsdbc](https://github.com/fvsdbc))
 - Fejlhåndtering [\#169](https://github.com/DBCDK/hejmdal/pull/169) ([hrmoller](https://github.com/hrmoller))
 - \#158: logout component [\#168](https://github.com/DBCDK/hejmdal/pull/168) ([fvsdbc](https://github.com/fvsdbc))
-- When a library in the dopdown is clicked the X should be visible [\#166](https://github.com/DBCDK/hejmdal/pull/166) ([hrmoller](https://github.com/hrmoller))
 - Issue 135 fvs [\#164](https://github.com/DBCDK/hejmdal/pull/164) ([fvsdbc](https://github.com/fvsdbc))
 - \#135: Preselect library for borchk Identity Provider [\#163](https://github.com/DBCDK/hejmdal/pull/163) ([fvsdbc](https://github.com/fvsdbc))
 - \#62 \#153: Identity Providers for nemlogin and wayf using bib.dk gatewayf [\#162](https://github.com/DBCDK/hejmdal/pull/162) ([fvsdbc](https://github.com/fvsdbc))
-- Implementer design II [\#159](https://github.com/DBCDK/hejmdal/pull/159) ([hrmoller](https://github.com/hrmoller))
 - Implementer design [\#152](https://github.com/DBCDK/hejmdal/pull/152) ([hrmoller](https://github.com/hrmoller))
+- When a library in the dopdown is clicked the X should be visible [\#166](https://github.com/DBCDK/hejmdal/pull/166) ([hrmoller](https://github.com/hrmoller))
+- Implementer design II [\#159](https://github.com/DBCDK/hejmdal/pull/159) ([hrmoller](https://github.com/hrmoller))
 
 ## [0.4.0](https://github.com/DBCDK/hejmdal/tree/0.4.0) (2016-11-21)
 [Full Changelog](https://github.com/DBCDK/hejmdal/compare/0.3.0...0.4.0)
 
 **Closed issues:**
 
-- borchk som multipel identity provider [\#136](https://github.com/DBCDK/hejmdal/issues/136)
-- Oprette endpoint til autentifikation [\#70](https://github.com/DBCDK/hejmdal/issues/70)
 - Lukning af milestone 0.4.0 [\#155](https://github.com/DBCDK/hejmdal/issues/155)
 - Udvidelse af borchk med brug af det servicenavn der kommer fra Smaug [\#142](https://github.com/DBCDK/hejmdal/issues/142)
 - Udvidelse af Smaug med borchk information [\#141](https://github.com/DBCDK/hejmdal/issues/141)
