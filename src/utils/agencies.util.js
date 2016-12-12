@@ -49,6 +49,21 @@ export async function getAgencyName(agencyId) {
   return name;
 }
 
+export async function getAgency(agencyId) {
+  await setAgencyList();
+
+  let ret = {};
+  if (agencyId) {
+    agencyList.forEach((agency) => {
+      if (agency.branchId === agencyId) {
+        ret = agency;
+      }
+    });
+  }
+  return ret;
+
+}
+
 /**
  * agencyList setter
  */
@@ -74,7 +89,7 @@ async function setUiList() {
 /**
  * For testing purposes
  *
- * @param list
+ * @param mockList
  */
 export function mockSetAgencyList(mockList) {
   agencyList = mockList;

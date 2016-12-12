@@ -9,7 +9,8 @@ import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
-import {getListOfAgenciesForFrontend, getAgencyName} from '../../utils/agencies.util';
+import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
+import {getHelpText, setLoginReplacersFromAgency} from '../../utils/help.text.util';
 import {ERRORS} from '../../utils/errors.util';
 
 /**
@@ -25,9 +26,12 @@ export async function authenticate(ctx, next) {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
-      const selectAgencyName = await getAgencyName(state.serviceAgency);
+      const agency = await getAgency(state.serviceAgency);
+      const selectAgencyName = agency.name;
       const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
+      const loginHelpReplacers = setLoginReplacersFromAgency(agency);
+      const helpText = getHelpText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
 
       ctx.render('Login', {
         error: error,
@@ -36,7 +40,8 @@ export async function authenticate(ctx, next) {
         VERSION_PREFIX,
         agencies: agencies,
         selectedAgency: state.serviceAgency || '',
-        selectedAgencyName: selectAgencyName
+        selectedAgencyName: selectAgencyName,
+        help: helpText
       });
 
       ctx.status = 200;
