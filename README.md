@@ -10,7 +10,7 @@
 
 ##Releases
 Releases are found at GitHub [/releases](https://github.com/DBCDK/hejmdal/releases). Each containing a link to the changelog for the given release. A consolidated changelog for all releases is found at [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) in the project root.  
-The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- you may need a valid github token to run the command.
+The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d\.\d\d{1,})"` -- you may need a valid github token to run the command.
 
 ##Start
 ###Development
