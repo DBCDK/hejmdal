@@ -1,15 +1,17 @@
 /* eslint-disable */
 import {assert} from 'chai';
+import Page from '../pageObjects/page';
 
 describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
+  const page = new Page();
 
   after(() => {
    browser.wipeStores();
   });
 
   it('should display ticket data in example application', () => {
-    browser.url('/');
+    page.open();
     browser.click('#example-page-login');
 
     const examplePageUrl = browser.getUrl();
@@ -17,8 +19,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isTrue(examplePageUrl.includes('/example/'));
 
     // Click login button on axample page
+    browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
-    browser.refresh();
 
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
@@ -69,6 +71,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isTrue(examplePageUrl.includes('/example/'));
 
     // Click login button on axample page
+    browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
 
     // Click UNI-Login on IdentityProvider select page

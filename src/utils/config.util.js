@@ -86,6 +86,9 @@ export const CONFIG = {
       nemlogin: 'nemlogin',
       wayf: 'wayf'
     }
+  },
+  test: {
+    host: process.env.TEST_HOST || null
   }
 };
 

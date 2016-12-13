@@ -56,7 +56,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit/valid_token" method="post">`;
+    const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit/${loginPage.validToken}" method="post">`;
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -72,7 +72,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a reject button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = '<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/valid_token"><strong>Godkend ikke</strong></a>';
+    const expected = `<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/${loginPage.validToken}"><strong>Godkend ikke</strong></a>`;
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -81,7 +81,7 @@ describe('Test Consent part of authetication flow', () => {
     browser.click('#consent-action-reject');
 
     const url = browser.getUrl();
-    const expectedUrl = 'login/consentsubmit/valid_token';
+    const expectedUrl = `login/consentsubmit/${loginPage.validToken}`;
     assert.isTrue(url.includes(expectedUrl));
 
     const session = browser.getSession();

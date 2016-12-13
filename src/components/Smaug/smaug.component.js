@@ -1,5 +1,6 @@
 import {getClient} from './smaug.client';
 import {log} from '../../utils/logging.util';
+import {CONFIG} from '../../utils/config.util';
 
 /**
  * Validate token.
@@ -29,16 +30,21 @@ export async function getAttributes(ctx, next) {
  * @returns {{id: String, identityProviders: Array, attributes: Array}}
  */
 function extractClientInfo(client) {
-  if (client.app.clientId) {
-    return {
-      id: client.app.clientId,
-      name: client.app.clientName,
-      identityProviders: client.identityProviders || [],
-      attributes: client.attributes || [],
-      borchkServiceName: client.borchkServiceName || null,
-      urls: client.urls || {}
-    };
+  if (!client.app.clientId) {
+    throw new Error('Invalid Client', client);
+  }
+  const serviceClient = {
+    id: client.app.clientId,
+    name: client.app.clientName,
+    identityProviders: client.identityProviders || [],
+    attributes: client.attributes || [],
+    borchkServiceName: client.borchkServiceName || null,
+    urls: client.urls || {}
+  };
+
+  if (CONFIG.test.host) {
+    serviceClient.urls.host = CONFIG.test.host;
   }
 
-  throw new Error('Invalid Client', client);
+  return serviceClient;
 }

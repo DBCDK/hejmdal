@@ -16,10 +16,9 @@ describe('Testing the getTicket endpoint', () => {
     loginPage.loginWithUNIlogin();
   });
 
-  after((done) => {
+  after(() => {
     browser.deleteCookie();
    browser.wipeStores();
-    browser.wipeStores(done);
   });
 
   it('Should deliver er valid ticket', () => {
@@ -27,6 +26,7 @@ describe('Testing the getTicket endpoint', () => {
     browser.click('#consent-action-accept');
 
     const ticketToken = browser.getText('#tickettoken');
+
     assert.isOk(ticketToken);
 
     const ticketId = browser.getText('#ticketid');
