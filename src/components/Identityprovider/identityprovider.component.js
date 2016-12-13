@@ -22,7 +22,19 @@ import {ERRORS} from '../../utils/errors.util';
  */
 export async function authenticate(ctx, next) {
   try {
-    if (!ctx.hasUser()) {
+    const ips = isLoggedInWith(ctx);
+    if (ips) {
+      if (ips.contains('borck')) {
+        await next();
+      }
+      else {
+        const state = ctx.getState();
+        const authToken = createHash(state.smaugToken);
+        const link = getIdentityProviders(state.serviceClient.identityProviders, authToken)[ips[0]].link;
+        ctx.redirect(link);
+      }
+    }
+    else {
       const state = ctx.getState();
       const authToken = createHash(state.smaugToken);
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
@@ -52,9 +64,22 @@ export async function authenticate(ctx, next) {
     log.error('Error in autheticate method', {error: e.message, stack: e.stack});
     ctx.status = 404;
   }
-
-  await next();
 }
+
+/**
+ * Returns the valid identityproviders a user is logged in with.
+ *
+ * @param ctx
+ * @returns {*}
+ */
+function isLoggedInWith(ctx) {
+  if (!ctx.hasUser()) {
+    return [];
+  }
+  const identityProviders = ctx.getState().serviceClient.identityProviders;
+  return ctx.getUser().identityProviders.filter(ip => identityProviders.contains(ip));
+}
+
 
 /**
  * Parses the callback parameters for unilogin.
