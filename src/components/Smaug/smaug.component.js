@@ -42,8 +42,8 @@ function extractClientInfo(client) {
     urls: client.urls || {}
   };
 
-  if (CONFIG.test.host) {
-    serviceClient.urls.host = CONFIG.test.host;
+  if (CONFIG.app.env === 'test') {
+    serviceClient.urls.host = CONFIG.app.host;
   }
 
   return serviceClient;
