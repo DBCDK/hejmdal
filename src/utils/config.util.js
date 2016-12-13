@@ -88,7 +88,8 @@ export const CONFIG = {
     }
   },
   test: {
-    host: process.env.TEST_HOST || null
+    host: process.env.TEST_HOST || null,
+    token: process.env.TEST_TOKEN || 'asdfg'
   }
 };
 

@@ -25,7 +25,7 @@ export const mockData = {
  * @returns {*}
  */
 export default function getMockClient(token) {
-  if (token === 'valid_token') {
+  if (token === CONFIG.test.token) {
     return {
       statusCode: 200,
       body: JSON.stringify(mockData)
