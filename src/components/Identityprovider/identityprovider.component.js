@@ -23,8 +23,8 @@ import {ERRORS} from '../../utils/errors.util';
 export async function authenticate(ctx, next) {
   try {
     const ips = isLoggedInWith(ctx);
-    if (ips) {
-      if (ips.contains('borck')) {
+    if (ips.length) {
+      if (ips.includes('borck')) {
         await next();
       }
       else {
@@ -77,7 +77,7 @@ function isLoggedInWith(ctx) {
     return [];
   }
   const identityProviders = ctx.getState().serviceClient.identityProviders;
-  return ctx.getUser().identityProviders.filter(ip => identityProviders.contains(ip));
+  return ctx.getUser().identityProviders.filter(ip => identityProviders.includes(ip));
 }
 
 
