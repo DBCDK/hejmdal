@@ -12,7 +12,6 @@ export const mockData = {
   },
   urls: {
     host: `http://localhost:${CONFIG.app.port}`,
-    // TODO maybe success and error path, should be given in the login request. Would allow services to refactor
     success: '/example/',
     error: '/thumbsdown'
   }
