@@ -17,14 +17,15 @@ div#borchk
               span(class='glyphicon glyphicon-triangle-bottom')
             button(type='button' class='btn inline-btn-default hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
               span(class='glyphicon glyphicon-remove')
-        if agencies
+        if branches
           div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')
             ul(class='dropdown-menu libraries-dropdown' id='libraries-dropdown')
               li(class='dropdown-header hide' id='latest') Forslag
               li(class='dropdown-header hide' id='alphabetical') Alfabetisk
-              each agency in agencies
+              each branch in branches
                 li
-                  a(class='agency' data-aid=agency.branchId onclick='OnClick(this);') #{agency.name}
+                  a(class='agency' data-aid=branch.branchId data-name=branch.name onclick='OnClick(this);') #{branch.name}
+                    span.hide #{branch.branchId}
 
     div.form-group
       label(for='userid-input')

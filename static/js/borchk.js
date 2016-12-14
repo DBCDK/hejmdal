@@ -232,7 +232,7 @@ function selectHighlighted(e) {
  * @param {Node} element The element that has been clicked
  */
 function OnClick(element) { // eslint-disable-line no-unused-vars
-  var branchName = element.textContent;
+  var branchName = element.dataset.name;
   var branchId = element.dataset.aid;
 
   libraryIdInput.value = branchId;

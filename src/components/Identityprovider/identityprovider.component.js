@@ -28,7 +28,7 @@ export async function authenticate(ctx, next) {
       const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
       const agency = await getAgency(state.serviceAgency);
       const selectAgencyName = agency.name;
-      const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
+      const branches = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(agency);
       const helpText = getHelpText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
@@ -38,7 +38,7 @@ export async function authenticate(ctx, next) {
         serviceClient: state.serviceClient.name,
         identityProviders,
         VERSION_PREFIX,
-        agencies: agencies,
+        branches: branches,
         selectedAgency: state.serviceAgency || '',
         selectedAgencyName: selectAgencyName,
         help: helpText
