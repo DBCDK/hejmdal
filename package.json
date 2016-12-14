@@ -15,7 +15,7 @@
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js --ignore ./static/example",
     "serve:debug": "nodemon --debug --exec node --no-stdin src/main.js --ignore ./static/example",
-    "test": ". ./env.test && MOCK_STORAGE=1 mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
+    "test": ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
     "test:integration": ". ./env.test && npm run build:css:prod && ./sauce-connect.sh & TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
