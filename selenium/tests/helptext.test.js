@@ -1,3 +1,4 @@
+/* eslint-disable-line no-undef */
 /**
  * @file
  * Testing the helptext functionality
