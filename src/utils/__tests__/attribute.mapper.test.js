@@ -16,11 +16,11 @@ describe('Attribute mapper unittest', () => {
       userIdType: 'CPR',
       userIdValue: '0102456789'
     },
-      {
-        provider: '111222',
-        userIdType: 'LOCAL-1',
-        userIdValue: '222333'
-      }],
+    {
+      provider: '111222',
+      userIdType: 'LOCAL-1',
+      userIdValue: '222333'
+    }],
     municipalityNumber: '333'
   };
 
