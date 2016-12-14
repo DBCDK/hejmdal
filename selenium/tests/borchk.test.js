@@ -36,10 +36,10 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
 
-  it('should display two out of four options', () => {
+  it('should display two out of three options', () => {
     browser.addValue('#libraryname-input', 'rin');
     const agencies = browser.elements('.agency');
-    assert.equal(agencies.value.length, 4, 'A total of 4 agencies is present in the dropdown');
+    assert.equal(agencies.value.length, 3, 'A total of 3 agencies is present in the dropdown');
 
     let visible = 0;
     let hidden = 0;
@@ -55,7 +55,7 @@ describe('Test Borchk component', () => {
     });
 
     assert.equal(visible, 2);
-    assert.equal(hidden, 2);
+    assert.equal(hidden, 1);
   });
 
   it('Should toggle the libraries button open/closed', () => {

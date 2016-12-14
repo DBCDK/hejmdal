@@ -3,12 +3,12 @@ const assert = require('chai').assert;
 
 import LoginPage from '../pageObjects/loginPage';
 
-describe('Test Smaug tokens', function() {
+describe('Test Smaug tokens', function () {
   this.timeout(30000);
   const loginPage = new LoginPage();
 
   after(() => {
-    browser.url('/wipestores');
+    browser.wipeStores();
   });
 
   it('should set state with invalid token', () => {

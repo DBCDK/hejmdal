@@ -14,7 +14,7 @@ describe('Test Smaug component', () => {
 
   beforeEach(() => {
     CONFIG.mock_externals.smaug = true;
-    ctx = mockContext('valid_token');
+    ctx = mockContext(CONFIG.test.token);
   });
 
   afterEach(() => {
