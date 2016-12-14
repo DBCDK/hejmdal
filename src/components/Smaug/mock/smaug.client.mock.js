@@ -12,7 +12,6 @@ export const mockData = {
   },
   urls: {
     host: `http://localhost:${CONFIG.app.port}`,
-    // TODO maybe success and error path, should be given in the login request. Would allow services to refactor
     success: '/example/',
     error: '/thumbsdown'
   }
@@ -25,7 +24,7 @@ export const mockData = {
  * @returns {*}
  */
 export default function getMockClient(token) {
-  if (token === 'valid_token') {
+  if (token === CONFIG.test.token) {
     return {
       statusCode: 200,
       body: JSON.stringify(mockData)

@@ -1,6 +1,6 @@
 {
   "name": "hejmdal",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js --ignore ./static/example",
     "serve:debug": "nodemon --debug --exec node --no-stdin src/main.js --ignore ./static/example",
-    "test": ". ./env.test && mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
+    "test": ". ./env.test && MOCK_STORAGE=1 mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
     "test:integration": ". ./env.test && npm run build:css:prod && TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
@@ -65,7 +65,7 @@
     "cssnano": "^3.7.7",
     "eslint": "^3.8.1",
     "mocha": "^3.1.0",
-    "mocha-jenkins-reporter": "0.3.1",
+    "mocha-jenkins-reporter": "0.3.2",
     "nodemon": "^1.11.0",
     "npm-check-updates": "^2.8.5",
     "postcss-cli": "^2.6.0",

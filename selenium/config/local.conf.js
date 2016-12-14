@@ -1,4 +1,6 @@
 export default {
   services: ['selenium-standalone'],
-  sauceConnect: false
+  sauceConnect: false,
+  user: null,
+  key: null
 };

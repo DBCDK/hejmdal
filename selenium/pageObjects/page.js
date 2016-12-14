@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 
 export default class Page {
-  open(path) {
+  validToken = process.env.SMAUG_TOKEN || 'asdfg';
+
+  open(path = '') {
     browser.url('/' + path);
   }
 }

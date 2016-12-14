@@ -5,7 +5,7 @@ describe('Test Smaug tokens', () => {
   const loginPage = new LoginPage();
 
   after(() => {
-    browser.url('/wipestores');
+    browser.wipeStores();
   });
 
   it('should login user with UNIlogin', () => {
