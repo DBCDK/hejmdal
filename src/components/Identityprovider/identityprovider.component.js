@@ -21,11 +21,15 @@ import {ERRORS} from '../../utils/errors.util';
  * @returns {*}
  */
 export async function authenticate(ctx, next) {
+
   try {
-    if (!ctx.hasUser()) {
+    if (!userIsLoggedIn(ctx)) {
       const state = ctx.getState();
-      const authToken = createHash(state.smaugToken);
-      const identityProviders = getIdentityProviders(state.serviceClient.identityProviders, authToken);
+      const identityProviders = getIdentityProviders(state);
+      if (state.serviceClient.identityProviders.length === 1 && state.serviceClient.identityProviders[0] !== 'borchk') {
+        ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
+        return;
+      }
       const agency = await getAgency(state.serviceAgency);
       const selectAgencyName = agency.name;
       const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
@@ -143,6 +147,7 @@ export async function wayfCallback(ctx) {
 
   ctx.setUser({
     userId: response.userId,
+    wayfId: response.wayfId,
     userType: 'wayf',
     identityProviders: ['wayf']
   });
@@ -199,7 +204,9 @@ export async function identityProviderCallback(ctx, next) {
  * @param {string} authToken
  * @return {{borchk: null}}
  */
-function getIdentityProviders(identityProviders, authToken) {
+function getIdentityProviders(state) {
+  const authToken = createHash(state.smaugToken);
+  const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
     unilogin: null,
@@ -244,5 +251,38 @@ function idenityProviderValidationFailed(ctx, error) {
   const errorParameter = error.error ? `&error=${error.message}` : '';
   const startOver = `${VERSION_PREFIX}/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}`;
   ctx.redirect(startOver);
+}
+
+
+/**
+ * Check if user is logged in with a valid serviceProvider
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+function userIsLoggedIn(ctx) {
+  const ips = isLoggedInWith(ctx);
+  if (ips.length) {
+    if (!ips.includes('borck')) {
+      const link = getIdentityProviders(ctx.getState())[ips[0]].link;
+      ctx.redirect(link);
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Returns the valid identityproviders a user is logged in with.
+ *
+ * @param ctx
+ * @returns {*}
+ */
+function isLoggedInWith(ctx) {
+  if (!ctx.hasUser()) {
+    return [];
+  }
+  const identityProviders = ctx.getState().serviceClient.identityProviders;
+  return ctx.getUser().identityProviders.filter(ip => identityProviders.includes(ip));
 }
 

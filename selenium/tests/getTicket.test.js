@@ -13,7 +13,7 @@ describe('Testing the getTicket endpoint', () => {
 
   beforeEach(() => {
     loginPage = new LoginPage();
-    loginPage.loginWithUNIlogin();
+    loginPage.login('unilogin');
   });
 
   after(() => {
