@@ -54,8 +54,6 @@ while [ ! -f ${SC_READYFILE} ]; do
   sleep .5
 done
 
-echo "hest"
-
 unset SAUCE_CONNECT_PLATFORM SAUCE_TMP_DIR SC_DIR SC_DISTRIBUTION SC_READYFILE SC_LOGFILE SC_TUNNEL_ID
 
-#popd
+popd
