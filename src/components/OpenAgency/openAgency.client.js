@@ -85,7 +85,7 @@ function parseFindLibraryResponse(response) {
     const agencies = [];
     response.findLibraryResponse.pickupAgency.forEach((agency) => {
       const branchId = getAgencyField(agency, 'branchId');
-      if(agencies.includes(branchId)){
+      if (agencies.includes(branchId)) {
         return;
       }
 
