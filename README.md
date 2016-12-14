@@ -121,10 +121,7 @@ set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
-- `MOCK_SESSION_STORAGE` : `mock_storage.session`  
-Set to `1` to use memory storage instead of persistent storage
-
-- `MOCK_TICKET_STORAGE` : `mock_storage.ticket`  
+- `MOCK_STORAGE` : `mock_storage.session`  
 Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  

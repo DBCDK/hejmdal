@@ -1,15 +1,17 @@
 /* eslint-disable */
 import {assert} from 'chai';
+import Page from '../pageObjects/page';
 
 describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
+  const page = new Page();
 
   after(() => {
-    browser.url('/wipestores');
+   browser.wipeStores();
   });
 
   it('should display ticket data in example application', () => {
-    browser.url('/');
+    page.open();
     browser.click('#example-page-login');
 
     const examplePageUrl = browser.getUrl();
@@ -17,8 +19,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isTrue(examplePageUrl.includes('/example/'));
 
     // Click login button on axample page
+    browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
-    browser.refresh();
 
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
@@ -41,7 +43,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     browser.click('#get-ticket-button');
 
     const ticket = JSON.parse(browser.getText('#ticket'));
-    const expected = JSON.stringify({
+    const expected = {
       "attributes": {
         "cpr": null,
         "birthDate": null,
@@ -54,9 +56,9 @@ describe('Testing the Example appliction using UNI-Login', function() {
       },
       "id": 1,
       "token": "5fc9b591842fed38c6d1549ce85ee51280e353a56c9a2fb3c40e3a1e2011006a"
-    });
+    };
 
-    assert.equal(JSON.stringify(ticket), expected);
+    assert.deepEqual(ticket, expected);
     browser.click('#reset-to-default');
   });
 
@@ -69,8 +71,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isTrue(examplePageUrl.includes('/example/'));
 
     // Click login button on axample page
+    browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
-    browser.refresh();
 
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');

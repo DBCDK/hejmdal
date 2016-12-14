@@ -4,7 +4,6 @@ import querystring from 'querystring';
 /* eslint-disable no-undef */
 
 export default class LoginPage extends Page {
-  validToken = 'valid_token';
 
   constructor() {
     super();
