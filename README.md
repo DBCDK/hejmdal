@@ -25,6 +25,9 @@ You can start the application with `node src/main.js` from the project root afte
 To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
 
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
+
+### Shrinkwrap
+dependency versions are controlled with shrinkwrap. To update a dependency run `npm update <package__name>`, or recreate the dependency tree by deleting npm-shrinkwrap.json and running `npm update && npm shrinkwrap`.
   
 ##Example applikation
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
