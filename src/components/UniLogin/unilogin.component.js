@@ -93,5 +93,5 @@ function getLiveUniloginUrl(token) {
  * @return {string}
  */
 function getReturUrl(token) {
-  return `${CONFIG.app.host}:${CONFIG.app.port}${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}`;
+  return `${CONFIG.app.host}${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}`;
 }

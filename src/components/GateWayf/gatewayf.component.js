@@ -59,7 +59,7 @@ export function getGateWayfUrl(idp, token) {
  */
 function getLiveGateWayfUrl(idp, token) {
   const base = CONFIG.gatewayf.uri;
-  const returnUrl = `${CONFIG.app.host}:${CONFIG.app.port}${VERSION_PREFIX}/login/identityProviderCallback/${idp}/${token}`;
+  const returnUrl = `${CONFIG.app.host}${VERSION_PREFIX}/login/identityProviderCallback/${idp}/${token}`;
   const wayfIdp = CONFIG.gatewayf.idp[idp];
 
   return `${base}?idp=${wayfIdp}&returnUrl=${returnUrl}`;
