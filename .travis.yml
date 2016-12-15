@@ -11,7 +11,6 @@ branches:
   only:
   - master
 env:
-- TEST_SUITE=lint
 - TEST_SUITE=test
 - TEST_SUITE=test:integration
 before_script:
