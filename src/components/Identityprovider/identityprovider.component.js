@@ -31,7 +31,6 @@ export async function authenticate(ctx, next) {
         ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
         return;
       }
-
       const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
       const selectAgencyName = branch ? `${branch.branchShortName} - ${branch.agencyName}` : null;
       const branches = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
