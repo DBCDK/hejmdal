@@ -15,7 +15,7 @@ describe('Test Consent part of authetication flow', () => {
 
   beforeEach(() => {
     loginPage = new LoginPage();
-    loginPage.loginWithUNIlogin();
+    loginPage.login('unilogin');
   });
 
   afterEach(() => {
