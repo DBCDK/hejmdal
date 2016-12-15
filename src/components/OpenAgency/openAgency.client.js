@@ -111,6 +111,7 @@ function parseFindLibraryResponse(response) {
       agencies.push(branchId);
     });
   }
+
   return libraryList;
 }
 

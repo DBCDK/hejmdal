@@ -42,7 +42,7 @@ export async function getAgencyName(agencyId) {
     name = 'Ukendt bibliotek: ' + agencyId;
     agencyList.forEach((agency) => {
       if (agency.branchId === agencyId) {
-        name = agency.name;
+        name = agency.branchName;
       }
     });
   }
@@ -81,7 +81,7 @@ async function setUiList() {
 
   if (!uiBranchList || !uiBranchList.length) {
     uiBranchList = agencyList.map((branch) => {
-      return {branchId: branch.branchId, name: `${branch.branchName} - ${branch.agencyName}`, hidden: `${branch.branchId}`};
+      return {branchId: branch.branchId, name: `${branch.branchShortName} - ${branch.agencyName}`, hidden: `${branch.branchId}`};
     });
   }
 }
