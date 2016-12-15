@@ -7,7 +7,7 @@ import {assert} from 'chai';
 import {
   giveConsentUI,
   retrieveUserConsent,
-  checkForExistingConsent,
+  getConsent,
   storeUserConsent
 } from '../consent.component';
 import sinon from 'sinon';
@@ -46,7 +46,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
   describe('retrieveUserConsent()', () => {
 
-    it('should  call next when no user or serviceClient.id is found', async() => {
+    it('should call next when no user or serviceClient.id is found', async() => {
       const _next = sandbox.stub();
 
       await retrieveUserConsent(ctx, _next);
@@ -61,15 +61,24 @@ describe('Unittesting methods in consent.component.test', () => {
       ctx.setUser({userId: userId});
       ctx.setState({
         serviceClient: {
-          id: serviceClientId
+          id: serviceClientId,
+          attributes: {
+            cpr: {}
+          }
+        },
+        ticket: {
+          attributes: {
+            cpr: '1234'
+          }
         }
+
       });
 
       await retrieveUserConsent(ctx, next);
       assert.isTrue(ctx.redirect.called);
     });
 
-    it('should add consent to state and invoke next when consent is found', async() => {
+    it('should invoke next when consent is found', async() => {
       ctx.redirect = sandbox.stub();
       const _next = sandbox.stub();
       const serviceClientId = Date.now();
@@ -87,7 +96,6 @@ describe('Unittesting methods in consent.component.test', () => {
 
       assert.isFalse(ctx.redirect.called);
       assert.isTrue(_next.called);
-      assert.deepEqual(ctx.getState().consents, {[serviceClientId]: {keys: []}});
     });
 
     it('should delete old consent and redirect user to consent page', async() => {
@@ -100,13 +108,16 @@ describe('Unittesting methods in consent.component.test', () => {
         serviceClient: {
           id: serviceClientId,
           attributes: ATTRIBUTES
+        },
+        ticket: {
+          attributes: ATTRIBUTES
         }
       });
 
       // first we store the consent object and verify it has been stored
       await storeUserConsent(ctx);
-      const consent = await checkForExistingConsent({userId: userId, serviceClientId: serviceClientId});
-      const consent_expected = {keys: ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'uniloginId', 'wayfId'].sort()};
+      const consent = await getConsent(ctx);
+      const consent_expected = ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'uniloginId', 'wayfId'];
       assert.deepEqual(consent, consent_expected, 'consent was stored as expected');
 
       // then we create sets a new attributes object and makes a request for the users consent.
@@ -131,9 +142,9 @@ describe('Unittesting methods in consent.component.test', () => {
   describe('checkForExistingConsent()', () => {
 
     it('should return false', async() => {
-      const consent = await checkForExistingConsent({userId: null, serviceClientId: 10});
+      const consent = await getConsent(ctx);
 
-      assert.isFalse(consent);
+      assert.deepEqual(consent, []);
     });
 
     it('should retrieve consent form memory storage', async() => {
@@ -149,9 +160,9 @@ describe('Unittesting methods in consent.component.test', () => {
 
       await storeUserConsent(ctx);
 
-      const consent = await checkForExistingConsent({userId: userId, serviceClientId: serviceClientId});
+      const consent = await getConsent(ctx);
 
-      assert.isObject(consent);
+      assert.isArray(consent);
       assert.isObject(ctx.session.state.consents[serviceClientId]);
     });
   });
