@@ -103,7 +103,7 @@ export const CONFIG = {
 export function validateConfig(config = CONFIG, k = '') {
   for (let key in config) {
     if (typeof config[key] === 'object') {
-      validateConfig(config[key], `${key}.`);
+      validateConfig(config[key], `${k}${key}.`);
     }
     else {
       if (config[key] === undefined) { // eslint-disable-line no-undefined
