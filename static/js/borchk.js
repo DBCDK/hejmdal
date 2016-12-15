@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function parseKeyCode(keyCode) {
   let key = '';
 
-  switch(keyCode){
+  switch (keyCode) {
     case 40:
       key = 'ArrowDown';
       break;
@@ -76,12 +76,9 @@ function parseKeyCode(keyCode) {
  * @param {KeyboardEvent} e
  */
 function handleKeyDown(e) {
-  console.log('keydown: ', e);
-  console.log('keydown: ', e.keyCode);
-  if(!e.key && e.keyCode){
+  if (!e.key && e.keyCode) {
     e.key = parseKeyCode(e.keyCode);
   }
-  console.log('keydown - key: ', e.key);
   if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
     e.preventDefault();
     navigateDropDown(e.key);
