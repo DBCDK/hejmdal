@@ -8,7 +8,8 @@ import {
   giveConsentUI,
   retrieveUserConsent,
   getConsent,
-  storeUserConsent
+  storeUserConsent,
+  shouldUserGiveConsent
 } from '../consent.component';
 import sinon from 'sinon';
 
@@ -40,6 +41,45 @@ describe('Unittesting methods in consent.component.test', () => {
       giveConsentUI(ctx, next);
       assert.isTrue(ctx.redirect.called);
       assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
+    });
+  });
+
+  describe('shouldUserGiveConsent()', () => {
+
+    beforeEach(() => {
+      ctx = mockContext();
+      initState(ctx, next);
+      ctx.setUser({userId: 'testUser'});
+
+      ctx.setState({
+        serviceClient: {
+          id: 'some id',
+          attributes: {
+            cpr: {}
+          }
+        },
+        ticket: {
+          attributes: {
+            cpr: '1234'
+          }
+        }
+      });
+    });
+
+    it('should give consent if valid attributes and no consent', async() => {
+      assert.isTrue(await shouldUserGiveConsent(ctx));
+    });
+
+    it('should not give consent if no valid attributes', async() => {
+      ctx.setUser({userId: 'testUser'});
+
+      ctx.setState({
+        ticket: {
+          attributes: {}
+        }
+      });
+
+      assert.isFalse(await shouldUserGiveConsent(ctx));
     });
   });
 
