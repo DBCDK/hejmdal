@@ -11,16 +11,18 @@ describe('Attribute mapper unittest', () => {
 
   const user = {};
   const culr = {
-    accounts: [{
-      provider: '000111',
-      userIdType: 'CPR',
-      userIdValue: '0102456789'
-    },
-    {
-      provider: '111222',
-      userIdType: 'LOCAL-1',
-      userIdValue: '222333'
-    }],
+    accounts: [
+      {
+        provider: '000111',
+        userIdType: 'CPR',
+        userIdValue: '0102456789'
+      },
+      {
+        provider: '111222',
+        userIdType: 'LOCAL-1',
+        userIdValue: '222333'
+      }
+    ],
     municipalityNumber: '333'
   };
 

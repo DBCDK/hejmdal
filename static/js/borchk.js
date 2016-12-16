@@ -3,7 +3,7 @@
  * This file provides the necessary functionality to provide a smooth user experience using the Borchk serviceprovider.
  */
 
-var librariesDropdown;
+var librariesDropdownContainer;
 var allAgencies;
 var currentlyVisibleAgencies = [];
 var currentlySelectedIndex = -1;
@@ -15,7 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input-hidden');
   currentSearchValue = libraryInput.value;
-  librariesDropdown = document.getElementById('libraries-dropdown-container');
+
+  librariesDropdownContainer = document.getElementById('libraries-dropdown-container');
   allAgencies = document.getElementsByClassName('agency');
 
   libraryInput.addEventListener('keyup', function() {
@@ -92,9 +93,9 @@ function clearLibraryInput() { // eslint-disable-line no-unused-vars
  * @param {KeyboardEvent} e
  */
 function escapeWasPressed(e) {
-  if (librariesDropdown.classList.contains('open')) {
+  if (librariesDropdownContainer.classList.contains('open')) {
     e.preventDefault();
-    librariesDropdown.classList.remove('open');
+    librariesDropdownContainer.classList.remove('open');
   }
 }
 
@@ -134,17 +135,17 @@ function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-
  */
 function toggleDropdown(forceOpen = null) {
   if (forceOpen) {
-    librariesDropdown.classList.add('open');
+    librariesDropdownContainer.classList.add('open');
   }
   else if (forceOpen === false) {
-    librariesDropdown.classList.remove('open');
+    librariesDropdownContainer.classList.remove('open');
   }
   else {
-    librariesDropdown.classList.toggle('open');
+    librariesDropdownContainer.classList.toggle('open');
   }
 
-  var ariaHidden = !librariesDropdown.classList.contains('open');
-  librariesDropdown.setAttribute('aria-hidden', ariaHidden.toString());
+  var ariaHidden = !librariesDropdownContainer.classList.contains('open');
+  librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
 }
 
 /**
@@ -174,7 +175,7 @@ function toggleVisibleLibraries() {
  * @param {String} key
  */
 function navigateDropDown(key) {
-  if (!librariesDropdown.classList.contains('open')) {
+  if (!librariesDropdownContainer.classList.contains('open')) {
     return;
   }
 
@@ -216,11 +217,11 @@ function navigateDropDown(key) {
 function selectHighlighted(e) {
   var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
-  if (currentlySelected && librariesDropdown.classList.contains('open')) {
+  if (currentlySelected && librariesDropdownContainer.classList.contains('open')) {
     e.preventDefault();
-    OnClick(currentlyVisibleAgencies[currentlySelectedIndex]);
+    OnClick(currentlySelected);
   }
-  else if (librariesDropdown.classList.contains('open')) {
+  else if (librariesDropdownContainer.classList.contains('open')) {
     e.preventDefault();
     navigateDropDown('ArrowDown');
   }
@@ -232,7 +233,7 @@ function selectHighlighted(e) {
  * @param {Node} element The element that has been clicked
  */
 function OnClick(element) { // eslint-disable-line no-unused-vars
-  var branchName = element.textContent;
+  var branchName = element.dataset.name;
   var branchId = element.dataset.aid;
 
   libraryIdInput.value = branchId;
@@ -278,7 +279,7 @@ function addElementToLocalStorage({branchName, branchId}) {
 function setRecentlySelectedLibraries() {
   removeExistingRecentlySelectedLibraries();
   const storedAgencies = localStorage.getItem('agencies');
-  if (!storedAgencies || !storedAgencies.length) {
+  if (!storedAgencies || !storedAgencies.length || !librariesDropdownContainer) {
     return;
   }
 
@@ -286,7 +287,7 @@ function setRecentlySelectedLibraries() {
 
   const latestHeader = document.getElementById('latest');
   const alphabeticalHeader = document.getElementById('alphabetical');
-  const librariesDopdown = document.getElementById('libraries-dropdown');
+  const librariesDropdown = document.getElementById('libraries-dropdown');
 
   latestHeader.classList.remove('hide');
   alphabeticalHeader.classList.remove('hide');
@@ -297,10 +298,11 @@ function setRecentlySelectedLibraries() {
     a.classList.add('agency');
     a.classList.add('recent');
     a.setAttribute('data-aid', agency.branchId);
+    a.setAttribute('data-name', agency.branchName);
     a.setAttribute('onclick', 'OnClick(this)');
     a.appendChild(document.createTextNode(agency.branchName));
     li.appendChild(a);
-    librariesDopdown.insertBefore(li, alphabeticalHeader);
+    librariesDropdown.insertBefore(li, alphabeticalHeader);
   });
 }
 

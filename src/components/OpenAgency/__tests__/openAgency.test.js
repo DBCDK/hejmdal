@@ -16,62 +16,79 @@ describe('Test openAgency component', () => {
   it('Lookup a library from name', async() => {
     const list = [
       {
-        id: '761500',
+        agencyId: '761500',
         branchId: '761500',
-        name: 'Horsens Bibliotek',
+        agencyName: '',
+        branchName: 'Horsens Bibliotek',
+        branchShortName: '',
+        city: '',
         address: 'Kongevejen 30, Endelave',
         type: 'Folkebibliotek',
-        branchEmail: '',
         registrationFormUrl: '',
-        registrationFormUrlText: ''
+        registrationFormUrlText: '',
+        branchEmail: ''
       },
       {
-        id: '761500',
+        agencyId: '761500',
         branchId: '761506',
-        name: 'Søvind Bibliotek',
+        agencyName: '',
+        branchName: 'Søvind Bibliotek',
+        branchShortName: '',
+        city: '',
         address: 'Ravnebjerget 12, Søvind',
         type: 'Folkebibliotek',
-        branchEmail: '',
         registrationFormUrl: '',
-        registrationFormUrlText: ''
+        registrationFormUrlText: '',
+        branchEmail: ''
       },
       {
-        id: '860970',
+        agencyId: '860970',
         branchId: '860970',
-        name: 'Horsens Gymnasium, Biblioteket',
+        agencyName: '',
+        branchName: 'Horsens Gymnasium, Biblioteket',
+        branchShortName: '',
+        city: '',
         address: '',
         type: 'Forskningsbibliotek',
-        branchEmail: '',
         registrationFormUrl: '',
-        registrationFormUrlText: ''
+        registrationFormUrlText: '',
+        branchEmail: ''
       }];
+
     assert.deepEqual(list, await libraryListFromName('horsen?'));
   });
 
   it('Lookup a library from position', async() => {
     const list = [
       {
-        id: '715100',
+        agencyId: '715100',
         branchId: '715100',
-        name: 'Ballerup Bibliotek',
+        agencyName: '',
+        branchName: 'Ballerup Bibliotek',
+        branchShortName: '',
+        city: '',
         address: 'Hovedbiblioteket Banegårdspladsen 1',
         type: 'Folkebibliotek',
-        distance: '1237',
-        branchEmail: '',
         registrationFormUrl: '',
-        registrationFormUrlText: ''
+        registrationFormUrlText: '',
+        branchEmail: '',
+        distance: '1237'
       },
       {
-        id: '724000',
+        agencyId: '724000',
         branchId: '724000',
-        name: 'Smørum Bibliotek',
+        agencyName: '',
+        branchName: 'Smørum Bibliotek',
+        branchShortName: '',
+        city: '',
         address: 'Flodvej 68 Smørumnedre',
         type: 'Folkebibliotek',
-        distance: '2905',
-        branchEmail: '',
         registrationFormUrl: '',
-        registrationFormUrlText: ''
+        registrationFormUrlText: '',
+        branchEmail: '',
+        distance: '2905'
       }];
+
     assert.deepEqual(list, await libraryListFromPosition('55.72', '12.35'));
   });
 

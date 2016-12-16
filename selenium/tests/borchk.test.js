@@ -116,11 +116,20 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
 
+  it('should be possible to search libraries using branchId', () => {
+    browser.addValue('#libraryname-input', '743001');
+
+    browser.isVisible('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+    browser.click('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+
+    assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
+  });
+
   it('Should display a pre-filled disabled field when &agency= is set', () => {
     browser.url(browser.getUrl() + '&agency=743001');
     assert.isFalse(browser.isVisible('#libraryid-input'));
     assert.isFalse(browser.isVisible('#libraryname-input'));
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
-    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek');
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
   });
 });

@@ -26,15 +26,16 @@ export async function authenticate(ctx, next) {
     if (!userIsLoggedIn(ctx)) {
       const state = ctx.getState();
       const identityProviders = getIdentityProviders(state);
+
       if (state.serviceClient.identityProviders.length === 1 && state.serviceClient.identityProviders[0] !== 'borchk') {
         ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
         return;
       }
-      const agency = await getAgency(state.serviceAgency);
-      const selectAgencyName = agency.name;
-      const agencies = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
+      const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
+      const selectAgencyName = branch ? `${branch.branchShortName} - ${branch.agencyName}` : null;
+      const branches = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
-      const loginHelpReplacers = setLoginReplacersFromAgency(agency);
+      const loginHelpReplacers = setLoginReplacersFromAgency(branch);
       const helpText = getHelpText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
 
       ctx.render('Login', {
@@ -42,7 +43,7 @@ export async function authenticate(ctx, next) {
         serviceClient: state.serviceClient.name,
         identityProviders,
         VERSION_PREFIX,
-        agencies: agencies,
+        branches: branches,
         selectedAgency: state.serviceAgency || '',
         selectedAgencyName: selectAgencyName,
         help: helpText
