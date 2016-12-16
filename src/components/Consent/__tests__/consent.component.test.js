@@ -122,11 +122,13 @@ describe('Unittesting methods in consent.component.test', () => {
 
       // then we create sets a new attributes object and makes a request for the users consent.
       // The check between the old and the consent objekt is implicitly part of the retrival process.
-      const newAttrbutes = Object.assign({}, ATTRIBUTES);
-      delete newAttrbutes.cpr;
+      const newAttrbutes = Object.assign({}, ATTRIBUTES, {newAtt: {name: 'some value'}});
       ctx.setState({
         serviceClient: {
           id: serviceClientId,
+          attributes: newAttrbutes
+        },
+        ticket: {
           attributes: newAttrbutes
         }
       });

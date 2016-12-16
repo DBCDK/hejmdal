@@ -6,6 +6,10 @@ describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
   const page = new Page();
 
+  before(() => {
+    browser.wipeStores();
+  });
+
   after(() => {
    browser.wipeStores();
   });
@@ -73,10 +77,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click login button on axample page
     browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
-
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
-
     const ticket = browser.getText('#tickettoken');
     assert.isOk(ticket);
 
