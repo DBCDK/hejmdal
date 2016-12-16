@@ -132,4 +132,11 @@ describe('Test Borchk component', () => {
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
     assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
   });
+
+  it('Should close dropwdown when a click happens outside the dropdown', () => {
+    browser.addValue('#libraryname-input', 'rin');
+    assert.isTrue(browser.isVisible('#libraries-dropdown'));
+    browser.click('body');
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
+  });
 });
