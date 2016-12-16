@@ -17,7 +17,14 @@ describe('test authenticate method', () => {
   });
   it('Should return content page', async() => {
     const sandbox = sinon.sandbox.create();
-    ctx.setState({serviceClient: {identityProviders: ['borchk', 'unilogin']}});
+    ctx.setState({
+      serviceClient: {
+        identityProviders: ['borchk', 'unilogin'],
+        urls: {
+          host: 'https://service_client_url'
+        }
+      }
+    });
     ctx.render = sandbox.mock();
     await authenticate(ctx, next);
     assert.equal(ctx.status, 200);
