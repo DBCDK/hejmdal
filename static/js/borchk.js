@@ -29,20 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleInputButtons();
   });
 
-  libraryInput.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      navigateDropDown(e.key);
-    }
-
-    if (e.key === 'Tab' || e.key === 'Enter') {
-      selectHighlighted(e);
-    }
-
-    if (e.key === 'Escape') {
-      escapeWasPressed(e);
-    }
-  });
+  libraryInput.addEventListener('keydown', handleKeyDown);
 
   if (document.getElementById('error-overlay')) {
     document.getElementById('error-overlay-close-btn').addEventListener('click', closeErrorOverlay);
@@ -54,6 +41,58 @@ document.addEventListener('DOMContentLoaded', function() {
     setRecentlySelectedLibraries();
   }
 });
+
+/**
+ *
+ * @param {Number} keyCode
+ */
+function parseKeyCode(keyCode) {
+  let key = '';
+
+  switch (keyCode) {
+    case 40:
+      key = 'ArrowDown';
+      break;
+    case 38:
+      key = 'ArrowUp';
+      break;
+    case 9:
+      key = 'Tab';
+      break;
+    case 13:
+      key = 'Enter';
+      break;
+    case 27:
+      key = 'Escape';
+      break;
+    default:
+      break;
+  }
+
+  return key;
+}
+
+/**
+ *
+ * @param {KeyboardEvent} e
+ */
+function handleKeyDown(e) {
+  if (!e.key && e.keyCode) {
+    e.key = parseKeyCode(e.keyCode);
+  }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    navigateDropDown(e.key);
+  }
+
+  if (e.key === 'Tab' || e.key === 'Enter') {
+    selectHighlighted(e);
+  }
+
+  if (e.key === 'Escape') {
+    escapeWasPressed(e);
+  }
+}
 
 /**
  * Toggles the visibility of the buttons next to the input field
