@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('try-again-btn').addEventListener('click', closeErrorOverlay);
   }
 
-  body.addEventListener('mousedown', function(e){
-    if(e.target.className.includes('glyphicon')){
+  body.addEventListener('mousedown', function(e) {
+    if (e.target.className.includes('glyphicon')) {
       return;
     }
     toggleDropdown(false);
