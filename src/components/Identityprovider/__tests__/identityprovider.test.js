@@ -76,10 +76,11 @@ describe('test identityProviderCallback method', () => {
     assert.deepEqual(ctx.getUser(), expected);
   });
 
-  it('Should add nemlogin user to context', async() => {
+  it('Should add nemlogin user and cpr to context', async() => {
     ctx.params.type = 'nemlogin';
     const expected = {
       userId: '0102030405',
+      cpr: '0102030405',
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };
