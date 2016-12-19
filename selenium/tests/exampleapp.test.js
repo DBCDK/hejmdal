@@ -6,10 +6,6 @@ describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
   const page = new Page();
 
-  before(() => {
-    browser.wipeStores();
-  });
-
   after(() => {
    browser.wipeStores();
   });
