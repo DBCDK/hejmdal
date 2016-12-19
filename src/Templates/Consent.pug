@@ -7,9 +7,9 @@ block append content
     div
       div.h3
         strong Adgang ikke godkendt
-      div.buffer-1-1
+      div#content.buffer-1-1
         strong.italic #{serviceName}
-        strong#content  har ikke fået adgang til de ønskede oplysninger
+        strong  har ikke fået adgang til de ønskede oplysninger
       div.buffer-1-1
         strong Derfor er du ikke blevet logget ind
     div &nbsp;
@@ -22,9 +22,9 @@ block append content
     div
       div.h3
         strong Godkendelse
-      div.buffer-1-1
+      div#content.buffer-1-1
         strong.italic #{serviceName}
-        strong#content  beder om adgang til disse oplysninger
+        strong  beder om adgang til disse oplysninger
       ul.attributeList
         each attribute in attributes
           li.attribute#attribute(data-toggle="collapse" href="#toggle-" + attribute.key aria-expanded="false") #{attribute.name}
