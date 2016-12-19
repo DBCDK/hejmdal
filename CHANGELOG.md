@@ -4,19 +4,75 @@
 
 [Full Changelog](https://github.com/DBCDK/hejmdal/compare/47-48...HEAD)
 
+**Implemented enhancements:**
+
+- Skal eksempelklienten skaleres til mobilvisning?  [\#213](https://github.com/DBCDK/hejmdal/issues/213)
+- Navn på bibliotek er ikke nok til at identificere det unikt [\#209](https://github.com/DBCDK/hejmdal/issues/209)
+
+**Fixed bugs:**
+
+- Login med NemLog-In springer consent over og giver tom ticket [\#236](https://github.com/DBCDK/hejmdal/issues/236)
+- Man skal ikke give consent til data, der ikke overføres [\#234](https://github.com/DBCDK/hejmdal/issues/234)
+- Får fejl, når jeg kommer tilbage fra login hos WAYF [\#215](https://github.com/DBCDK/hejmdal/issues/215)
+- Ved login fra to service clients bliver man ved andet login bedt om tomt consent [\#214](https://github.com/DBCDK/hejmdal/issues/214)
+- Navn på bibliotek er ikke nok til at identificere det unikt [\#209](https://github.com/DBCDK/hejmdal/issues/209)
+- "Hovedbiblioteket" optræder 8 gange i listen over biblioteker, men der er kun 3 med det navn [\#208](https://github.com/DBCDK/hejmdal/issues/208)
+- Efterfølgende logins skal viderestille til Identity Provider, hvis IP er forskellig fra IP ved første login [\#202](https://github.com/DBCDK/hejmdal/issues/202)
+- Direkte viderestilling til Uni-Login virker ikke [\#200](https://github.com/DBCDK/hejmdal/issues/200)
+- "Prøv igen"-knap på fejlside virker ikke [\#197](https://github.com/DBCDK/hejmdal/issues/197)
+- "Brug for hjælp til at logge ind?"-knappen har ikke noget link. [\#196](https://github.com/DBCDK/hejmdal/issues/196)
+- "Luk"-knap på fejlside sender mig til "forbidden"-side [\#195](https://github.com/DBCDK/hejmdal/issues/195)
+- "Fortryd login" på fejlside virker ikke [\#194](https://github.com/DBCDK/hejmdal/issues/194)
+- Der mangler tekst på fejlside [\#193](https://github.com/DBCDK/hejmdal/issues/193)
+- Consent-side mangler navn på modtager af information [\#190](https://github.com/DBCDK/hejmdal/issues/190)
+- Ved login med Uni-Login er der en forkert returURL [\#189](https://github.com/DBCDK/hejmdal/issues/189)
+- Safari OSX: Man kan ikke bladre i forslagslisten vha. piletasterne [\#188](https://github.com/DBCDK/hejmdal/issues/188)
+- Jeg får kun forslag til biblioteker baseret på branchName [\#186](https://github.com/DBCDK/hejmdal/issues/186)
+
 **Closed issues:**
 
+- Fjern sauce-connect.sh [\#222](https://github.com/DBCDK/hejmdal/issues/222)
+- Tekster til grænseflade [\#180](https://github.com/DBCDK/hejmdal/issues/180)
+- udvidelser til integrationstest [\#175](https://github.com/DBCDK/hejmdal/issues/175)
 - Implementer hjælp info [\#173](https://github.com/DBCDK/hejmdal/issues/173)
+- TODO's  [\#172](https://github.com/DBCDK/hejmdal/issues/172)
 - Sprog abstraktion [\#171](https://github.com/DBCDK/hejmdal/issues/171)
+- Optimer byg af CSS [\#161](https://github.com/DBCDK/hejmdal/issues/161)
 - FrontEnd: Implementer hjælpeside [\#160](https://github.com/DBCDK/hejmdal/issues/160)
 - Grænseflade til Smaug [\#139](https://github.com/DBCDK/hejmdal/issues/139)
+- Tilføj en shrinkwrap fil for at låse versioner mellem byg [\#73](https://github.com/DBCDK/hejmdal/issues/73)
 - Dokumentation af adgangsplatformen [\#71](https://github.com/DBCDK/hejmdal/issues/71)
 
 **Merged pull requests:**
 
+- Added background color to .row class [\#245](https://github.com/DBCDK/hejmdal/pull/245) ([hrmoller](https://github.com/hrmoller))
+- make example client mobile "friendly" [\#243](https://github.com/DBCDK/hejmdal/pull/243) ([vibjerg](https://github.com/vibjerg))
+- Optimer byg af CSS [\#241](https://github.com/DBCDK/hejmdal/pull/241) ([hrmoller](https://github.com/hrmoller))
+- Add cpr to user when using nemlogin [\#237](https://github.com/DBCDK/hejmdal/pull/237) ([vibjerg](https://github.com/vibjerg))
+- Add service client name to image on consent page [\#235](https://github.com/DBCDK/hejmdal/pull/235) ([vibjerg](https://github.com/vibjerg))
+- Der mangler tekst på fejlside [\#233](https://github.com/DBCDK/hejmdal/pull/233) ([hrmoller](https://github.com/hrmoller))
+- Use wayfId as userId if userId is not set [\#232](https://github.com/DBCDK/hejmdal/pull/232) ([vibjerg](https://github.com/vibjerg))
+- Add display name to consent accept/reject form [\#231](https://github.com/DBCDK/hejmdal/pull/231) ([vibjerg](https://github.com/vibjerg))
+- Klik ved siden af åben dropdown skal lukke listen [\#227](https://github.com/DBCDK/hejmdal/pull/227) ([hrmoller](https://github.com/hrmoller))
+- "Fortryd login" på fejlside virker ikke [\#225](https://github.com/DBCDK/hejmdal/pull/225) ([hrmoller](https://github.com/hrmoller))
+- \#222: Fjern sauce-connect.sh [\#223](https://github.com/DBCDK/hejmdal/pull/223) ([hrmoller](https://github.com/hrmoller))
+- Safari OSX: Man kan ikke bladre i forslagslisten vha. piletasterne [\#221](https://github.com/DBCDK/hejmdal/pull/221) ([hrmoller](https://github.com/hrmoller))
+- Fix consent problems [\#219](https://github.com/DBCDK/hejmdal/pull/219) ([vibjerg](https://github.com/vibjerg))
+- remove sauce-connect.sh from test commando [\#217](https://github.com/DBCDK/hejmdal/pull/217) ([vibjerg](https://github.com/vibjerg))
+- "Hovedbiblioteket" optræder 8 gange... [\#216](https://github.com/DBCDK/hejmdal/pull/216) ([hrmoller](https://github.com/hrmoller))
+- "Brug for hjælp til at logge ind?"-knappen har ikke noget link. [\#211](https://github.com/DBCDK/hejmdal/pull/211) ([hrmoller](https://github.com/hrmoller))
+- Update mocha-jenkins-reporter to the latest version 🚀 [\#207](https://github.com/DBCDK/hejmdal/pull/207) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- "Luk"-knap på fejlside sender mig til "forbidden"-side [\#206](https://github.com/DBCDK/hejmdal/pull/206) ([hrmoller](https://github.com/hrmoller))
+- Check if user is logged in with valid identityProvider [\#204](https://github.com/DBCDK/hejmdal/pull/204) ([vibjerg](https://github.com/vibjerg))
+- Remove port from generated urls [\#203](https://github.com/DBCDK/hejmdal/pull/203) ([vibjerg](https://github.com/vibjerg))
+- Remove todos and add suggested test [\#199](https://github.com/DBCDK/hejmdal/pull/199) ([vibjerg](https://github.com/vibjerg))
+- Update mocha-jenkins-reporter to the latest version 🚀 [\#185](https://github.com/DBCDK/hejmdal/pull/185) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- \#165: info operation. Refactor helpText\* to text\* [\#182](https://github.com/DBCDK/hejmdal/pull/182) ([fvsdbc](https://github.com/fvsdbc))
+- Run tests against live services [\#181](https://github.com/DBCDK/hejmdal/pull/181) ([vibjerg](https://github.com/vibjerg))
 - \#160: clear session after reject consent [\#179](https://github.com/DBCDK/hejmdal/pull/179) ([fvsdbc](https://github.com/fvsdbc))
 - \#160: Help text for login and consent [\#178](https://github.com/DBCDK/hejmdal/pull/178) ([fvsdbc](https://github.com/fvsdbc))
 - Update dependencies to enable Greenkeeper 🌴 [\#177](https://github.com/DBCDK/hejmdal/pull/177) ([greenkeeper[bot]](https://github.com/integration/greenkeeper))
+- Added shrinkwrap file [\#176](https://github.com/DBCDK/hejmdal/pull/176) ([vibjerg](https://github.com/vibjerg))
 - Optimer byg af CSS [\#174](https://github.com/DBCDK/hejmdal/pull/174) ([hrmoller](https://github.com/hrmoller))
 
 ## [47-48](https://github.com/DBCDK/hejmdal/tree/47-48) (2016-12-02)
