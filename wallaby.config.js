@@ -29,10 +29,9 @@ module.exports = function(wallaby) {
       params: {
         env: // @see https://wallabyjs.com/docs/config/runner.html
         'PORT=3011;' +
+        'HOST=http://localhost:3011;' +
         'HASH_SHARED=test-me-hash-shared;' +
-        'MOCK_TICKET_STORAGE=1;' +
-        'MOCK_CONSENT_STORAGE=1;' +
-        'MOCK_SESSION_STORAGE=1;' +
+        'MOCK_STORAGE=1;' +
         'MOCK_CULR=1;' +
         'MOCK_BORCHK=1;' +
         'MOCK_NEMLOGIN=1;' +

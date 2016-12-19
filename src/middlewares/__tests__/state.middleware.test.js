@@ -40,7 +40,7 @@ describe('stateMiddleware tests', () => {
     const ctx = {
       session: {}
     };
-    const newState = {test: 'some value'};
+    const newState = {test: 'some value', identityProviders: []};
     stateMiddleware(ctx, () => {});
     ctx.setUser(newState);
     assert.deepEqual(ctx.session.user, newState);

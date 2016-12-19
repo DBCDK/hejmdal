@@ -10,11 +10,21 @@ import {CONFIG} from '../../../utils/config.util';
 describe('test authenticate method', () => {
   const next = () => {
   };
-  const ctx = mockContext();
+  let ctx;
 
+  beforeEach(() => {
+    ctx = mockContext();
+  });
   it('Should return content page', async() => {
     const sandbox = sinon.sandbox.create();
-    ctx.setState({serviceClient: {identityProviders: ['borchk', 'unilogin']}});
+    ctx.setState({
+      serviceClient: {
+        identityProviders: ['borchk', 'unilogin'],
+        urls: {
+          host: 'https://service_client_url'
+        }
+      }
+    });
     ctx.render = sandbox.mock();
     await authenticate(ctx, next);
     assert.equal(ctx.status, 200);
@@ -29,13 +39,18 @@ describe('test authenticate method', () => {
 });
 
 describe('test identityProviderCallback method', () => {
-  const ctx = mockContext('qwerty', 'some_url', {
-    params: {},
-    query: {
-      id: 'testId'
-    }
+  let ctx;
+
+  beforeEach(() => {
+    ctx = mockContext('qwerty', 'some_url', {
+      params: {},
+      query: {
+        id: 'testId'
+      }
+    });
+    ctx.params.token = createHash(ctx.getState().smaugToken);
   });
-  ctx.params.token = createHash(ctx.getState().smaugToken);
+
   const next = () => {
   };
 
@@ -55,6 +70,7 @@ describe('test identityProviderCallback method', () => {
       userType: 'unilogin',
       identityProviders: ['unilogin']
     };
+
     await identityProviderCallback(ctx, next);
 
     assert.deepEqual(ctx.getUser(), expected);

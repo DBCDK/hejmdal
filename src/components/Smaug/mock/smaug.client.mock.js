@@ -2,6 +2,7 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
+  displayName: 'Test Service',
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
   borchkServiceName: 'bibliotek.dk',
   attributes: ATTRIBUTES,
@@ -28,6 +29,14 @@ export default function getMockClient(token) {
     return {
       statusCode: 200,
       body: JSON.stringify(mockData)
+    };
+  }
+
+  if (token === 'd83a6fba8a7847d1add4703cc237cb72') {
+    const mockUni = Object.assign({}, mockData, {identityProviders: ['unilogin'], attributes: {uniloginId: ATTRIBUTES.uniloginId}});
+    return {
+      statusCode: 200,
+      body: JSON.stringify(mockUni)
     };
   }
 

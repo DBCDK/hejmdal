@@ -3,8 +3,9 @@ div.topbar-container
     div.col-xs-6.col-sm-5.col-sm-offset-1
       span.logo-img
     div.col-xs-6.col-sm-5.align-right
-      span.glyphicon.glyphicon-question-sign(data-toggle="modal" data-target="#helpModal")
       if (help && help.title && help.sections)
+        if (!info)
+          span.glyphicon.glyphicon-question-sign(data-toggle="modal" data-target="#helpModal")
         div.modal.fade#helpModal(role="dialog" aria-labelledby="helpModalLabel")
           div.modal-dialog(role="document")
             div.modal-content
