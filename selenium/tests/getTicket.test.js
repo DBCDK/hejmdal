@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-undef */
 /**
  * @file
  * Testing the getTicket endpoint
@@ -6,7 +6,6 @@
 import {assert} from 'chai';
 
 import LoginPage from '../pageObjects/loginPage';
-//import DB from '../CustomMethods/db';
 
 describe('Testing the getTicket endpoint', () => {
   let loginPage = null;
@@ -18,7 +17,7 @@ describe('Testing the getTicket endpoint', () => {
 
   after(() => {
     browser.deleteCookie();
-   browser.wipeStores();
+    browser.wipeStores();
   });
 
   it('Should deliver er valid ticket', () => {
@@ -35,7 +34,7 @@ describe('Testing the getTicket endpoint', () => {
     browser.url(`/getTicket/${ticketToken}/${ticketId}`);
 
     const body = browser.getText('body');
-    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"libraries":[],"municipality":null,"uniloginId":"test1234","wayfId":null},"id":${ticketId},"token":"${ticketToken}"}`;
+    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"libraries":[],"municipality":null,"uniloginId":"test1234","wayfId":null},"id":${ticketId},"token":"${ticketToken}"}`; // eslint-disable-line
 
     // ensure the ticket is as expected
     assert.deepEqual(JSON.parse(body), JSON.parse(expectedValidTicket));
