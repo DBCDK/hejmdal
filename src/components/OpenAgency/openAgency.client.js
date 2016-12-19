@@ -82,23 +82,36 @@ export async function libraryListFromPosition(latitude, longitude, distance = ''
 function parseFindLibraryResponse(response) {
   const libraryList = [];
   if (response.findLibraryResponse && Array.isArray(response.findLibraryResponse.pickupAgency)) {
+    const agencies = [];
     response.findLibraryResponse.pickupAgency.forEach((agency) => {
-      let item = {
-        id: getAgencyField(agency, 'agencyId'),
-        branchId: getAgencyField(agency, 'branchId'),
-        name: getAgencyField(agency, 'branchName'),
+      const branchId = getAgencyField(agency, 'branchId');
+      if (agencies.includes(branchId)) {
+        return;
+      }
+
+      const item = {
+        agencyId: getAgencyField(agency, 'agencyId'),
+        branchId: branchId,
+        agencyName: getAgencyField(agency, 'agencyName'),
+        branchName: getAgencyField(agency, 'branchName'),
+        branchShortName: getAgencyField(agency, 'branchShortName'),
+        city: getAgencyField(agency, 'city'),
         address: getAgencyField(agency, 'postalAddress'),
         type: getAgencyField(agency, 'agencyType'),
         registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
         registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
         branchEmail: getAgencyField(agency, 'branchEmail')
       };
+
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
       }
+
       libraryList.push(item);
+      agencies.push(branchId);
     });
   }
+
   return libraryList;
 }
 
@@ -107,7 +120,7 @@ function parseFindLibraryResponse(response) {
  *
  * @param buffer
  * @param field
- * @returns {*}
+ * @returns {string}
  */
 function getAgencyField(buffer, field) {
   if (buffer[field]) {

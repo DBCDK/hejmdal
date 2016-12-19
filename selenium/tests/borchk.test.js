@@ -116,11 +116,32 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
 
+  it('should be possible to search libraries using branchId', () => {
+    browser.addValue('#libraryname-input', '743001');
+
+    browser.isVisible('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+    browser.click('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+
+    assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
+  });
+
   it('Should display a pre-filled disabled field when &agency= is set', () => {
     browser.url(browser.getUrl() + '&agency=743001');
     assert.isFalse(browser.isVisible('#libraryid-input'));
     assert.isFalse(browser.isVisible('#libraryname-input'));
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
-    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek');
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+  });
+
+  it('Should close dropwdown when a click happens outside the dropdown', () => {
+    browser.addValue('#libraryname-input', 'rin');
+    assert.isTrue(browser.isVisible('#libraries-dropdown'));
+    browser.click('body');
+    assert.isFalse(browser.isVisible('#libraries-dropdown'));
+    });
+    
+  it('Should redirect back to serviceclient when "Fortryd log ind" is clicked', () => {
+    browser.click('#cancel-login');
+    assert.equal(browser.getUrl(), 'http://localhost:3011/');
   });
 });
