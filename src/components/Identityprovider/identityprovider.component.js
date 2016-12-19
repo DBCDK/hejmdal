@@ -147,7 +147,7 @@ export async function wayfCallback(ctx) {
   const response = await getGateWayfResponse(ctx, 'wayf');
 
   ctx.setUser({
-    userId: response.userId,
+    userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
     wayfId: response.wayfId,
     userType: 'wayf',
     identityProviders: ['wayf']
