@@ -56,7 +56,9 @@ export async function consentSubmit(ctx, next) {
     const serviceClient = ctx.getState().serviceClient;
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
     const helpText = getText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClient.name});
-    ctx.session = null;    // clear session to discard identityprovider login
+
+    // Remove current identityProvider from list of used providers
+    ctx.resetIdentityProvider(ctx.getUser().userType);
 
     ctx.render('Consent', {
       consentFailed: true,

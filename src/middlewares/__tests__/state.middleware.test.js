@@ -40,11 +40,10 @@ describe('stateMiddleware tests', () => {
     const ctx = {
       session: {}
     };
-    const newState = {test: 'some value', identityProviders: []};
+    const newState = {test: 'some value', userType: 'testType'};
     stateMiddleware(ctx, () => {});
     ctx.setUser(newState);
-    assert.deepEqual(ctx.session.user, newState);
-    assert.deepEqual(ctx.getUser(), newState);
+    assert.deepEqual(ctx.getUser(), Object.assign(newState, {identityProviders: ['testType']}));
   });
 
   it('should set a default state', () => {

@@ -78,8 +78,7 @@ export async function uniloginCallback(ctx) {
 
   ctx.setUser({
     userId: userId,
-    userType: 'unilogin',
-    identityProviders: ['unilogin']
+    userType: 'unilogin'
   });
 
   return ctx;
@@ -107,7 +106,6 @@ export async function borchkCallback(ctx) {
       userId: response.userId,
       cpr: isValidCpr(response.userId) ? response.userId : null,
       userType: 'borchk',
-      identityProviders: ['borchk'],
       libraryId: response.libraryId,
       pincode: response.pincode,
       userValidated: true
@@ -132,8 +130,7 @@ export async function nemloginCallback(ctx) {
   ctx.setUser({
     userId: response.userId,
     cpr: isValidCpr(response.userId) ? response.userId : null,
-    userType: 'nemlogin',
-    identityProviders: ['nemlogin']
+    userType: 'nemlogin'
   });
 
   return ctx;
@@ -150,8 +147,7 @@ export async function wayfCallback(ctx) {
   ctx.setUser({
     userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
     wayfId: response.wayfId,
-    userType: 'wayf',
-    identityProviders: ['wayf']
+    userType: 'wayf'
   });
 
   return ctx;
