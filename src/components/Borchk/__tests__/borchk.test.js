@@ -28,6 +28,6 @@ describe('Test borchk component', () => {
     const user = {libraryId: '761500', userId: '1234567890', pincode: ''};
     const response = await validateUserInLibrary(ctx, user);
     assert.isTrue(response.error);
-    assert.equal(response.message, 'unknown_error');
+    assert.equal(response.message, 'bonfd');
   });
 });
