@@ -74,24 +74,50 @@ function extractInfo(response) {
   };
 
   if (response && response.borrowerCheckResponse && response.borrowerCheckResponse.requestStatus) {
-    switch (response.borrowerCheckResponse.requestStatus.$) {
+    const message = response.borrowerCheckResponse.requestStatus.$;
+    switch (message) {
       case 'ok':
         statusResponse.error = false;
         statusResponse.message = 'OK';
         break;
+      case 'service_not_licensed':
+        log.error('Invalid borchk request. Service not licensed', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'service_unavailable':
+        log.error('Borchk service is unavailable', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'library_not_found':
+        log.error('Borchk: The requested library was not found', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'borrowercheck_not_allowed':
+        log.error('Borchk: Borrowercheck is no allowed', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'borrower_not_found':
+        log.error('Borchk: Borrower not found', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'borrower_not_in_municipality':
+        log.error('Borchk: Borrower not in municipality', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
+      case 'municipality_check_not_supported_by_library':
+        log.error('Borchk: Municipality check not supported by library', {response: response});
+        statusResponse.message = ERRORS[message];
+        break;
       case 'no_user_in_request':
         log.error('Invalid borchk request. Missing user', {response: response});
-        statusResponse.message = ERRORS.no_user_in_request;
+        statusResponse.message = ERRORS[message];
         break;
       case 'error_in_request':
         log.error('Invalid borchk request', {response: response});
-        statusResponse.message = ERRORS.error_in_request;
-        break;
-      case 'library_not_found':
-        log.error('Unknown borchk library', {response: response});
-        statusResponse.message = ERRORS.library_not_found;
+        statusResponse.message = ERRORS[message];
         break;
       default:
+        log.error('Unknown borchk library', {response: response});
         break;
     }
   }

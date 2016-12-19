@@ -257,7 +257,6 @@ function idenityProviderValidationFailed(ctx, error) {
   ctx.redirect(startOver);
 }
 
-
 /**
  * Check if user is logged in with a valid serviceProvider
  *
