@@ -31,7 +31,7 @@ export async function giveConsentUI(ctx, next) {
     const returnUrl = state.returnUrl ? state.serviceClient.urls.host + state.returnUrl : '';
     const helpText = getText(['consent'], {__SERVICE_CLIENT_NAME__: state.serviceClient.name});
     ctx.render('Consent', {
-      attributes: setConsentAttributes(state.serviceClient.attributes, state.ticket.attributes),
+      attributes: getConsentAttributes(ctx),
       consentAction: VERSION_PREFIX + '/login/consentsubmit/' + state.smaugToken,
       consentFailed: false,
       returnUrl: returnUrl,
@@ -57,6 +57,7 @@ export async function consentSubmit(ctx, next) {
     const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
     const helpText = getText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClient.name});
     ctx.session = null;    // clear session to discard identityprovider login
+
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
@@ -96,19 +97,9 @@ async function getConsentResponse(ctx) {
  * @param {function} next
  */
 export async function retrieveUserConsent(ctx, next) {
-  const user = ctx.getUser();
-  const serviceClient = ctx.getState().serviceClient;
-
-  if (user.userId && serviceClient.id) {
-    const consent = await getConsent(ctx);
-
-    if (consent) {
-      addConsentToState(ctx, consent);
-      await next();
-    }
-    else {
-      ctx.redirect(`${VERSION_PREFIX}/login/consent`);
-    }
+  const userShouldGiveConsent = await shouldUserGiveConsent(ctx);
+  if (userShouldGiveConsent) {
+    ctx.redirect(`${VERSION_PREFIX}/login/consent`);
   }
   else {
     await next();
@@ -116,24 +107,18 @@ export async function retrieveUserConsent(ctx, next) {
 }
 
 /**
- * Checks the storage for an existing consent which is added to the session if found. Otherwise false is returned.
- * Exported only to make testable.
+ * Check if a user should give consent.
  *
- * @param {string} userId
- * @param {string} serviceClientId
- * @return {object|boolean}
+ * A user should give consent if there are attributes in the ticket the service client requests, that the user have not
+ * given consent to before.
+ *
+ * @param ctx
+ * @returns {boolean}
  */
-export async function checkForExistingConsent({userId, serviceClientId}) {
-  let consent = false;
-
-  try {
-    consent = await consentStore.read(`${userId}:${serviceClientId}`);
-  }
-  catch (e) {
-    log.error('Failed check for existing consent', {error: e.message, stack: e.stack});
-  }
-
-  return consent;
+export async function shouldUserGiveConsent(ctx) {
+  const consent = await getConsent(ctx);
+  const attributes = getConsentAttributes(ctx);
+  return Object.keys(attributes).filter(attribute => !consent.includes(attribute)).length > 0;
 }
 
 /**
@@ -144,7 +129,7 @@ export async function checkForExistingConsent({userId, serviceClientId}) {
  * @return {*}
  */
 export async function storeUserConsent(ctx) {
-  const consent = createConsentObject(ctx);
+  const consent = getConsentAttributes(ctx);
   const user = ctx.getUser();
   const state = ctx.getState();
 
@@ -159,11 +144,12 @@ export async function storeUserConsent(ctx) {
   }
 
   const consentid = `${user.userId}:${state.serviceClient.id}`;
-
   addConsentToState(ctx, consent);
 
+  await consentStore.delete(consentid);
+
   try {
-    await consentStore.insert(consentid, consent);
+    await consentStore.insert(consentid, {keys: Object.keys(consent)});
   }
   catch (e) {
     log.error('Failed saving of user consent', {error: e.message, stack: e.stack});
@@ -187,16 +173,13 @@ function addConsentToState(ctx, consent) {
  * @param ctx
  * @returns {boolean}
  */
-async function getConsent(ctx) {
-  const user = ctx.getUser();
-  const serviceClient = ctx.getState().serviceClient;
-  let consent = false;
+export async function getConsent(ctx) {
+  const userId = ctx.getUser().userId;
+  const serviceClientId = ctx.getState().serviceClient.id;
+  let consent = [];
   try {
-    consent = await checkForExistingConsent({userId: user.userId, serviceClientId: serviceClient.id});
-    if (consent && JSON.stringify(consent) !== JSON.stringify(createConsentObject(ctx))) {
-      await removeConsent(user.userId, serviceClient.id);
-      consent = false;
-    }
+    const consentObject = (await consentStore.read(`${userId}:${serviceClientId}`));
+    consent = consentObject && consentObject.keys || [];
   }
   catch (e) {
     log.error('Error while retrieving user consent', {error: e.message, stack: e.stack});
@@ -207,37 +190,41 @@ async function getConsent(ctx) {
 
 /**
  *
- * @param userId
- * @param serviceClientId
- */
-async function removeConsent(userId, serviceClientId) {
-  await consentStore.delete(`${userId}:${serviceClientId}`);
-}
-
-/**
- *
- * @param ctx
- * @returns {{keys: Array.<*>}}
- */
-function createConsentObject(ctx) {
-  const attributes = ctx.getState().serviceClient.attributes || {};
-  const keys = Object.keys(attributes);
-  return {keys: keys.sort()};
-}
-
-/**
- *
  * @param definitionAttributes
  * @param ticketAttributes
  * @returns {{}}
  */
-function setConsentAttributes(definitionAttributes, ticketAttributes) {
+function getConsentAttributes(ctx) {
+  const state = ctx.getState();
+  const definitionAttributes = state.serviceClient.attributes || {};
+  const ticketAttributes = state.ticket.attributes || {};
   const consentAttributes = {};
   Object.keys(definitionAttributes).forEach((key) => {
-    if (ticketAttributes[key] && ticketAttributes[key] !== []) {
-      consentAttributes[key] = definitionAttributes[key];
+    if (attributeIsSet(ticketAttributes[key])) {
+      consentAttributes[key] = Object.assign({}, definitionAttributes[key]);
       consentAttributes[key].key = key;
     }
   });
   return consentAttributes;
+}
+
+/**
+ * Check if an attribute contains values.
+ *
+ * @param attribute
+ * @returns {boolean}
+ */
+function attributeIsSet(attribute) {
+  let isSet = true;
+  if (attribute === null || typeof attribute === 'undefined') {
+    isSet = false;
+  }
+  else if (Array.isArray(attribute) && attribute.length === 0) {
+    isSet = false;
+  }
+  else if (typeof attribute === 'object' && Object.keys(attribute).length === 0) {
+    isSet = false;
+  }
+
+  return isSet;
 }

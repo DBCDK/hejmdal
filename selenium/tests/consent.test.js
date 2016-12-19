@@ -12,10 +12,12 @@ import {VERSION_PREFIX} from '../../src/utils/version.util';
 
 describe('Test Consent part of authetication flow', () => {
   let loginPage = null;
+  let serviceClient = null;
 
   beforeEach(() => {
     loginPage = new LoginPage();
     loginPage.login('unilogin');
+    serviceClient = browser.getState().serviceClient
   });
 
   afterEach(() => {
@@ -31,19 +33,18 @@ describe('Test Consent part of authetication flow', () => {
 
   it('should render message to user', () => {
     const content = browser.getText('#content');
-    const expected = 'beder om adgang til disse oplysninger';
-    assert.isTrue(content.startsWith(expected));
+    const expected = serviceClient.name + ' beder om adgang til disse oplysninger';
+    assert.equal(content, expected);
   });
 
   it('should render attributenames in message shown to user', () => {
     const attributesRendered = browser.elements('#attribute');
     const formHtml = attributesRendered.getHTML().toString();
-    const attributes = browser.getState().serviceClient.attributes;
+    const attributes = serviceClient.attributes;
 
     Object.keys(attributes).forEach((key) => {
       const name = attributes[key].name;
       switch (key) {
-        case 'libraries':
         case 'uniloginId':
           assert.isTrue(formHtml.includes(name));
           break;
@@ -88,8 +89,8 @@ describe('Test Consent part of authetication flow', () => {
     assert.isNull(session);
 
     const content = browser.getText('#content');
-    const expected = 'har ikke fået adgang til de ønskede oplysninger';
-    assert.isTrue(content.startsWith(expected));
+    const expected = serviceClient.name + ' har ikke fået adgang til de ønskede oplysninger';
+    assert.equal(content, expected);
 
     const returnText = browser.getText('#returnUrl');
     const expectedReturnText = 'Tilbage til';
