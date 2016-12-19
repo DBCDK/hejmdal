@@ -206,6 +206,7 @@ export async function identityProviderCallback(ctx, next) {
  * @return {{borchk: null}}
  */
 function getIdentityProviders(state) {
+
   const authToken = createHash(state.smaugToken);
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
@@ -217,7 +218,8 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
-      action: `${VERSION_PREFIX}/login/identityProviderCallback/borchk/${authToken}`
+      action: `${VERSION_PREFIX}/login/identityProviderCallback/borchk/${authToken}`,
+      abortAction: state.serviceClient.urls.host
     };
   }
 
