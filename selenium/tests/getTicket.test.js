@@ -47,7 +47,6 @@ describe('Testing the getTicket endpoint', () => {
     const body2 = browser.getText('body');
     const expectedValidTicket2 = `{"attributes":null,"id":${ticketId},"token":"${ticketToken}"}`;
 
-    console.log(JSON.parse(body2), JSON.parse(expectedValidTicket2));
     // ensure the ticket is as expected
     assert.deepEqual(JSON.parse(body2), JSON.parse(expectedValidTicket2));
   });
