@@ -13,6 +13,15 @@
 .consent-rejected-img {
   background: svg-inline(rejected) no-repeat;
 }
+.consent-img-label {
+  position: relative;
+  display: inline-block;
+  left: 190px;
+  text-align: center;
+  width: 160px;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
 
 .banner {
   display: block;

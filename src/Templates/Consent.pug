@@ -4,6 +4,7 @@ block append content
   if consentFailed
     div
       span.banner.consent-rejected-img
+      span.italic.consent-img-label #{serviceName}
     div
       div.h3
         strong Adgang ikke godkendt
@@ -19,6 +20,7 @@ block append content
   else
     div
       span.banner.consent-img
+      span.italic.consent-img-label  #{serviceName}
     div
       div.h3
         strong Godkendelse
