@@ -13,6 +13,10 @@ label {
   }
 }
 
+.row {
+  background-color: var(--background-color);
+}
+
 .container {
   background-color: var(--background-color);
   height: 100%;
