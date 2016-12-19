@@ -12,6 +12,7 @@ var libraryInput;
 var libraryIdInput;
 
 document.addEventListener('DOMContentLoaded', function() {
+  var body = document.getElementsByTagName('body')[0];
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input-hidden');
   currentSearchValue = libraryInput.value;
@@ -36,6 +37,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('try-again-btn').addEventListener('click', closeErrorOverlay);
   }
+
+  body.addEventListener('mousedown', function(e) {
+    if (e.target.className.includes('glyphicon')) {
+      return;
+    }
+    toggleDropdown(false);
+  });
+
+  librariesDropdownContainer.addEventListener('mousedown', function(e) {
+    e.stopPropagation();
+  });
 
   if (Storage !== undefined) { // eslint-disable-line no-undefined
     setRecentlySelectedLibraries();
