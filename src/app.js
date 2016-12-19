@@ -69,7 +69,7 @@ export function startServer() {
   app.use(session({
     store: new SessionStore(CONFIG.mock_storage),
     key: 'sid',
-    maxAge: CONFIG.session.life_time,
+    maxAge: null,
     secure: CONFIG.app.env === 'production',
     path: '/',
     httpOnly: true

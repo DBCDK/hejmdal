@@ -17,7 +17,5 @@ export async function SessionMiddleware(ctx, next) {
     ctx.session = {};
   }
 
-  ctx.session.expires = new Date(Date.now() + (CONFIG.session.life_time)).toISOString();
-
   await next();
 }
