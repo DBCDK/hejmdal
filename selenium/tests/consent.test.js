@@ -45,7 +45,6 @@ describe('Test Consent part of authetication flow', () => {
     Object.keys(attributes).forEach((key) => {
       const name = attributes[key].name;
       switch (key) {
-        case 'libraries':
         case 'uniloginId':
           assert.isTrue(formHtml.includes(name));
           break;
