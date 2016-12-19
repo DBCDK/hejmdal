@@ -1,10 +1,12 @@
 /* eslint-disable */
 import {assert} from 'chai';
 import Page from '../pageObjects/page';
+import LoginPage from '../pageObjects/loginPage';
 
 describe('Testing the Example appliction using UNI-Login', function() {
   this.timeout(30000);
   const page = new Page();
+  const loginPage = new LoginPage();
 
   after(() => {
    browser.wipeStores();
@@ -40,9 +42,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     const getTicketLink = browser.getText('#ticketurl');
     assert.isTrue(getTicketLink.includes(`/getTicket/${ticketToken}/${ticketId}`));
 
-    browser.click('#get-ticket-button');
-
-    const ticket = JSON.parse(browser.getText('#ticket'));
+    const ticket = page.getTicket();
     const expected = {
       "attributes": {
         "cpr": null,
@@ -59,6 +59,8 @@ describe('Testing the Example appliction using UNI-Login', function() {
     };
 
     assert.deepEqual(ticket, expected);
+    page.open();
+    browser.click('#example-page-login');
     browser.click('#reset-to-default');
   });
 
