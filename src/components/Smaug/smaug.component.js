@@ -1,5 +1,6 @@
 import {getClient} from './smaug.client';
 import {log} from '../../utils/logging.util';
+import {CONFIG} from '../../utils/config.util';
 
 /**
  * Validate token.
@@ -17,7 +18,7 @@ export async function getAttributes(ctx, next) {
     await next();
   }
   catch (err) {
-    log.error('Invalid Token', err);
+    log.error('Invalid Token', {error: err.message, stack: err.stack});
     ctx.status = 403;
   }
 }
@@ -29,16 +30,21 @@ export async function getAttributes(ctx, next) {
  * @returns {{id: String, identityProviders: Array, attributes: Array}}
  */
 function extractClientInfo(client) {
-  if (client.app.clientId) {
-    return {
-      id: client.app.clientId,
-      name: client.app.clientName,
-      identityProviders: client.identityProviders || [],
-      attributes: client.attributes || [],
-      borchkServiceName: client.borchkServiceName || null,
-      urls: client.urls || {}
-    };
+  if (!client.app.clientId) {
+    throw new Error('Invalid Client', client);
+  }
+  const serviceClient = {
+    id: client.app.clientId,
+    name: client.app.clientName,
+    identityProviders: client.identityProviders || [],
+    attributes: client.attributes || [],
+    borchkServiceName: client.borchkServiceName || null,
+    urls: client.urls || {}
+  };
+
+  if (CONFIG.app.env === 'test') {
+    serviceClient.urls.host = CONFIG.app.host;
   }
 
-  throw new Error('Invalid Client', client);
+  return serviceClient;
 }

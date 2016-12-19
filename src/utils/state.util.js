@@ -2,8 +2,6 @@
  * @deprecated use setDefaultState in state.middleware instead
  * Initializes state object with dummy data
  *
- * @todo move state to session
- *
  * @param ctx
  * @param next
  * @returns {*}

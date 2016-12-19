@@ -1,6 +1,6 @@
 [![NSP Status](https://nodesecurity.io/orgs/dbcdk/projects/4eba54f1-c2ff-4d1e-ab6f-80ae788ec29c/badge)](https://nodesecurity.io/orgs/dbcdk/projects/4eba54f1-c2ff-4d1e-ab6f-80ae788ec29c)
-[![David](https://img.shields.io/david/DBCDK/hejmdal.svg?style=flat-square)](https://david-dm.org/DBCDK/hejmdal#info=dependencies)
-[![David](https://img.shields.io/david/dev/DBCDK/hejmdal.svg?style=flat-square)](https://david-dm.org/DBCDK/hejmdal#info=dev)
+[![bitHound Dependencies](https://www.bithound.io/github/DBCDK/hejmdal/badges/dependencies.svg)](https://www.bithound.io/github/DBCDK/hejmdal/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/DBCDK/hejmdal/badges/devDependencies.svg)](https://www.bithound.io/github/DBCDK/hejmdal/master/dependencies/npm)
 [![bitHound Overall Score](https://www.bithound.io/github/DBCDK/hejmdal/badges/score.svg)](https://www.bithound.io/github/DBCDK/hejmdal)
 [![Build Status](https://travis-ci.org/DBCDK/hejmdal.svg?branch=master)](https://travis-ci.org/DBCDK/hejmdal)
 
@@ -10,7 +10,7 @@
 
 ##Releases
 Releases are found at GitHub [/releases](https://github.com/DBCDK/hejmdal/releases). Each containing a link to the changelog for the given release. A consolidated changelog for all releases is found at [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) in the project root.  
-The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d.\d\d{1,})"` -- you may need a valid github token to run the command.
+The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d\.\d\d{1,})"` -- you may need a valid github token to run the command.
 
 ##Start
 ###Development
@@ -25,6 +25,9 @@ You can start the application with `node src/main.js` from the project root afte
 To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
 
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
+
+### Shrinkwrap
+dependency versions are controlled with shrinkwrap. To update a dependency run `npm update <package__name>`, or recreate the dependency tree by deleting npm-shrinkwrap.json and running `npm update && npm shrinkwrap`.
   
 ##Example applikation
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
@@ -118,10 +121,7 @@ set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
-- `MOCK_SESSION_STORAGE` : `mock_storage.session`  
-Set to `1` to use memory storage instead of persistent storage
-
-- `MOCK_TICKET_STORAGE` : `mock_storage.ticket`  
+- `MOCK_STORAGE` : `mock_storage.session`  
 Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  

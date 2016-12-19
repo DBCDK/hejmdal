@@ -1,7 +1,9 @@
 import {assert} from 'chai';
+import sinon from 'sinon';
 
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
 import {mockContext} from '../../utils/test.util';
+import {log} from '../../utils/logging.util';
 
 describe('Attribute mapper unittest', () => {
   const next = () => {
@@ -9,16 +11,18 @@ describe('Attribute mapper unittest', () => {
 
   const user = {};
   const culr = {
-    accounts: [{
-      provider: '000111',
-      userIdType: 'CPR',
-      userIdValue: '0102456789'
-    },
+    accounts: [
+      {
+        provider: '000111',
+        userIdType: 'CPR',
+        userIdValue: '0102456789'
+      },
       {
         provider: '111222',
         userIdType: 'LOCAL-1',
         userIdValue: '222333'
-      }],
+      }
+    ],
     municipalityNumber: '333'
   };
 
@@ -158,6 +162,7 @@ describe('Attribute mapper unittest', () => {
   });
 
   it('log an error for unknown attribute', () => {
+    const spy = sinon.spy(log, 'error');
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
@@ -168,7 +173,8 @@ describe('Attribute mapper unittest', () => {
     });
     mapAttributesToTicket(ctx, next);
     assert.deepEqual(ctx.session.state.ticket.attributes, {});
-    // TODO Vodden testes at der er logget?
+    assert.isTrue(spy.called, 'log.error was invoked');
+    assert.equal(spy.args[0][0], 'Cannot map attribute: notThere');
+    sinon.restore();
   });
-
 });

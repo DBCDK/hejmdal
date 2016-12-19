@@ -67,7 +67,7 @@ export function startServer() {
     });
 
   app.use(session({
-    store: new SessionStore(CONFIG.mock_storage.session),
+    store: new SessionStore(CONFIG.mock_storage),
     key: 'sid',
     maxAge: CONFIG.session.life_time,
     secure: CONFIG.app.env === 'production',

@@ -9,7 +9,7 @@ import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
  * @type {Array}
  */
 let agencyList = [];
-let uiList = [];
+let uiBranchList = [];
 
 /**
  *
@@ -25,7 +25,7 @@ export async function cacheAgencies(name = '') {
  */
 export async function getListOfAgenciesForFrontend() {
   await setUiList();
-  return uiList;
+  return uiBranchList;
 }
 
 /**
@@ -42,7 +42,7 @@ export async function getAgencyName(agencyId) {
     name = 'Ukendt bibliotek: ' + agencyId;
     agencyList.forEach((agency) => {
       if (agency.branchId === agencyId) {
-        name = agency.name;
+        name = agency.branchName;
       }
     });
   }
@@ -74,14 +74,14 @@ async function setAgencyList() {
 }
 
 /**
- * uiList setter
+ * uiBranchList setter
  */
 async function setUiList() {
   await setAgencyList();
 
-  if (!uiList || !uiList.length) {
-    uiList = agencyList.map((agency) => {
-      return {branchId: agency.branchId, name: agency.name};
+  if (!uiBranchList || !uiBranchList.length) {
+    uiBranchList = agencyList.map((branch) => {
+      return {branchId: branch.branchId, name: `${branch.branchShortName} - ${branch.agencyName}`, hidden: `${branch.branchId}`};
     });
   }
 }

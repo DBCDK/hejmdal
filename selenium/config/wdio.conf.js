@@ -75,7 +75,7 @@ let config = {
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.
-  baseUrl: `${process.env.HOST}:${process.env.PORT}${VERSION_PREFIX}`,
+  baseUrl: `${process.env.HOST}${VERSION_PREFIX}`,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -113,7 +113,6 @@ let config = {
   services: ['sauce'],
   user: process.env.SAUCE_USERNAME,
   key: process.env.SAUCE_ACCESS_KEY,
-  sauceConnect: process.env.CI && false || true,
 
   //
   // Framework you want to run your specs with.
@@ -138,7 +137,8 @@ let config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    compilers: ['js:babel-register']
+    compilers: ['js:babel-register'],
+    timeout: 30000
   },
   //
   // =====
