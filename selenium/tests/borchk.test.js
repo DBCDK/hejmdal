@@ -138,8 +138,8 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
     browser.click('body');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
-    });
-    
+  });
+
   it('Should redirect back to serviceclient when "Fortryd log ind" is clicked', () => {
     browser.click('#cancel-login');
     assert.equal(browser.getUrl(), 'http://localhost:3011/');

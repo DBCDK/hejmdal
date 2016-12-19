@@ -5,27 +5,32 @@ div.col-xs-2.col-xs-offset-10
 // Headline
 div.col-xs-12.col-sm-8.col-sm-offset-2
   div
-    case error
-      when 'fimis'
-      when 'nouse'
-        h2.red Fejl i udfyldning af felter
-      when 'erreq'
-        h2.red Der opstod en server fejl
-      when 'linfo'
-        h2.red Det valgte bibliotek kunne ikke findes
+    h2.red Fejl i login
 
 // Message
 div.col-xs-12.col-sm-8.col-sm-offset-2.error-message
   case error
-    when 'nouse'
-    when 'fimis'
+    when 'snotl'
+      p Den side, du vil logge ind på, har ikke ret til at benytte bibliotekslogin. Du er derfor ikke logget ind.
+    when 'sevua'
+      p Vi kunne ikke få forbindelse, så du er ikke logget ind. Prøv igen senere.
     when 'linfo'
+      p Det valgte bibliotek findes ikke, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+    when 'bonal'
+      p Det valgte bibliotek tillader ikke login, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+    when 'bonfd'
+      p Biblioteket kan ikke genkende brugeren med de indtastede oplysninger, så du er ikke logget ind. Tjek at alle felter er udfyldt korrekt og prøv igen.
+    when 'bnimu'
+      p Det ser ud til, at du ikke bor i kommunen for det valgte bibliotek. Du er derfor ikke logget ind. Prøv at logge ind via biblioteket i den kommune, hvor du bor.
+    when 'bcnsl'
+      p Systemet kan ikke tjekke dine oplysninger, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+    when 'nouse'
+      p Husk at udfylde feltet CPR / lånernummer og prøv igen.
+    when 'fimis'
       p Det ser ud til at oplysningerne ikke er rigtige.
       p Tjek at du har udfyldt felterne korrekt og prøv igen.
-
     when 'erreq'
-      p Det ser ud til at oplysningerne ikke er korrekte, men der skete en fejl på serveren.
-      p Prøv at udfylde felterne igen.
+      p Der skete en fejl i login. Det har ikke noget med dine info at gøre, så prøv bare igen.
 
 // Actions
 div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
