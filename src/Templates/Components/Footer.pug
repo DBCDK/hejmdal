@@ -1,5 +1,6 @@
 div#footer
   div.footer-container
     span.col-xs-6.col-sm-5.col-sm-offset-1
-      a(class="footer-link") Vores brug af cookies
+      if (!info)
+        a.footer-link(href='info/cookies' target='hjemdal-cookie') Vores brug af cookies
     span.col-xs-6.col-sm-5.align-right &copy; DDB 2016

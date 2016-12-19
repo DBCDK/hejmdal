@@ -1,0 +1,15 @@
+.header {
+  font-size: 1.4em;
+}
+
+.title, .body {
+  text-align: left;
+}
+
+.close, .title {
+  font-size: 1.5em;
+}
+
+.body {
+  font-size: 1.1em;
+}
