@@ -131,6 +131,7 @@ export async function nemloginCallback(ctx) {
 
   ctx.setUser({
     userId: response.userId,
+    cpr: isValidCpr(response.userId) ? response.userId : null,
     userType: 'nemlogin',
     identityProviders: ['nemlogin']
   });
