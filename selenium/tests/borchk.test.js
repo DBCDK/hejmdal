@@ -144,4 +144,12 @@ describe('Test Borchk component', () => {
     browser.click('#cancel-login');
     assert.equal(browser.getUrl(), 'http://localhost:3011/');
   });
+
+  it('Should preselect an editable library', () => {
+    loginPage.open({token: loginPage.validToken, presel: '743001'});
+
+    assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
+    assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
+    assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
+  });
 });

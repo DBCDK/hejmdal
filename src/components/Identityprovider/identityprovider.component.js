@@ -31,9 +31,18 @@ export async function authenticate(ctx, next) {
         ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
         return;
       }
+
+      let preselctedName = null;
+      let preselectedId = null;
+      if (ctx.query.presel) {
+        const preselectedLibrary = await getAgency(ctx.query.presel);
+        preselctedName = `${preselectedLibrary.branchShortName} - ${preselectedLibrary.agencyName}`;
+        preselectedId = preselectedLibrary.branchId;
+      }
+
       const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
-      const selectAgencyName = branch ? `${branch.branchShortName} - ${branch.agencyName}` : null;
-      const branches = identityProviders.borchk && !selectAgencyName ? await getListOfAgenciesForFrontend() : null;
+      const lockedAgencyName = branch ? `${branch.branchShortName} - ${branch.agencyName}` : null;
+      const branches = identityProviders.borchk && !lockedAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(branch);
       const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
@@ -44,8 +53,10 @@ export async function authenticate(ctx, next) {
         identityProviders,
         VERSION_PREFIX,
         branches: branches,
-        selectedAgency: state.serviceAgency || '',
-        selectedAgencyName: selectAgencyName,
+        preselctedName: preselctedName,
+        preselectedId: preselectedId,
+        lockedAgency: state.serviceAgency || null,
+        lockedAgencyName: lockedAgencyName,
         help: helpText
       });
 
@@ -114,7 +125,8 @@ export async function borchkCallback(ctx) {
     });
   }
   else {
-    idenityProviderValidationFailed(ctx, validated);
+    const librayId = response.libraryId || null;
+    idenityProviderValidationFailed(ctx, validated, librayId);
   }
 
   return ctx;
@@ -249,11 +261,13 @@ function getIdentityProviders(state) {
  *
  * @param {object} ctx
  * @param {object} error
+ * @param {string} libraryId
  */
-function idenityProviderValidationFailed(ctx, error) {
+function idenityProviderValidationFailed(ctx, error, libraryId) {
   const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
-  const startOver = `${VERSION_PREFIX}/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}`;
+  const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
+  const startOver = `${VERSION_PREFIX}/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}${preselctedLibrary}`;
   ctx.redirect(startOver);
 }
 
