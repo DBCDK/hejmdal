@@ -32,6 +32,10 @@ label {
   border-color: var(--btn-green);
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
+
 .form-control {
   font-size: 18px;
   font-weight: 700;
