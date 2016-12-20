@@ -49,10 +49,42 @@ document.addEventListener('DOMContentLoaded', function() {
     e.stopPropagation();
   });
 
+  libraryInput.addEventListener('focus', toggleFocusOnLibraryNameInput);
+  libraryInput.addEventListener('blur', toggleFocusOnLibraryNameInput);
+  document.getElementById('userid-input').addEventListener('focus', toggleFocusOnUserIdInput);
+  document.getElementById('userid-input').addEventListener('blur', toggleFocusOnUserIdInput);
+
+  document.getElementById('pin-input').addEventListener('focus', toggleFocusOnUserPinInput);
+  document.getElementById('pin-input').addEventListener('blur', toggleFocusOnUserPinInput);
+
+
+
   if (Storage !== undefined) { // eslint-disable-line no-undefined
     setRecentlySelectedLibraries();
   }
 });
+
+/**
+ * Toggles focus class on button's associated with libraryName input field
+ */
+function toggleFocusOnLibraryNameInput(){
+  document.getElementById('libraries-dropdown-toggle-btn').classList.toggle('hasfocus');
+  document.getElementById('clear-libraries-input-btn').classList.toggle('hasfocus');
+}
+
+/**
+ * Toggles focus class on button's associated with userid-input field
+ */
+function toggleFocusOnUserIdInput(){
+  document.getElementById('toggle-userid-input').classList.toggle('hasfocus');
+}
+
+/**
+ * Toggles focus class on button's associated with pin-input field
+ */
+function toggleFocusOnUserPinInput(){
+  document.getElementById('toggle-pin-input').classList.toggle('hasfocus');
+}
 
 /**
  *

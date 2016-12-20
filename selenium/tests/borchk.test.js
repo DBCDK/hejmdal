@@ -152,4 +152,25 @@ describe('Test Borchk component', () => {
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
+
+  it('Should set the hasfocus class on buttons when the input field has focus', () => {
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#libraryname-input');
+    assert.isTrue(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#userid-input');
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isTrue(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#pin-input');
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isTrue(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+  });
 });

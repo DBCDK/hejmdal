@@ -62,7 +62,8 @@ input[type="url"]:focus,
 input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
-.uneditable-input:focus {
+.uneditable-input:focus,
+.inline-btn-default:focus {
   /*border-color: rgba(19, 33, 255, 0.8);*/
   box-shadow: none;
 }
@@ -75,4 +76,9 @@ input[type="color"]:focus,
   border-radius: 0;
   background-color: transparent;
   border-bottom: solid var(--dark-grey) 2px;
+
+  &.hasfocus {
+    border-color: #66afe9;
+    outline: 0;
+  }
 }

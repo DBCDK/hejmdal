@@ -30,3 +30,10 @@ html, body {
   margin-top: 20px;
   z-index: 1;
 }
+
+.hasfocus {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  border-bottom: solid var(--dark-grey) 2px;
+}
