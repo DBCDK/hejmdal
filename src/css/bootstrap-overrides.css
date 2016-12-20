@@ -5,6 +5,7 @@ h1 {
 
 label {
   font-weight: normal;
+  margin-bottom: 0;
 }
 
 @media (min-width: 800px) {
