@@ -1,21 +1,21 @@
 div#borchk
   form(action=identityProviders.borchk.action method='post')
     div.form-group
-      if selectedAgency
+      if lockedAgency
         label(for='libraryid-input')
           strong Bibliotek
-        input(type="hidden" value=selectedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
-        input(type="text" disabled value=selectedAgencyName class="form-control" id="libraryid-input-disabled" name="libraryName" aria-hidden='false' aria-disabled='true')
+        input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
+        input(type="text" disabled value=lockedAgencyName class="form-control" id="libraryid-input-disabled" name="libraryName" aria-hidden='false' aria-disabled='true')
       else
         label(for='libraryid-input')
           strong Bibliotek
         div.input-group
-          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true')
-          input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' )
+          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true' value=preselctedName)
+          input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' value=preselectedId )
           div.input-group-btn
-            button(type='button' class='btn inline-btn-default dropdown-toggle' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
+            button.btn.inline-btn-default.dropdown-toggle(type='button' class=preselctedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
               span(class='glyphicon glyphicon-triangle-bottom')
-            button(type='button' class='btn inline-btn-default hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
+            button.btn.inline-btn-default(type='button' class=preselctedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
               span(class='glyphicon glyphicon-remove')
         if branches
           div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')

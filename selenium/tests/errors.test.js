@@ -38,4 +38,15 @@ describe('Testing errors shown in the UI', () => {
     browser.click('#try-again-btn');
     assert.isFalse(browser.isVisible('#error-overlay'));
   });
+
+  it('Should set the presel url parameter', () => {
+    browser.addValue('#libraryname-input', 'ringe');
+    browser.click('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+
+    browser.addValue('#userid-input', '1234');
+    browser.addValue('#pin-input', '1234');
+    browser.click('#borchk-submit');
+
+    assert.isTrue(browser.getUrl().includes('presel=743001'));
+  });
 });
