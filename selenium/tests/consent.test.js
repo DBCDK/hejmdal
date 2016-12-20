@@ -79,14 +79,16 @@ describe('Test Consent part of authetication flow', () => {
   });
 
   it('should clear session and show a reject page including a return url', () => {
+    let session = browser.getSession();
+    assert.isTrue(session.user.identityProviders.includes('unilogin'));
     browser.click('#consent-action-reject');
 
     const url = browser.getUrl();
     const expectedUrl = `login/consentsubmit/${loginPage.validToken}`;
     assert.isTrue(url.includes(expectedUrl));
 
-    const session = browser.getSession();
-    assert.isNull(session);
+    session = browser.getSession();
+    assert.isFalse(session.user.identityProviders.includes('unilogin'));
 
     const content = browser.getText('#content');
     const expected = serviceClient.name + ' har ikke fået adgang til de ønskede oplysninger';
