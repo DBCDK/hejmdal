@@ -1,3 +1,8 @@
+@svg-load checkmark url(svg/checkmark.svg) {
+  fill: white;
+}
+
+
 .libraries-dropdown {
   max-height: 200px;
   width: 100%;
@@ -16,4 +21,30 @@
 
 .hide {
   display: none;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+input[type="checkbox"] + span {
+  display: inline-block;
+}
+
+input[type="checkbox"]:checked + span:before {
+  background: svg-inline(checkmark) no-repeat center;
+  background-color: var(--btn-green);
+  background-size: 15px 15px;
+  border: none;
+}
+
+input[type="checkbox"] + span:before {
+  content: " ";
+  position: relative;
+  margin-right: 10px;
+  top: 5px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 4px;
 }
