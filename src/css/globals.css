@@ -22,8 +22,7 @@ html, body {
 
 .btn-grey {
   width: 100px;
-  color: white;
-  background-color: var(--btn-grey);
+  background-color: white;
 }
 
 .content {
