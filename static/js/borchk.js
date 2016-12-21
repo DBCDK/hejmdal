@@ -230,11 +230,12 @@ function toggleDropdown(forceOpen = null) {
   librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
 }
 
-function toggleLabelsInDropDown(){
-  if(currentSearchValue.length >= 1){
+function toggleLabelsInDropDown() {
+  if (currentSearchValue.length >= 1) {
     document.getElementById('latest').classList.add('hide');
     document.getElementById('alphabetical').classList.add('hide');
-  } else {
+  }
+  else {
     document.getElementById('latest').classList.remove('hide');
     document.getElementById('alphabetical').classList.remove('hide');
   }
