@@ -18,7 +18,7 @@ describe('Test Smaug tokens', function () {
 
   it('should show login with valid token', () => {
     loginPage.open({token: loginPage.validToken, returnurl: 'some_url'});
-    browser.include('Log ind');
+    browser.include('LOG IND');
   });
 
   it('should set state with valid token', () => {
