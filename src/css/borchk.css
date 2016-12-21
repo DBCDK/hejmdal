@@ -34,6 +34,10 @@
   font-size: 16px;
 }
 
+.login-actions {
+  margin-bottom: 80px;
+}
+
 .icon-btn {
   display: block;
   height: 20px;

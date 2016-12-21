@@ -41,6 +41,7 @@ div#borchk
           button(type='button' class='btn inline-btn-default' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
             span(class='icon-btn icon-eye-open' id='pin-input-glyph')
 
-    div.pull-right
-      a(href=identityProviders.borchk.abortAction class='buffer-right-20 link-style' id="cancel-login") Fortryd log ind
-      button(type='submit' class='btn btn-success' id='borchk-submit') Log ind
+    div.login-actions
+      div.pull-right
+        a(href=identityProviders.borchk.abortAction class='buffer-right-20 link-style' id="cancel-login") Fortryd log ind
+        button(type='submit' class='btn btn-success' id='borchk-submit') Log ind
