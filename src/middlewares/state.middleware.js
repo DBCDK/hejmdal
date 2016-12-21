@@ -10,7 +10,7 @@
  * @param {function} next
  */
 export async function stateMiddleware(ctx, next) {
-  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser});
+  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser, resetIdentityProvider});
   await next();
 }
 
@@ -63,7 +63,7 @@ function getState() {
  */
 function setUser(newValues) {
   const existingIps = this.session.user && this.session.user.identityProviders || [];
-  const identityProviders = newValues.identityProviders && newValues.identityProviders.concat(existingIps) || [];
+  const identityProviders = !existingIps.includes(newValues.userType) && existingIps.concat([newValues.userType]) || existingIps;
   this.session.user = Object.assign({}, this.session.user || {}, newValues, {identityProviders});
   return this.session.user;
 }
@@ -86,4 +86,7 @@ function hasUser() {
   return this.session.user.userId && true || false;
 }
 
-
+function resetIdentityProvider(idp) {
+  const user = this.getUser();
+  user.identityProviders = user.identityProviders.filter(identityProvider => identityProvider !== idp);
+}
