@@ -215,6 +215,7 @@ function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-
  * Toggles the libraries dropdown open/cloesd
  */
 function toggleDropdown(forceOpen = null) {
+  toggleLabelsInDropDown();
   if (forceOpen) {
     librariesDropdownContainer.classList.add('open');
   }
@@ -227,6 +228,16 @@ function toggleDropdown(forceOpen = null) {
 
   var ariaHidden = !librariesDropdownContainer.classList.contains('open');
   librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
+}
+
+function toggleLabelsInDropDown(){
+  if(currentSearchValue.length >= 1){
+    document.getElementById('latest').classList.add('hide');
+    document.getElementById('alphabetical').classList.add('hide');
+  } else {
+    document.getElementById('latest').classList.remove('hide');
+    document.getElementById('alphabetical').classList.remove('hide');
+  }
 }
 
 /**
