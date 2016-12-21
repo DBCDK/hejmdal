@@ -207,8 +207,8 @@ function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-
 
   userInputField.setAttribute('type', newType);
   var glyph = document.getElementById(glyphId);
-  glyph.classList.toggle('glyphicon-eye-close');
-  glyph.classList.toggle('glyphicon-eye-open');
+  glyph.classList.toggle('icon-eye-closed');
+  glyph.classList.toggle('icon-eye-open');
 
   userInputField.focus();
 }
