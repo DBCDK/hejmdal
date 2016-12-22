@@ -2,7 +2,7 @@ extends Main
 
 block append content
   if consentFailed
-    div
+    div.text-center
       span.banner.consent-rejected-img
       span.italic.consent-img-label #{serviceName}
     div
@@ -18,7 +18,7 @@ block append content
       div.buffer-vertical-5
         a.link-style#returnUrl(href=returnUrl) Tilbage til #{serviceName}
   else
-    div
+    div.text-center
       span.banner.consent-img
       span.italic.consent-img-label  #{serviceName}
     div
