@@ -38,6 +38,12 @@
   padding-left: 1em;
 }
 
+.attributeList {
+  .glyphicon-info-sign {
+    padding-top: 0.2em;
+  }
+}
+
 ul.attributeList {
   margin: 0.5em 0 1em 0;
   padding: 0;
@@ -47,7 +53,7 @@ li.attribute {
   list-style-type: none;
   border-top: 2px solid gray;
   font-size: 1.1em;
-  padding: 0.4em 0.7em 0 0.5em;
+  padding: 0.8em 0.7em 0.3em 0.5em;
   margin: 0.5em 0 0 0;
 }
 
