@@ -82,7 +82,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
 
-  it('Should empty the libraries input field when clicked', () => {
+  it('Should empty the libraries input field when clicked and set focus', () => {
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
     browser.addValue('#libraryname-input', 'rin');
 
@@ -90,6 +90,7 @@ describe('Test Borchk component', () => {
 
     browser.click('#clear-libraries-input-btn');
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
+    assert.isTrue(browser.hasFocus('#libraryname-input'));
   });
 
   it('Should switch type on userid input field', () => {

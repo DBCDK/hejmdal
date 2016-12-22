@@ -166,6 +166,7 @@ function clearLibraryInput() { // eslint-disable-line no-unused-vars
   libraryInput.value = '';
   toggleInputButtons();
   toggleDropdown(false);
+  libraryInput.focus();
 }
 
 /**
