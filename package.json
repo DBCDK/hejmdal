@@ -65,7 +65,7 @@
     "cssnano": "^3.7.7",
     "eslint": "^3.8.1",
     "mocha": "^3.1.0",
-    "mocha-jenkins-reporter": "0.3.3",
+    "mocha-jenkins-reporter": "0.3.4",
     "nodemon": "^1.11.0",
     "npm-check-updates": "^2.8.5",
     "postcss-cli": "^2.6.0",
