@@ -15,7 +15,7 @@ describe('Test Borchk component', () => {
     loginPage = new LoginPage();
   });
   it('should login using borchk', () => {
-    browser.url(browser.getUrl() + '&agency=743001');
+    browser.url(browser.getUrl() + '&agency=724000');
     browser.setValue('#userid-input', '87654321');
     browser.setValue('#pin-input', '1234');
     browser.click('#borchk-submit');
