@@ -1,9 +1,14 @@
+
 @svg-load --svg-eye-closed url(svg/eye-closed.svg) {
   fill: black;
 }
 
 @svg-load --svg-eye-open url(svg/eye-open.svg) {
   fill: black;
+}
+
+@svg-load checkmark url(svg/checkmark.svg) {
+  fill: white;
 }
 
 .libraries-dropdown {
@@ -53,4 +58,29 @@
 
 .icon-eye-open {
   background: svg-inline(--svg-eye-open) no-repeat center;
+
+input[type="checkbox"] {
+  display: none;
+}
+input[type="checkbox"] + span {
+  display: inline-block;
+}
+
+input[type="checkbox"]:checked + span:before {
+  background: svg-inline(checkmark) no-repeat center;
+  background-color: var(--btn-green);
+  background-size: 15px 15px;
+  border: none;
+}
+
+input[type="checkbox"] + span:before {
+  content: " ";
+  position: relative;
+  margin-right: 10px;
+  top: 5px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid;
+  border-radius: 4px;
 }

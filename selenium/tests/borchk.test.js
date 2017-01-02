@@ -14,6 +14,15 @@ describe('Test Borchk component', () => {
   beforeEach(() => {
     loginPage = new LoginPage();
   });
+  it('should login using borchk', () => {
+    browser.url(browser.getUrl() + '&agency=724000');
+    browser.setValue('#userid-input', '87654321');
+    browser.setValue('#pin-input', '1234');
+    browser.click('#borchk-submit');
+    assert.isNotNull(loginPage.getTicket().id);
+    browser.deleteCookie();
+  });
+
 
   it('should display the borchk login form and elements', () => {
     assert.isTrue(browser.isVisible('#borchk'));
@@ -23,6 +32,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#userid-input'));
     assert.isTrue(browser.isVisible('#pin-input'));
     assert.isTrue(browser.isVisible('#borchk-submit'));
+
   });
 
   it('should display dropdown when inputfield has two or more characters', () => {
