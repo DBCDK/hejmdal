@@ -11,7 +11,6 @@ import cors from 'koa-cors'; // @see https://github.com/evert0n/koa-cors
 import convert from 'koa-convert';
 import Pug from 'koa-pug';
 import responseTime from 'koa-response-time';
-import session from 'koa-session2';
 import Knex from 'knex';
 import {Model} from 'objection';
 import Session from './models/db_models/session.model';
@@ -19,7 +18,7 @@ import Session from './models/db_models/session.model';
 // Middleware
 import {LoggerMiddleware} from './middlewares/logger.middleware';
 import {SetVersionHeader} from './middlewares/headers.middleware';
-import {SessionMiddleware} from './middlewares/session.middleware';
+import session from './middlewares/session.middleware';
 import {stateMiddleware} from './middlewares/state.middleware';
 import ctxdump from './middlewares/ctxdump.middleware';
 
@@ -69,7 +68,7 @@ export function startServer() {
   app.use(session({
     store: new SessionStore(CONFIG.mock_storage),
     key: 'sid',
-    maxAge: CONFIG.session.life_time,
+    maxAge: null,
     secure: CONFIG.app.env === 'production',
     path: '/',
     httpOnly: true
@@ -79,7 +78,6 @@ export function startServer() {
     maxage: CONFIG.app.env !== 'production' ? 0 : 2628000000 // one month
   })));
 
-  app.use(SessionMiddleware);
   app.use(stateMiddleware);
   app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
   app.use(LoggerMiddleware);

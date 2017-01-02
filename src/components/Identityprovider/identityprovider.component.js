@@ -113,6 +113,7 @@ export async function borchkCallback(ctx) {
   }
 
   if (!validated.error) {
+    ctx.session.rememberMe = response.rememberMe;
     ctx.setUser({
       userId: response.userId,
       cpr: isValidCpr(response.userId) ? response.userId : null,

@@ -45,6 +45,10 @@ div#borchk
           button(type='button' class='btn inline-btn-default' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyp");')
             span(class='glyphicon glyphicon-eye-open' id='pin-input-glyp')
 
+    div.pull-left
+      label.remember(for='rememberMe')
+        input(type='checkbox' name='rememberMe' id='rememberMe')
+        span Husk Mig
     div.pull-right
       a(href=identityProviders.borchk.abortAction class='buffer-right-20 link-style' id="cancel-login")
         strong Fortryd log ind

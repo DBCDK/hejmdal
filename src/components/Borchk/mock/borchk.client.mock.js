@@ -9,6 +9,6 @@ const mockDataNotFound = '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},
 export default function getMockClient(library) {
   return {
     statusCode: 200,
-    body: (library === '710100') ? mockDataOk : mockDataNotFound
+    body: (library === '710100' || library === '743001') ? mockDataOk : mockDataNotFound
   };
 }
