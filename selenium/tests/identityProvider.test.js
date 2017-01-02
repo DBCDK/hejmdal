@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import LoginPage from '../pageObjects/loginPage';
+import {assert} from 'chai';
 
 describe('Test Identity Provider', () => {
   const page = new LoginPage();
@@ -12,6 +13,12 @@ describe('Test Identity Provider', () => {
   it('should login user with UNIlogin', () => {
     page.login('unilogin');
     browser.assertUniLoginUser();
+  });
+
+  it('should use returnUrl in query on login', () => {
+    page.login('unilogin', 'asdfg', {returnurl: 'testreturnurl'});
+    page.acceptConsent();
+    assert.isTrue(browser.getUrl().includes('testreturnurl'));
   });
 
   it('should test Login with two different service clients in same session', () => {

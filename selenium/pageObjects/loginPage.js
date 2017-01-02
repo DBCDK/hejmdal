@@ -14,8 +14,8 @@ export default class LoginPage extends Page {
     super.open(`login?${querystring.stringify(qs)}`);
   }
 
-  login(provider, token = this.validToken) {
-    this.open({token});
+  login(provider, token = this.validToken, qs = {}) {
+    this.open(Object.assign(qs, {token}));
     if (provider === 'borchk') {
       // TODO Input actions here to test borchk
     }
