@@ -12,6 +12,7 @@ import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.componen
 import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import {ERRORS} from '../../utils/errors.util';
+import _ from 'lodash';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -21,11 +22,24 @@ import {ERRORS} from '../../utils/errors.util';
  * @returns {*}
  */
 export async function authenticate(ctx, next) {
+  const state = ctx.getState();
+  const loginURL = `/${VERSION_PREFIX}/login?token=${state.smaugToken}`;
 
   try {
     if (!userIsLoggedIn(ctx)) {
-      const state = ctx.getState();
       const identityProviders = getIdentityProviders(state);
+
+      if (_.uniq(_.values(identityProviders)).length === 1 && _.head(_.uniq(_.values(identityProviders))) === null) {
+        const serviceClient = state.serviceClient;
+        log.error('The service has no valid identityproviders configured', {
+          serviceClient: {
+            id: serviceClient.id,
+            name: serviceClient.name,
+            identityProviders: serviceClient.identityProviders
+          }
+        });
+        throw new Error('The service has no valid identityproviders configured');
+      }
 
       if (state.serviceClient.identityProviders.length === 1 && state.serviceClient.identityProviders[0] !== 'borchk') {
         ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
@@ -49,7 +63,9 @@ export async function authenticate(ctx, next) {
 
       ctx.render('Login', {
         error: error,
+
         serviceClient: state.serviceClient.name,
+        loginURL,
         identityProviders,
         VERSION_PREFIX,
         branches: branches,
@@ -65,8 +81,9 @@ export async function authenticate(ctx, next) {
     }
   }
   catch (e) {
+    const error = 'unkip';
+    ctx.render('Error', {error, loginURL});
     log.error('Error in autheticate method', {error: e.message, stack: e.stack});
-    ctx.status = 404;
   }
 
   await next();

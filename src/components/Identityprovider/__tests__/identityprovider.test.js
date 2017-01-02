@@ -8,15 +8,20 @@ import {md5} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
 
 describe('test authenticate method', () => {
-  const next = () => {
-  };
+  const next = () => {};
   let ctx;
+  let sandbox;
 
   beforeEach(() => {
     ctx = mockContext();
+    sandbox = sinon.sandbox.create();
   });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   it('Should return content page', async() => {
-    const sandbox = sinon.sandbox.create();
     ctx.setState({
       serviceClient: {
         identityProviders: ['borchk', 'unilogin'],
@@ -31,10 +36,15 @@ describe('test authenticate method', () => {
     sandbox.restore();
   });
 
-  it('Should return error', async() => {
+  it('Should render error page', async() => {
+    const spy = sandbox.spy(ctx, 'render');
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
+    assert.isFalse(spy.called);
+
     await authenticate(ctx, next);
-    assert.equal(ctx.status, 404);
+
+    assert.isTrue(spy.called);
+    assert.equal(JSON.stringify(spy.args), '[["Error",{"error":"unkip","loginURL":"//v0/login?token=qwerty"}]]');
   });
 });
 

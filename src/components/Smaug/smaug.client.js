@@ -22,8 +22,10 @@ export async function getClient(token) {
       qs: {token: token}
     });
   }
+
   if (response.statusCode === 200) {
-    return JSON.parse(response.body);
+    const obj = JSON.parse(response.body);
+    return obj;
   }
 
   throw new TokenError(response.statusMessage);

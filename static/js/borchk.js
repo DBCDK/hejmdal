@@ -32,12 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   libraryInput.addEventListener('keydown', handleKeyDown);
 
-  if (document.getElementById('error-overlay')) {
-    document.getElementById('error-overlay-close-btn').addEventListener('click', closeErrorOverlay);
-
-    document.getElementById('try-again-btn').addEventListener('click', closeErrorOverlay);
-  }
-
   body.addEventListener('mousedown', function(e) {
     if (e.target.className.includes('glyphicon')) {
       return;
@@ -412,19 +406,4 @@ function removeExistingRecentlySelectedLibraries() {
   lis.forEach(function(_li) {
     _li.parentNode.removeChild(_li);
   });
-}
-
-/**
- * Closes the eroroverlay
- * @param {Event} e
- */
-function closeErrorOverlay(e) {
-  if (e) {
-    e.preventDefault();
-  }
-  document.getElementById('topbar-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('content-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('footer-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('error-overlay').setAttribute('aria-hidden', 'true');
-  document.getElementById('error-overlay').classList.add('hide');
 }

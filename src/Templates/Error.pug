@@ -1,0 +1,7 @@
+include Head
+body
+  div.container
+    div(class = error ? 'error-overlay' : 'error-overlay hide' id='error-overlay' aria-hidden = !error ? 'true' : 'false')
+      div.container.error-bg
+        div.row.error-bg
+        include Components/Error

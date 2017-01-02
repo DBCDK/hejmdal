@@ -1,41 +1,18 @@
-doctype html
-html(lang='da')
-  head
-    meta(charset='utf-8')
-    meta(name='viewport' content='width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0')
-    meta(name='env' content=env)
-    meta(http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1')
-    meta(name='theme-color' content='#000000')
-    meta(name='description' content='Adgangsplatformen..')
+include Head
+body
+  div.container
+    div(class='row' id='topbar-container' aria-hidden = error ? 'true' : 'false')
+      include Components/Topbar
 
-    title!= title
+    div.row
+      div(class='col-xs-12 col-sm-10 col-sm-offset-1 content' id='content-container' aria-hidden = error ? 'true' : 'false')
+        block content
 
-    <!-- Bootstrap -->
-    link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    div(class='row' id='footer-container'  aria-hidden = error ? 'true' : 'false')
+      include Components/Footer
 
-    <!-- Styles -->
-    block styles
-      link(rel='stylesheet', href='/css/styles.css?' + version)
-
-    block scripts
-      script(src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous")
-      script(src="/js/bootstrap.min.js?" + version)
-      script(src="/js/borchk.js?" + version)
-
-  body
-    div.container
-      div(class='row' id='topbar-container' aria-hidden = error ? 'true' : 'false')
-        include Components/Topbar
-
-      div.row
-        div(class='col-xs-12 col-sm-10 col-sm-offset-1 content' id='content-container' aria-hidden = error ? 'true' : 'false')
-          block content
-
-      div(class='row' id='footer-container'  aria-hidden = error ? 'true' : 'false')
-        include Components/Footer
-
-      if error
-        div(class = error ? 'error-overlay' : 'error-overlay hide' id='error-overlay' aria-hidden = !error ? 'true' : 'false')
-          div.container.error-bg
-            div.row.error-bg
-              include Components/Error
+    if error
+      div(class = error ? 'error-overlay' : 'error-overlay hide' id='error-overlay' aria-hidden = !error ? 'true' : 'false')
+        div.container.error-bg
+          div.row.error-bg
+            include Components/Error
