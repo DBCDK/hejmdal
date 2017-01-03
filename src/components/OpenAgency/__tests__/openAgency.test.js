@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import {libraryListFromName, libraryListFromPosition} from '../openAgency.client';
