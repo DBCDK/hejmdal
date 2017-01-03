@@ -158,8 +158,10 @@ function toggleInputButtons() {
  */
 function clearLibraryInput() { // eslint-disable-line no-unused-vars
   libraryInput.value = '';
+  currentSearchValue = libraryInput.value;
   toggleInputButtons();
   toggleDropdown(false);
+  toggleVisibleLibraries();
   libraryInput.focus();
 }
 
