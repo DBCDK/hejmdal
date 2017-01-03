@@ -7,6 +7,7 @@ import Session from '../models/db_models/session.model';
 import * as Borchk from '../components/Borchk/borchk.client';
 import * as Culr from '../components/Culr/culr.client';
 import * as Smaug from '../components/Smaug/smaug.client';
+import * as OpenAgency from '../components/OpenAgency/openAgency.client';
 
 import {log} from './logging.util';
 
@@ -15,6 +16,7 @@ export default async function sanityCheck() {
   checkBorchk();
   checkCulr();
   checkSmaug();
+  checkOpenAgency();
 }
 
 /**
@@ -63,12 +65,24 @@ export async function checkSmaug() {
   try {
     const client = await Smaug.health();
     if (client.statusCode !== 200) {
-      throw Error('Smaug is not r$esponding');
+      throw Error('Smaug is not responding');
     }
 
   }
   catch (e) {
     log.error('Request to Smaug failed', {error: e.message, stack: e.stack});
+  }
+}
+
+/**
+ * Check if OpenAgency webservice is responding
+ */
+export async function checkOpenAgency() {
+  try {
+    await OpenAgency.libraryListFromName('test');
+  }
+  catch (e) {
+    log.error('Request to OpenAgency failed', {error: e.message, stack: e.stack});
   }
 }
 
