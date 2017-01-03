@@ -94,7 +94,7 @@ export function startServer() {
   // trust ip-addresses from X-Forwarded-By header, and log requests
   app.proxy = true;
 
-  cacheAgencies(CONFIG.app.env === 'test' ? 'ringe' : 'horsen?');
+  cacheAgencies(CONFIG.app.env === 'test' ? 'ringe' : '');
 
   app.use(router);
 
