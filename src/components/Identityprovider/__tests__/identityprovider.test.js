@@ -44,7 +44,8 @@ describe('test authenticate method', () => {
     await authenticate(ctx, next);
 
     assert.isTrue(spy.called);
-    assert.equal(JSON.stringify(spy.args), '[["Error",{"error":"unkip","loginURL":"//v0/login?token=qwerty"}]]');
+    assert.isString(spy.args[0][1].error);
+    assert.isObject(spy.args[0][1].link);
   });
 });
 

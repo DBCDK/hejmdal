@@ -13,7 +13,7 @@ describe('Test Smaug tokens', function () {
 
   it('should set state with invalid token', () => {
     loginPage.open({token: 'invalid_token', returnurl: 'some_url'});
-    browser.include('Forbidden');
+    browser.include('ikke adgang');
   });
 
   it('should show login with valid token', () => {
