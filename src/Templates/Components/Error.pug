@@ -1,7 +1,6 @@
 div.col-xs-2.col-xs-offset-10
-  if error != 'unkip'
-    a(class="link-style" href=loginURL id='error-overlay-close-btn')
-      span(class='glyphicon glyphicon-remove close-btn')
+  a(class="link-style" href=loginURL id='error-overlay-close-btn')
+    span(class='glyphicon glyphicon-remove close-btn')
 
 // Headline
 div.col-xs-12.col-sm-8.col-sm-offset-2
@@ -37,16 +36,15 @@ div.col-xs-12.col-sm-8.col-sm-offset-2.error-message
       script.
         console.error('Der kan ikke findes en valid identityprovider i konfigurationen i auth.dbc.dk/Smaug. Kontrollér at oplysningerne er rigtige og tag evt. kontakt til DDB/DBC.');
 
-if error != 'unkip'
-  // Actions
-  div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
-    div
-      a(href='#' class='buffer-right-20 link-style')
-        strong Fortryd log ind
-      button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
+// Actions
+div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
+  div
+    a(href='#' class='buffer-right-20 link-style')
+      strong Fortryd log ind
+    button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
 
-  div.col-xs-12.buffer-top-30
-    // Helptext
-    include Helptext.container.pug
+div.col-xs-12.buffer-top-30
+  // Helptext
+  include Helptext.container.pug
 
 
