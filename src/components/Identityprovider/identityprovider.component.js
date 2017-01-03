@@ -81,8 +81,12 @@ export async function authenticate(ctx, next) {
     }
   }
   catch (e) {
-    const error = 'unkip';
-    ctx.render('Error', {error, loginURL});
+    const error = 'Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.';
+    const link = {
+      href: loginURL,
+      value: 'Prøv igen'
+    };
+    ctx.render('Error', {error, link});
     log.error('Error in autheticate method', {error: e.message, stack: e.stack});
   }
 

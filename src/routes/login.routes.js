@@ -24,7 +24,9 @@ const ticketRoute = async(ctx, next) => {
 };
 
 router.get('/', setDefaultState, getAttributes, authenticate, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute);
+
 router.get('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
+
 router.post('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
 router.get('/consent', Consent.giveConsentUI);
 router.get('/consentsubmit/:token', Consent.consentSubmit);
