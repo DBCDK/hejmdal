@@ -13,8 +13,7 @@ export const mockData = {
   },
   urls: {
     host: `http://localhost:${CONFIG.app.port}`,
-    success: '/example/',
-    error: '/thumbsdown'
+    returnUrl: '/example/'
   }
 };
 
