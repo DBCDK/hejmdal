@@ -58,6 +58,7 @@
 
 .icon-eye-open {
   background: svg-inline(--svg-eye-open) no-repeat center;
+}
 
 input[type="checkbox"] {
   display: none;
