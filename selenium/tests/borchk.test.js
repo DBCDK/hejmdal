@@ -92,7 +92,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
 
-  it('Should empty the libraries input field when clicked', () => {
+  it('Should empty the libraries input field when clicked and set focus', () => {
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
     browser.addValue('#libraryname-input', 'rin');
 
@@ -100,6 +100,7 @@ describe('Test Borchk component', () => {
 
     browser.click('#clear-libraries-input-btn');
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
+    assert.isTrue(browser.hasFocus('#libraryname-input'));
   });
 
   it('Should switch type on userid input field', () => {
@@ -161,5 +162,26 @@ describe('Test Borchk component', () => {
     assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
+  });
+
+  it('Should set the hasfocus class on buttons when the input field has focus', () => {
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#libraryname-input');
+    assert.isTrue(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#userid-input');
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isTrue(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
+
+    browser.click('#pin-input');
+    assert.isFalse(browser.getAttribute('#libraries-dropdown-toggle-btn', 'class').includes('hasfocus'));
+    assert.isFalse(browser.getAttribute('#toggle-userid-input', 'class').includes('hasfocus'));
+    assert.isTrue(browser.getAttribute('#toggle-pin-input', 'class').includes('hasfocus'));
   });
 });

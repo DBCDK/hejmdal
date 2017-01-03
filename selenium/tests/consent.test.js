@@ -73,7 +73,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a reject button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = `<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/${loginPage.validToken}"><strong>Godkend ikke</strong></a>`;
+    const expected = `<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/${loginPage.validToken}">Godkend ikke</a>`;
 
     assert.isTrue(formHtml.includes(expected));
   });

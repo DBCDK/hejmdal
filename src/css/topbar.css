@@ -1,10 +1,14 @@
-@svg-load logo url(svg/bibliotekslogin_logo.svg) {
+@svg-load --logo url(svg/bibliotekslogin_logo.svg) {
+  fill: white;
+}
+
+@svg-load --svg-help-icon url(svg/help.svg) {
   fill: white;
 }
 
 .logo-img {
   display: block;
-  background: svg-inline(logo) no-repeat center;
+  background: svg-inline(--logo) no-repeat center;
   width: 200px;
   height: 50px;
   margin-top: 5px;
@@ -16,11 +20,19 @@
   background-color: var(--dark-grey);
 }
 
-.glyphicon-question-sign {
-  color: white;
-  margin-top: 10px;
-  position: relative;
-  font-size: 30px;
+.icon-btn {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.icon-question-sign {
+  margin-top: 11px;
+  display: block;
+  height: 30px;
+  width: 30px;
+  background: svg-inline(--svg-help-icon) no-repeat center;
+  fill: white;
 }
 
 .modal-header {

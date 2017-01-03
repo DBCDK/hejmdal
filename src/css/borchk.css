@@ -1,18 +1,29 @@
+
+@svg-load --svg-eye-closed url(svg/eye-closed.svg) {
+  fill: black;
+}
+
+@svg-load --svg-eye-open url(svg/eye-open.svg) {
+  fill: black;
+}
+
 @svg-load checkmark url(svg/checkmark.svg) {
   fill: white;
 }
 
-
 .libraries-dropdown {
   max-height: 200px;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
 
-.agency:hover {
-  cursor: pointer;
+.agency {
+  font-size: 16px;
+  :hover {
+    cursor: pointer;
+  }
 }
 
 .selected {
@@ -22,6 +33,31 @@
 .hide {
   display: none;
 }
+
+#borchk-submit {
+  text-transform: uppercase;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-right: 25px;
+  font-size: 16px;
+}
+
+.login-actions {
+  margin-bottom: 80px;
+}
+
+.icon-btn {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.icon-eye-closed {
+  background: svg-inline(--svg-eye-closed) no-repeat center;
+}
+
+.icon-eye-open {
+  background: svg-inline(--svg-eye-open) no-repeat center;
 
 input[type="checkbox"] {
   display: none;

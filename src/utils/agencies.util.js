@@ -81,7 +81,8 @@ async function setUiList() {
 
   if (!uiBranchList || !uiBranchList.length) {
     uiBranchList = agencyList.map((branch) => {
-      return {branchId: branch.branchId, name: `${branch.branchShortName} - ${branch.agencyName}`, hidden: `${branch.branchId}`};
+      const name = branch.branchShortName ? `${branch.branchShortName} - ${branch.agencyName}` : branch.agencyName;
+      return {branchId: branch.branchId, name: name, hidden: `${branch.branchId}`};
     });
   }
 }

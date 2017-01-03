@@ -5,12 +5,7 @@ h1 {
 
 label {
   font-weight: normal;
-}
-
-@media (min-width: 800px) {
-  .container {
-    max-width: 800px;
-  }
+  margin-bottom: 0;
 }
 
 .row {
@@ -19,16 +14,26 @@ label {
 
 .container {
   background-color: var(--background-color);
-  height: 100%;
+  max-width: 800px;
+  padding-bottom: 40px;
+
+  @media (min-width: 769px) {
+    margin-top: 20px;
+  }
 }
 
 .error-bg {
   background-color: var(--error-red);
+  height: 100%;
 }
 
 .btn-success {
   background-color: var(--btn-green);
   border-color: var(--btn-green);
+}
+
+.form-group {
+  margin-bottom: 20px;
 }
 
 .form-control {
@@ -62,7 +67,8 @@ input[type="url"]:focus,
 input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
-.uneditable-input:focus {
+.uneditable-input:focus,
+.inline-btn-default:focus {
   /*border-color: rgba(19, 33, 255, 0.8);*/
   box-shadow: none;
 }
@@ -75,4 +81,9 @@ input[type="color"]:focus,
   border-radius: 0;
   background-color: transparent;
   border-bottom: solid var(--dark-grey) 2px;
+
+  &.hasfocus {
+    border-color: #66afe9;
+    outline: 0;
+  }
 }

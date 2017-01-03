@@ -1,0 +1,25 @@
+doctype html
+html(lang='da')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width, maximum-scale=1.0, minimum-scale=1.0, initial-scale=1.0')
+    meta(name='env' content=env)
+    meta(http-equiv='X-UA-Compatible' content='IE=Edge,chrome=1')
+    meta(name='theme-color' content='#000000')
+    meta(name='description' content='Adgangsplatformen..')
+
+    title!= title
+
+    <!-- Bootstrap -->
+    link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+
+    <!-- Styles -->
+    block styles
+      link(rel='stylesheet', href='/css/styles.css?' + version)
+
+    block scripts
+      script(src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous")
+      script(src="/js/bootstrap.min.js?" + version)
+      script(src="/js/error.js?" + version)
+      if identityProviders && identityProviders.borchk
+        script(src="/js/borchk.js?" + version)

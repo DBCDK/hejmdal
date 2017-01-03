@@ -88,9 +88,9 @@ describe('Test Borchk component - non Firefox', () => {
     browser.setValue('#libraryname-input', '');
     browser.addValue('#libraryname-input', 'rin');
 
-    // Ensure the two labels in the dropdown are now visible
-    assert.isTrue(browser.isVisible('#latest'));
-    assert.isTrue(browser.isVisible('#alphabetical'));
+    // Ensure the two labels in the dropdown are not visible
+    assert.isFalse(browser.isVisible('#latest'));
+    assert.isFalse(browser.isVisible('#alphabetical'));
 
     // ArrowDown ArrowDown ArrowDown Enter
     browser.keys(['\uE015', '\uE015', '\uE015', '\uE007']);

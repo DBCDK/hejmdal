@@ -1,6 +1,7 @@
 div.col-xs-2.col-xs-offset-10
-  a(class="link-style" href=VERSION_PREFIX + '/login?token=valid_token' id='error-overlay-close-btn')
-    span(class='glyphicon glyphicon-remove close-btn')
+  if error != 'unkip'
+    a(class="link-style" href=loginURL id='error-overlay-close-btn')
+      span(class='glyphicon glyphicon-remove close-btn')
 
 // Headline
 div.col-xs-12.col-sm-8.col-sm-offset-2
@@ -31,16 +32,21 @@ div.col-xs-12.col-sm-8.col-sm-offset-2.error-message
       p Tjek at du har udfyldt felterne korrekt og prøv igen.
     when 'erreq'
       p Det ser ud til, at de indtastede oplysninger ikke er korrekte.
+    when 'unkip'
+      p Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.
+      script.
+        console.error('Der kan ikke findes en valid identityprovider i konfigurationen i auth.dbc.dk/Smaug. Kontrollér at oplysningerne er rigtige og tag evt. kontakt til DDB/DBC.');
 
-// Actions
-div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
-  div
-    a(href='#' class='buffer-right-20 link-style')
-      strong Fortryd log ind
-    button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
+if error != 'unkip'
+  // Actions
+  div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
+    div
+      a(href='#' class='buffer-right-20 link-style')
+        strong Fortryd log ind
+      button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
 
-div.col-xs-12.buffer-top-30
-  // Helptext
-  include Helptext.container.pug
+  div.col-xs-12.buffer-top-30
+    // Helptext
+    include Helptext.container.pug
 
 

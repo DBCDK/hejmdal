@@ -18,15 +18,31 @@ html, body {
 
 #external-providers {
   margin-bottom: 50px;
+  .btn {
+    margin-right: 10px;
+  }
 }
 
 .btn-grey {
   width: 100px;
-  color: white;
-  background-color: var(--btn-grey);
+  background-color: white;
 }
 
 .content {
   margin-top: 20px;
   z-index: 1;
+}
+
+.hasfocus {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  border-bottom: solid var(--dark-grey) 2px;
+}
+
+input[type="password"] {
+  &.form-control {
+    font-size: 27px;
+    letter-spacing: 1px;
+  }
 }

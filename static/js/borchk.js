@@ -32,12 +32,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   libraryInput.addEventListener('keydown', handleKeyDown);
 
-  if (document.getElementById('error-overlay')) {
-    document.getElementById('error-overlay-close-btn').addEventListener('click', closeErrorOverlay);
-
-    document.getElementById('try-again-btn').addEventListener('click', closeErrorOverlay);
-  }
-
   body.addEventListener('mousedown', function(e) {
     if (e.target.className.includes('glyphicon')) {
       return;
@@ -49,10 +43,40 @@ document.addEventListener('DOMContentLoaded', function() {
     e.stopPropagation();
   });
 
+  libraryInput.addEventListener('focus', toggleFocusOnLibraryNameInput);
+  libraryInput.addEventListener('blur', toggleFocusOnLibraryNameInput);
+  document.getElementById('userid-input').addEventListener('focus', toggleFocusOnUserIdInput);
+  document.getElementById('userid-input').addEventListener('blur', toggleFocusOnUserIdInput);
+
+  document.getElementById('pin-input').addEventListener('focus', toggleFocusOnUserPinInput);
+  document.getElementById('pin-input').addEventListener('blur', toggleFocusOnUserPinInput);
+
   if (Storage !== undefined) { // eslint-disable-line no-undefined
     setRecentlySelectedLibraries();
   }
 });
+
+/**
+ * Toggles focus class on button's associated with libraryName input field
+ */
+function toggleFocusOnLibraryNameInput() {
+  document.getElementById('libraries-dropdown-toggle-btn').classList.toggle('hasfocus');
+  document.getElementById('clear-libraries-input-btn').classList.toggle('hasfocus');
+}
+
+/**
+ * Toggles focus class on button's associated with userid-input field
+ */
+function toggleFocusOnUserIdInput() {
+  document.getElementById('toggle-userid-input').classList.toggle('hasfocus');
+}
+
+/**
+ * Toggles focus class on button's associated with pin-input field
+ */
+function toggleFocusOnUserPinInput() {
+  document.getElementById('toggle-pin-input').classList.toggle('hasfocus');
+}
 
 /**
  *
@@ -136,6 +160,7 @@ function clearLibraryInput() { // eslint-disable-line no-unused-vars
   libraryInput.value = '';
   toggleInputButtons();
   toggleDropdown(false);
+  libraryInput.focus();
 }
 
 /**
@@ -175,8 +200,8 @@ function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-
 
   userInputField.setAttribute('type', newType);
   var glyph = document.getElementById(glyphId);
-  glyph.classList.toggle('glyphicon-eye-close');
-  glyph.classList.toggle('glyphicon-eye-open');
+  glyph.classList.toggle('icon-eye-closed');
+  glyph.classList.toggle('icon-eye-open');
 
   userInputField.focus();
 }
@@ -185,6 +210,7 @@ function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-
  * Toggles the libraries dropdown open/cloesd
  */
 function toggleDropdown(forceOpen = null) {
+  toggleLabelsInDropDown();
   if (forceOpen) {
     librariesDropdownContainer.classList.add('open');
   }
@@ -197,6 +223,17 @@ function toggleDropdown(forceOpen = null) {
 
   var ariaHidden = !librariesDropdownContainer.classList.contains('open');
   librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
+}
+
+function toggleLabelsInDropDown() {
+  if (currentSearchValue.length >= 1) {
+    document.getElementById('latest').classList.add('hide');
+    document.getElementById('alphabetical').classList.add('hide');
+  }
+  else {
+    document.getElementById('latest').classList.remove('hide');
+    document.getElementById('alphabetical').classList.remove('hide');
+  }
 }
 
 /**
@@ -369,19 +406,4 @@ function removeExistingRecentlySelectedLibraries() {
   lis.forEach(function(_li) {
     _li.parentNode.removeChild(_li);
   });
-}
-
-/**
- * Closes the eroroverlay
- * @param {Event} e
- */
-function closeErrorOverlay(e) {
-  if (e) {
-    e.preventDefault();
-  }
-  document.getElementById('topbar-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('content-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('footer-container').setAttribute('aria-hidden', 'false');
-  document.getElementById('error-overlay').setAttribute('aria-hidden', 'true');
-  document.getElementById('error-overlay').classList.add('hide');
 }

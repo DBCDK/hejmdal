@@ -13,5 +13,6 @@ export const ERRORS = {
   municipality_check_not_supported_by_library: 'bcnsl',
   no_user_in_request: 'nouse',
   error_in_request: 'erreq',
-  missing_fields: 'erreq'
+  missing_fields: 'erreq',
+  unknown_identityprovider: 'unkip'
 };
