@@ -4,12 +4,15 @@
  */
 
 import Session from '../models/db_models/session.model';
-import * as Borchk from './components/Borchk/borchk.client';
+import * as Borchk from '../components/Borchk/borchk.client';
+import * as Culr from '../components/Culr/culr.client';
+
 import {log} from './logging.util';
 
-export default function sanityCheck() {
+export default async function sanityCheck() {
   checkDatabase();
   checkBorchk();
+  checkCulr();
 }
 
 /**
@@ -33,6 +36,21 @@ export function checkBorchk() {
   }).catch(e => {
     log.error('Borchk is failing', {error: e.message, stack: e.stack});
   });
+}
 
+/**
+ * Check if CULR webservice is responding
+ */
+export async function checkCulr() {
+  try {
+    const response = await Culr.getAccounts({userIdValue: 'test'});
+    if (!response.result) {
+      throw Error('No valid response from borchk', response);
+    }
+
+  }
+  catch (e) {
+    log.error('Request to CULR failed', {error: e.message, stack: e.stack});
+  }
 }
 
