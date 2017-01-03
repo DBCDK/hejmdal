@@ -1,17 +1,18 @@
 /**
  * @file
- * Description...
+ * Redirect user to service client on success.
  */
 
+import buildReturnUrl from '../utils/buildReturnUrl.util';
+
 export async function redirectToClient(ctx, next) {
-  const ticketToken = ctx.getState().ticket.token;
-  const ticketId = ctx.getState().ticket.id;
-
-  if (ticketToken && ticketId) {
-    const host = ctx.getState().serviceClient.urls.host;
-    const path = ctx.getState().serviceClient.urls.success;
-
-    ctx.redirect(`${host}${path}?token=${ticketToken}&id=${ticketId}`);
+  const state = ctx.getState();
+  const {token, id} = state.ticket;
+  if (token && id) {
+    ctx.redirect(buildReturnUrl(state, {token, id}));
   }
-  await next();
+  else {
+    await next();
+  }
 }
+

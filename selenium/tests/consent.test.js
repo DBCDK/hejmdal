@@ -100,7 +100,7 @@ describe('Test Consent part of authetication flow', () => {
 
     const returnUrl = browser.elements('#returnUrl');
     const formHtml = returnUrl.getHTML();
-    const expectedReturnUrl = 'message=consent%20was%20rejected';
+    const expectedReturnUrl = 'error=consent%20was%20rejected';
     assert.isTrue(formHtml.includes(expectedReturnUrl));
   });
 

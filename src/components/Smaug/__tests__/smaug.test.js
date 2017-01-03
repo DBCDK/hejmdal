@@ -66,8 +66,7 @@ describe('Test Smaug component', () => {
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,
-        success: '/example/',
-        error: '/thumbsdown'
+        returnUrl: '/example/'
       }
     });
   });
@@ -84,8 +83,7 @@ describe('Test Smaug component', () => {
       attributes: [],
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,
-        success: '/example/',
-        error: '/thumbsdown'
+        returnUrl: '/example/'
       }
     });
   });

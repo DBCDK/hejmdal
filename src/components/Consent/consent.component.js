@@ -11,6 +11,7 @@ import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
 import {log} from '../../utils/logging.util';
 import {getText} from '../../utils/text.util';
+import buildReturnUrl from '../../utils/buildReturnUrl.util';
 
 const consentStore = CONFIG.mock_storage ?
   new KeyValueStorage(new MemoryStorage()) :
@@ -53,9 +54,10 @@ export async function consentSubmit(ctx, next) {
   const response = await getConsentResponse(ctx);
 
   if (!response || !response.userconsent || (response.userconsent && response.userconsent === '0')) {
-    const serviceClient = ctx.getState().serviceClient;
-    const returnUrl = serviceClient.urls.host + serviceClient.urls.error + '?message=consent%20was%20rejected`';
-    const helpText = getText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClient.name});
+    const state = ctx.getState();
+    const returnUrl = buildReturnUrl(state, {error: 'consent was rejected'});
+    const serviceClientName = state.serviceClient.name;
+    const helpText = getText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClientName});
 
     // Remove current identityProvider from list of used providers
     ctx.resetIdentityProvider(ctx.getUser().userType);
@@ -63,7 +65,7 @@ export async function consentSubmit(ctx, next) {
     ctx.render('Consent', {
       consentFailed: true,
       returnUrl: returnUrl,
-      serviceName: serviceClient.name,
+      serviceName: serviceClientName,
       help: helpText
     });
   }
