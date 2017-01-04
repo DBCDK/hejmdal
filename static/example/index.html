@@ -70,11 +70,21 @@
         <input id="input-login-token" type="text" value="asdfg" size="50" oninput="onChange({key: 'token', val: this.value})"/>
       </div>
 
+      <div class="input-pair">
+        <label for="input-preselected-library">Forudvalgt bibliotek der kan ændres af brugeren</label><br/>
+        <input id="input-preselected-library" type="text" value="" size="50" oninput="onChange({key: 'presel', val: this.value})"/>
+      </div>
+
+      <div class="input-pair">
+        <label for="input-locked-library">Forudvalgt bibliotek der ikke kan ændres af brugeren</label><br/>
+        <input id="input-locked-library" type="text" value="" size="50" oninput="onChange({key: 'agency', val: this.value})"/>
+      </div>
 
       <div class="input-pair">
         <button id="login-button" onclick="onClick()">Login</button>
         <button id="reset-to-default" onclick="resetToDefault()">Reset (og log ud)</button>
       </div>
+
       <div class="info">
         <span id="currenturl">&nbsp;</span>
       </div>
