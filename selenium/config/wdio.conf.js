@@ -110,9 +110,9 @@ let config = {
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
   // services: ['selenium-standalone'],
-  services: ['sauce'],
-  user: process.env.SAUCE_USERNAME,
-  key: process.env.SAUCE_ACCESS_KEY,
+  // services: ['sauce'],
+  // user: process.env.SAUCE_USERNAME,
+  // key: process.env.SAUCE_ACCESS_KEY,
 
   //
   // Framework you want to run your specs with.
