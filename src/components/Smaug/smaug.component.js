@@ -33,6 +33,7 @@ function extractClientInfo(client) {
   if (!client.app.clientId) {
     throw new Error('Invalid Client', client);
   }
+
   const serviceClient = {
     id: client.app.clientId,
     name: client.displayName,
