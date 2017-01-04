@@ -51,13 +51,13 @@ describe('Testing errors shown in the UI', () => {
   });
 
   it('should open a generic error page', () => {
-    browser.addValue('#libraryname-input', 'ringe');
-    browser.click('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+    browser.addValue('#libraryname-input', 'slagelse');
+    browser.click('=Slagelse Bibliotekerne');
 
     browser.addValue('#userid-input', '1234');
     browser.addValue('#pin-input', '1234');
     browser.click('#borchk-submit');
 
-    assert.isTrue(browser.getUrl().includes('presel=743001'));
+    assert.isTrue(browser.getUrl().includes('presel=733000'));
   });
 });
