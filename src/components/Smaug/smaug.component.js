@@ -43,7 +43,7 @@ function extractClientInfo(client) {
     urls: client.urls || {}
   };
 
-  if((!serviceClient.urls.returnUrl || serviceClient.urls.returnUrl.length < 1) && serviceClient.urls.host){
+  if ((!serviceClient.urls.returnUrl || serviceClient.urls.returnUrl.length < 1) && serviceClient.urls.host) {
     serviceClient.urls.returnUrl = serviceClient.urls.host;
   }
 
