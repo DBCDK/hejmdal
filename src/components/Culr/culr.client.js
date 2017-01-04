@@ -15,10 +15,6 @@ const CULR_AUTH_CREDENTIALS = {
   profileName: CONFIG.culr.profileName
 };
 
-if (!CulrClient) {
-  init();
-}
-
 /**
  * Invokes the getAccount CULR method
  *
@@ -26,6 +22,9 @@ if (!CulrClient) {
  * @return {Promise}
  */
 export async function getAccounts({userIdValue}) {
+  if (!CulrClient) {
+    await init();
+  }
   const params = {
     userCredentials: {
       userIdType: 'CPR',
@@ -54,34 +53,39 @@ export async function getAccounts({userIdValue}) {
  * created.
  */
 export function init() {
-  const options = {
-    ignoredNamespaces: {
-      namespaces: [],
-      override: true
-    }
-  };
-
-  if (CONFIG.mock_externals.culr) {
-    setMockClient();
-  }
-  else {
-    soap.createClient(CONFIG.culr.uri, options, (err, client) => {
-      if (err) {
-        log.error('Error when creating CULR client', {error: err});
-        return false;
+  return new Promise((resolve, reject) => {
+    const options = {
+      ignoredNamespaces: {
+        namespaces: [],
+        override: true
       }
+    };
 
-      client.on('request', (request) => {
-        log.debug('A request was made to CULR', {request: request});
+    if (CONFIG.mock_externals.culr) {
+      setMockClient();
+      resolve(CulrClient);
+    }
+    else {
+      soap.createClient(CONFIG.culr.uri, options, (err, client) => {
+        if (err) {
+          log.error('Error when creating CULR client', {error: err});
+          reject(err);
+          return false;
+        }
+
+        client.on('request', (request) => {
+          log.debug('A request was made to CULR', {request: request});
+        });
+
+        client.on('response', (response) => {
+          log.debug('A response was received from CULR', {response: response});
+        });
+
+        CulrClient = client;
+        resolve(CulrClient);
       });
-
-      client.on('response', (response) => {
-        log.debug('A response was received from CULR', {response: response});
-      });
-
-      CulrClient = client;
-    });
-  }
+    }
+  });
 }
 
 function setMockClient() {

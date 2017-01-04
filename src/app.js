@@ -13,7 +13,7 @@ import Pug from 'koa-pug';
 import responseTime from 'koa-response-time';
 import Knex from 'knex';
 import {Model} from 'objection';
-import Session from './models/db_models/session.model';
+import sanityCheck from './utils/sanityCheck.util';
 
 // Middleware
 import {LoggerMiddleware} from './middlewares/logger.middleware';
@@ -59,11 +59,8 @@ export function startServer() {
   // the Model.bindKnex method.
   Model.knex(knex);
 
-  // Making a query to db to ensure it is possible to connect
-  Session.query().count('*')
-    .catch((e) => {
-      log.error('Query failed', {error: e.message, stack: e.stack});
-    });
+  // Check if connection to external resources is possible
+  sanityCheck();
 
   app.use(session({
     store: new SessionStore(CONFIG.mock_storage),

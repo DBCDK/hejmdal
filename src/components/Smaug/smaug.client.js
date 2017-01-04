@@ -30,3 +30,14 @@ export async function getClient(token) {
 
   throw new TokenError(response.statusMessage);
 }
+
+/**
+ * Check if Smaug webservice is up.
+ *
+ * @returns {Promise}
+ */
+export async function health() {
+  return await promiseRequest('get', {
+    uri: CONFIG.smaug.uri + '/health'
+  });
+}
