@@ -33,6 +33,7 @@ function extractClientInfo(client) {
   if (!client.app.clientId) {
     throw new Error('Invalid Client', client);
   }
+
   const serviceClient = {
     id: client.app.clientId,
     name: client.displayName,
@@ -41,6 +42,10 @@ function extractClientInfo(client) {
     borchkServiceName: client.borchkServiceName || null,
     urls: client.urls || {}
   };
+
+  if((!serviceClient.urls.returnUrl || serviceClient.urls.returnUrl.length < 1) && serviceClient.urls.host){
+    serviceClient.urls.returnUrl = serviceClient.urls.host;
+  }
 
   if (CONFIG.app.env === 'test') {
     serviceClient.urls.host = CONFIG.app.host;
