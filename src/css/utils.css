@@ -33,3 +33,7 @@
 .red {
   color: var(--red);
 }
+
+.pointer {
+  cursor: pointer;
+}

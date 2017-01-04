@@ -5,7 +5,7 @@ div.topbar-container
     div.col-xs-6.col-sm-5.align-right
       if (help && help.title && help.sections)
         if (!info)
-          span.icon-question-sign.pull-right(data-toggle="modal" data-target="#helpModal")
+          span.icon-question-sign.pull-right.pointer(data-toggle="modal" data-target="#helpModal")
 
         div.modal.fade#helpModal(role="dialog" aria-labelledby="helpModalLabel")
           div.modal-dialog(role="document")
