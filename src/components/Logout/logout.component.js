@@ -17,7 +17,7 @@ export async function logout(ctx, next) {
   let loginFound = false;
   let idpLogoutInfo = false;
 
-  if (ctx.session.state) {
+  if (ctx.session.state && ctx.getUser().identityProviders) {
     ctx.getUser().identityProviders.forEach((idp) => {
       if (idp !== 'borchk') {
         idpLogoutInfo = true;

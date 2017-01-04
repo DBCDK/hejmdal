@@ -2,10 +2,12 @@
 window.hejmdal = {
   host: `${window.location.origin}/v0`,
   path: `/login`,
-  token: 'valid_token',
+  token: 'asdfg',
   tickettoken: null,
   ticketid: null,
   ticket: null,
+  presel: '',
+  agency: ''
 };
 
 const queryObj = parseQueryString();
@@ -76,8 +78,19 @@ function setState() {
   document.getElementById('input-login-host').value = window.hejmdal.host;
   document.getElementById('input-login-path').value = window.hejmdal.path;
   document.getElementById('input-login-token').value = window.hejmdal.token;
+  document.getElementById('input-preselected-library').value = window.hejmdal.presel;
+  document.getElementById('input-login-token').value = window.hejmdal.token;
 
-  document.getElementById('currenturl').textContent = `${window.hejmdal.host}${window.hejmdal.path}?token=${window.hejmdal.token}`;
+  let url = `${window.hejmdal.host}${window.hejmdal.path}?token=${window.hejmdal.token}`;
+  if(window.hejmdal.presel.length >= 1){
+    url += `&presel=${window.hejmdal.presel}`;
+  }
+
+  if(window.hejmdal.agency.length >= 1){
+    url += `&agency=${window.hejmdal.agency}`;
+  }
+
+  document.getElementById('currenturl').textContent = url;
 
   document.getElementById('tickettoken').innerHTML = window.hejmdal.tickettoken || '&nbsp;';
   document.getElementById('ticketid').innerHTML = window.hejmdal.ticketid || '&nbsp;';

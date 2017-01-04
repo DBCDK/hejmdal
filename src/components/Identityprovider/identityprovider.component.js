@@ -50,12 +50,12 @@ export async function authenticate(ctx, next) {
       let preselectedId = null;
       if (ctx.query.presel) {
         const preselectedLibrary = await getAgency(ctx.query.presel);
-        preselctedName = `${preselectedLibrary.branchShortName} - ${preselectedLibrary.agencyName}`;
+        preselctedName = preselectedLibrary.agencyName;
         preselectedId = preselectedLibrary.branchId;
       }
 
       const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
-      const lockedAgencyName = branch ? `${branch.branchShortName} - ${branch.agencyName}` : null;
+      const lockedAgencyName = branch ? branch.agencyName : null;
       const branches = identityProviders.borchk && !lockedAgencyName ? await getListOfAgenciesForFrontend() : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(branch);

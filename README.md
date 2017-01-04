@@ -29,7 +29,7 @@ For development you use `npm run migrate:latest:dev` to source the env.env file 
 ### Shrinkwrap
 dependency versions are controlled with shrinkwrap. To update a dependency run `npm update <package__name>`, or recreate the dependency tree by deleting npm-shrinkwrap.json and running `npm update && npm shrinkwrap`.
   
-##Example applikation
+##Example application
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
 
 ##Tests

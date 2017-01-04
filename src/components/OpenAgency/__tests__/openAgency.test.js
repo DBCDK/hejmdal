@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import {libraryListFromName, libraryListFromPosition} from '../openAgency.client';
@@ -18,33 +19,21 @@ describe('Test openAgency component', () => {
       {
         agencyId: '761500',
         branchId: '761500',
-        agencyName: '',
+        agencyName: 'Horsens Bibliotek',
         branchName: 'Horsens Bibliotek',
-        branchShortName: '',
-        city: '',
-        address: 'Kongevejen 30, Endelave',
+        branchShortName: 'Horsens Bibliotek',
+        city: 'Horsens',
+        address: 'Tobaksgården 12Postbox 521',
         type: 'Folkebibliotek',
         registrationFormUrl: '',
         registrationFormUrlText: '',
-        branchEmail: ''
-      },
-      {
-        agencyId: '761500',
-        branchId: '761506',
-        agencyName: '',
-        branchName: 'Søvind Bibliotek',
-        branchShortName: '',
-        city: '',
-        address: 'Ravnebjerget 12, Søvind',
-        type: 'Folkebibliotek',
-        registrationFormUrl: '',
-        registrationFormUrlText: '',
-        branchEmail: ''
+        branchEmail: 'bibliotek@horsens.dk',
+        distance: ''
       },
       {
         agencyId: '860970',
         branchId: '860970',
-        agencyName: '',
+        agencyName: 'Horsens Gymnasium, Biblioteket',
         branchName: 'Horsens Gymnasium, Biblioteket',
         branchShortName: '',
         city: '',
@@ -52,7 +41,33 @@ describe('Test openAgency component', () => {
         type: 'Forskningsbibliotek',
         registrationFormUrl: '',
         registrationFormUrlText: '',
-        branchEmail: ''
+        branchEmail: undefined
+      },
+      {
+        agencyId: '874540',
+        branchId: '874540',
+        agencyName: 'Horsens Statsskole, Biblioteket',
+        branchName: 'Horsens Statsskole, Biblioteket',
+        branchShortName: '',
+        city: '',
+        address: '',
+        type: 'Forskningsbibliotek',
+        registrationFormUrl: '',
+        registrationFormUrlText: '',
+        branchEmail: undefined
+      },
+      {
+        agencyId: '861340',
+        branchId: '861340',
+        agencyName: 'Learnmark Horsens',
+        branchName: 'Learnmark Horsens',
+        branchShortName: '',
+        city: ' ',
+        address: ' ',
+        type: 'Forskningsbibliotek',
+        registrationFormUrl: '',
+        registrationFormUrlText: '',
+        branchEmail: undefined
       }];
 
     assert.deepEqual(list, await libraryListFromName('horsen?'));

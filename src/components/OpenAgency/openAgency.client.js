@@ -49,7 +49,6 @@ export async function libraryListFromName(text) {
 
 export async function libraryListFromPosition(latitude, longitude, distance = '') {
   let response;
-
   // for test and development
   if (CONFIG.mock_externals.openAgency) {
     response = getMockClient(latitude + '-' + longitude);
@@ -85,7 +84,9 @@ function parseFindLibraryResponse(response) {
     const agencies = [];
     response.findLibraryResponse.pickupAgency.forEach((agency) => {
       const branchId = getAgencyField(agency, 'branchId');
-      if (agencies.includes(branchId)) {
+      const branchType = getAgencyField(agency, 'branchType');
+
+      if (agencies.includes(branchId) || branchType !== 'H') {
         return;
       }
 

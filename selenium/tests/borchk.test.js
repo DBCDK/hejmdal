@@ -14,6 +14,7 @@ describe('Test Borchk component', () => {
   beforeEach(() => {
     loginPage = new LoginPage();
   });
+
   it('should login using borchk', () => {
     browser.url(browser.getUrl() + '&agency=724000');
     browser.setValue('#userid-input', '87654321');
@@ -22,7 +23,6 @@ describe('Test Borchk component', () => {
     assert.isNotNull(loginPage.getTicket().id);
     browser.deleteCookie();
   });
-
 
   it('should display the borchk login form and elements', () => {
     assert.isTrue(browser.isVisible('#borchk'));
@@ -36,20 +36,20 @@ describe('Test Borchk component', () => {
   });
 
   it('should display dropdown when inputfield has two or more characters', () => {
-    browser.addValue('#libraryname-input', 'r');
+    browser.addValue('#libraryname-input', 's');
     assert.isFalse(browser.isVisible('#libraries-dropdown'));
 
-    browser.addValue('#libraryname-input', 'i');
+    browser.addValue('#libraryname-input', 'l');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
 
-    browser.addValue('#libraryname-input', 'n');
+    browser.addValue('#libraryname-input', 'a');
     assert.isTrue(browser.isVisible('#libraries-dropdown'));
   });
 
-  it('should display two out of three options', () => {
-    browser.addValue('#libraryname-input', 'rin');
+  it('should display three out of five options', () => {
+    browser.addValue('#libraryname-input', 'sla');
     const agencies = browser.elements('.agency');
-    assert.equal(agencies.value.length, 3, 'A total of 3 agencies is present in the dropdown');
+    assert.equal(agencies.value.length, 5, 'A total of 5 agencies is present in the dropdown');
 
     let visible = 0;
     let hidden = 0;
@@ -64,8 +64,8 @@ describe('Test Borchk component', () => {
       }
     });
 
-    assert.equal(visible, 2);
-    assert.equal(hidden, 1);
+    assert.equal(visible, 3);
+    assert.equal(hidden, 2);
   });
 
   it('Should toggle the libraries button open/closed', () => {
@@ -86,7 +86,7 @@ describe('Test Borchk component', () => {
     assert.isTrue(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isFalse(browser.isVisible('#clear-libraries-input-btn'));
 
-    browser.addValue('#libraryname-input', 'rin');
+    browser.addValue('#libraryname-input', 'sla');
 
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
@@ -94,9 +94,9 @@ describe('Test Borchk component', () => {
 
   it('Should empty the libraries input field when clicked and set focus', () => {
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
-    browser.addValue('#libraryname-input', 'rin');
+    browser.addValue('#libraryname-input', 'sla');
 
-    assert.equal('rin', browser.getValue('#libraryname-input'));
+    assert.equal('sla', browser.getValue('#libraryname-input'));
 
     browser.click('#clear-libraries-input-btn');
     assert.equal('', browser.getValue('#libraryname-input'), 'input field is empty');
@@ -128,20 +128,20 @@ describe('Test Borchk component', () => {
   });
 
   it('should be possible to search libraries using branchId', () => {
-    browser.addValue('#libraryname-input', '743001');
+    browser.addValue('#libraryname-input', '733000');
 
-    browser.isVisible('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
-    browser.click('=Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
-
-    assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
+    browser.isVisible('=Slagelse Bibliotekerne');
+    browser.click('=Slagelse Bibliotekerne');
+    assert.equal('Slagelse Bibliotekerne', browser.getValue('#libraryname-input'));
   });
 
   it('Should display a pre-filled disabled field when &agency= is set', () => {
-    browser.url(browser.getUrl() + '&agency=743001');
+    browser.url(browser.getUrl() + '&agency=733000');
     assert.isFalse(browser.isVisible('#libraryid-input'));
     assert.isFalse(browser.isVisible('#libraryname-input'));
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
-    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne');
+
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Slagelse Bibliotekerne');
   });
 
   it('Should close dropwdown when a click happens outside the dropdown', () => {
@@ -157,9 +157,9 @@ describe('Test Borchk component', () => {
   });
 
   it('Should preselect an editable library', () => {
-    loginPage.open({token: loginPage.validToken, presel: '743001'});
+    loginPage.open({token: loginPage.validToken, presel: '733000'});
 
-    assert.equal('Ringe Bibliotek - Faaborg-Midtfyn Bibliotekerne', browser.getValue('#libraryname-input'));
+    assert.equal('Slagelse Bibliotekerne', browser.getValue('#libraryname-input'));
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
