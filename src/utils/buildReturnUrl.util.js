@@ -10,7 +10,7 @@ export default function buildReturnUrl(state, queryObject = {}) {
   let path = state.returnUrl || state.serviceClient.urls.returnUrl;
   const querystring = objectToQueryString(queryObject);
 
-  if(!path){
+  if (!path) {
     path = '';
   }
 
