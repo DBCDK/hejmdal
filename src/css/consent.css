@@ -7,7 +7,7 @@
 }
 
 .consent-img {
-  background: svg-inline(consent) no-repeat center;
+  background: svg-inline(consent) no-repeat;
 }
 
 .consent-rejected-img {
@@ -18,6 +18,12 @@
   display: inline-block;
   margin-top: 5px;
   font-size: 0.9em;
+}
+
+.consent-img-container {
+  width: 260px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .banner {
@@ -41,7 +47,6 @@
 .attributeList {
   .glyphicon-info-sign {
     font-size: 1.5em;
-    top: -1px;
   }
 }
 
@@ -61,8 +66,4 @@ li.attribute {
 .right-text {
   position: relative;
   float: right;
-}
-
-.buffer-1-1 {
-  font-size: 1.1em;
 }

@@ -31,6 +31,7 @@ html, body {
 .content {
   margin-top: 20px;
   z-index: 1;
+  margin-bottom: 50px;
 }
 
 .hasfocus {
