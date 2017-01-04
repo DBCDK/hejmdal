@@ -6,6 +6,7 @@
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import {VERSION_PREFIX} from '../utils/version.util';
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
+import sanityCheck from '../utils/sanityCheck.util';
 
 const router = new Router({prefix: VERSION_PREFIX});
 
@@ -13,8 +14,14 @@ router.get('/', (ctx) => {
   ctx.body = renderFrontPage();
 });
 
-router.get('/health', (ctx) => {
-  ctx.body = 'OK!';
+router.get('/health', async (ctx) => {
+
+  const health = await sanityCheck();
+  ctx.status = 200;
+  ctx.body = health;
+  if (health.filter(e => e.state === 'fail').length) {
+    ctx.status = 503;
+  }
 });
 
 router.get('/fejl', (ctx) => {
