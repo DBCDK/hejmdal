@@ -1,16 +1,20 @@
 /**
  * Build a returnUrl from state.
  *
- * @param state
- * @param querystring
+ * @param {object} state
+ * @param {object} queryObject
  * @returns {string}
  */
 export default function buildReturnUrl(state, queryObject = {}) {
   let host = state.serviceClient.urls.host;
   let path = state.returnUrl || state.serviceClient.urls.returnUrl;
-  let querystring = objectToQueryString(queryObject);
+  const querystring = objectToQueryString(queryObject);
 
-  if (path.charAt(0) !== '/') {
+  if (!path) {
+    path = '';
+  }
+
+  if (path.length && path.charAt(0) !== '/') {
     path = '/' + path;
   }
 
