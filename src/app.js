@@ -20,6 +20,7 @@ import {LoggerMiddleware} from './middlewares/logger.middleware';
 import {SetVersionHeader} from './middlewares/headers.middleware';
 import session from './middlewares/session.middleware';
 import {stateMiddleware} from './middlewares/state.middleware';
+import errorMiddleware from './middlewares/error.middleware';
 import ctxdump from './middlewares/ctxdump.middleware';
 
 // Utils
@@ -93,7 +94,10 @@ export function startServer() {
 
   cacheAgencies(CONFIG.app.env === 'test' ? 'ringe' : '');
 
+  app.use(errorMiddleware);
+
   app.use(router);
+
 
   if (CONFIG.app.env !== 'production') {
     app.use(ctxdump);

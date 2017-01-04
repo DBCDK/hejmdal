@@ -5,36 +5,29 @@
 
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
 import {VERSION_PREFIX} from '../utils/version.util';
-import {CONFIG} from '../utils/config.util';
-
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
-
-import {wipeStores} from '../utils/test.util';
 
 const router = new Router({prefix: VERSION_PREFIX});
 
-router.get('/', (ctx, next) => {
+router.get('/', (ctx) => {
   ctx.body = renderFrontPage();
-  next();
 });
 
-router.get('/health', (ctx, next) => {
+router.get('/health', (ctx) => {
   ctx.body = 'OK!';
-  next();
 });
 
-router.get('/fejl', (ctx, next) => {
-  ctx.body = 'Fejl!';
-  next();
+router.get('/fejl', (ctx) => {
+  const state = ctx.getState();
+  let link = null;
+  if (state && state.smaugToken) {
+    link = {
+      href: `${VERSION_PREFIX}/login?token=${state.smaugToken}`,
+      value: 'Prøv igen'
+    };
+  }
+  const error = 'Der er sket en fejl. Dette kan skyldes at du har klikket på et ugyldigt link.';
+  ctx.render('Error', {error, link});
 });
-
-if (CONFIG.app.env === 'test') {
-  // Endpoint that only will be exposed while NODE_ENV=test.
-  router.get('/wipestores', (ctx, next) => {
-    wipeStores();
-    ctx.body = 'Stores was wiped!';
-    next();
-  });
-}
 
 export default router;
