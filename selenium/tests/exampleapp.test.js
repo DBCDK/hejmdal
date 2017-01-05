@@ -3,7 +3,6 @@ import {assert} from 'chai';
 import Page from '../pageObjects/page';
 
 describe('Testing the Example appliction using UNI-Login', function() {
-  this.timeout(30000);
   const page = new Page();
 
   after(() => {
