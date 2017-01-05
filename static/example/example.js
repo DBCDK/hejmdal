@@ -7,7 +7,8 @@ window.hejmdal = {
   ticketid: null,
   ticket: null,
   presel: '',
-  agency: ''
+  agency: '',
+  agencytype: null,
 };
 
 const queryObj = parseQueryString();
@@ -88,6 +89,10 @@ function setState() {
 
   if(window.hejmdal.agency.length >= 1){
     url += `&agency=${window.hejmdal.agency}`;
+  }
+
+  if(window.hejmdal.agencytype){
+    url += `&agencytype=${window.hejmdal.agencytype}`;
   }
 
   document.getElementById('currenturl').textContent = url;

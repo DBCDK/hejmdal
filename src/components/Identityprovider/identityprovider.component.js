@@ -38,6 +38,7 @@ export async function authenticate(ctx, next) {
             identityProviders: serviceClient.identityProviders
           }
         });
+
         throw new Error('The service has no valid identityproviders configured');
       }
 
@@ -56,7 +57,8 @@ export async function authenticate(ctx, next) {
 
       const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
       const lockedAgencyName = branch ? branch.agencyName : null;
-      const branches = identityProviders.borchk && !lockedAgencyName ? await getListOfAgenciesForFrontend() : null;
+      const agencyTypeFilter = ctx.query.agencytype || null;
+      const branches = identityProviders.borchk && !lockedAgencyName ? await getListOfAgenciesForFrontend(agencyTypeFilter) : null;
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(branch);
       const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
