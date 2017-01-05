@@ -26,14 +26,15 @@ export async function cacheAgencies(name = '') {
 export async function getListOfAgenciesForFrontend(filterParam = null) {
   await setUiList();
 
+  let branchList = uiBranchList;
+
   if (filterParam === 'forsk' || filterParam === 'folk') {
-    return uiBranchList.filter((agency) => {
+    branchList = uiBranchList.filter((agency) => {
       return agency.type === filterParam;
     });
   }
-  else {
-    return uiBranchList;
-  }
+
+  return branchList;
 }
 
 /**
@@ -86,8 +87,6 @@ async function setAgencyList() {
  */
 async function setUiList() {
   await setAgencyList();
-
-  const types = [];
 
   if (!uiBranchList || !uiBranchList.length) {
     uiBranchList = agencyList.map((branch) => {
