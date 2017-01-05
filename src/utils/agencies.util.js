@@ -69,8 +69,8 @@ export async function getAgency(agencyId) {
       }
     });
   }
-  return ret;
 
+  return ret;
 }
 
 /**
