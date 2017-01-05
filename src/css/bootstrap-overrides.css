@@ -6,6 +6,7 @@ h1 {
 label {
   font-weight: normal;
   margin-bottom: 0;
+  color: black;
 }
 
 .row {
@@ -50,7 +51,7 @@ label {
   box-shadow: none;
   border: none;
   border-radius: 0;
-  border-bottom: 2px solid var(--dark-grey);
+  border-bottom: 2px solid black;
   padding-left: 0;
 }
 
@@ -86,7 +87,7 @@ input[type="color"]:focus,
   border: none;
   border-radius: 0;
   background-color: transparent;
-  border-bottom: solid var(--dark-grey) 2px;
+  border-bottom: solid black 2px;
 
   &.hasfocus {
     border-color: #66afe9;

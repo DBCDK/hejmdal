@@ -1,9 +1,6 @@
 html, body {
   height: 100%;
-}
-
-.borchk-component {
-  margin-bottom: 50px;
+  background-color: var(--background-color-body);
 }
 
 .link-style {
@@ -17,6 +14,7 @@ html, body {
 }
 
 #external-providers {
+  margin-top: 10px;
   margin-bottom: 50px;
   .btn {
     margin-right: 10px;
@@ -26,6 +24,12 @@ html, body {
 .btn-grey {
   width: 100px;
   background-color: white;
+}
+
+.icon-btn {
+  display: block;
+  height: 20px;
+  width: 26px;
 }
 
 .content {
