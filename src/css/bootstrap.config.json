@@ -398,7 +398,8 @@
   "js": [
     "dropdown.js",
     "modal.js",
+    "collapse.js",
     "transition.js"
   ],
-  "customizerUrl": "http://getbootstrap.com/customize/?id=bc3aa0b0e05e6d7881faae693223e05d"
+  "customizerUrl": "http://getbootstrap.com/customize/?id=b3eb90ef22a3e72864687d7578653d42"
 }
