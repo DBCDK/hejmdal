@@ -30,6 +30,12 @@ label {
 .btn-success {
   background-color: var(--btn-green);
   border-color: var(--btn-green);
+  padding-left: 25px;
+  padding-right: 25px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: .8px;
 }
 
 .form-group {

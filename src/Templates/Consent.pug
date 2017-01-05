@@ -2,13 +2,13 @@ extends Main
 
 block append content
   if consentFailed
-    div.text-center
-      span.banner.consent-rejected-img
-      span.italic.consent-img-label #{serviceName}
+    div.consent-img-container.text-right
+        span.banner.consent-rejected-img
+        span.italic.consent-img-label #{serviceName}
     div
       div.h3
         strong Adgang ikke godkendt
-      div#content.buffer-1-1
+      div#content.buffer-1-1.buffer-vertical-30
         strong.italic #{serviceName}
         strong  har ikke fået adgang til de ønskede oplysninger
       div.buffer-1-1
@@ -18,15 +18,15 @@ block append content
       div.buffer-vertical-5
         a.link-style#returnUrl(href=returnUrl) Tilbage til #{serviceName}
   else
-    div.text-center
+    div.consent-img-container.text-right
       span.banner.consent-img
-      span.italic.consent-img-label  #{serviceName}
+      span.italic.consent-img-label #{serviceName}
     div
       div.h3
         strong Godkendelse
-      div#content.buffer-1-1
+      div#content.buffer-1-1.buffer-vertical-30
         strong.italic #{serviceName}
-        strong  beder om adgang til disse oplysninger
+        strong  beder om adgang til disse oplysninger:
       ul.attributeList
         each attribute in attributes
           li.attribute#attribute(data-toggle="collapse" href="#toggle-" + attribute.key aria-expanded="false") #{attribute.name}

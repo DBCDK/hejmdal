@@ -33,7 +33,7 @@ describe('Test Consent part of authetication flow', () => {
 
   it('should render message to user', () => {
     const content = browser.getText('#content');
-    const expected = serviceClient.name + ' beder om adgang til disse oplysninger';
+    const expected = serviceClient.name + ' beder om adgang til disse oplysninger:';
     assert.equal(content, expected);
   });
 

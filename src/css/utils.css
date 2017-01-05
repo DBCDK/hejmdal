@@ -10,6 +10,10 @@
   margin-bottom: 10px;
 }
 
+.buffer-vertical-30 {
+  margin-bottom: 30px;
+}
+
 .buffer-vertical-50 {
   margin-bottom: 50px;
 }
@@ -20,6 +24,10 @@
 
 .buffer-top-30 {
   margin-top: 30px;
+}
+
+.buffer-1-1 {
+  font-size: 1.1em;
 }
 
 .align-right {

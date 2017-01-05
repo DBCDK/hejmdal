@@ -34,14 +34,6 @@
   display: none;
 }
 
-#borchk-submit {
-  text-transform: uppercase;
-  font-weight: 600;
-  padding-left: 25px;
-  padding-right: 25px;
-  font-size: 16px;
-}
-
 .login-actions {
   margin-bottom: 80px;
 }
