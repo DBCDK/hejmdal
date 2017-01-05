@@ -81,6 +81,15 @@
       </div>
 
       <div class="input-pair">
+        <label for="input-agency-type">Filtring af søgbare bibliotekstyper på loginsiden: Alle, Folkebiblioteker eller Forskningsbiblioteker</label><br/>
+        <select id="input-agency-type" name="select" oninput="onChange({key: 'agencytype', val: this.value})">
+          <option value="" selected>Alle</option>
+          <option value="folk">Folkebiblioteker</option>
+          <option value="forsk">Forskningsbiblioteker</option>
+        </select>
+      </div>
+
+      <div class="input-pair">
         <button id="login-button" onclick="onClick()">Login</button>
         <button id="reset-to-default" onclick="resetToDefault()">Reset (og log ud)</button>
       </div>

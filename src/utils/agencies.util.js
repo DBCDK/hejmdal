@@ -23,9 +23,17 @@ export async function cacheAgencies(name = '') {
  *
  * @return {Array}
  */
-export async function getListOfAgenciesForFrontend() {
+export async function getListOfAgenciesForFrontend(filterParam = null) {
   await setUiList();
-  return uiBranchList;
+
+  if (filterParam === 'forsk' || filterParam === 'folk') {
+    return uiBranchList.filter((agency) => {
+      return agency.type === filterParam;
+    });
+  }
+  else {
+    return uiBranchList;
+  }
 }
 
 /**
@@ -79,9 +87,12 @@ async function setAgencyList() {
 async function setUiList() {
   await setAgencyList();
 
+  const types = [];
+
   if (!uiBranchList || !uiBranchList.length) {
     uiBranchList = agencyList.map((branch) => {
-      return {branchId: branch.branchId, name: branch.agencyName, hidden: branch.branchId};
+      const type = branch.type === 'Forskningsbibliotek' ? 'forsk' : 'folk';
+      return {branchId: branch.branchId, name: branch.agencyName, hidden: branch.branchId, type: type};
     });
   }
 }
