@@ -10,7 +10,7 @@ div#borchk
         div.input-group
           input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true' value=preselctedName)
           input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' value=preselectedId )
-          div.input-group-btn
+          div.input-group-btn.black
             button.btn.inline-btn-default.dropdown-toggle(type='button' class=preselctedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
               span(class='glyphicon glyphicon-triangle-bottom')
             button.btn.inline-btn-default(type='button' class=preselctedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
@@ -45,10 +45,9 @@ div#borchk
       div.remember-me-container.col-xs-6.col-md-6
         label.remember(for='rememberMe')
           input(type='checkbox' name='rememberMe' id='rememberMe')
-          span Husk Mig
+          span Husk mig
       div.login-buttons-container.col-xs-6.col-md-6
         div
           button(type='submit' class='btn btn-success' id='borchk-submit') Log ind
-        div.buffer-top-20
-          a(href=identityProviders.borchk.abortAction class='buffer-right-12 link-style' id="cancel-login")
-            strong Fortryd log ind
+        div.buffer-top-10
+          a(href=identityProviders.borchk.abortAction class='link-style' id="cancel-login") Fortryd log ind

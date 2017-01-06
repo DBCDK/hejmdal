@@ -13,14 +13,6 @@ html, body {
   color: black;
 }
 
-#external-providers {
-  margin-top: 10px;
-  margin-bottom: 50px;
-  .btn {
-    margin-right: 10px;
-  }
-}
-
 .btn-grey {
   width: 100px;
   background-color: white;

@@ -23,6 +23,12 @@ label {
   }
 }
 
+.btn-default {
+  &:hover {
+    background-color: var(--background-color-body);
+  }
+}
+
 .error-bg {
   background-color: var(--error-red);
   height: 100%;
