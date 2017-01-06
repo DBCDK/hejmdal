@@ -1,3 +1,23 @@
 .link-style {
   cursor: pointer;
 }
+
+#external-providers {
+  margin-top: 10px;
+  margin-bottom: 50px;
+
+  .btn {
+    margin-right: 10px;
+    padding: 5px 9px;
+  }
+
+  .btn-grey {
+    width: inherit;
+  }
+}
+
+.external-providers-btn-container {
+  a:last-of-type {
+    margin-right: 0 !important;
+  }
+}

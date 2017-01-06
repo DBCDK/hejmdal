@@ -1,8 +1,9 @@
 :root {
   --red: #de3733;
-  --background-color: #edebe6;
+  --background-color-body: #edebe6;
+  --background-color: #d2d0cb;
   --dropdown-selected-bg: #f5f5f5;
-  --dark-grey: #616161;
+  --dark-grey: #7e7c77;
   --btn-green: #007236;
   --btn-grey: #999999;
   --error-red: #f2dede;

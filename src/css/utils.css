@@ -1,3 +1,7 @@
+.buffer-right-12 {
+  margin-right: 12px;
+}
+
 .buffer-right-20 {
   margin-right: 20px;
 }
@@ -22,6 +26,14 @@
   margin-top: 5px;
 }
 
+.buffer-top-10 {
+  margin-top: 10px;
+}
+
+.buffer-top-20 {
+  margin-top: 20px;
+}
+
 .buffer-top-30 {
   margin-top: 30px;
 }
@@ -40,6 +52,10 @@
 
 .red {
   color: var(--red);
+}
+
+.black {
+  color: black;
 }
 
 .pointer {
