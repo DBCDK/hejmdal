@@ -176,7 +176,17 @@ Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 # Dokumentation
 ## Endpoints
 - `/login?token=ABC_123&returnurl=someRelativeCallBackUrl&agency=myAgencyId` 
-Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.
+Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.    
+The login url takes the following parameters as arguments. All of them is testable in the exampleapplication found on `/example/`:
+  - `agency`  
+  Locks the library input fied to one specific library (agency) and the user wont be able to change the selection. I.e `agency=743000`
+  - `presel`  
+  Same as the above agency parameter but the field is not locked and the user will be able to change the selection. I.e `presel=743000`
+  - `agencytype`  
+  Use this parameter to filter the libraries available in the dropdown. By default both Folkebiblioteker (agencies) and Forskningsbiblioteker will be available.  
+  By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
+    
+
 - `/logout` eller `/logout?returnurl=someRelativeCallBackUrl` 
 The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
 
