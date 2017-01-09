@@ -1,17 +1,19 @@
 # Change Log
 
-## [Unreleased](https://github.com/DBCDK/hejmdal/tree/HEAD)
-
-[Full Changelog](https://github.com/DBCDK/hejmdal/compare/47-48...HEAD)
+## [0.9.0](https://github.com/DBCDK/hejmdal/tree/0.9.0) (2017-01-09)
+[Full Changelog](https://github.com/DBCDK/hejmdal/compare/47-48...0.9.0)
 
 **Implemented enhancements:**
 
+- Tilpasning af consent-side [\#268](https://github.com/DBCDK/hejmdal/issues/268)
 - Udfør sanityCheck ved kald til /health [\#259](https://github.com/DBCDK/hejmdal/issues/259)
 - Ændring i tekst på fejlside [\#248](https://github.com/DBCDK/hejmdal/issues/248)
 - Loginside: Klik på slet-knap i inputfelt til Bibliotek skal placere fokus/cursor i feltet.  [\#244](https://github.com/DBCDK/hejmdal/issues/244)
 - Tryk på "Prøv igen" på "Fejl i login"-side fjerner data fra inputfelter [\#240](https://github.com/DBCDK/hejmdal/issues/240)
 - Designtilpasninger "Fejl i login"-side [\#239](https://github.com/DBCDK/hejmdal/issues/239)
 - Designtilpasninger godkendelses-side [\#238](https://github.com/DBCDK/hejmdal/issues/238)
+- Designtilpasninger loginside [\#224](https://github.com/DBCDK/hejmdal/issues/224)
+- Service client skal kunne anføre, hvilken type af biblioteker, der skal vises i bibliotekslisten [\#220](https://github.com/DBCDK/hejmdal/issues/220)
 - Skal eksempelklienten skaleres til mobilvisning?  [\#213](https://github.com/DBCDK/hejmdal/issues/213)
 - Vis navn på væsen ved forvalgt bibliotek ved login [\#210](https://github.com/DBCDK/hejmdal/issues/210)
 - Navn på bibliotek er ikke nok til at identificere det unikt [\#209](https://github.com/DBCDK/hejmdal/issues/209)
@@ -39,11 +41,13 @@
 - Consent-side mangler navn på modtager af information [\#190](https://github.com/DBCDK/hejmdal/issues/190)
 - Ved login med Uni-Login er der en forkert returURL [\#189](https://github.com/DBCDK/hejmdal/issues/189)
 - Safari OSX: Man kan ikke bladre i forslagslisten vha. piletasterne [\#188](https://github.com/DBCDK/hejmdal/issues/188)
+- Klik ved siden af åben dropdown skal lukke listen [\#187](https://github.com/DBCDK/hejmdal/issues/187)
 - Jeg får kun forslag til biblioteker baseret på branchName [\#186](https://github.com/DBCDK/hejmdal/issues/186)
 - Frontend: implementer cookiepolitik side.   [\#165](https://github.com/DBCDK/hejmdal/issues/165)
 
 **Closed issues:**
 
+- Readme bør opdateres med info om parametre [\#274](https://github.com/DBCDK/hejmdal/issues/274)
 - Bedre logning af generelle fejl [\#271](https://github.com/DBCDK/hejmdal/issues/271)
 - Brug host som retururl hvis ingen retururl er defineret [\#261](https://github.com/DBCDK/hejmdal/issues/261)
 - An in-range update of wdio-mocha-framework is breaking the build 🚨 [\#230](https://github.com/DBCDK/hejmdal/issues/230)
@@ -69,6 +73,7 @@
 
 **Merged pull requests:**
 
+- Sidste ændringer [\#279](https://github.com/DBCDK/hejmdal/pull/279) ([hrmoller](https://github.com/hrmoller))
 - Designtilpasninger loginside - mindre jursteringer [\#275](https://github.com/DBCDK/hejmdal/pull/275) ([hrmoller](https://github.com/hrmoller))
 - Service client skal kunne anføre, hvilken type af biblioteker, der skal vises i bibliotekslisten [\#273](https://github.com/DBCDK/hejmdal/pull/273) ([hrmoller](https://github.com/hrmoller))
 - Log errors in middleware [\#272](https://github.com/DBCDK/hejmdal/pull/272) ([vibjerg](https://github.com/vibjerg))
