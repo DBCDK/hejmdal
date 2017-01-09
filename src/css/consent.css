@@ -46,13 +46,19 @@
 
 .attributeList {
   .glyphicon-info-sign {
-    font-size: 1.5em;
+    font-size: 1.2em;
+    top: 3px;
   }
 }
 
 ul.attributeList {
   margin: 0.5em 0 1em 0;
   padding: 0;
+
+  li:last-of-type {
+    border-bottom: 2px solid gray;
+    padding-bottom: 14px;
+  }
 }
 
 li.attribute {
