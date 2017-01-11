@@ -17,6 +17,7 @@
     "serve:debug": "nodemon $NODE_DEBUG_OPTION --debug --exec node --no-stdin src/main.js --ignore ./static/example",
     "test": ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 MOCK_SMAUG=1 mocha --recursive ./src/**/*.test.js --compilers js:babel-register --reporter mocha-jenkins-reporter",
     "test:integration": "npm run build:css:prod && . ./env.test && TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
+    "test:integration:jenkins": "npm run build:css:prod && . ./env.test && TEST_ENV=jenkins wdio ./selenium/config/wdio.conf.js",
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
@@ -76,10 +77,10 @@
     "postcss-simple-vars": "^3.0.0",
     "precss": "^1.4.0",
     "sinon": "^1.17.6",
-    "wdio": "^0.3.3",
     "wdio-junit-reporter": "^0.2.0",
     "wdio-mocha-framework": "^0.5.2",
     "wdio-sauce-service": "^0.3.0",
-    "wdio-selenium-standalone-service": "0.0.7"
+    "wdio-selenium-standalone-service": "0.0.7",
+    "webdriverio": "^4.6.1"
   }
 }
