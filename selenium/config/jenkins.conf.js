@@ -10,5 +10,5 @@ export default {
       build: process.env.BUILD_NUMBER
     }
   ],
-  sauceConnect: true,
+  sauceConnect: true
 };
