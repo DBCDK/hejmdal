@@ -50,8 +50,6 @@ let config = {
     browserName: 'chrome',
     platform: 'OS X 10.11',
     version: 'latest',
-    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    build: process.env.TRAVIS_BUILD_NUMBER
   }],
   //
   // ===================
@@ -219,7 +217,7 @@ if (process.env.TEST_ENV === 'saucelabs') {
 }
 
 if (process.env.TEST_ENV === 'jenkins') {
-  config = Object.assign(config, require('./sauce.conf').default);
+  config = Object.assign(config, require('./jenkins.conf').default);
 }
 
 exports.config = config;
