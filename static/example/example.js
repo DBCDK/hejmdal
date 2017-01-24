@@ -2,7 +2,7 @@
 window.hejmdal = {
   host: `${window.location.origin}/v0`,
   path: `/login`,
-  token: 'asdfg',
+  token: '',
   tickettoken: null,
   ticketid: null,
   ticket: null,

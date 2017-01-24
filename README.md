@@ -184,6 +184,7 @@ The login url takes the following parameters as arguments. All of them is testab
   Same as the above agency parameter but the field is not locked and the user will be able to change the selection. I.e `presel=743000`
   - `agencytype`  
   Use this parameter to filter the libraries available in the dropdown. By default both Folkebiblioteker (agencies) and Forskningsbiblioteker will be available.  
+  
   By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
     
 
