@@ -117,7 +117,7 @@
         Ved at indløse <span>token</span> og <span>id</span> på
         <span class="code">/getTicket/TOKEN/ID</span>
         kan applikationen hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
-        Ligeledes er dette noget der konfigureres i Den åbne platform.
+        Hvilke attributter en applikation kan få udleveret, konfigureres i Den åbne platform.
       </p>
 
       <div id="post-success" class="hide">
@@ -133,8 +133,7 @@
         <p>
           Med token og id konstrueres en ny URL (<span class="code">/getTicket/TOKEN/ID</span>) som den
           herunder hvorfra den endelige ticket kan hentes.
-          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket
-          kun være gyldig i 1 time hvorefter den slettes.
+          Tickets slettes når de er hentet og kan kun hentes en gang. Hvis en ticket ikke hentes efter den er dannet, slettes den automatisk efter kort tid.
         </p>
         <div class="info" id="ticketurl">&nbsp;</div>
         <button id="get-ticket-button" onclick="getTicket()">Hent ticket</button>
