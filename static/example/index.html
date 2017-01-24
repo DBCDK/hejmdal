@@ -49,20 +49,30 @@
   </head>
   <body>
     <div id="example">
-      <h3>eksempelside -- Adgangsplatformen -- login.bib.dk</h3>
-      <p>Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne</p>
+      <h3>Eksempelside -- login.bib.dk</h3>
+      <p>Denne side er et eksempel på hvordan kald til login.bib.dk konstrueres og skal ses som en hjælp til udviklere til at komme igang med at udvikle op i mod login.bib.dk</p>
       <p>
-        Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Et sådan token fås ved at [...].
-        Se mere her: [URL]
+        Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne<br/>
+        Under felterne konstrueres URL'en der skal bruges i en applikation for at lave tilsvarende kald til login.bib.dk
+      </p>
+      <p>
+        Efter succesfuldt login på login.bib.dk vil brugeren blive redirected til den URL der er specificeret i Den åbne platform under <span class="code">urls.returnUrl</span>.<br/>
+        Hvis eksemplet herunder ikke ændres vil man blive redirected til denne side men med information vedrørende den udstedte ticket i bunden af siden.
+      </p>
+      <p>
+        Et eksempel på hvordan konfigurationen i Den åbne platform kan se ud for en applikation der skal bruge login.bib.dk <a href="https://github.com/DBCDK/hejmdal/blob/master/src/components/Smaug/mock/smaug.client.mock.js">kan ses på GitHub</a> men selve arbejdet med at konfigurerer foretages af DBC.
+      </p>
+      <p>
+        Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Se mere på <a href="https://openplatform.dbc.dk/v1/">https://openplatform.dbc.dk/v1/</a>
       </p>
 
       <div class="input-pair">
         <label for="input-login-host">Host URL</label>
-        <input id="input-login-host" type="text" value="" size="50" oninput="onChange({key: 'host', val: this.value})"/>
+        <input id="input-login-host" type="text" value="" size="50" disabled oninput="onChange({key: 'host', val: this.value})"/>
       </div>
       <div class="input-pair">
         <label for="input-login-path">Login path</label>
-        <input id="input-login-path" type="text" value="" size="50" oninput="onChange({key: 'path', val: this.value})"/>
+        <input id="input-login-path" type="text" value="" size="50" disabled oninput="onChange({key: 'path', val: this.value})"/>
       </div>
 
       <div class="input-pair">
@@ -71,17 +81,17 @@
       </div>
 
       <div class="input-pair">
-        <label for="input-preselected-library">Forudvalgt bibliotek der kan ændres af brugeren</label><br/>
+        <label for="input-preselected-library">Forudvalgt bibliotek der kan ændres af brugeren (valgfri) f.eks. 785100</label><br/>
         <input id="input-preselected-library" type="text" value="" size="50" oninput="onChange({key: 'presel', val: this.value})"/>
       </div>
 
       <div class="input-pair">
-        <label for="input-locked-library">Forudvalgt bibliotek der ikke kan ændres af brugeren</label><br/>
+        <label for="input-locked-library">Forudvalgt bibliotek der ikke kan ændres af brugeren (valgfri) f.eks. 785100</label><br/>
         <input id="input-locked-library" type="text" value="" size="50" oninput="onChange({key: 'agency', val: this.value})"/>
       </div>
 
       <div class="input-pair">
-        <label for="input-agency-type">Filtring af søgbare bibliotekstyper på loginsiden: Alle, Folkebiblioteker eller Forskningsbiblioteker</label><br/>
+        <label for="input-agency-type">Filtrering af søgbare bibliotekstyper på loginsiden: Alle, Folkebiblioteker eller Forskningsbiblioteker (valgfri). Alle vises som default</label><br/>
         <select id="input-agency-type" name="select" oninput="onChange({key: 'agencytype', val: this.value})">
           <option value="" selected>Alle</option>
           <option value="folk">Folkebiblioteker</option>
@@ -99,15 +109,15 @@
       </div>
       <p>
         Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til klienten med to GET parametre sat i URLen - et
-        <span class="code">token</span> og et <span class="code">id</span>:
-        <span class="code">?token=TOKEN&id=ID</span>.
-        Dette callback konfigureres for den enkelte klient i den åbne platform.
+        <span class="code">token</span> og et <span class="code">id</span>
+        (eks.: <span class="code">?token=TOKEN&id=ID</span>).
+        Dette callback konfigureres for den givne applikation i Den åbne platform som beskrevet ovenfor.
       </p>
       <p>
         Ved at indløse <span>token</span> og <span>id</span> på
         <span class="code">/getTicket/TOKEN/ID</span>
-        kan clienten hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
-        Ligeledes er dette noget der konfigureres i Den åbne platform.
+        kan applikationen hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
+        Hvilke attributter en applikation kan få udleveret, konfigureres i Den åbne platform.
       </p>
 
       <div id="post-success" class="hide">
@@ -123,8 +133,7 @@
         <p>
           Med token og id konstrueres en ny URL (<span class="code">/getTicket/TOKEN/ID</span>) som den
           herunder hvorfra den endelige ticket kan hentes.
-          En ticket kan kun hentes een gang da den slettes efter at være hentet. Desuden vil en ticket
-          kun være gyldig i X dage.
+          Tickets slettes når de er hentet og kan kun hentes en gang. Hvis en ticket ikke hentes efter den er dannet, slettes den automatisk efter kort tid.
         </p>
         <div class="info" id="ticketurl">&nbsp;</div>
         <button id="get-ticket-button" onclick="getTicket()">Hent ticket</button>
