@@ -122,7 +122,7 @@ export async function retrieveUserConsent(ctx, next) {
 export async function shouldUserGiveConsent(ctx) {
   const consent = await getConsent(ctx);
   const attributes = getConsentAttributes(ctx);
-  return Object.keys(attributes).filter(attribute => !consent.includes(attribute)).length > 0;
+  return Object.keys(attributes).filter(attribute => consent.includes(attribute)).length > 0;
 }
 
 /**

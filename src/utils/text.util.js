@@ -176,7 +176,7 @@ export function getText(helpNames, placeHolders = false, prefix = '') {
     let helpstr = JSON.stringify(helpObj);
     if (placeHolders) {
       Object.keys(placeHolders).forEach((key) => {
-        helpstr = helpstr.replace(key, placeHolders[key]);
+        helpstr = helpstr.replace(new RegExp(key, 'g'), placeHolders[key]);
       });
     }
     helpObj = JSON.parse(helpstr);
