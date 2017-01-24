@@ -89,7 +89,6 @@ const helpTexts = {
         texts: [
           'Du skal være oprettet som bruger på biblioteket for at kunne logge ind',
           'Du kan skrive dit cpr-nummer eller dit lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet.',
-          'Hvis du ikke er oprettet som låner, kan du blive det på bibliotekets hjemmeside:',
           '__CREATE_LIBRARY_USER__'
         ]
       },
@@ -192,14 +191,14 @@ export function getText(helpNames, placeHolders = false, prefix = '') {
  */
 export function setLoginReplacersFromAgency(agency) {
   const loginHelpReplacers = {
-    __CREATE_LIBRARY_USER__: '',
+    __CREATE_LIBRARY_USER__: 'Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside.',
     __FORGOT_CODE_CONTACT_LIBRARY__: ''
   };
   if (agency) {
     if (agency.registrationFormUrl) {
       loginHelpReplacers.__CREATE_LIBRARY_USER__ =
         '<a href=\\"' + agency.registrationFormUrl + '\\">'
-        + (agency.registrationFormUrlText ? agency.registrationFormUrlText : 'opret bruger på biblioteket')
+        + (agency.registrationFormUrlText ? agency.registrationFormUrlText : 'Opret dig som låner på ' + agency.agencyName)
         + '</a>';
     }
     if (agency.branchEmail) {
