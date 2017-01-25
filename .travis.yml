@@ -14,7 +14,7 @@ env:
   - TEST_SUITE=test
   - TEST_SUITE=test:integration
 before_script:
-  - if [ "${TEST_SUITE}" == "test:integration" ]; then psql -c 'create database hejmdal_test owner some_user;' -U postgres && npm run migrate:latest; fi
+  - if [ "${TEST_SUITE}" == "test:integration" ]; then psql -c 'create database hejmdal_test owner postgres;' -U postgres && npm run migrate:latest; fi
 script: npm run $TEST_SUITE
 notifications:
   slack:
