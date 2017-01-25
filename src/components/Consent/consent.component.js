@@ -16,7 +16,6 @@ const consentStore = CONFIG.mock_storage ?
   new KeyValueStorage(new MemoryStorage()) :
   new KeyValueStorage(new PersistentConsentStorage());
 
-console.log('mock', CONFIG.mock_storage);
 /**
  * Renders the consent UI
  *
@@ -122,8 +121,6 @@ export async function retrieveUserConsent(ctx, next) {
 export async function shouldUserGiveConsent(ctx) {
   const consent = await getConsent(ctx);
   const attributes = getConsentAttributes(ctx);
-  console.log('consent', consent);
-  console.log('attributes', attributes);
   return Object.keys(attributes).filter(attribute => !consent.includes(attribute)).length > 0;
 }
 
@@ -173,7 +170,6 @@ export async function getConsent(ctx) {
   let consent = [];
   try {
     const consentObject = (await consentStore.read(`${userId}:${serviceClientId}`));
-    console.log('consentObject', consentObject);
     consent = consentObject && consentObject.keys || [];
   }
   catch (e) {
