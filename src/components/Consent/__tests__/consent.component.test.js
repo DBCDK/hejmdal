@@ -39,7 +39,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       giveConsentUI(ctx, next);
       assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0][0], `/fejl`);
+      assert.equal(ctx.redirect.args[0][0], '/fejl');
     });
   });
 
@@ -176,7 +176,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       // ensuring the user is redirected to the consent page
       assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0], `/login/consent`);
+      assert.equal(ctx.redirect.args[0], '/login/consent');
     });
   });
 

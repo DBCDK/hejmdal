@@ -102,7 +102,7 @@ async function getConsentResponse(ctx) {
 export async function retrieveUserConsent(ctx, next) {
   const userShouldGiveConsent = await shouldUserGiveConsent(ctx);
   if (userShouldGiveConsent) {
-    ctx.redirect(`/login/consent`);
+    ctx.redirect('/login/consent');
   }
   else {
     await next();
