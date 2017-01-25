@@ -13,7 +13,7 @@ import {
 } from '../consent.component';
 import sinon from 'sinon';
 
-import {initState} from '../../../utils/state.util';
+import {setDefaultState} from '../../../middlewares/state.middleware';
 import {mockContext} from '../../../utils/test.util';
 import {ATTRIBUTES} from '../../../utils/attributes.util';
 
@@ -24,7 +24,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
   beforeEach(() => {
     ctx = mockContext();
-    initState(ctx, next);
+    setDefaultState(ctx, next);
     sandbox = sinon.sandbox.create();
   });
 
@@ -47,7 +47,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
     beforeEach(() => {
       ctx = mockContext();
-      initState(ctx, next);
+      setDefaultState(ctx, next);
       ctx.setUser({userId: 'testUser'});
 
       ctx.setState({
