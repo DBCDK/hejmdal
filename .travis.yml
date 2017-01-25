@@ -10,14 +10,9 @@ cache:
 branches:
   only:
   - master
-env:
-- TEST_SUITE=test
-- TEST_SUITE=test:integration
-before_install:
-  - if [ "${TEST_SUITE}" != "test:integration" ]; then unset SAUCE_USERNAME && unset SAUCE_ACCESS_KEY; fi
 before_script:
-  - if [ "${TEST_SUITE}" == "test:integration" ]; then psql -c 'create database hejmdal_test;' -U postgres && npm run migrate:latest; fi
-script: npm run $TEST_SUITE
+  - psql -c 'create database hejmdal_test;' -U postgres && npm run migrate:latest;
+script: npm run lint && npm run test:integration
 notifications:
   slack:
     rooms:
