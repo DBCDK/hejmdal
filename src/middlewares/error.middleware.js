@@ -3,7 +3,6 @@
  * Add methods for handling the state object
  */
 
-import {VERSION_PREFIX} from '../utils/version.util';
 import {log} from '../utils/logging.util';
 
 /**
@@ -27,7 +26,7 @@ export default async function errorMiddleware(ctx, next) {
     ctx.status = err.status || 500;
     const state = ctx.getState();
     const link = state && state.smaugToken && {
-      href: `${VERSION_PREFIX}/login?token=${state.smaugToken}`,
+      href: `/login?token=${state.smaugToken}`,
       value: 'Prøv igen'
     };
     let error = 'Der er sket en fejl. Prøv at logge ind igen';

@@ -4,11 +4,10 @@
  */
 
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
-import {VERSION_PREFIX} from '../utils/version.util';
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 import sanityCheck from '../utils/sanityCheck.util';
 
-const router = new Router({prefix: VERSION_PREFIX});
+const router = new Router();
 
 router.get('/', (ctx) => {
   ctx.body = renderFrontPage();
@@ -29,7 +28,7 @@ router.get('/fejl', (ctx) => {
   let link = null;
   if (state && state.smaugToken) {
     link = {
-      href: `${VERSION_PREFIX}/login?token=${state.smaugToken}`,
+      href: `/login?token=${state.smaugToken}`,
       value: 'Prøv igen'
     };
   }

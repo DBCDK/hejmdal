@@ -29,6 +29,6 @@ export function getMockedGateWayfResponse(idp) {
   return idp === 'nemlogin' ? mockNemloginOk : mockWayfOk;
 }
 
-export function getMockedGateWayfUrl(version, idp, token) {
-  return `${version}/login/identityProviderCallback/${idp}/${token}`;
+export function getMockedGateWayfUrl(idp, token) {
+  return `/login/identityProviderCallback/${idp}/${token}`;
 }

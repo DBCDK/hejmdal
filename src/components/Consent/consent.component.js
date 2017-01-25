@@ -4,7 +4,6 @@
  */
 
 import {form} from 'co-body';
-import {VERSION_PREFIX} from '../../utils/version.util';
 import {CONFIG} from '../../utils/config.util';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
@@ -26,14 +25,14 @@ const consentStore = CONFIG.mock_storage ?
 export async function giveConsentUI(ctx, next) {
   const state = ctx.getState();
   if (!state || !state.serviceClient || !state.serviceClient.id) {
-    ctx.redirect(`${VERSION_PREFIX}/fejl`);
+    ctx.redirect('/fejl');
   }
   else {
     const returnUrl = state.returnUrl ? state.serviceClient.urls.host + state.returnUrl : '';
     const helpText = getText(['consent'], {__SERVICE_CLIENT_NAME__: state.serviceClient.name});
     ctx.render('Consent', {
       attributes: getConsentAttributes(ctx),
-      consentAction: VERSION_PREFIX + '/login/consentsubmit/' + state.smaugToken,
+      consentAction: '/login/consentsubmit/' + state.smaugToken,
       consentFailed: false,
       returnUrl: returnUrl,
       serviceName: state.serviceClient.name,
@@ -103,7 +102,7 @@ async function getConsentResponse(ctx) {
 export async function retrieveUserConsent(ctx, next) {
   const userShouldGiveConsent = await shouldUserGiveConsent(ctx);
   if (userShouldGiveConsent) {
-    ctx.redirect(`${VERSION_PREFIX}/login/consent`);
+    ctx.redirect(`/login/consent`);
   }
   else {
     await next();
@@ -194,9 +193,8 @@ export async function getConsent(ctx) {
 
 /**
  *
- * @param definitionAttributes
- * @param ticketAttributes
- * @returns {{}}
+ * @param ctx
+ * @returns {object}
  */
 function getConsentAttributes(ctx) {
   const state = ctx.getState();

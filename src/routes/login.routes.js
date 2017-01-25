@@ -1,6 +1,5 @@
 import Router from 'koa-router';
 import compose from 'koa-compose';
-import {VERSION_PREFIX} from '../utils/version.util';
 
 import {getAttributes} from '../components/Smaug/smaug.component';
 import {authenticate, identityProviderCallback} from '../components/Identityprovider/identityprovider.component';
@@ -11,7 +10,7 @@ import mapAttributesToTicket from '../utils/attribute.mapper.util';
 import * as Consent from '../components/Consent/consent.component';
 import * as Culr from '../components/Culr/culr.component';
 
-const router = new Router({prefix: VERSION_PREFIX + '/login'});
+const router = new Router({prefix: '/login'});
 
 const identityProviderCallbackRoute = async(ctx, next) => {
   await compose([identityProviderCallback, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute])(ctx, next);

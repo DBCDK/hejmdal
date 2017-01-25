@@ -5,7 +5,6 @@
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {isValidCpr} from '../../utils/cpr.util';
-import {VERSION_PREFIX} from '../../utils/version.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
@@ -23,7 +22,7 @@ import _ from 'lodash';
  */
 export async function authenticate(ctx, next) {
   const state = ctx.getState();
-  const loginURL = `/${VERSION_PREFIX}/login?token=${state.smaugToken}`;
+  const loginURL = `/login?token=${state.smaugToken}`;
 
   try {
     if (!userIsLoggedIn(ctx)) {
@@ -69,7 +68,6 @@ export async function authenticate(ctx, next) {
         serviceClient: state.serviceClient.name,
         loginURL,
         identityProviders,
-        VERSION_PREFIX,
         branches: branches,
         preselctedName: preselctedName,
         preselectedId: preselectedId,
@@ -234,9 +232,8 @@ export async function identityProviderCallback(ctx, next) {
 
 /**
  *
- * @param {Array} identityProviders
- * @param {string} authToken
- * @return {{borchk: null}}
+ * @param {object} state
+ * @return {object}
  */
 function getIdentityProviders(state) {
 
@@ -251,7 +248,7 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
-      action: `${VERSION_PREFIX}/login/identityProviderCallback/borchk/${authToken}`,
+      action: `/login/identityProviderCallback/borchk/${authToken}`,
       abortAction: state.serviceClient.urls.host
     };
   }
@@ -287,7 +284,7 @@ function idenityProviderValidationFailed(ctx, error, libraryId) {
   const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
   const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
-  const startOver = `${VERSION_PREFIX}/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}${preselctedLibrary}`;
+  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}${preselctedLibrary}`;
   ctx.redirect(startOver);
 }
 

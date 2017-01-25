@@ -1,8 +1,7 @@
 import Router from 'koa-router';
-import {VERSION_PREFIX} from '../utils/version.util';
 import {showInfo} from '../components/Info/info.component';
 
-const router = new Router({prefix: VERSION_PREFIX + '/info'});
+const router = new Router({prefix: '/info'});
 
 router.get('/:infoId', showInfo);
 router.get('/:infoId/:localId', showInfo);

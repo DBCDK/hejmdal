@@ -7,7 +7,6 @@ import moment from 'moment';
 
 import {md5} from '../../utils/hash.utils';
 import {CONFIG} from '../../utils/config.util';
-import {VERSION_PREFIX} from '../../utils/version.util';
 import {log} from '../../utils/logging.util';
 
 /**
@@ -68,7 +67,7 @@ function getMockedUniloginUrl(token) {
   const timestamp = moment().utc().format('YYYYMMDDHHmmss');
   const auth = md5(timestamp + CONFIG.unilogin.secret + user);
 
-  return `${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}?auth=${auth}&timestamp=${timestamp}&user=${user}`;
+  return `/login/identityProviderCallback/unilogin/${token}?auth=${auth}&timestamp=${timestamp}&user=${user}`;
 }
 
 /**
@@ -93,5 +92,5 @@ function getLiveUniloginUrl(token) {
  * @return {string}
  */
 function getReturUrl(token) {
-  return `${CONFIG.app.host}${VERSION_PREFIX}/login/identityProviderCallback/unilogin/${token}`;
+  return `${CONFIG.app.host}/login/identityProviderCallback/unilogin/${token}`;
 }
