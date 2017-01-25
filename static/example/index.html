@@ -51,19 +51,23 @@
     <div id="example">
       <h3>Eksempelside -- login.bib.dk</h3>
       <p>Denne side er et eksempel på hvordan kald til login.bib.dk konstrueres og skal ses som en hjælp til udviklere til at komme igang med at udvikle op i mod login.bib.dk</p>
+      <p>For at kunne bruge login.bib.dk er det forudsætning at din applikation er oprettet i <a href="https://openplatform.dbc.dk">Den åbne platform</a> hvorfra der skal genereres et gyldigt token som skal medsendes i requests til login.bib.dk.</p>
+      <hr/>
       <p>
-        Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne<br/>
+        Udfyld felterne herunder, eller brug default værdierne, og klik på login for at teste oplysningerne.<br/>
         Under felterne konstrueres URL'en der skal bruges i en applikation for at lave tilsvarende kald til login.bib.dk
       </p>
       <p>
-        Efter succesfuldt login på login.bib.dk vil brugeren blive redirected til den URL der er specificeret i Den åbne platform under <span class="code">urls.returnUrl</span>.<br/>
-        Hvis eksemplet herunder ikke ændres vil man blive redirected til denne side men med information vedrørende den udstedte ticket i bunden af siden.
+        Efter succesfuld autentifikation på login.bib.dk vil brugeren blive redirected til den URL der er konfigureret i Den åbne platform for den pågældende applikation.<br/>
+        Hvis eksemplet herunder ikke ændres vil man blive redirected til denne side med information vedrørende den udstedte ticket i bunden af siden.
       </p>
       <p>
-        Et eksempel på hvordan konfigurationen i Den åbne platform kan se ud for en applikation der skal bruge login.bib.dk <a href="https://github.com/DBCDK/hejmdal/blob/master/src/components/Smaug/mock/smaug.client.mock.js">kan ses på GitHub</a> men selve arbejdet med at konfigurerer foretages af DBC.
+        En ticket er den måde hvorpå login.bib.dk og en given appliaktion udveklser oplysninger.<br />
+        I Den åbne platform konfigureres det for hver enkelt apllikation, hvilke atrributter den pågældende applikation ønsker retur fra login.bib.dk.
+        En liste over mulige attributter <a href="https://github.com/DBCDK/hejmdal/blob/master/src/utils/attributes.util.js">kan ses på GitHub</a> men vær opmærksom på, at der ikke er nogen garanti for at alle attributter er tilgængelige afhængig af hvilken login-metode brugeren vælger at bruge.
       </p>
       <p>
-        Et token fra Den åbne platform er nødvendigt for at kunne bruge login.bib.dk. Se mere på <a href="https://openplatform.dbc.dk/v1/">https://openplatform.dbc.dk/v1/</a>
+        Et eksempel på hvordan konfigurationen i Den åbne platform kan se ud for en applikation der skal bruge login.bib.dk <a href="https://github.com/DBCDK/hejmdal/blob/master/src/components/Smaug/mock/smaug.client.mock.js">kan ses på GitHub</a> mens selve arbejdet med at konfigurerer foretages i samarbejde med DBC.
       </p>
 
       <div class="input-pair">
@@ -108,13 +112,13 @@
         <span id="currenturl">&nbsp;</span>
       </div>
       <p>
-        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til klienten med to GET parametre sat i URLen - et
-        <span class="code">token</span> og et <span class="code">id</span>
-        (eks.: <span class="code">?token=TOKEN&id=ID</span>).
-        Dette callback konfigureres for den givne applikation i Den åbne platform som beskrevet ovenfor.
+        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til applikationen med to GET parametre sat i URLen:
+        <span class="code">token</span> og <span class="code">id</span>
+        (<span class="code">?token=TOKEN&id=ID</span>).
+        Dette redirect konfigureres for den givne applikation i Den åbne platform som beskrevet ovenfor.
       </p>
       <p>
-        Ved at indløse <span>token</span> og <span>id</span> på
+        Ved at indløse <span class="code">token</span> og <span class="code">id</span> på
         <span class="code">/getTicket/TOKEN/ID</span>
         kan applikationen hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
         Hvilke attributter en applikation kan få udleveret, konfigureres i Den åbne platform.
