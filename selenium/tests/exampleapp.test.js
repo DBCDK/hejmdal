@@ -46,7 +46,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
         "birthDate": null,
         "birthYear": null,
         "gender": null,
-        "libraries": [],
+        "agencies": [],
         "municipality": null,
         "uniloginId": "test1234",
         "wayfId": null,
