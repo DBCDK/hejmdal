@@ -8,7 +8,6 @@
 import {assert} from 'chai';
 
 import LoginPage from '../pageObjects/loginPage';
-import {VERSION_PREFIX} from '../../src/utils/version.util';
 
 describe('Test Consent part of authetication flow', () => {
   let loginPage = null;
@@ -57,7 +56,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = `<form action="${VERSION_PREFIX}/login/consentsubmit/${loginPage.validToken}" method="post">`;
+    const expected = `<form action="/login/consentsubmit/${loginPage.validToken}" method="post">`;
 
     assert.isTrue(formHtml.includes(expected));
   });
@@ -73,7 +72,7 @@ describe('Test Consent part of authetication flow', () => {
   it('should render a form that contains a reject button', () => {
     const consentActions = browser.elements('#consent-actions');
     const formHtml = consentActions.getHTML();
-    const expected = `<a class="buffer-right-20 link-style" id="consent-action-reject" href="/v0/login/consentsubmit/${loginPage.validToken}">Godkend ikke</a>`;
+    const expected = `<a class="buffer-right-20 link-style" id="consent-action-reject" href="/login/consentsubmit/${loginPage.validToken}">Godkend ikke</a>`;
 
     assert.isTrue(formHtml.includes(expected));
   });

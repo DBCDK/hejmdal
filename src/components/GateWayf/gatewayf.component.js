@@ -4,7 +4,6 @@
 
 import {form} from 'co-body';
 import {CONFIG} from '../../utils/config.util';
-import {VERSION_PREFIX} from '../../utils/version.util';
 import {log} from '../../utils/logging.util';
 import {getMockedGateWayfUrl, getMockedGateWayfResponse} from './mock/gatewayf.mock';
 
@@ -47,7 +46,7 @@ export async function getGateWayfResponse(ctx, idp) {
  * @returns {*}
  */
 export function getGateWayfUrl(idp, token) {
-  return CONFIG.mock_externals[idp] ? getMockedGateWayfUrl(VERSION_PREFIX, idp, token) : getLiveGateWayfUrl(idp, token);
+  return CONFIG.mock_externals[idp] ? getMockedGateWayfUrl(idp, token) : getLiveGateWayfUrl(idp, token);
 }
 
 /**
@@ -59,7 +58,7 @@ export function getGateWayfUrl(idp, token) {
  */
 function getLiveGateWayfUrl(idp, token) {
   const base = CONFIG.gatewayf.uri;
-  const returnUrl = `${CONFIG.app.host}${VERSION_PREFIX}/login/identityProviderCallback/${idp}/${token}`;
+  const returnUrl = `${CONFIG.app.host}/login/identityProviderCallback/${idp}/${token}`;
   const wayfIdp = CONFIG.gatewayf.idp[idp];
 
   return `${base}?idp=${wayfIdp}&returnUrl=${returnUrl}`;

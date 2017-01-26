@@ -106,11 +106,11 @@ hejmdal database password
 Specifies the log level used by the application. Defaults to `INFO`
 Log level constants supported:: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
 
+- `MOCK_STORAGE` : `mock_storage`  
+Set to `1` to use memory storage for tickets and consent instead of persistent storage
+
 - `MOCK_BORCHK`: `mock_externals.borchk`
 Set to `1` (`MOCK_BORCHK=1`) to mock borchk and use a predefined response
-
-- `MOCK_CONSENT_STORAGE` : `mock_storage.consent`  
-Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_CULR` : `mock_externals.culr`  
 Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
@@ -120,9 +120,6 @@ set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
  
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
-
-- `MOCK_STORAGE` : `mock_storage.session`  
-Set to `1` to use memory storage instead of persistent storage
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
 set to `1` (`MOCK_SMAUG=1`) to mock Smaug and use a predefined response

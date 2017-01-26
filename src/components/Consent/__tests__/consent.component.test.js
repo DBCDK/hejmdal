@@ -13,8 +13,7 @@ import {
 } from '../consent.component';
 import sinon from 'sinon';
 
-import {initState} from '../../../utils/state.util';
-import {VERSION_PREFIX} from '../../../utils/version.util';
+import {setDefaultState} from '../../../middlewares/state.middleware';
 import {mockContext} from '../../../utils/test.util';
 import {ATTRIBUTES} from '../../../utils/attributes.util';
 
@@ -25,7 +24,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
   beforeEach(() => {
     ctx = mockContext();
-    initState(ctx, next);
+    setDefaultState(ctx, next);
     sandbox = sinon.sandbox.create();
   });
 
@@ -40,7 +39,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       giveConsentUI(ctx, next);
       assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0][0], `${VERSION_PREFIX}/fejl`);
+      assert.equal(ctx.redirect.args[0][0], '/fejl');
     });
   });
 
@@ -48,7 +47,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
     beforeEach(() => {
       ctx = mockContext();
-      initState(ctx, next);
+      setDefaultState(ctx, next);
       ctx.setUser({userId: 'testUser'});
 
       ctx.setState({
@@ -177,7 +176,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       // ensuring the user is redirected to the consent page
       assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0], `${VERSION_PREFIX}/login/consent`);
+      assert.equal(ctx.redirect.args[0], '/login/consent');
     });
   });
 

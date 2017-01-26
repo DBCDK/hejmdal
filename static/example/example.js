@@ -1,6 +1,6 @@
 /* eslint-disable */
 window.hejmdal = {
-  host: `${window.location.origin}/v0`,
+  host: `${window.location.origin}`,
   path: `/login`,
   token: '',
   tickettoken: null,
@@ -80,7 +80,7 @@ function setState() {
   document.getElementById('input-login-path').value = window.hejmdal.path;
   document.getElementById('input-login-token').value = window.hejmdal.token;
   document.getElementById('input-preselected-library').value = window.hejmdal.presel;
-  document.getElementById('input-login-token').value = window.hejmdal.token;
+  document.getElementById('input-locked-library').value = window.hejmdal.agency;
 
   let url = `${window.hejmdal.host}${window.hejmdal.path}?token=${window.hejmdal.token}`;
   if(window.hejmdal.presel.length >= 1){
