@@ -32,7 +32,7 @@ block append content
           li.attribute#attribute(data-toggle="collapse" href="#toggle-" + attribute.key aria-expanded="false") #{attribute.name}
             a.right-text
               span.glyphicon.glyphicon-info-sign(aria-hidden="true")
-          div.collapse.italic.indent(id="toggle-" + attribute.key) #{attribute.description}
+            div.collapse.italic.indent(id="toggle-" + attribute.key) #{attribute.description}
 
       div.buffer-vertical-10.pull-right#consent-actions
         form(action=consentAction method='post')
