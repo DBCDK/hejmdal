@@ -54,8 +54,16 @@ function mapCulrResponse(culr, attributes, user) {
 
       libraries.push({
         libraryid: account.provider,
-        loanerid: account.userIdValue
+        loanerid: account.userIdValue,
+        loaneridType: account.userIdType
       });
+    });
+  }
+  else if (cpr && user.libraryId) {
+    libraries.push({
+      libraryid: user.libraryId,
+      loanerid: cpr,
+      loaneridType: 'CPR'
     });
   }
   if (cpr) {

@@ -118,7 +118,7 @@ Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 - `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
 set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
  
-- `MOCK_OPENAGENCY`: `mock_externals.openAgency`
+- `MOCK_OPENAGENCY`: `mock_externals.openAgency`  
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
@@ -163,7 +163,7 @@ UNI-Login Secret
 - `UNI_LOGIN_URL` : `unilogin.uniloginBasePath`  
 UNI-Login base URL (`https://sso.emu.dk/unilogin/login.cgi`)
 
-- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`
+- `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`  
   Max age of the ticket returned from UNI-Login upon successful authetication.  
   UNI-Loing recommends this value to be set to 60 seconds which is default in Hejmdal.
 
@@ -172,7 +172,7 @@ Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 
 # Dokumentation
 ## Endpoints
-- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl&agency=myAgencyId` 
+- `/login?token=ABC_123&returnurl=someRelativeCallBackUrl&agency=myAgencyId`  
 Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.    
 The login url takes the following parameters as arguments. All of them is testable in the exampleapplication found on `/example/`:
   - `agency`  
@@ -185,6 +185,6 @@ The login url takes the following parameters as arguments. All of them is testab
   By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
     
 
-- `/logout` eller `/logout?returnurl=someRelativeCallBackUrl` 
+- `/logout` eller `/logout?returnurl=someRelativeCallBackUrl`  
 The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
 
