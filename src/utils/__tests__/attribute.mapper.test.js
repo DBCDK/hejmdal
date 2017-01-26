@@ -49,9 +49,9 @@ describe('Attribute mapper unittest', () => {
       birthYear: '2045',
       gender: 'm',
       cpr: '0102456789',
-      libraries: [
-        {libraryid: '000111', loanerid: '0102456789'},
-        {libraryid: '111222', loanerid: '222333'}
+      agencies: [
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
       municipality: '333'
     });
@@ -131,9 +131,9 @@ describe('Attribute mapper unittest', () => {
 
     mapAttributesToTicket(ctx, next);
     assert.deepEqual(ctx.session.state.ticket.attributes, {
-      libraries: [
-        {libraryid: '000111', loanerid: '0102456789'},
-        {libraryid: '111222', loanerid: '222333'}
+      agencies: [
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ]
     });
   });
@@ -153,9 +153,9 @@ describe('Attribute mapper unittest', () => {
 
     mapAttributesToTicket(ctx, next);
     assert.deepEqual(ctx.session.state.ticket.attributes, {
-      libraries: [
-        {libraryid: '000111', loanerid: '0102456789'},
-        {libraryid: '111222', loanerid: '222333'}
+      agencies: [
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
       municipality: null
     });

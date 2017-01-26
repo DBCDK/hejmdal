@@ -43,7 +43,7 @@ function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
 
   let cpr = user.cpr || null;
-  let libraries = [];
+  let agencies = [];
   let fromCpr = {};
 
   if (culr.accounts && Array.isArray(culr.accounts)) {
@@ -52,18 +52,18 @@ function mapCulrResponse(culr, attributes, user) {
         cpr = account.userIdValue;
       }
 
-      libraries.push({
-        libraryid: account.provider,
-        loanerid: account.userIdValue,
-        loaneridType: account.userIdType
+      agencies.push({
+        agencyId: account.provider,
+        userId: account.userIdValue,
+        userIdType: account.userIdType
       });
     });
   }
   else if (cpr && user.libraryId) {
-    libraries.push({
-      libraryid: user.libraryId,
-      loanerid: cpr,
-      loaneridType: 'CPR'
+    agencies.push({
+      agencyId: user.libraryId,
+      userId: cpr,
+      userIdType: 'CPR'
     });
   }
   if (cpr) {
@@ -81,8 +81,9 @@ function mapCulrResponse(culr, attributes, user) {
       case 'cpr':
         mapped.cpr = cpr;
         break;
+      case 'agencies':
       case 'libraries':
-        mapped.libraries = libraries;
+        mapped.agencies = agencies;
         break;
       case 'municipality':
         mapped.municipality = culr.municipalityNumber || null;
