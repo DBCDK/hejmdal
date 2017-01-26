@@ -123,7 +123,7 @@ describe('Test Consent part of authetication flow', () => {
       birthDate: null,
       birthYear: null,
       gender: null,
-      libraries: [],
+      agencies: [],
       municipality: null,
       uniloginId: 'test1234',
       wayfId: null
