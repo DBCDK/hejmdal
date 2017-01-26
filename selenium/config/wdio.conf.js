@@ -1,8 +1,6 @@
 /* eslint-disable */
 require('babel-register');
 
-const VERSION_PREFIX = require('./../../src/utils/version.util.js').VERSION_PREFIX;
-
 let config = {
 
   //
@@ -73,7 +71,7 @@ let config = {
   //
   // Set a base URL in order to shorten url command calls. If your url parameter starts
   // with "/", then the base url gets prepended.
-  baseUrl: `${process.env.HOST}${VERSION_PREFIX}`,
+  baseUrl: `${process.env.HOST}`,
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
