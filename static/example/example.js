@@ -52,7 +52,6 @@ function openTicket() {
 }
 
 function resetToDefault() {
-  window.localStorage.removeItem('hejmdal');
   window.location = `${window.hejmdal.host}/logout?returnurl=/example/`;
 }
 
@@ -106,7 +105,6 @@ function setState() {
 
   // Ticket
   if (window.hejmdal.ticket) {
-    // if ticket has been stored in localStorage it will be a string and JSON.stringify will fail
     if (typeof window.hejmdal.ticket === 'string') {
       window.hejmdal.ticket = JSON.parse(window.hejmdal.ticket);
     }
@@ -114,25 +112,12 @@ function setState() {
   }
 
   document.getElementById('ticket').textContent = JSON.stringify(window.hejmdal.ticket, null, '  ') || '&nbsp;';
-
-  window.localStorage.setItem('hejmdal', JSON.stringify(window.hejmdal));
 }
 
 /**
  * Init method called by the end of HTML rendering
  */
 function init() {
-  const storage = window.localStorage.getItem('hejmdal');
-
-  if (storage) {
-    try {
-      window.hejmdal = JSON.parse(storage)
-    }
-    catch (e) {
-      console.error('Could not object from localStorage', e);
-    }
-  }
-
   if (queryObj.token) {
     window.hejmdal.tickettoken = queryObj.token;
     window.hejmdal.ticketid = queryObj.id;
