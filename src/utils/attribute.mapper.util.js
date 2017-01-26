@@ -7,6 +7,7 @@
 
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
+import {createHash} from './hash.utils';
 
 /**
  * Attribute mapper
@@ -23,7 +24,7 @@ export default async function mapAttributesToTicket(ctx, next) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
 
-    const ticketAttributes = mapCulrResponse(culr, serviceAttributes, user);
+    const ticketAttributes = mapCulrResponse(culr, serviceAttributes, user, state.serviceClient.id);
 
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
@@ -36,10 +37,11 @@ export default async function mapAttributesToTicket(ctx, next) {
  *
  * @param {object} culr The CULR reponse object
  * @param {object} attributes The attributes object defined in Smaug
+ * @param {string} serviceId string
  * @see ATTRIBUTES
  * @return {{}}
  */
-function mapCulrResponse(culr, attributes, user) {
+function mapCulrResponse(culr, attributes, user, serviceId) {
   let mapped = {};
 
   let cpr = user.cpr || null;
@@ -66,6 +68,7 @@ function mapCulrResponse(culr, attributes, user) {
       userIdType: 'CPR'
     });
   }
+
   if (cpr) {
     fromCpr = mapFromCpr(cpr);
   }
@@ -94,6 +97,9 @@ function mapCulrResponse(culr, attributes, user) {
       case 'wayfId':
         mapped.wayfId = user.wayfId ? user.wayfId : null;
         break;
+      case 'uniqueId':
+        mapped.uniqueId = createUniqueId(user.cpr, serviceId);
+        break;
       default:
         log.error('Cannot map attribute: ' + field);
         break;
@@ -101,4 +107,16 @@ function mapCulrResponse(culr, attributes, user) {
   });
 
   return mapped;
+}
+
+/**
+ * Creates a unique user id for the
+ * @param {string} userId - user identification
+ * @param {string} serviceId - aservice identification
+ * @returns {string}
+ */
+function createUniqueId(userId, serviceId) {
+  if (userId && serviceId) {
+    return createHash(userId + ':' + serviceId);
+  }
 }

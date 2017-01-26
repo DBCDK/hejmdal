@@ -4,7 +4,7 @@
  * Describe the attributes supported by hejmdal.
  *
  * Each service specified in Smaug, can ask for one or more of these attributes.
- * The values of the attributes are fetched from CULR
+ * The values of the attributes are fetched from CULR and/or the IDP
  *
  */
 
@@ -40,5 +40,9 @@ export const ATTRIBUTES = {
   wayfId: {
     name: 'WAYF id',
     description: 'Brugerens identifikation hos WAYF'
+  },
+  uniqueId: {
+    name: 'Bibliotekslogin id',
+    description: 'Anonymiseret identifikation hos Bibliotekslogin'
   }
 };

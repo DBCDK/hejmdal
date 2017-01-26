@@ -2,6 +2,7 @@ import {assert} from 'chai';
 import sinon from 'sinon';
 
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
+import {createHash} from '../../utils/hash.utils';
 import {mockContext} from '../../utils/test.util';
 import {log} from '../../utils/logging.util';
 
@@ -9,6 +10,7 @@ describe('Attribute mapper unittest', () => {
   const next = () => {
   };
 
+  const serviceId = 'a799f79-9797as979-4jk44-323332ed34';
   const user = {};
   const culr = {
     accounts: [
@@ -34,10 +36,12 @@ describe('Attribute mapper unittest', () => {
 
   it('map all possible values', () => {
     const ctx = mockContext();
+    ctx.setUser({cpr: '0102456789'});
     ctx.setState({
       culr: culr,
       serviceClient: {
-        attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}, libraries: {}, municipality: {}}
+        id: serviceId,
+        attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}, libraries: {}, municipality: {}, uniqueId: {}}
       },
       ticket: {}
     });
@@ -53,6 +57,7 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
+      uniqueId: createHash('0102456789:' + serviceId),
       municipality: '333'
     });
   });
