@@ -62,6 +62,10 @@ describe('Test Smaug component', () => {
         wayfId: {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
+        },
+        uniqueId: {
+          name: 'Bibliotekslogin id',
+          description: 'Anonymiseret identifikation hos Bibliotekslogin'
         }
       },
       urls: {
