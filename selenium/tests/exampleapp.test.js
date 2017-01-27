@@ -74,8 +74,6 @@ describe('Testing the Example appliction using UNI-Login', function() {
     browser.click('#login-button');
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
-    // Click on accept consent button
-    browser.click('#consent-action-accept');
     const ticket = browser.getText('#tickettoken');
     assert.isOk(ticket);
 
