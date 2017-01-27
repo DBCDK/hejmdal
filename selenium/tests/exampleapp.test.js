@@ -17,7 +17,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
     assert.isTrue(examplePageUrl.includes('/example/'));
 
-    // Click login button on axample page
+    // Click login button on example page
     browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
 
@@ -26,7 +26,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click on accept consent button
     browser.click('#consent-action-accept');
 
-    // Assert that additional information containing a ticket-token and -id is shoen
+    // Assert that additional information containing a ticket-token and -id is shown
     assert.isTrue(browser.isVisible('#post-success'));
 
     // assert
@@ -74,10 +74,13 @@ describe('Testing the Example appliction using UNI-Login', function() {
     browser.click('#login-button');
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
-    const ticket = browser.getText('#tickettoken');
-    assert.isOk(ticket);
+
+    const ticketToken = browser.getText('#tickettoken');
+    console.log('token, ticketToken');
+    assert.isOk(ticketToken);
 
     const ticketId = browser.getText('#ticketid');
+    console.log('id, ticketId');
     assert.isOk(ticketId);
 
     // Repeating the above steps as we're now logged in
@@ -88,7 +91,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
     assert.isTrue(examplePageUrl2.includes('/example/'));
 
-    // Click login button on axample page
+    // Click login button on example page
     browser.click('#login-button');
 
     // at this point above we clicked the UNI-Login button but since we're now logged
