@@ -72,16 +72,13 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click login button on example page
     browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
-    console.log('first login', browser.getUrl());
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
 
     const ticketToken = browser.getText('#tickettoken');
-    console.log('token', ticketToken);
     assert.isOk(ticketToken);
 
     const ticketId = browser.getText('#ticketid');
-    console.log('id', ticketId);
     assert.isOk(ticketId);
 
     // Repeating the above steps as we're now logged in
@@ -99,13 +96,10 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // at this point above we clicked the UNI-Login button but since we're now logged
     // in we should skip this step be sent straight back to our origin with a new
     // ticket and ticket id
-    console.log('after login', browser.getUrl());
     const ticketToken2 = browser.getText('#tickettoken');
-    console.log('token2', ticketToken2);
     assert.isOk(ticketToken2);
 
     const ticketId2 = browser.getText('#ticketid');
-    console.log('is', ticketId2);
     assert.isOk(ticketId2);
 
     assert.notEqual(ticketToken, ticketToken2);
