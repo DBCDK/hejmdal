@@ -72,6 +72,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // Click login button on example page
     browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
+    console.log('first login', browser.getUrl());
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
 
@@ -92,6 +93,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isTrue(examplePageUrl2.includes('/example/'));
 
     // Click login button on example page
+    browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
 
     // at this point above we clicked the UNI-Login button but since we're now logged
