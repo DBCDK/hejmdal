@@ -69,11 +69,13 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
     assert.isTrue(examplePageUrl.includes('/example/'));
 
-    // Click login button on axample page
+    // Click login button on example page
     browser.setValue('#input-login-token', page.validToken);
     browser.click('#login-button');
     // Click UNI-Login on IdentityProvider select page
     browser.click('#unilogin-btn');
+    // Click on accept consent button
+    browser.click('#consent-action-accept');
     const ticket = browser.getText('#tickettoken');
     assert.isOk(ticket);
 
