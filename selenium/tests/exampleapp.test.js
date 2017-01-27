@@ -97,6 +97,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     // at this point above we clicked the UNI-Login button but since we're now logged
     // in we should skip this step be sent straight back to our origin with a new
     // ticket and ticket id
+    console.log('after login', browser.getUrl());
     const ticketToken2 = browser.getText('#tickettoken');
     console.log('token2', ticketToken2);
     assert.isOk(ticketToken2);
