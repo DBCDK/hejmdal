@@ -34,7 +34,7 @@
 .glyphicon-info-sign {
   color: gray;
   cursor: pointer;
-}
+}:window-inactive
 
 .italic {
   font-style: italic;
@@ -73,3 +73,10 @@ li.attribute {
   position: relative;
   float: right;
 }
+
+.clear {
+  clear: both;
+}
+.help-text {
+  text-align: center;
+  padding-top: 3em;}
