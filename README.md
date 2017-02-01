@@ -100,7 +100,7 @@ Name of hejmdals database
 Database user
 
 - `HEJMDAL_DB_USER_PASSWORD` : `postgres.connection.password`  
-hejmdal database password
+hejmdal database password.
 
 - `LOG_LEVEL` : `log.level`  
 Specifies the log level used by the application. Defaults to `INFO`
