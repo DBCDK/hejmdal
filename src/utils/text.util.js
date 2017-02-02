@@ -17,7 +17,7 @@ const helpTexts = {
         texts: [
           'For at logge ind, skal du godkende, at dine oplysninger bliver videregivet til __SERVICE_CLIENT_NAME__. Du skal kun godkende én gang.',
           'Oplysningerne overføres krypteret, så de ikke kan opfanges af andre.',
-          'Hvis du afviser, vil oplysningerne ikke blive overført til __SERVICE_CLIENT_NAME__, og du ikke blive logget ind. ' +
+          'Hvis du afviser, vil oplysningerne ikke blive overført til __SERVICE_CLIENT_NAME__, og du vil ikke blive logget ind. ' +
           'Dine oplysninger vil heller ikke blive gemt andre steder. ' +
           'Næste gang du vil logge ind til __SERVICE_CLIENT_NAME__, vil du derfor igen blive bedt om at godkende.'
         ]
