@@ -176,7 +176,7 @@ Set to `local` to run selenium tests locally. Defaults to `saucelabs`
 Login URL. If the token parameter is incorrect (or missing) a http error 403 is returned. The returnurl specifies the relative callbach url for the calling service. If the agency (6-digit library number) is set, the borchk identity provider will automatically select the agency.    
 The login url takes the following parameters as arguments. All of them is testable in the exampleapplication found on `/example/`:
   - `agency`  
-  Locks the library input fied to one specific library (agency) and the user wont be able to change the selection. I.e `agency=743000`
+  Locks the library input fied to one specific library (agency) and the user wont be able to change the selection... I.e `agency=743000`
   - `presel`  
   Same as the above agency parameter but the field is not locked and the user will be able to change the selection. I.e `presel=743000`
   - `agencytype`  
