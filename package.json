@@ -80,7 +80,7 @@
     "wdio-junit-reporter": "^0.2.0",
     "wdio-mocha-framework": "^0.5.2",
     "wdio-sauce-service": "^0.3.0",
-    "wdio-selenium-standalone-service": "0.0.7",
+    "wdio-selenium-standalone-service": "0.0.8",
     "webdriverio": "^4.6.1"
   }
 }
