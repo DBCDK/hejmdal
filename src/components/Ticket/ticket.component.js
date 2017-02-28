@@ -48,7 +48,8 @@ export async function storeTicket(ctx, next) {
  * @returns {*}
  */
 export async function getTicket(ctx, next) {
-  const ticket = ctx.getState().ticket;
+  const state = ctx.getState();
+  const ticket = state ? state.ticket : {};
   ticket.attributes = false;
 
   if (ctx.params.token && ctx.params.id) {

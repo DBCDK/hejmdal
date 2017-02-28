@@ -10,6 +10,7 @@ const mockNemloginOk = {
   mail: [],
   schacPersonalUniqueID: ['urn:mace:terena.org:schac:personalUniqueID:dk:CPR:0102030405'],
   eduPersonTargetedID: ['WAYF-DK-some-long-md5-like-string'],
+  hash: 'md5:shac...+edu...+salt',
   groups: {
     users: [],
     members: []
@@ -19,6 +20,7 @@ const mockWayfOk = {
   mail: [],
   schacPersonalUniqueID: ['urn:mace:terena.org:schac:personalUniqueID:dk:CPR:0102030405'],
   eduPersonTargetedID: ['WAYF-DK-some-other-md5-like-string'],
+  hash: 'md5:shac...+edu...+salt',
   groups: {
     users: [],
     members: []
