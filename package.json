@@ -42,7 +42,7 @@
     "babel-plugin-transform-class-properties": "^6.16.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
     "babel-register": "^6.16.3",
-    "co-body": "^4.2.0",
+    "co-body": "^5.0.0",
     "knex": "0.12.7",
     "koa": "^2.0.1",
     "koa-bodyparser": "^4.0.0",
