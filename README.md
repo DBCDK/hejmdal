@@ -102,6 +102,9 @@ Database user
 - `HEJMDAL_DB_USER_PASSWORD` : `postgres.connection.password`  
 hejmdal database password.
 
+- `HOST` : `app.host`  
+The address og the application (including protocol and port number)
+
 - `LOG_LEVEL` : `log.level`  
 Specifies the log level used by the application. Defaults to `INFO`
 Log level constants supported:: `OFF` (0), `ERROR` (1), `WARN` (2), `WARNING` (2), `INFO` (3), `DEBUG` (4), `TRACE` (5)
