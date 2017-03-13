@@ -103,7 +103,7 @@ Database user
 hejmdal database password.
 
 - `HOST` : `app.host`  
-The address og the application (including protocol and port number)
+The address og the application (including protocol and port number).
 
 - `LOG_LEVEL` : `log.level`  
 Specifies the log level used by the application. Defaults to `INFO`
