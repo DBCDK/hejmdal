@@ -1,5 +1,5 @@
 div#borchk
-  form(action=identityProviders.borchk.action method='post')
+  form(action=identityProviders.borchk.action autocomplete='off' method='post')
     div.form-group
       if lockedAgency
         label(for='libraryid-input') Bibliotek
@@ -8,7 +8,7 @@ div#borchk
       else
         label(for='libraryid-input') Bibliotek
         div.input-group
-          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' autocomplete='off' required='true' value=preselctedName)
+          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselctedName)
           input(type="hidden" name="libraryId" id="libraryid-input-hidden" aria-hidden='true' value=preselectedId )
           div.input-group-btn.black
             button.btn.inline-btn-default.dropdown-toggle(type='button' class=preselctedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
