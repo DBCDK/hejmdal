@@ -70,7 +70,7 @@
     "mocha-jenkins-reporter": "0.3.6",
     "nodemon": "^1.11.0",
     "npm-check-updates": "^2.10.1",
-    "postcss-cli": "^3.1.1",
+    "postcss-cli": "^2.6.0",
     "postcss-custom-properties": "^5.0.1",
     "postcss-import": "^9.0.0",
     "postcss-inline-svg": "^2.2.0",
