@@ -11,7 +11,7 @@ var currentSearchValue = '';
 var libraryInput;
 var libraryIdInput;
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var body = document.getElementsByTagName('body')[0];
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input-hidden');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
   librariesDropdownContainer = document.getElementById('libraries-dropdown-container');
   allAgencies = document.getElementsByClassName('agency');
 
-  libraryInput.addEventListener('keyup', function() {
+  libraryInput.addEventListener('keyup', function () {
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
       toggleBorchkDropdown();
@@ -32,14 +32,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   libraryInput.addEventListener('keydown', handleKeyDown);
 
-  body.addEventListener('mousedown', function(e) {
+  body.addEventListener('mousedown', function (e) {
     if (e.target.className.includes('glyphicon')) {
       return;
     }
     toggleDropdown(false);
   });
 
-  librariesDropdownContainer.addEventListener('mousedown', function(e) {
+  librariesDropdownContainer.addEventListener('mousedown', function (e) {
     e.stopPropagation();
   });
 
@@ -251,6 +251,12 @@ function toggleVisibleLibraries() {
     var shouldHide = !allAgencies.item(i).textContent.toLowerCase().includes(currentSearchValue.toLowerCase());
     item.classList.toggle('hide', shouldHide);
 
+    for (var j = 0; j < currentlyVisibleAgencies.length; j++) {
+      if (currentlyVisibleAgencies[j].innerText === item.innerText) {
+        shouldHide = true;
+        item.classList.add('hide');
+      }
+    }
     if (!shouldHide) {
       currentlyVisibleAgencies.push(item);
       currentlySelectedIndex = -1;
@@ -342,7 +348,7 @@ function addElementToLocalStorage({branchName, branchId}) {
   const storedAgencies = localStorage.getItem('agencies');
   const agencies = storedAgencies ? JSON.parse(storedAgencies) : [];
   let indexOfExistingItem = -1;
-  agencies.find(function(element, index) {
+  agencies.find(function (element, index) {
     if (element.branchId === branchId) {
       indexOfExistingItem = index;
     }
@@ -382,7 +388,7 @@ function setRecentlySelectedLibraries() {
   latestHeader.classList.remove('hide');
   alphabeticalHeader.classList.remove('hide');
 
-  agencies.forEach(function(agency) {
+  agencies.forEach(function (agency) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.classList.add('agency');
@@ -405,7 +411,7 @@ function removeExistingRecentlySelectedLibraries() {
     lis.push(li);
   }
 
-  lis.forEach(function(_li) {
+  lis.forEach(function (_li) {
     _li.parentNode.removeChild(_li);
   });
 }
