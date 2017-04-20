@@ -23,16 +23,26 @@ export async function stateMiddleware(ctx, next) {
 export async function setDefaultState(ctx, next) {
   ctx.session.state = {
     consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
-    returnUrl: ctx.query.returnurl === 'null' ? null : ctx.query.returnurl || null,
-    serviceAgency: ctx.query.agency === 'null' ? null : ctx.query.agency || null,
+    returnUrl: handleNullFromUrl(ctx.query.returnurl),
+    serviceAgency: handleNullFromUrl(ctx.query.agency),
     serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
-    smaugToken: ctx.query.token === 'null' ? null : ctx.query.token || null,
+    smaugToken: handleNullFromUrl(ctx.query.token),
     ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object
   };
 
   ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
 
   await next();
+}
+
+/**
+ * return null if value is the string 'null'
+ *
+ * @param urlValue
+ * @returns {*}
+ */
+function handleNullFromUrl(urlValue) {
+  return urlValue === 'null' ? null : urlValue || null;
 }
 
 /**
