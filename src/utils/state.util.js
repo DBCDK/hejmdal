@@ -12,10 +12,10 @@ export async function initState(ctx, next) {
     state: {
       consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
       culr: null,
-      returnUrl: ctx.query.returnurl || null,
-      serviceAgency: ctx.query.agency || null,
+      returnUrl: ctx.query.returnurl === 'null' ? null : ctx.query.returnurl || null,
+      serviceAgency: ctx.query.agency === 'null' ? null : ctx.query.agency || null,
       serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
-      smaugToken: ctx.query.token || null
+      smaugToken: ctx.query.token === 'null' ? null : ctx.query.token || null
     },
     user: {}  // contains the userId, userIdType, identityProviders
   }, ctx.session || {});
