@@ -61,10 +61,11 @@ export async function authenticate(ctx, next) {
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(branch);
       const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
+      const returnUrl = state.serviceClient.urls.host + (state.returnUrl ? state.returnUrl : state.serviceClient.urls.returnUrl);
 
       ctx.render('Login', {
         error: error,
-
+        returnUrl: returnUrl,
         serviceClient: state.serviceClient.name,
         loginURL,
         identityProviders,
