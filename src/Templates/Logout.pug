@@ -15,15 +15,20 @@ block append content
         div.buffer-1-1
           strong Hvis du vil logge ud af alle sider, skal du derfor lukke alle vinduer og faner i din browser
     div &nbsp;
+    div.buffer-vertical-5
     if returnurl
-      div.buffer-vertical-5
-        a(class="link-style" href=returnurl) Tilbage til #{serviceName}
+      a(class="link-style" href=returnurl) Tilbage til #{serviceName}
+    else
+      a(class="link-style" onClick='window.history.back(); return false;') Tilbage
   else
     div
       div.h3
         strong Fejl
       div.buffer-1-1
         strong Du var ikke logget ind med Bibliotekslogin
+      div &nbsp;
+      div.buffer-vertical-5
+        a(class="link-style" onClick='window.history.back(); return false;') Tilbage
     div &nbsp;
 
   div &nbsp;
