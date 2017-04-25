@@ -59,6 +59,10 @@ describe('Test Smaug component', () => {
           name: 'UNI-login brugernavn',
           description: 'Brugerens identifikation hos UNI-Login'
         },
+        userId: {
+          name: "Biblioteks bruger-id",
+          description: "Brugerens identitet på biblioteket - oftest CPR-nummer"
+        },
         wayfId: {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
