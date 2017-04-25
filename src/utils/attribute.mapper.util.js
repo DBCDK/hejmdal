@@ -37,6 +37,7 @@ export default async function mapAttributesToTicket(ctx, next) {
  *
  * @param {object} culr The CULR reponse object
  * @param {object} attributes The attributes object defined in Smaug
+ * @param {object} user data returned by the idp
  * @param {string} serviceId string
  * @see ATTRIBUTES
  * @return {{}}
@@ -93,6 +94,9 @@ function mapCulrResponse(culr, attributes, user, serviceId) {
         break;
       case 'uniloginId':
         mapped.uniloginId = user.userType === 'unilogin' && user.userId ? user.userId : null;
+        break;
+      case 'userId':
+        mapped.userId = user.userId;
         break;
       case 'wayfId':
         mapped.wayfId = user.wayfId ? user.wayfId : null;

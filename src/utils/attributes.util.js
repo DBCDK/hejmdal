@@ -37,6 +37,10 @@ export const ATTRIBUTES = {
     name: 'UNI-login brugernavn',
     description: 'Brugerens identifikation hos UNI-Login'
   },
+  userId: {
+    name: 'Biblioteks brugernummer',
+    description: 'Biblioteks bruger id nummer - oftest CPR-nummer'
+  },
   wayfId: {
     name: 'WAYF id',
     description: 'Brugerens identifikation hos WAYF'
