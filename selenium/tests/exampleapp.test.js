@@ -43,6 +43,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     const expected = {
       "attributes": {
         "cpr": null,
+        "userId": 'test1234',
         "birthDate": null,
         "birthYear": null,
         "gender": null,
