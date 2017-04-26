@@ -38,3 +38,4 @@ selenium/*.png
 # STATICS #
 # ==========
 static/css
+static/js
