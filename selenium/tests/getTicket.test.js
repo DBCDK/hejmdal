@@ -34,17 +34,17 @@ describe('Testing the getTicket endpoint', () => {
     browser.url(`/getTicket/${ticketToken}/${ticketId}`);
 
     const body = browser.getText('body');
-    const expectedValidTicket = `{"attributes":{"cpr":null,"birthDate":null,"birthYear":null,"gender":null,"agencies":[],"municipality":null,"uniloginId":"test1234","wayfId":null},"id":${ticketId},"token":"${ticketToken}"}`; // eslint-disable-line
+    const expectedValidTicket = `{"id":${ticketId},"token":"${ticketToken}","attributes":{"cpr":null,"gender":null,"userId":"test1234","wayfId":null,"agencies":[],"birthDate":null,"birthYear":null,"uniloginId":"test1234","municipality":null}}`; // eslint-disable-line
 
     // ensure the ticket is as expected
     assert.deepEqual(JSON.parse(body), JSON.parse(expectedValidTicket));
 
-    // Going t getTikcet again with the same token and id should give an empty ticket as it now should be deleted
+    // Going to getTicket again with the same token and id should give an empty ticket as it now should be deleted
 
     browser.url(`/getTicket/${ticketToken}/${ticketId}`);
 
     const body2 = browser.getText('body');
-    const expectedValidTicket2 = `{"attributes":null,"id":${ticketId},"token":"${ticketToken}"}`;
+    const expectedValidTicket2 = `{"id":${ticketId},"token":"${ticketToken}","attributes":null}`;
 
     // ensure the ticket is as expected
     assert.deepEqual(JSON.parse(body2), JSON.parse(expectedValidTicket2));

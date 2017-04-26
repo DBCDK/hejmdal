@@ -42,8 +42,9 @@ describe('Test Consent part of authetication flow', () => {
     const attributes = serviceClient.attributes;
 
     Object.keys(attributes).forEach((key) => {
-      const name = attributes[key].name;
+      const name = '>' + attributes[key].name + '<';
       switch (key) {
+        case 'userId':
         case 'uniloginId':
           assert.isTrue(formHtml.includes(name));
           break;
@@ -120,6 +121,7 @@ describe('Test Consent part of authetication flow', () => {
     const ticketAttributes = ticket.attributes;
     assert.deepEqual(ticketAttributes, {
       cpr: null,
+      userId: 'test1234',
       birthDate: null,
       birthYear: null,
       gender: null,

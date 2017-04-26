@@ -20,6 +20,7 @@ describe('Test Borchk component', () => {
     browser.setValue('#userid-input', '87654321');
     browser.setValue('#pin-input', '1234');
     browser.click('#borchk-submit');
+    browser.click('#consent-action-accept');
     assert.isNotNull(loginPage.getTicket().id);
     browser.deleteCookie();
   });
