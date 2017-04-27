@@ -38,13 +38,13 @@
     "node": ">=6.7.0"
   },
   "dependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.18.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-register": "^6.18.0",
-    "co-body": "^5.0.0",
+    "co-body": "^5.1.1",
     "knex": "0.12.7",
-    "koa": "^2.0.1",
+    "koa": "^2.2.0",
     "koa-bodyparser": "^4.0.0",
     "koa-combine-routers": "^1.0.0",
     "koa-convert": "^1.2.0",
@@ -55,14 +55,14 @@
     "koa-session2": "^2.1.1",
     "koa-static": "^3.0.0",
     "lodash": "https://registry.npmjs.org/lodash/-/lodash-4.17.2.tgz",
-    "moment": "^2.16.0",
+    "moment": "^2.18.1",
     "objection": "^0.7.1",
     "pg": "^6.1.0",
     "soap": "^0.19.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.3",
-    "babel-eslint": "^7.0.0",
+    "babel-eslint": "^7.2.2",
     "chai": "^3.5.0",
     "cssnano": "^3.7.7",
     "eslint": "^3.16.0",
@@ -83,6 +83,6 @@
     "wdio-mocha-framework": "^0.5.2",
     "wdio-sauce-service": "^0.4.0",
     "wdio-selenium-standalone-service": "0.0.8",
-    "webdriverio": "^4.6.1"
+    "webdriverio": "^4.7.1"
   }
 }
