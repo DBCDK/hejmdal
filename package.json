@@ -43,7 +43,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-register": "^6.24.1",
     "co-body": "^5.1.1",
-    "knex": "0.12.9",
+    "knex": "0.13.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-combine-routers": "^1.0.0",
