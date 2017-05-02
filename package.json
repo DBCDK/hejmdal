@@ -83,6 +83,6 @@
     "wdio-mocha-framework": "^0.5.10",
     "wdio-sauce-service": "^0.4.0",
     "wdio-selenium-standalone-service": "0.0.8",
-    "webdriverio": "^4.7.1"
+    "webdriverio": "^4.8.0"
   }
 }
