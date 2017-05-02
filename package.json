@@ -42,6 +42,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
     "babel-register": "^6.24.1",
+    "brace-expansion": "^1.1.7",
     "co-body": "^5.1.1",
     "knex": "0.13.0",
     "koa": "^2.2.0",
