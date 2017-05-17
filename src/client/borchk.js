@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
   libraryInput.addEventListener('keydown', handleKeyDown);
 
   body.addEventListener('mousedown', function (e) {
-    if (e.target.className.includes('glyphicon')) {
+    if (e.target.className.indexOf('glyphicon') !== -1) {
       return;
     }
     toggleDropdown(false);
