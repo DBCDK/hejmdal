@@ -114,7 +114,7 @@ function parseKeyCode(keyCode) {
  */
 function handleKeyDown(e) {
   if (!e.key && e.keyCode) {
-    e['key'] = parseKeyCode(e.keyCode);
+    e.key = parseKeyCode(e.keyCode);
   }
   if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
     e.preventDefault();
