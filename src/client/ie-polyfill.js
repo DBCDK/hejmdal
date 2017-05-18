@@ -1,4 +1,5 @@
-/*! Created by MDN {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find} */
+/* eslint-disable */
+// Created by MDN {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find}
 if (!Array.prototype.find) {
   Array.prototype.find = function(predicate) {
     if (this === null) {
@@ -26,7 +27,7 @@ if (!Array.prototype.find) {
 ;(function() {
   // helpers
   var regExp = function(name) {
-    return new RegExp('(^| )'+ name +'( |$)');
+    return new RegExp('(^| )' + name + '( |$)');
   };
   var forEach = function(list, fn, scope) {
     for (var i = 0; i < list.length; i++) {
