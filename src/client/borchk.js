@@ -248,7 +248,7 @@ function toggleVisibleLibraries() {
   for (var i = 0; i < allAgencies.length; i++) {
     var item = allAgencies.item(i);
     item.classList.remove('selected');
-    var shouldHide = allAgencies.item(i).textContent.toLowerCase().indexOf(currentSearchValue.toLowerCase()) === -1;
+    var shouldHide = !allAgencies.item(i).textContent.toLowerCase().includes(currentSearchValue.toLowerCase());
     item.classList.toggle('hide', shouldHide);
 
     for (var j = 0; j < currentlyVisibleAgencies.length; j++) {
