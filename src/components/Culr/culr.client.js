@@ -11,17 +11,16 @@ let CulrClient = null;
 const CULR_AUTH_CREDENTIALS = {
   userIdAut: CONFIG.culr.userIdAut,
   groupIdAut: CONFIG.culr.groupIdAut,
-  passwordAut: CONFIG.culr.passwordAut,
-  profileName: CONFIG.culr.profileName
+  passwordAut: CONFIG.culr.passwordAut
 };
 
 /**
- * Invokes the getAccount CULR method
+ * Invokes the getAccountsByGlobalId CULR method
  *
  * @param userIdValue CPR of the given user
  * @return {Promise}
  */
-export async function getAccounts({userIdValue}) {
+export async function getAccountsByGlobalId({userIdValue}) {
   if (!CulrClient) {
     await init();
   }
@@ -37,7 +36,7 @@ export async function getAccounts({userIdValue}) {
     if (!CulrClient) {
       throw new Error('CULR client is not initialised');
     }
-    CulrClient.getAccounts(params, (err, result) => {
+    CulrClient.getAccountsByGlobalId(params, (err, result) => {
       if (err) {
         reject(err);
       }

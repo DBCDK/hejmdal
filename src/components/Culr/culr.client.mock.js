@@ -5,13 +5,13 @@
 
 export const CulrMockClient = {
   /**
-   * getAccounts mock. If the value of params.userCredentials.userIdValue matches '1234567890' a OK200 response will be
+   * getAccountsByGlobalId mock. If the value of params.userCredentials.userIdValue matches '1234567890' a OK200 response will be
    * returned. Otherwise is a ACCOUNT_DOES_NOT_EXIST response is returned.
    *
    * @param {object} params
    * @param {function} cb
    */
-  getAccounts: (params, cb) => {
+  getAccountsByGlobalId: (params, cb) => {
     const response = params.userCredentials.userIdValue === '5555666677' ? OK200() : ACCOUNT_DOES_NOT_EXIST();
     cb(null, response);
   }
