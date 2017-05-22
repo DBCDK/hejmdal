@@ -5,7 +5,7 @@
 
 var librariesDropdownContainer;
 var allAgencies;
-var currentlyVisibleAgencies = [];
+let currentlyVisibleAgencies = [];
 var currentlySelectedIndex = -1;
 var currentSearchValue = '';
 var libraryInput;
@@ -245,18 +245,19 @@ function toggleLabelsInDropDown() {
 function toggleVisibleLibraries() {
   currentlyVisibleAgencies = [];
 
-  for (var i = 0; i < allAgencies.length; i++) {
-    var item = allAgencies.item(i);
+  for (let i = 0; i < allAgencies.length; i++) {
+    const item = allAgencies.item(i);
     item.classList.remove('selected');
-    var shouldHide = allAgencies.item(i).textContent.toLowerCase().indexOf(currentSearchValue.toLowerCase()) === -1;
+    let shouldHide = allAgencies.item(i).textContent.toLowerCase().indexOf(currentSearchValue.toLowerCase()) === -1;
     item.classList.toggle('hide', shouldHide);
 
-    for (var j = 0; j < currentlyVisibleAgencies.length; j++) {
+    for (let j = 0; j < currentlyVisibleAgencies.length; j++) {
       if (currentlyVisibleAgencies[j].innerText === item.innerText) {
         shouldHide = true;
         item.classList.add('hide');
       }
     }
+
     if (!shouldHide) {
       currentlyVisibleAgencies.push(item);
       currentlySelectedIndex = -1;
