@@ -28,7 +28,10 @@ block append content
         strong Du var ikke logget ind med Bibliotekslogin
       div &nbsp;
       div.buffer-vertical-5
-        a(class="link-style" onClick='window.history.back(); return false;') Tilbage
+        if returnurl
+          a(class="link-style" href=returnurl) Tilbage til #{serviceName}
+        else
+          a(class="link-style" onClick='window.history.back(); return false;') Tilbage
     div &nbsp;
 
   div &nbsp;

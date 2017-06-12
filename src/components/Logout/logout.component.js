@@ -2,6 +2,8 @@
  * @file
  */
 
+import validate from 'validate.js';
+
 /**
  *
  * Sets the session to null which will provoke the session to be destroyed.
@@ -17,15 +19,23 @@ export async function logout(ctx, next) {
   let loginFound = false;
   let idpLogoutInfo = false;
 
+  if (ctx.query.returnurl && !validate({website: ctx.query.returnurl}, {website: {url: {allowLocal: true, url: true}}})) {
+    returnUrl = ctx.query.returnurl;
+  }
+
   if (ctx.session.state && ctx.getUser().identityProviders) {
+    loginFound = true;
+
     ctx.getUser().identityProviders.forEach((idp) => {
       if (idp !== 'borchk') {
         idpLogoutInfo = true;
       }
     });
-    returnUrl = ctx.query.returnurl ? ctx.getState().serviceClient.urls.host + ctx.query.returnurl : '';
-    serviceName = ctx.getState().serviceClient.name;
-    loginFound = true;
+
+    if (!returnUrl) {
+      returnUrl = ctx.query.returnurl ? ctx.getState().serviceClient.urls.host + ctx.query.returnurl : '';
+      serviceName = ctx.getState().serviceClient.name;
+    }
   }
 
   ctx.session = null;
@@ -34,7 +44,7 @@ export async function logout(ctx, next) {
     idpLogoutInfo: idpLogoutInfo,
     loginFound: loginFound,
     returnurl: returnUrl,
-    serviceName: serviceName
+    serviceName: serviceName || returnUrl
   });
 
   await next();
