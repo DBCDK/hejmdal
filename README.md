@@ -188,6 +188,11 @@ The login url takes the following parameters as arguments. All of them is testab
   By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
     
 
-- `/logout` eller `/logout?returnurl=someRelativeCallBackUrl`  
-The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
+- `/logout` or `/logout?returnurl=someRelativeCallBackUrl`  
+The users session is removed. The returnurl contains the relative callback url for the calling service. If the user 
+session contains information from an identityprovider which has some special login/logout style, a message is presented 
+with information about how the user should handle this - some identity providers do not support a logout operation, so 
+in order to logout properly, the user has to close all browser windows.
+
+If a full URL (including http(s)://) is specified in `returnurl` it will be used without any modification on the logout page.
 
