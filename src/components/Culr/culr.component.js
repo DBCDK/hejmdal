@@ -36,7 +36,7 @@ async function getUserAttributesFromCulr(userId) {
   let response = null;
 
   try {
-    response = await culr.getAccounts({userIdValue: userId});
+    response = await culr.getAccountsByGlobalId({userIdValue: userId});
   }
   catch (e) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
