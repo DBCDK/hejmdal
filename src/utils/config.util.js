@@ -44,8 +44,7 @@ export const CONFIG = {
     openAgency: process.env.MOCK_OPENAGENCY === '1',
     smaug: process.env.MOCK_SMAUG === '1',
     unilogin: process.env.MOCK_UNILOGIN === '1',
-    wayf: process.env.MOCK_WAYF === '1',
-    gatewayf: process.env.MOCK_GATEWAYF === '1'
+    wayf: process.env.MOCK_WAYF === '1'
   },
   mock_storage: process.env.MOCK_STORAGE === '1',
   openAgency: {
