@@ -133,9 +133,6 @@ set to `1` (`MOCK_UNILOGIN=1`) to mock UNI-Login and use a predefined response
 - `MOCK_WAYF` : `mock_externals.wayf`  
 set to `1` (`MOCK_WAYF=1`) to mock WAYF and use a predefined response
  
-- `MOCK_GATEWAYF` : `mock_externals.gatewayf`  
-set to `1` (`MOCK_GATEWAYF=1`) to mock GATEWAYF and use a predefined response
- 
 - `NODE_ENV` : `app.env`  
 When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
  
