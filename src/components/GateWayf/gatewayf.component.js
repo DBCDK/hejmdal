@@ -73,14 +73,14 @@ async function getWayfDataFromDb(wayfTicket) {
   const storage = new KeyValueStorage(new PersistentTicketStorage());
   let id;
   let secret;
-  id = 10; secret = 'bdda523df71337adecfc783e87cfd1a62c3031f98a4d0cecb930e99d22bd2ade';
+  // id = 10; secret = 'bdda523df71337adecfc783e87cfd1a62c3031f98a4d0cecb930e99d22bd2ade';
   if (Array.isArray(wayfTicket.id)) {
     id = wayfTicket.id[0];
   }
   if (Array.isArray(wayfTicket.secret)) {
     secret = wayfTicket.secret[0];
   }
-  const gateWayfTicket = true ? await storage.read(id, secret): getMockedGateWayfResponse('wayf');  // eslint-disable-line no-constant-condition
+  const gateWayfTicket = await storage.read(id, secret);
   return getWayfDataFromRedirect(gateWayfTicket);
 }
 
