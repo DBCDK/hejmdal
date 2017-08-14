@@ -20,7 +20,7 @@ export async function getGateWayfResponse(ctx, idp) {
   let userInfo = {userId: null, wayfId: null};
   try {
     const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfResponse(idp) : await form(ctx);
-    userInfo = Array.isArray(wayfObj.id) ? await getWayfDataFromDb(wayfObj) : getWayfDataFromRedirect(wayfObj);
+    userInfo = Array.isArray(wayfObj.id) ? await getUserDataFromDb(wayfObj) : getUserDataFromWayfObject(wayfObj);
   }
   catch (e) {
     log.error('Could not retrieve ' + idp + ' response', {error: e.message, stack: e.stack});
@@ -47,7 +47,7 @@ export function getGateWayfUrl(idp, token) {
  * @param wayfObj
  * @returns {{userId: *, wayfId: *}}
  */
-function getWayfDataFromRedirect(wayfObj) {
+function getUserDataFromWayfObject(wayfObj) {
   let cpr = null;
   let wayfId = null;
   if (Array.isArray(wayfObj.schacPersonalUniqueID)) {
@@ -69,7 +69,7 @@ function getWayfDataFromRedirect(wayfObj) {
  * @param wayfTicket
  * @returns {{userId, wayfId}|{userId: *, wayfId: *}}
  */
-async function getWayfDataFromDb(wayfTicket) {
+async function getUserDataFromDb(wayfTicket) {
   const storage = new KeyValueStorage(new PersistentTicketStorage());
   let id;
   let secret;
@@ -81,7 +81,7 @@ async function getWayfDataFromDb(wayfTicket) {
     secret = wayfTicket.secret[0];
   }
   const gateWayfTicket = await storage.read(id, secret);
-  return getWayfDataFromRedirect(gateWayfTicket);
+  return getUserDataFromWayfObject(gateWayfTicket);
 }
 
 /**
