@@ -20,8 +20,7 @@ export async function getGateWayfResponse(ctx, idp) {
   let userInfo = {userId: null, wayfId: null};
   try {
     const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfResponse(idp) : await form(ctx);
-    userInfo = await getWayfDataFromDb(wayfObj);
-    // userInfo = Array.isArray(wayfObj.id) ? await getWayfDataFromDb(wayfObj) : getWayfDataFromRedirect(wayfObj);
+    userInfo = Array.isArray(wayfObj.id) ? await getWayfDataFromDb(wayfObj) : getWayfDataFromRedirect(wayfObj);
   }
   catch (e) {
     log.error('Could not retrieve ' + idp + ' response', {error: e.message, stack: e.stack});
@@ -81,10 +80,7 @@ async function getWayfDataFromDb(wayfTicket) {
   if (Array.isArray(wayfTicket.secret)) {
     secret = wayfTicket.secret[0];
   }
-  // console.log('id', id, 'secret', secret);
   const gateWayfTicket = true ? await storage.read(id, secret): getMockedGateWayfResponse('wayf');  // eslint-disable-line no-constant-condition
-  // console.log('gatewayfticket', gateWayfTicket);
-  // console.log('mock', getMockedGateWayfResponse('wayf'));
   return getWayfDataFromRedirect(gateWayfTicket);
 }
 
