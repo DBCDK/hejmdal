@@ -9,7 +9,6 @@ import {log} from '../../utils/logging.util';
 export default class PersistentGateWayfTicketStorage {
 
   read(tid, secret) {
-    console.log('tid', tid, 'secret', secret);
     return GateWayfTicket.query().select('ticket').where({id: tid, ticketsecret: secret})
       .then((result) => {
         return result[0] ? result[0].ticket : null;

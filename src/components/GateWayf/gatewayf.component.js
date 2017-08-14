@@ -73,7 +73,6 @@ async function getUserDataFromDb(wayfTicket) {
   const storage = new KeyValueStorage(new PersistentTicketStorage());
   let id;
   let secret;
-  // id = 10; secret = 'bdda523df71337adecfc783e87cfd1a62c3031f98a4d0cecb930e99d22bd2ade';
   if (Array.isArray(wayfTicket.id)) {
     id = wayfTicket.id[0];
   }
@@ -81,6 +80,10 @@ async function getUserDataFromDb(wayfTicket) {
     secret = wayfTicket.secret[0];
   }
   const gateWayfTicket = await storage.read(id, secret);
+  if (gateWayfTicket === null) {
+    log.error('Could not read gateWayf ticket id: ' + id);
+    return {userId: null, wayfId: null};
+  }
   return getUserDataFromWayfObject(gateWayfTicket);
 }
 
