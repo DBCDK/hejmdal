@@ -12,6 +12,12 @@ import {getMockedGateWayfUrl, getMockedGateWayfResponse} from './mock/gatewayf.m
 /**
  * Retrieving gatewayf response through co-body module
  *
+ * Handling old scheme where the userdata is send as POST data
+ * and
+ * new scheme, where gateWayf stores the userdata in a pg db and POST a ticket to this information
+ *
+ * Garbage collection of the gateWayf Ticket is handled by gateWayf
+ *
  * @param ctx
  * @param idp
  * @returns {{userId: *}}
@@ -84,6 +90,7 @@ async function getUserDataFromDb(wayfTicket) {
     log.error('Could not read gateWayf ticket id: ' + id);
     return {userId: null, wayfId: null};
   }
+  await storage.delete(id);
   return getUserDataFromWayfObject(gateWayfTicket);
 }
 
