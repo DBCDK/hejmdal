@@ -57,12 +57,13 @@ export default class KeyValueStorage {
    * Read an on object from store
    *
    * @param {string} objectKey
+   * @param {string} extra
    * @returns {boolean}
    */
-  async read(objectKey) {
+  async read(objectKey, extra) {
     let object = false;
     try {
-      object = await this.store.read(objectKey);
+      object = await this.store.read(objectKey, extra);
     }
     catch (e) {
       log.error('Read object', {error: e.message, stack: e.stack});
