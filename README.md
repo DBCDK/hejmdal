@@ -5,23 +5,23 @@
 [![Build Status](https://travis-ci.org/DBCDK/hejmdal.svg?branch=master)](https://travis-ci.org/DBCDK/hejmdal)
 
 # hejmdal
-*Heimdall (Hejmdal in danish, Heimdallr in Norrønt) is attested as possessing foreknowledge, keen eyesight and hearing, is described as "the whitest of the gods" and keeps watch for the onset of Ragnarök while drinking fine mead in his dwelling Himinbjörg, located where the burning rainbow bridge Bifröst meets heaven*
+*Heimdall (Hejmdal in Danish, Heimdallr in Norrønt) is attested as possessing foreknowledge, keen eyesight and hearing, is described as "the whitest of the gods" and keeps watch for the onset of Ragnarök while drinking fine mead in his dwelling Himinbjörg, located where the burning rainbow bridge Bifröst meets heaven*
 [Wikipedia](https://en.wikipedia.org/wiki/Heimdallr)
 
-##Releases
+## Releases
 Releases are found at GitHub [/releases](https://github.com/DBCDK/hejmdal/releases). Each containing a link to the changelog for the given release. A consolidated changelog for all releases is found at [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) in the project root.  
 The changelog is made with [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator) and can be created with the command `github_changelog_generator -u DBCDK -p hejmdal --exclude-tags-regex "(jenkins-|\d\.\d\d{1,})"` -- you may need a valid github token to run the command.
 
-##Start
-###Development
+## Start
+### Development
 After cloning the repository, run `npm install` to install dependencies. Copy env.test to env.env and set the environment variables (see below) to you need/liking. The application is started with `npm run dev`, which include [nodemon](https://www.npmjs.com/package/nodemon) in order to restart the application, when the code is changed.
 
 To use a local database, postgres has to be installed. User, password and database are set through environment variables - see [Migration](https://github.com/DBCDK/hejmdal#migration) below.
 
-###Production
+### Production
 You can start the application with `node src/main.js` from the project root after setting the environment variables.
 
-###Migration
+### Migration
 To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
 
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
@@ -29,10 +29,10 @@ For development you use `npm run migrate:latest:dev` to source the env.env file 
 ### Shrinkwrap
 dependency versions are controlled with shrinkwrap. To update a dependency run `npm update <package__name>`, or recreate the dependency tree by deleting npm-shrinkwrap.json and running `npm update && npm shrinkwrap`.
   
-##Example application
+## Example application
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
 
-##Tests
+## Tests
 
 ### Unittests
 The tests are run by `npm run test` - specifications can be found in `package.json`.  
@@ -43,10 +43,10 @@ See [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporte
 ### Integration tests
 Integration tests run with [selenium](http://docs.seleniumhq.org/) are located in selenium/tests and are run with `npm run test:integration`. The tests use [saucelabs](https://saucelabs.com/) and require that the environment variable `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` are set.  
 
-##Logging
+## Logging
 Logging use `stdout` and the levels specified in [environment variables](https://github.com/DBCDK/hejmdal#environment-variables) below.
 
-##Environment variables
+## Environment variables
 The variables are specified at the form `name : internal config object`. References in the log from the startup, will use the internal config object.
 - `BORCHK_URI` : `borchk.uri`  
 The address of the borchk service
