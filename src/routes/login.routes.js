@@ -7,6 +7,7 @@ import {setDefaultState} from '../middlewares/state.middleware';
 import {redirectToClient} from '../middlewares/redirecttoclient.middleware';
 import {storeTicket} from '../components/Ticket/ticket.component';
 import mapAttributesToTicket from '../utils/attribute.mapper.util';
+import {verifyToken} from '../components/VerifyToken/verifyToken.component';
 import * as Consent from '../components/Consent/consent.component';
 import * as Culr from '../components/Culr/culr.component';
 
@@ -25,6 +26,7 @@ const ticketRoute = async(ctx, next) => {
 router.get('/', setDefaultState, getAttributes, authenticate, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute);
 
 router.get('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
+router.get('/verifyToken', setDefaultState, verifyToken);
 
 router.post('/identityProviderCallback/:type/:token', identityProviderCallbackRoute);
 router.get('/consent', Consent.giveConsentUI);
