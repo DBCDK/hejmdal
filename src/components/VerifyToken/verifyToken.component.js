@@ -1,7 +1,7 @@
 import {getClientFromSmaug} from '../../components/Smaug/smaug.component';
 
 export async function verifyToken(ctx, next) {
-  const data = {ok: false, expires: '1990-01-01', token: ctx.query.token};
+  const data = {ok: false, token: ctx.query.token};
   try {
     const client = await getClientFromSmaug(ctx.query.token);
     data.ok = true;
