@@ -188,7 +188,7 @@ The login url takes the following parameters as arguments. All of them is testab
   By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
     
 - `/login/verifyToken?token=ABC_123`  
-Check the validity of the token. Returns a json-string, containing ok (true/false), expires (expiration time for the token) and token (the token send) like  *{"ok":true,"token":"ABC_123","expires":"2017-12-06T11:28:30.121Z"}* or *{"ok":false,"token":"ABC_123"}*
+Check the validity of the token. Returns a json-string, containing ok (true/false), token (the token send) and if the token is valid, expires (the expiration time for the token) ike  *{"ok":true,"token":"ABC_123","expires":"2017-12-06T11:28:30.121Z"}* or *{"ok":false,"token":"ABC_123"}*
 
 - `/logout` eller `/logout?returnurl=someRelativeCallBackUrl`  
 The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
