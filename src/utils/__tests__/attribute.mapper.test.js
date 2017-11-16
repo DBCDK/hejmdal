@@ -180,6 +180,5 @@ describe('Attribute mapper unittest', () => {
     assert.deepEqual(ctx.session.state.ticket.attributes, {});
     assert.isTrue(spy.called, 'log.error was invoked');
     assert.equal(spy.args[0][0], 'Cannot map attribute: notThere');
-    sinon.restore();
   });
 });
