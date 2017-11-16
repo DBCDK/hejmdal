@@ -21,11 +21,11 @@ export default class Page {
     return JSON.parse(browser.getText('body'));
   }
 
-  validateTicket(hasValues, hasNotElements = []) {
-    const ticket = this.getTicket();
+  validateTicketAttributes(hasValues, hasNotElements = []) {
+    const attributes = this.getTicket().attributes;
     Object.keys(hasValues).forEach(key => {
-      assert.deepPropertyVal(ticket, key, hasValues[key], `Ticket contains ${key}`);
+      assert.deepPropertyVal(attributes, key, hasValues[key], `Ticket attributes contains ${key}`);
     });
-    hasNotElements.forEach(element => assert.notDeepProperty(ticket, element, `Ticket does not contain ${element}`));
+    hasNotElements.forEach(element => assert.notDeepPropertyVal(attributes, element, `Ticket attributes does not contain ${element}`));
   }
 }

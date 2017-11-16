@@ -104,6 +104,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isOk(ticketId2);
 
     assert.notEqual(ticketToken, ticketToken2);
-    assert.isAbove(ticketId2, ticketId);
+    assert.isTrue(ticketId2 > ticketId);
+    assert.isAbove(parseInt(ticketId2), parseInt(ticketId));
   });
 });

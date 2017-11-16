@@ -25,12 +25,12 @@ describe('Test Identity Provider', () => {
     // Login in with serviceprovider that requests all attributes
     page.login('wayf', 'asdfg');
     page.acceptConsent();
-    page.validateTicket({'attributes.wayfId': 'WAYF-DK-some-other-md5-like-string'});
+    page.validateTicketAttributes({wayfId: 'WAYF-DK-some-other-md5-like-string'});
 
     // Login with unilogin with a serviceprovider that request only unilogin id
     page.loginDirect('d83a6fba8a7847d1add4703cc237cb72');
     page.acceptConsent();
-    page.validateTicket({'attributes.uniloginId': 'test1234'}, ['attributes.wayfId']);
+    page.validateTicketAttributes({uniloginId: 'test1234'}, ['wayfId']);
   });
 
 });
