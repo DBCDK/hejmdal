@@ -105,7 +105,7 @@ describe('Test Borchk component', () => {
   });
 
   it('Should switch type on userid input field', () => {
-    assert.equal(browser.getAttribute('#userid-input', 'type'), 'tel');
+    assert.equal(browser.getAttribute('#userid-input', 'type'), 'password');
     browser.click('#toggle-userid-input');
     assert.equal(browser.getAttribute('#userid-input', 'type'), 'password');
     browser.click('#toggle-userid-input');
