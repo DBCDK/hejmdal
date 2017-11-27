@@ -10,8 +10,7 @@ html(lang='da')
 
     title!= title
 
-    <!-- Bootstrap -->
-    link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    <!-- Bootstrap included in styles -->
 
     <!-- Styles -->
     block styles
@@ -19,7 +18,7 @@ html(lang='da')
 
     block scripts
       script(src="/js/ie-polyfill.js?" + version)
-      script(src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous")
+      script(src="/js/jquery-3.1.1.slim.min.js?" + version)
       script(src="/js/bootstrap.min.js?" + version)
       script(src="/js/error.js?" + version)
       if identityProviders && identityProviders.borchk
