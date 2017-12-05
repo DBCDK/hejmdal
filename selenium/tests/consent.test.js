@@ -109,6 +109,7 @@ describe('Test Consent part of authetication flow', () => {
     browser.click('#get-ticket-button');
 
     const url = browser.getUrl();
+    browser.pause(100);
     const expected = '/example/?token=';
 
     const ticket = browser.getTicketOnExamplePage();
