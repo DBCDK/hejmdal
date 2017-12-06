@@ -154,7 +154,7 @@ describe('Test Borchk component', () => {
 
   it('Should redirect back to serviceclient when "Fortryd log ind" is clicked', () => {
     browser.click('#cancel-login');
-    assert.equal(browser.getUrl(), 'http://localhost:3011/');
+    assert.equal(browser.getUrl(), 'http://localhost:3011/example/?error=LoginCancelled');
   });
 
   it('Should preselect an editable library', () => {

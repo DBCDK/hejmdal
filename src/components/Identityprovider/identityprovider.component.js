@@ -10,6 +10,7 @@ import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.compone
 import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
 import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
+import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {ERRORS} from '../../utils/errors.util';
 import _ from 'lodash';
 
@@ -61,11 +62,10 @@ export async function authenticate(ctx, next) {
       const error = ctx.query.error ? ctx.query.error : null;
       const loginHelpReplacers = setLoginReplacersFromAgency(branch);
       const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
-      const returnUrl = state.serviceClient.urls.host + (state.returnUrl ? state.returnUrl : state.serviceClient.urls.returnUrl);
 
       ctx.render('Login', {
         error: error,
-        returnUrl: returnUrl,
+        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
         serviceClient: state.serviceClient.name,
         loginURL,
         identityProviders,
@@ -250,7 +250,7 @@ function getIdentityProviders(state) {
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
       action: `/login/identityProviderCallback/borchk/${authToken}`,
-      abortAction: state.serviceClient.urls.host
+      abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
     };
   }
 
