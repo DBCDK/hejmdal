@@ -36,5 +36,5 @@ export function getMockedGateWayfLoginUrl(idp, token) {
 }
 
 export function getMockedGateWayfLogoutUrl() {
-  return `/logout`;
+  return '/logout';
 }

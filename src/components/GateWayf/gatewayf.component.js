@@ -53,7 +53,7 @@ export function getGateWayfLoginUrl(idp, token) {
  * @returns {*}
  */
 export function getGateWayfLogoutUrl() {
-  return CONFIG.mock_externals['nemlogin'] ? getMockedGateWayfLogoutUrl() : getLiveGateWayfLogoutUrl();
+  return CONFIG.mock_externals.nemlogin ? getMockedGateWayfLogoutUrl() : getLiveGateWayfLogoutUrl();
 }
 
 /**
