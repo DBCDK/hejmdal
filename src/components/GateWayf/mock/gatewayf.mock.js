@@ -27,10 +27,14 @@ const mockWayfOk = {
   }
 };
 
-export function getMockedGateWayfResponse(idp) {
+export function getMockedGateWayfLoginResponse(idp) {
   return idp === 'nemlogin' ? mockNemloginOk : mockWayfOk;
 }
 
-export function getMockedGateWayfUrl(idp, token) {
+export function getMockedGateWayfLoginUrl(idp, token) {
   return `/login/identityProviderCallback/${idp}/${token}`;
+}
+
+export function getMockedGateWayfLogoutUrl() {
+  return `/logout`;
 }

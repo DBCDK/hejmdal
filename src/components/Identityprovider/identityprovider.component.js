@@ -7,7 +7,7 @@ import {createHash, validateHash} from '../../utils/hash.utils';
 import {isValidCpr} from '../../utils/cpr.util';
 import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
 import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
-import {getGateWayfResponse, getGateWayfUrl} from '../GateWayf/gatewayf.component';
+import {getGateWayfLoginResponse, getGateWayfLoginUrl} from '../GateWayf/gatewayf.component';
 import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
@@ -160,7 +160,7 @@ export async function borchkCallback(ctx) {
  * @returns {*}
  */
 export async function nemloginCallback(ctx) {
-  const response = await getGateWayfResponse(ctx, 'nemlogin');
+  const response = await getGateWayfLoginResponse(ctx, 'nemlogin');
 
   ctx.setUser({
     userId: response.userId,
@@ -177,7 +177,7 @@ export async function nemloginCallback(ctx) {
  * @returns {*}
  */
 export async function wayfCallback(ctx) {
-  const response = await getGateWayfResponse(ctx, 'wayf');
+  const response = await getGateWayfLoginResponse(ctx, 'wayf');
 
   ctx.setUser({
     userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
@@ -262,13 +262,13 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('nemlogin')) {
     providers.nemlogin = {
-      link: getGateWayfUrl('nemlogin', authToken)
+      link: getGateWayfLoginUrl('nemlogin', authToken)
     };
   }
 
   if (identityProviders.includes('wayf')) {
     providers.wayf = {
-      link: getGateWayfUrl('wayf', authToken)
+      link: getGateWayfLoginUrl('wayf', authToken)
     };
   }
 

@@ -2,6 +2,9 @@
  * @file
  */
 
+import buildReturnUrl from '../../utils/buildReturnUrl.util';
+import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
+
 /**
  *
  * Sets the session to null which will provoke the session to be destroyed.
@@ -12,30 +15,42 @@
  * @param next
  */
 export async function logout(ctx, next) {
-  let returnUrl;
+  let returnUrl = '';
   let serviceName;
   let loginFound = false;
   let idpLogoutInfo = false;
+  let idpLogoutUrl = '';
 
-  if (ctx.session.state && ctx.getUser().identityProviders) {
-    ctx.getUser().identityProviders.forEach((idp) => {
-      if (idp !== 'borchk') {
-        idpLogoutInfo = true;
-      }
-    });
-    returnUrl = ctx.query.returnurl ? ctx.getState().serviceClient.urls.host + ctx.query.returnurl : '';
-    serviceName = ctx.getState().serviceClient.name;
+  const user = ctx.getUser();
+  if (ctx.session.state && user) {
     loginFound = true;
+    if (!ctx.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
+      ctx.setState({logoutGatewayf: true, returnUrl: ctx.query.returnurl || ctx.getState().returnUrl});
+      idpLogoutUrl = getGateWayfLogoutUrl();
+    }
+    else {
+      if (ctx.query.returnurl) {
+        ctx.setState({returnUrl: ctx.query.returnurl});
+      }
+      returnUrl = buildReturnUrl(ctx.getState());
+      idpLogoutInfo = (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf'));
+      serviceName = ctx.getState().serviceClient.name;
+    }
   }
 
-  ctx.session = null;
+  if (idpLogoutUrl) {
+    ctx.redirect(idpLogoutUrl);
+  }
+  else {
+    ctx.session = null;
 
-  ctx.render('Logout', {
-    idpLogoutInfo: idpLogoutInfo,
-    loginFound: loginFound,
-    returnurl: returnUrl,
-    serviceName: serviceName
-  });
+    ctx.render('Logout', {
+      idpLogoutInfo: idpLogoutInfo,
+      loginFound: loginFound,
+      returnurl: returnUrl,
+      serviceName: serviceName
+    });
+  }
 
   await next();
 }

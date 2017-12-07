@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import {getGateWayfResponse} from '../gatewayf.component';
+import {getGateWayfLoginResponse} from '../gatewayf.component';
 import {mockContext} from '../../../utils/test.util';
 
 describe('Test GateWayf component', () => {
@@ -10,7 +10,7 @@ describe('Test GateWayf component', () => {
       userId: '0102030405',
       wayfId: 'WAYF-DK-some-long-md5-like-string'
     };
-    assert.deepEqual(await getGateWayfResponse(ctx, 'nemlogin'), expected);
+    assert.deepEqual(await getGateWayfLoginResponse(ctx, 'nemlogin'), expected);
   });
 
   it('Lookup a known user from wayf', async() => {
@@ -18,7 +18,7 @@ describe('Test GateWayf component', () => {
       userId: '0102030405',
       wayfId: 'WAYF-DK-some-other-md5-like-string'
     };
-    assert.deepEqual(await getGateWayfResponse(ctx, 'wayf'), expected);
+    assert.deepEqual(await getGateWayfLoginResponse(ctx, 'wayf'), expected);
   });
 
 });
