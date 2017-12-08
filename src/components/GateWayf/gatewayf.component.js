@@ -7,7 +7,7 @@ import {CONFIG} from '../../utils/config.util';
 import {log} from '../../utils/logging.util';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import PersistentTicketStorage from '../../models/GateWayfTicket/gatewayfticket.persistent.storage.model';
-import {getMockedGateWayfUrl, getMockedGateWayfResponse} from './mock/gatewayf.mock';
+import {getMockedGateWayfLoginUrl, getMockedGateWayfLogoutUrl, getMockedGateWayfLoginResponse} from './mock/gatewayf.mock';
 
 /**
  * Retrieving gatewayf response through co-body module
@@ -22,10 +22,10 @@ import {getMockedGateWayfUrl, getMockedGateWayfResponse} from './mock/gatewayf.m
  * @param idp
  * @returns {{userId: *}}
  */
-export async function getGateWayfResponse(ctx, idp) {
+export async function getGateWayfLoginResponse(ctx, idp) {
   let userInfo = {userId: null, wayfId: null};
   try {
-    const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfResponse(idp) : await form(ctx);
+    const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfLoginResponse(idp) : await form(ctx);
     userInfo = Array.isArray(wayfObj.id) ? await getUserDataFromDb(wayfObj) : getUserDataFromWayfObject(wayfObj);
   }
   catch (e) {
@@ -37,14 +37,23 @@ export async function getGateWayfResponse(ctx, idp) {
 }
 
 /**
- * Create url for gateWayf - either a mock for test og the production live url
+ * Create login url for gateWayf - either a mock for test og the production live url
  *
  * @param idp
  * @param token
  * @returns {*}
  */
-export function getGateWayfUrl(idp, token) {
-  return CONFIG.mock_externals[idp] ? getMockedGateWayfUrl(idp, token) : getLiveGateWayfUrl(idp, token);
+export function getGateWayfLoginUrl(idp, token) {
+  return CONFIG.mock_externals[idp] ? getMockedGateWayfLoginUrl(idp, token) : getLiveGateWayfLoginUrl(idp, token);
+}
+
+/**
+ * Create logout url for gateWayf - either a mock for test og the production live url
+ *
+ * @returns {*}
+ */
+export function getGateWayfLogoutUrl() {
+  return CONFIG.mock_externals.nemlogin ? getMockedGateWayfLogoutUrl() : getLiveGateWayfLogoutUrl();
 }
 
 /**
@@ -94,17 +103,30 @@ async function getUserDataFromDb(wayfTicket) {
   return getUserDataFromWayfObject(gateWayfTicket);
 }
 
+
 /**
- * Create production url for gateWayf, with callback, idp and token
+ * Create production login url for gateWayf, with callback, idp and token
  *
  * @param idp
  * @param token
  * @returns {string}
  */
-function getLiveGateWayfUrl(idp, token) {
+function getLiveGateWayfLoginUrl(idp, token) {
   const base = CONFIG.gatewayf.uri;
   const returnUrl = `${CONFIG.app.host}/login/identityProviderCallback/${idp}/${token}`;
   const wayfIdp = CONFIG.gatewayf.idp[idp];
 
   return `${base}?idp=${wayfIdp}&returnUrl=${returnUrl}`;
+}
+
+/**
+ * Create production logout url for gateWayf, with callback
+ *
+ * @returns {string}
+ */
+function getLiveGateWayfLogoutUrl() {
+  const base = CONFIG.gatewayf.uri;
+  const returnUrl = encodeURIComponent(`${CONFIG.app.host}/logout`);
+
+  return `${base}?op=logout&returnUrl=${returnUrl}`;
 }
