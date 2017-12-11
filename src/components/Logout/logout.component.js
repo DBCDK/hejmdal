@@ -20,6 +20,7 @@ export async function logout(ctx, next) {
   let loginFound = false;
   let idpLogoutInfo = false;
   let idpLogoutUrl = '';
+  let logoutInfoCode = '';
 
   const user = ctx.getUser();
   if (ctx.session.state && user) {
@@ -35,6 +36,12 @@ export async function logout(ctx, next) {
       returnUrl = buildReturnUrl(ctx.getState());
       idpLogoutInfo = (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf'));
       serviceName = ctx.getState().serviceClient.name;
+      if (ctx.getState().logoutScreen === 'skip') {
+        logoutInfoCode = 'logout';
+        if (idpLogoutInfo) {
+          logoutInfoCode = 'logout_close_browser';
+        }
+      }
     }
   }
 
@@ -44,12 +51,17 @@ export async function logout(ctx, next) {
   else {
     ctx.session = null;
 
-    ctx.render('Logout', {
-      idpLogoutInfo: idpLogoutInfo,
-      loginFound: loginFound,
-      returnurl: returnUrl,
-      serviceName: serviceName
-    });
+    if (logoutInfoCode) {
+      ctx.redirect(returnUrl + (returnUrl.indexOf('?') ? '?' : '&') + 'message=' + logoutInfoCode);
+    }
+    else {
+      ctx.render('Logout', {
+        idpLogoutInfo: idpLogoutInfo,
+        loginFound: loginFound,
+        returnurl: returnUrl,
+        serviceName: serviceName
+      });
+    }
   }
 
   await next();
