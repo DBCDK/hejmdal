@@ -10,7 +10,7 @@
  * @param {function} next
  */
 export async function stateMiddleware(ctx, next) {
-  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser, resetIdentityProvider});
+  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser, resetUser});
   await next();
 }
 
@@ -96,7 +96,11 @@ function hasUser() {
   return this.session.user.userId && true || false;
 }
 
-function resetIdentityProvider(idp) {
-  const user = this.getUser();
-  user.identityProviders = user.identityProviders.filter(identityProvider => identityProvider !== idp);
+/**
+ * Clear user info and remove idp from list of identityProviders
+ * @param idp
+ */
+function resetUser(idp) {
+  const identityProviders = this.getUser().identityProviders.filter(identityProvider => identityProvider !== idp);
+  this.session.user = {identityProviders: identityProviders};
 }
