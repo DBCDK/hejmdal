@@ -32,7 +32,7 @@ describe('Test Smaug component', () => {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
-      logoutScreen: null,
+      logoutScreen: 'include',
       borchkServiceName: 'bibliotek.dk',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
@@ -88,7 +88,7 @@ describe('Test Smaug component', () => {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
       identityProviders: [],
-      logoutScreen: null,
+      logoutScreen: 'include',
       borchkServiceName: 'bibliotek.dk',
       attributes: [],
       urls: {
