@@ -25,9 +25,6 @@ You can start the application with `node src/main.js` from the project root afte
 To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
 
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
-
-### Shrinkwrap
-dependency versions are controlled with shrinkwrap. To update a dependency run `npm update <package__name>`, or recreate the dependency tree by deleting npm-shrinkwrap.json and running `npm update && npm shrinkwrap`.
   
 ## Example application
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
@@ -191,5 +188,6 @@ The login url takes the following parameters as arguments. All of them is testab
 Check the validity of the token. Returns a json-string, containing ok (true/false), token (the token send) and if the token is valid, expires (the expiration time for the token) ike  *{"ok":true,"token":"ABC_123","expires":"2017-12-06T11:28:30.121Z"}* or *{"ok":false,"token":"ABC_123"}*
 
 - `/logout` eller `/logout?returnurl=someRelativeCallBackUrl`  
-The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows.
+The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows. The information is either (depending on the context setting logoutScreen) shown to the user by hejmdal or returned to the client as message=logout or message=logout_close_browser.
+
 
