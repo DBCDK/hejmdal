@@ -36,7 +36,7 @@ export async function logout(ctx, next) {
       returnUrl = buildReturnUrl(ctx.getState());
       idpLogoutInfo = (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf'));
       serviceName = ctx.getState().serviceClient.name;
-      if (ctx.getState().logoutScreen === 'skip') {
+      if (ctx.getState().serviceClient.logoutScreen === 'skip') {
         logoutInfoCode = 'logout';
         if (idpLogoutInfo) {
           logoutInfoCode = 'logout_close_browser';
