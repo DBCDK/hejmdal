@@ -59,7 +59,7 @@ export async function consentSubmit(ctx, next) {
     const helpText = getText(['consentReject'], {__SERVICE_CLIENT_NAME__: serviceClientName});
 
     // Remove current identityProvider from list of used providers
-    ctx.resetIdentityProvider(ctx.getUser().userType);
+    ctx.resetUser(ctx.getUser().userType);
 
     ctx.render('Consent', {
       consentFailed: true,
