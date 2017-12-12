@@ -40,6 +40,7 @@ function extractClientInfo(client) {
   const serviceClient = {
     id: client.app.clientId,
     name: client.displayName,
+    logoutScreen: client.logoutScreen || 'include',
     identityProviders: client.identityProviders || [],
     attributes: client.attributes || [],
     borchkServiceName: client.borchkServiceName || null,
