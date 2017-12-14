@@ -13,7 +13,7 @@ let config = {
   // directory is where your package.json resides, so `wdio` will be called from there.
   //
   specs: [
-    './selenium/**/*.test.js'
+    './selenium/**/logout*.test.js'
   ],
   exclude: [
     // 'path/to/excluded/files'
