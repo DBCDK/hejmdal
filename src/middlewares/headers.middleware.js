@@ -11,7 +11,12 @@ import {VERSION} from '../utils/version.util';
  * @param {object} ctx
  * @param {function} next
  */
-export async function SetVersionHeader(ctx, next) {
+export async function SetHeaders(ctx, next) {
   await next();
-  ctx.set('X-API-Version', VERSION);
+  ctx.set({
+    'X-API-Version': VERSION,
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
 }

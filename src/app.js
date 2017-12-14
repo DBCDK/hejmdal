@@ -17,7 +17,7 @@ import sanityCheck from './utils/sanityCheck.util';
 
 // Middleware
 import {LoggerMiddleware} from './middlewares/logger.middleware';
-import {SetVersionHeader} from './middlewares/headers.middleware';
+import {SetHeaders} from './middlewares/headers.middleware';
 import session from './middlewares/session.middleware';
 import {stateMiddleware} from './middlewares/state.middleware';
 import errorMiddleware from './middlewares/error.middleware';
@@ -79,7 +79,7 @@ export function startServer() {
   app.use(stateMiddleware);
   app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
   app.use(LoggerMiddleware);
-  app.use(SetVersionHeader);
+  app.use(SetHeaders);
 
   // Use CORS
   const corsOptions = {
