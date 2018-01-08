@@ -1,4 +1,4 @@
-import {getClient} from './smaug.client';
+import {getClient, getValidatedUserToken} from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
@@ -24,6 +24,20 @@ export async function getAttributes(ctx, next) {
 
 export async function getClientFromSmaug(smaugToken) {
   return await getClient(smaugToken);
+}
+
+export async function getUserToken(ctx, next) {
+  const {userId, libraryId, pincode} = ctx.getUser();
+  const state = ctx.getState();
+  if (!state || !state.serviceClient || !state.serviceClient.id) {
+    ctx.redirect('/fejl');
+  }
+  const {token} = state.serviceClient.attributes;
+  if (token && userId && libraryId && pincode) {
+    const validatedUserToken = await getValidatedUserToken(libraryId, userId, pincode);
+    ctx.setState({validatedUserToken});
+  }
+  await next();
 }
 
 /**

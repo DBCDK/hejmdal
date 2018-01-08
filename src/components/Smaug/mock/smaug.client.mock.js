@@ -45,3 +45,21 @@ export default function getMockClient(token) {
   };
 }
 
+/**
+ * Mock Client for test and development
+ *
+ * @param token
+ * @returns {*}
+ */
+export function getMockValidateUserTokenClient(library, username, password) {
+  if (library === 111111 && username === 112233445566 && password === 1234) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({access_token: 'qwerty123456asdfgh'})
+    };
+  }
+  return {
+    statusCode: 403
+  };
+}
+
