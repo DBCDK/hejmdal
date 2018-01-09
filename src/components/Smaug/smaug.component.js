@@ -29,9 +29,6 @@ export async function getClientFromSmaug(smaugToken) {
 export async function getUserToken(ctx, next) {
   const {userId, libraryId, pincode} = ctx.getUser();
   const state = ctx.getState();
-  if (!state || !state.serviceClient || !state.serviceClient.id) {
-    ctx.redirect('/fejl');
-  }
   const {token} = state.serviceClient.attributes;
   if (token && userId && libraryId && pincode) {
     const validatedUserToken = await getValidatedUserToken(libraryId, userId, pincode);

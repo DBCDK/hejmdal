@@ -27,7 +27,6 @@ describe('Test Smaug component', () => {
 
   it('should add client token', async() => {
     await smaug.getAttributes(ctx, () => {});
-
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
@@ -68,6 +67,9 @@ describe('Test Smaug component', () => {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
         },
+        token: {
+          noConsent: true
+        },
         uniqueId: {
           name: 'Bibliotekslogin id',
           description: 'Anonymiseret identifikation hos Bibliotekslogin'
@@ -78,6 +80,13 @@ describe('Test Smaug component', () => {
         returnUrl: '/example/'
       }
     });
+  });
+
+  it('should return validated user token', async() => {
+    await smaug.getAttributes(ctx, () => {});
+    ctx.setUser({libraryId: 111111, userId: 112233445566, pincode: 1234});
+    await smaug.getUserToken(ctx, () => {});
+    assert.equal(ctx.session.state.validatedUserToken, 'qwerty123456asdfgh');
   });
 
   it('should add empty default attributes', async() => {
