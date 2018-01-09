@@ -148,6 +148,15 @@ The lifetime for a user session in milliseconds. Defaults to 86400000 (24 hours:
 - `SMAUG_URI` : `smaug.uri`  
 The address of the Smaug service
 
+- `SMAUG_OAUTH_URI` : `smaug.oAuthUri`  
+The address of the Smaug oAuth service
+
+- `SMAUG_CLIENT_ID` : `smaug.clientId`  
+Hejmdal application client id for smaug
+
+- `SMAUG_CLIENT_SECRET` : `smaug.clientSecret`  
+Hejmdal application client secret for smaug
+
 - `SAUCE_USERNAME` : `brugernavn`  
 Saucelabs user name
 
