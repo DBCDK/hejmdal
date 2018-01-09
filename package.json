@@ -25,7 +25,8 @@
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
     "precommit": "npm run lint && npm run test && npm run test:integration:local",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "debug": ". ./env.env && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example"
   },
   "repository": {
     "type": "git",
