@@ -67,7 +67,7 @@ describe('Test Smaug component', () => {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
         },
-        token: {
+        authenticatedToken: {
           noConsent: true
         },
         uniqueId: {
@@ -85,8 +85,8 @@ describe('Test Smaug component', () => {
   it('should return validated user token', async() => {
     await smaug.getAttributes(ctx, () => {});
     ctx.setUser({libraryId: '724000', userId: '87654321', pincode: '1234'});
-    await smaug.getUserToken(ctx, () => {});
-    assert.equal(ctx.session.state.validatedUserToken, 'qwerty123456asdfgh');
+    await smaug.getAuthenticatedToken(ctx, () => {});
+    assert.equal(ctx.session.state.authenticatedToken, 'qwerty123456asdfgh');
   });
 
   it('should add empty default attributes', async() => {

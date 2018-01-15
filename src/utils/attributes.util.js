@@ -49,7 +49,7 @@ export const ATTRIBUTES = {
     name: 'Bibliotekslogin id',
     description: 'Anonymiseret identifikation hos Bibliotekslogin'
   },
-  token: {
+  authenticatedToken: {
     noConsent: true
   }
 };

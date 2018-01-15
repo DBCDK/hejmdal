@@ -31,7 +31,7 @@ export async function getClient(token) {
   throw new TokenError(response.statusMessage);
 }
 
-export async function getValidatedUserToken(clientId, library, username, password) {
+export async function getToken(clientId, library, username, password) {
   let response;
 
   // for test and development
