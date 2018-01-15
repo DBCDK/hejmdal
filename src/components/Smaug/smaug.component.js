@@ -31,7 +31,7 @@ export async function getUserToken(ctx, next) {
   const state = ctx.getState();
   const {token} = state.serviceClient.attributes;
   if (token && userId && libraryId && pincode) {
-    const validatedUserToken = await getValidatedUserToken(libraryId, userId, pincode);
+    const validatedUserToken = await getValidatedUserToken(state.serviceClient.id, libraryId, userId, pincode);
     ctx.setState({validatedUserToken});
   }
   await next();

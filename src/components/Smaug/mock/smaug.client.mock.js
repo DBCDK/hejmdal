@@ -52,7 +52,7 @@ export default function getMockClient(token) {
  * @returns {*}
  */
 export function getMockValidateUserTokenClient(library, username, password) {
-  if (library === 111111 && username === 112233445566 && password === 1234) {
+  if (library === '724000' && username === '87654321' && password === '1234') {
     return {
       statusCode: 200,
       body: JSON.stringify({access_token: 'qwerty123456asdfgh'})

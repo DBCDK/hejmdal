@@ -72,9 +72,9 @@ export const CONFIG = {
   },
   smaug: {
     uri: process.env.SMAUG_URI,
-    oAuthUri: process.env.SMAUG_OAUTH_URI,
-    clientId: process.env.SMAUG_CLIENT_ID,
-    clientSecret: process.env.SMAUG_CLIENT_SECRET
+    adminUri: process.env.SMAUG_ADMIN_URI,
+    adminUsername: process.env.SMAUG_ADMIN_USERNAME,
+    adminPassword: process.env.SMAUG_ADMIN_PASSWORD
   },
   unilogin: {
     id: process.env.UNI_LOGIN_ID,

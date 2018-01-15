@@ -31,19 +31,19 @@ export async function getClient(token) {
   throw new TokenError(response.statusMessage);
 }
 
-export async function getValidatedUserToken(library, username, password) {
+export async function getValidatedUserToken(clientId, library, username, password) {
   let response;
 
   // for test and development
   if (CONFIG.mock_externals.smaug) {
-    response = getMockValidateUserTokenClient(111111, 112233445566, 1234);
+    response = getMockValidateUserTokenClient(library, username, password);
   }
   else {
     response = await promiseRequest('post', {
-      uri: CONFIG.smaug.oAuthUri + '/oauth/token',
+      uri: CONFIG.smaug.adminUri + '/clients/token/' + clientId,
       auth: {
-        user: CONFIG.smaug.clientId,
-        pass: CONFIG.smaug.clientSecret
+        user: CONFIG.smaug.adminUsername,
+        pass: CONFIG.smaug.adminUsername
       },
       form: {
         grant_type: 'password',

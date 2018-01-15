@@ -84,7 +84,7 @@ describe('Test Smaug component', () => {
 
   it('should return validated user token', async() => {
     await smaug.getAttributes(ctx, () => {});
-    ctx.setUser({libraryId: 111111, userId: 112233445566, pincode: 1234});
+    ctx.setUser({libraryId: '724000', userId: '87654321', pincode: '1234'});
     await smaug.getUserToken(ctx, () => {});
     assert.equal(ctx.session.state.validatedUserToken, 'qwerty123456asdfgh');
   });
