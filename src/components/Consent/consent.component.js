@@ -202,7 +202,7 @@ function getConsentAttributes(ctx) {
   const ticketAttributes = state.ticket.attributes || {};
   const consentAttributes = {};
   Object.keys(definitionAttributes).forEach((key) => {
-    if (attributeIsSet(ticketAttributes[key]) && definitionAttributes[key].noConsent !== true) {
+    if (attributeIsSet(ticketAttributes[key]) && definitionAttributes[key].skipConsent !== true) {
       consentAttributes[key] = Object.assign({}, definitionAttributes[key]);
       consentAttributes[key].key = key;
     }

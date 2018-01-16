@@ -56,7 +56,7 @@ describe('Unittesting methods in consent.component.test', () => {
           attributes: {
             cpr: {},
             token: {
-              noConsent: true
+              skipConsent: true
             }
           }
         },

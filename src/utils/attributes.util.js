@@ -50,6 +50,6 @@ export const ATTRIBUTES = {
     description: 'Anonymiseret identifikation hos Bibliotekslogin'
   },
   authenticatedToken: {
-    noConsent: true
+    skipConsent: true
   }
 };

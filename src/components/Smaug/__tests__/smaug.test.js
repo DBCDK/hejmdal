@@ -68,7 +68,7 @@ describe('Test Smaug component', () => {
           description: 'Brugerens identifikation hos WAYF'
         },
         authenticatedToken: {
-          noConsent: true
+          skipConsent: true
         },
         uniqueId: {
           name: 'Bibliotekslogin id',
