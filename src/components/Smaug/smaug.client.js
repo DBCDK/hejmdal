@@ -1,6 +1,6 @@
 import {CONFIG} from '../../utils/config.util';
 import {TokenError} from './smaug.errors';
-import mockClient from './mock/smaug.client.mock';
+import mockClient, {getMockValidateUserTokenClient} from './mock/smaug.client.mock';
 import {promiseRequest} from '../../utils/request.util';
 /**
  * Retreives context based on given token
@@ -30,6 +30,37 @@ export async function getClient(token) {
 
   throw new TokenError(response.statusMessage);
 }
+
+export async function getToken(clientId, library, username, password) {
+  let response;
+
+  // for test and development
+  if (CONFIG.mock_externals.smaug) {
+    response = getMockValidateUserTokenClient(library, username, password);
+  }
+  else {
+    response = await promiseRequest('post', {
+      uri: CONFIG.smaug.adminUri + '/clients/token/' + clientId,
+      auth: {
+        user: CONFIG.smaug.adminUsername,
+        pass: CONFIG.smaug.adminUsername
+      },
+      form: {
+        grant_type: 'password',
+        username: `${username}@DK-${library}`,
+        password: `${password}`
+      }
+    });
+  }
+
+  if (response.statusCode === 200) {
+    const obj = JSON.parse(response.body);
+    return obj.access_token;
+  }
+
+  throw new TokenError(response.statusMessage);
+}
+
 
 /**
  * Check if Smaug webservice is up.

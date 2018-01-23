@@ -1,7 +1,7 @@
 import Router from 'koa-router';
 import compose from 'koa-compose';
 
-import {getAttributes} from '../components/Smaug/smaug.component';
+import {getAttributes, getAuthenticatedToken} from '../components/Smaug/smaug.component';
 import {authenticate, identityProviderCallback} from '../components/Identityprovider/identityprovider.component';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {redirectToClient} from '../middlewares/redirecttoclient.middleware';
@@ -17,7 +17,7 @@ const identityProviderCallbackRoute = async(ctx, next) => {
   await compose([identityProviderCallback, collectAndCreateAttributesRoute, Consent.retrieveUserConsent, ticketRoute])(ctx, next);
 };
 const collectAndCreateAttributesRoute = async(ctx, next) => {
-  await compose([Culr.getCulrAttributes, mapAttributesToTicket])(ctx, next);
+  await compose([Culr.getCulrAttributes, getAuthenticatedToken, mapAttributesToTicket])(ctx, next);
 };
 const ticketRoute = async(ctx, next) => {
   await compose([storeTicket, redirectToClient])(ctx, next);

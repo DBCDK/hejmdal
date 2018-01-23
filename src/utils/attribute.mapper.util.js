@@ -23,8 +23,7 @@ export default async function mapAttributesToTicket(ctx, next) {
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
-
-    const ticketAttributes = mapCulrResponse(culr, serviceAttributes, user, state.serviceClient.id);
+    const ticketAttributes = mapCulrResponse(culr, state.authenticatedToken, serviceAttributes, user, state.serviceClient.id);
 
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
@@ -42,7 +41,7 @@ export default async function mapAttributesToTicket(ctx, next) {
  * @see ATTRIBUTES
  * @return {{}}
  */
-function mapCulrResponse(culr, attributes, user, serviceId) {
+function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) {
   let mapped = {};
 
   let cpr = user.cpr || null;
@@ -97,6 +96,9 @@ function mapCulrResponse(culr, attributes, user, serviceId) {
         break;
       case 'userId':
         mapped.userId = user.userId;
+        break;
+      case 'authenticatedToken':
+        mapped.authenticatedToken = authenticatedToken;
         break;
       case 'wayfId':
         mapped.wayfId = user.wayfId ? user.wayfId : null;

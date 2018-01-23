@@ -48,5 +48,8 @@ export const ATTRIBUTES = {
   uniqueId: {
     name: 'Bibliotekslogin id',
     description: 'Anonymiseret identifikation hos Bibliotekslogin'
+  },
+  authenticatedToken: {
+    skipConsent: true
   }
 };

@@ -71,7 +71,10 @@ export const CONFIG = {
     life_time: Number(process.env.SESSION_LIFE_TIME)
   },
   smaug: {
-    uri: process.env.SMAUG_URI
+    uri: process.env.SMAUG_URI,
+    adminUri: process.env.SMAUG_ADMIN_URI,
+    adminUsername: process.env.SMAUG_ADMIN_USERNAME,
+    adminPassword: process.env.SMAUG_ADMIN_PASSWORD
   },
   unilogin: {
     id: process.env.UNI_LOGIN_ID,

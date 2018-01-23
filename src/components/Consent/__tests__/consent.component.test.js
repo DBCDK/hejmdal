@@ -54,7 +54,10 @@ describe('Unittesting methods in consent.component.test', () => {
         serviceClient: {
           id: 'some id',
           attributes: {
-            cpr: {}
+            cpr: {},
+            token: {
+              skipConsent: true
+            }
           }
         },
         ticket: {
@@ -75,6 +78,19 @@ describe('Unittesting methods in consent.component.test', () => {
       ctx.setState({
         ticket: {
           attributes: {}
+        }
+      });
+
+      assert.isFalse(await shouldUserGiveConsent(ctx));
+    });
+    it('should not give consent if no attributes requires consent', async() => {
+      ctx.setUser({userId: 'testUser'});
+
+      ctx.setState({
+        ticket: {
+          attributes: {
+            token: 123123123
+          }
         }
       });
 
