@@ -43,7 +43,7 @@ export async function getToken(clientId, library, username, password) {
       uri: CONFIG.smaug.adminUri + '/clients/token/' + clientId,
       auth: {
         user: CONFIG.smaug.adminUsername,
-        pass: CONFIG.smaug.adminUsername
+        pass: CONFIG.smaug.adminPassword
       },
       form: {
         grant_type: 'password',
@@ -52,7 +52,6 @@ export async function getToken(clientId, library, username, password) {
       }
     });
   }
-
   if (response.statusCode === 200) {
     const obj = JSON.parse(response.body);
     return obj.access_token;
