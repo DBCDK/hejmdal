@@ -12,6 +12,7 @@ var libraryInput;
 var libraryIdInput;
 
 document.addEventListener('DOMContentLoaded', function () {
+  autocompleteUsername();
   var body = document.getElementsByTagName('body')[0];
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input-hidden');
@@ -55,6 +56,18 @@ document.addEventListener('DOMContentLoaded', function () {
     setRecentlySelectedLibraries();
   }
 });
+
+/**
+ * Hack that catches autocompleted username and adds it to userid-input input field.
+ *
+ * This is needed because userid-input as default is a password field.
+ */
+function autocompleteUsername() {
+  var catcher = document.getElementById('autocomplete-username');
+  catcher.addEventListener('change', function (event) {
+    document.getElementById('userid-input').value = event.currentTarget.value;
+  });
+}
 
 /**
  * Toggles focus class on button's associated with libraryName input field

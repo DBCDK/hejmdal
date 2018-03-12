@@ -28,8 +28,8 @@ div#borchk
     div.form-group
       label(for='userid-input') CPR eller lånerkortnummer
       div.input-group
-        input(type="text" value="" class="form-control" id="catch-saved-cpr" name="catch-previous-saved-cpr" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px")
-        input(type='password' class='form-control' id='userid-input' name='userId' pattern='[0-9]*' required='true' autocomplete="new-password")
+        input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
+        input(type='password' class='form-control' id='userid-input' name='userId' pattern='[0-9]*' required='true' autocomplete="password")
         div.input-group-btn
           button(type='button' class='btn inline-btn-default' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
             span(class='icon-btn icon-eye-closed' id='userid-input-glyph')
