@@ -1,0 +1,21 @@
+extends Main
+
+block append content
+  div#profile
+    div.dialog(role="document")
+      div.content
+        div.header
+          h4.title
+            strong Dine godkendelser
+        div.body
+          p Du har tidligere godkendt at følgende sider kan få adgang til dine data via Bibliotekslogin:
+          each consent in consents
+            ul
+              li
+                strong #{consent.name}
+          p Hvis du ikke længere ønsker, at dine data kan overføres, kan du slette godkendelserne her.
+          div#delete-btn-container
+            button(type='submit' class='btn btn-danger' id='borchk-submit') SLET GODKENDELSER
+          if proceed
+            div#proceed-login
+              a(href=proceed.url class='link-style') Tilbage til #{proceed.name}
