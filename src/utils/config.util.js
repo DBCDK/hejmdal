@@ -74,7 +74,8 @@ export const CONFIG = {
     uri: process.env.SMAUG_URI,
     adminUri: process.env.SMAUG_ADMIN_URI,
     adminUsername: process.env.SMAUG_ADMIN_USERNAME,
-    adminPassword: process.env.SMAUG_ADMIN_PASSWORD
+    adminPassword: process.env.SMAUG_ADMIN_PASSWORD,
+    hejmdalClientId: process.env.HEJMDAL_CLIENT_ID
   },
   unilogin: {
     id: process.env.UNI_LOGIN_ID,

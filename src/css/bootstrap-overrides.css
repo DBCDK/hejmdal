@@ -45,6 +45,17 @@ label {
   letter-spacing: .8px;
 }
 
+.btn-danger {
+  background-color: var(--btn-red);
+  border-color: var(--btn-red);
+  padding-left: 25px;
+  padding-right: 25px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: .8px;
+}
+
 .form-group {
   margin-bottom: 20px;
 }

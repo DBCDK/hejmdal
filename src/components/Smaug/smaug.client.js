@@ -31,6 +31,18 @@ export async function getClient(token) {
   throw new TokenError(response.statusMessage);
 }
 
+/**
+ * Retreives context based on given clientId
+ *
+ * @param {String} token
+ * @return {Object}
+ * @throws {Error|TokenError}
+ */
+export async function getClientById(clientId) {
+  const token = await getToken(clientId, null, '@', '@');
+  return (await getClient(token));
+}
+
 export async function getToken(clientId, library, username, password) {
   let response;
 
@@ -47,7 +59,7 @@ export async function getToken(clientId, library, username, password) {
       },
       form: {
         grant_type: 'password',
-        username: `${username}@DK-${library}`,
+        username: library ? `${username}@DK-${library}` : username,
         password: `${password}`
       }
     });
