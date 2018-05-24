@@ -1,6 +1,8 @@
 extends Main
 
 block append content
+  if loginToProfile
+    div#profile-login Du er ved at logge ind på din profil
   div
     div.borchk-component
       if identityProviders.borchk
