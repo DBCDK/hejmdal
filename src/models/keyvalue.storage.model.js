@@ -72,6 +72,24 @@ export default class KeyValueStorage {
   }
 
   /**
+   * Find objects from store where key begins with given prefix
+   *
+   * @param {string} objectKeyPrefix
+   * @param {string} extra
+   * @returns {boolean}
+   */
+  async find(objectKeyPrefix, extra) {
+    let objects = false;
+    try {
+      objects = await this.store.find(objectKeyPrefix, extra);
+    }
+    catch (e) {
+      log.error('Find objects', {error: e.message, stack: e.stack});
+    }
+    return objects;
+  }
+
+  /**
    * Delete an object in store
    *
    * @param {string} objectKey

@@ -36,4 +36,15 @@ export default class PersistentConsentStorage {
         return false;
       });
   }
+
+  find(consentIdPrefix) {
+    return Consent.query().select(['consentid', 'consent']).where('consentid', 'like', consentIdPrefix + '%')
+      .then((result) => {
+        return result.length ? result.map(c => ({key: c.consentid, value: c.consent})) : null;
+      })
+      .catch((error) => {
+        log.error('Failed to get consents', {error: error.message});
+        return null;
+      });
+  }
 }

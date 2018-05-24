@@ -65,4 +65,8 @@ export default class PersistenSessionStorage {
     throw new Error('Cannot use insertNext in session');
   }
 
+  static find(sid) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use find in session');
+  }
+
 }

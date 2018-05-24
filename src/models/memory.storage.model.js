@@ -57,6 +57,26 @@ export default class MemoryStorage {
   }
 
   /**
+   * Find objects from store where key begins with given prefix
+   *
+   * @param {string} objectKeyPrefix
+   * @param {string} extra
+   * @returns {boolean}
+   */
+  async find(objectKeyPrefix) {
+    const objects = Object.entries(this.storage)
+      .filter(entry => entry[0].beginsWith(objectKeyPrefix))
+      .map(entry => {
+        return {
+          key: entry[0],
+          value: entry[1]
+        };
+      });
+
+    return objects.length > 0 ? objects : false;
+  }
+
+  /**
    * Update an entry if it exist
    *
    * @param key

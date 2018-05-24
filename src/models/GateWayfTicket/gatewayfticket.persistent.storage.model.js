@@ -62,4 +62,8 @@ export default class PersistentGateWayfTicketStorage {
   static upsert(tid, ticket) {   // eslint-disable-line no-unused-vars
     throw new Error('Cannot use upsert in gatewayfticket');
   }
+
+  static find(tid) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use find in gatewayfticket');
+  }
 }

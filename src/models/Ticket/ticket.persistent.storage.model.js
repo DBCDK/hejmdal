@@ -69,4 +69,8 @@ export default class PersistentTicketStorage {
   upsert(tid, ticket) {   // eslint-disable-line no-unused-vars
     throw new Error('Cannot use upsert in ticket');
   }
+
+  static find(tid) {   // eslint-disable-line no-unused-vars
+    throw new Error('Cannot use find in ticket');
+  }
 }
