@@ -180,6 +180,30 @@ export async function getConsent(ctx) {
 }
 
 /**
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+export async function findConsents(ctx) {
+  const userId = ctx.getUser().userId;
+  let consents = [];
+  try {
+    const consentObject = (await consentStore.find(userId));
+    consents = consentObject && consentObject.map(c => {
+      return {
+        serviceClientId: c.key.match(/.*:(.*)/)[1],
+        consent: c.value
+      };
+    }) || [];
+  }
+  catch (e) {
+    log.error('Error while retrieving user consents', {error: e.message, stack: e.stack});
+  }
+
+  return consents;
+}
+
+/**
  * Adds a consent object to the state object
  *
  * @param ctx
