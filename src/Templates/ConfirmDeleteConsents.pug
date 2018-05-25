@@ -1,0 +1,20 @@
+extends Main
+
+block append content
+  div#profile
+    div.dialog(role="document")
+      div.content
+        div.consent-img-container
+            span.banner.delete-profile-img
+        div.header
+          h4.title
+            strong Er du sikker på, at du vil slette dine godkendelser?
+        div.body
+          p Næste gang, du vil logge ind via bibliotekslogin, vil du blive bedt om en ny godkendelse.
+          div#delete-btn-container
+            form(action=deleteConsentsAction method='post')
+              button(type='submit' class='btn btn-danger') JA, SLET GODKENDELSER
+          div#cancel-delete-consents
+            a(href='#' class='link-style' onClick='window.history.back()') Fortryd
+          div.clear.help-text
+            a.link-style#helptext-link(data-toggle="modal" data-target="#helpModal") Hvad er en godkendelse?

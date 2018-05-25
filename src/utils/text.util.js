@@ -24,6 +24,17 @@ const helpTexts = {
       }
     ]
   },
+  deleteConsents: {
+    title: 'Hjælp til sletning af godkendelser',
+    sections: [
+      {
+        header: 'Sletning af godkendelser',
+        texts: [
+          'Hvad skal hjælpeteksten være?'
+        ]
+      }
+    ]
+  },
   consentReject: {
     title: 'Godkendelse afvist',
     sections: [
@@ -207,5 +218,3 @@ export function setLoginReplacersFromAgency(agency) {
   }
   return loginHelpReplacers;
 }
-
-

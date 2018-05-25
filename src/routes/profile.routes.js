@@ -3,13 +3,22 @@
  * Handles logout
  */
 import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
-import {profile, consentsDeleted} from '../components/Profile/profile.component';
+import {profile, consentsDeleted, confirmDeleteConsents} from '../components/Profile/profile.component';
+import {deleteConsents} from '../components/Consent/consent.component';
+import {logout} from '../components/Logout/logout.component';
 import {getAttributes} from '../components/Smaug/smaug.component';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {getToken} from '../components/Smaug/smaug.client';
 import {CONFIG} from '../utils/config.util';
 
 const router = new Router({prefix: '/profile'});
+
+const checkLoggedIn = async (ctx, next) => {
+  if (!ctx.hasUser()) {
+    throw new Error('User not logged in');
+  }
+  await next();
+};
 
 router.get(
   '/',
@@ -33,14 +42,17 @@ router.get(
   profile
 );
 
+router.get(
+  '/confirmDeleteConsents',
+  checkLoggedIn,
+  confirmDeleteConsents
+);
+
 router.post(
   '/deleteConsents',
-  async (ctx, next) => {
-    if (!ctx.hasUser()) {
-      throw new Error('Error deleting consents, user not logged in');
-    }
-    await next();
-  },
+  checkLoggedIn,
+  deleteConsents,
+  logout,
   consentsDeleted
 );
 

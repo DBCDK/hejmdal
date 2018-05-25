@@ -1,6 +1,11 @@
 #proceed-login {
   text-align: right;
 }
+#cancel-delete-consents,
+#logout {
+  margin-top: 0.5em;
+  text-align: right;
+}
 #delete-btn-container {
   text-align: right;
   margin: 1em 0;
@@ -9,6 +14,10 @@
   list-style-position: inside;
   padding: 0;
 }
+#profile .header {
+  margin-top: 2em;
+}
+
 .consent-list-element:first-child {
   border-top: 2px solid var(--dark-grey);
 }
