@@ -29,7 +29,7 @@ export async function setDefaultState(ctx, next) {
     smaugToken: handleNullFromUrl(ctx.query.token),
     ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
-  ctx.session.loginToProfile = ctx.session.loginToProfile || false;
+  ctx.session.loginToProfile = !!ctx.query.loginToProfile;
   ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
 
   await next();

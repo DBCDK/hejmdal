@@ -2,7 +2,11 @@ extends Main
 
 block append content
   if loginToProfile
-    div#profile-login Du er ved at logge ind på din profil
+    div.consent-img-container
+        span.banner.user-data-img
+    div#profile-login.header
+      h4.title
+        strong Log ind for at se dine data
   div
     div.borchk-component
       if identityProviders.borchk

@@ -10,7 +10,7 @@ export async function redirectToClient(ctx, next) {
   const {token, id} = state.ticket;
   if (token && id) {
     if (ctx.session.loginToProfile) {
-      ctx.redirect('/profile');
+      ctx.redirect(`/profile?token=${state.smaugToken}`);
     }
     else {
       ctx.redirect(buildReturnUrl(state, {token, id}));

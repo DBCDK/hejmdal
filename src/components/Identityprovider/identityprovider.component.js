@@ -24,6 +24,7 @@ import _ from 'lodash';
 export async function authenticate(ctx, next) {
   const state = ctx.getState();
   const loginURL = `/login?token=${state.smaugToken}`;
+  const loginToProfileURL = `/profile?token=${state.smaugToken}&loginToProfile=1`;
   const loginToProfile = !!ctx.session.loginToProfile;
 
   try {
@@ -76,7 +77,8 @@ export async function authenticate(ctx, next) {
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
         help: helpText,
-        loginToProfile
+        loginToProfile,
+        loginToProfileURL
       });
 
       ctx.status = 200;

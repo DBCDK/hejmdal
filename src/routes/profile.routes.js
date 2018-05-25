@@ -25,8 +25,7 @@ router.get(
   async (ctx, next) => {
     const token = ctx.request.query.token || (await getToken(CONFIG.smaug.hejmdalClientId, null, '@', '@'));
     if (!ctx.hasUser()) {
-      ctx.session.loginToProfile = true;
-      const loginUrl = `/login?token=${token}`;
+      const loginUrl = `/login?token=${token}&loginToProfile=1`;
       ctx.redirect(loginUrl);
       return;
     }
@@ -34,7 +33,6 @@ router.get(
       ctx.redirect(`/profile?token=${token}`);
       return;
     }
-    ctx.session.loginToProfile = false;
     await next();
   },
   setDefaultState,
