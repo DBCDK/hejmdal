@@ -4,7 +4,7 @@
 
 import {getText} from '../../utils/text.util';
 import {CONFIG} from '../../utils/config.util';
-import {findConsents} from '../Consent/consent.component';
+import {findConsents, deleteConsents} from '../Consent/consent.component';
 import {getClientById} from '../Smaug/smaug.client';
 import {log} from '../../utils/logging.util';
 
@@ -31,6 +31,7 @@ export async function profile(ctx, next) {
   consents = consents.filter(consent => consent.name);
   await ctx.render('Profile', {
     consents,
+    deleteConsentsAction: '/profile/deleteConsents',
     proceed: serviceClient && serviceClient.id !== CONFIG.smaug.hejmdalClientId ? {
       name: serviceClient.name,
       url: `/login?token=${smaugToken}`
@@ -38,5 +39,17 @@ export async function profile(ctx, next) {
     info: true,
     textObj: getText(['cookies'])
   });
+  await next();
+}
+
+/**
+ * Renders consents deleted page
+ *
+ * @param ctx
+ * @param next
+ */
+export async function consentsDeleted(ctx, next) {
+  await ctx.render('ConsentsDeleted');
+  await deleteConsents(ctx);
   await next();
 }

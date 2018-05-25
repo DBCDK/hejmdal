@@ -191,6 +191,7 @@ export async function findConsents(ctx) {
     const consentObject = (await consentStore.find(userId));
     consents = consentObject && consentObject.map(c => {
       return {
+        consentId: c.key,
         serviceClientId: c.key.match(/.*:(.*)/)[1],
         consent: c.value
       };
@@ -201,6 +202,24 @@ export async function findConsents(ctx) {
   }
 
   return consents;
+}
+
+/**
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+export async function deleteConsents(ctx) {
+  const consents = await findConsents(ctx);
+  for (let i = 0; i < consents.length; i++) {
+    const consentId = consents[i].consentId;
+    try {
+      await consentStore.delete(consentId);
+    }
+    catch (err) {
+      log.error(`Could not delete consent with id: $${consentId}`, {error: err.message, stack: err.stack});
+    }
+  }
 }
 
 /**

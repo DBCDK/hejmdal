@@ -5,3 +5,15 @@
   text-align: right;
   margin: 1em 0;
 }
+#profile ul {
+  list-style-position: inside;
+  padding: 0;
+}
+.consent-list-element:first-child {
+  border-top: 2px solid var(--dark-grey);
+}
+.consent-list-element {
+  border-bottom: 2px solid var(--dark-grey);
+  padding: 0.5em 1em;
+  margin: 0px;
+}

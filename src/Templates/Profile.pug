@@ -4,18 +4,24 @@ block append content
   div#profile
     div.dialog(role="document")
       div.content
+        div.consent-img-container
+            span.banner.user-data-img
         div.header
           h4.title
             strong Dine godkendelser
         div.body
-          p Du har tidligere godkendt at følgende sider kan få adgang til dine data via Bibliotekslogin:
-          each consent in consents
+          if consents.length > 0
+            p Du har tidligere godkendt at følgende sider kan få adgang til dine data via Bibliotekslogin:
             ul
-              li
-                strong #{consent.name}
-          p Hvis du ikke længere ønsker, at dine data kan overføres, kan du slette godkendelserne her.
-          div#delete-btn-container
-            button(type='submit' class='btn btn-danger' id='borchk-submit') SLET GODKENDELSER
+              each consent in consents
+                li.consent-list-element
+                  strong #{consent.name}
+            p Hvis du ikke længere ønsker, at dine data kan overføres, kan du slette godkendelserne her.
+            div#delete-btn-container
+              form(action=deleteConsentsAction method='post')
+                button(type='submit' class='btn btn-danger' name='deleteconsents') SLET GODKENDELSER
+          else
+            p Du har ingen godkendelser liggende her......
           if proceed
             div#proceed-login
               a(href=proceed.url class='link-style') Tilbage til #{proceed.name}
