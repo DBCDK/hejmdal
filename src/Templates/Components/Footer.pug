@@ -4,7 +4,7 @@ div#footer
       if (!info)
         div
           a.footer-link(href='/info/cookies' target='hjemdal-cookie') Vores brug af cookies
-      if (!loginToProfile)
+      if (!loginToProfile && loginToProfileURL)
         div.login-profile-link
           a.footer-link(href=loginToProfileURL) Se dine godkendelser
     div.col-xs-6.col-sm-5.align-right &copy; DDB 2016
