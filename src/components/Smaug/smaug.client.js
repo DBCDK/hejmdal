@@ -48,7 +48,7 @@ export async function getToken(clientId, library, username, password) {
 
   // for test and development
   if (CONFIG.mock_externals.smaug) {
-    response = getMockValidateUserTokenClient(library, username, password);
+    response = getMockValidateUserTokenClient(clientId, library, username, password);
   }
   else {
     response = await promiseRequest('post', {
