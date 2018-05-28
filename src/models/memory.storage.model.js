@@ -65,7 +65,7 @@ export default class MemoryStorage {
    */
   async find(objectKeyPrefix) {
     const objects = Object.entries(this.storage)
-      .filter(entry => entry[0].beginsWith(objectKeyPrefix))
+      .filter(entry => entry[0] && entry[0].startsWith && entry[0].startsWith(objectKeyPrefix))
       .map(entry => {
         return {
           key: entry[0],
