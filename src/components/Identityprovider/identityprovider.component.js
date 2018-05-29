@@ -24,6 +24,8 @@ import _ from 'lodash';
 export async function authenticate(ctx, next) {
   const state = ctx.getState();
   const loginURL = `/login?token=${state.smaugToken}`;
+  const loginToProfileURL = `/profile?token=${state.smaugToken}&loginToProfile=1`;
+  const loginToProfile = !!ctx.session.loginToProfile;
 
   try {
     if (!userIsLoggedIn(ctx)) {
@@ -74,7 +76,9 @@ export async function authenticate(ctx, next) {
         preselectedId: preselectedId,
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
-        help: helpText
+        help: helpText,
+        loginToProfile,
+        loginToProfileURL
       });
 
       ctx.status = 200;
@@ -320,4 +324,3 @@ function isLoggedInWith(ctx) {
   const identityProviders = ctx.getState().serviceClient.identityProviders;
   return ctx.getUser().identityProviders.filter(ip => identityProviders.includes(ip));
 }
-

@@ -1,0 +1,32 @@
+extends Main
+
+block append content
+  div#profile
+    div.dialog(role="document")
+      div.content
+        div.consent-img-container
+            span.banner.user-data-img
+        div.header
+          h4.title
+            strong Dine godkendelser
+        div.body
+          if consents.length > 0
+            p Du har tidligere godkendt at følgende sider kan få adgang til dine data via Bibliotekslogin:
+            ul
+              each consent in consents
+                li.consent-list-element
+                  strong #{consent.name}
+            p Hvis du ikke længere ønsker, at dine data kan overføres, kan du slette godkendelserne her.
+            div#delete-btn-container
+              form(action=deleteConsentsAction method='get')
+                button(type='submit' class='btn btn-danger') SLET GODKENDELSER
+          else
+            p Du har ikke nogen godkendelser.
+            p Vi har ikke nogen registrering af, at du tidligere har brugt Bibliotekslogin. Derfor har vi heller ikke nogen godkendelse fra dig til at overføre data til bibliotekstjenester eller -sider.
+          if proceed
+            div#proceed-login
+              a(href=proceed.url class='link-style') Fortsæt til #{proceed.name}
+          div#logout
+            a(href='/logout' class='link-style') Log ud
+          div.clear.help-text
+            a.link-style#helptext-link(data-toggle="modal" data-target="#helpModal") Hvad er en godkendelse?

@@ -12,3 +12,7 @@
   color: var(--dark-grey);
   text-decoration: underline;
 }
+
+#footer .login-profile-link {
+  margin-top: 0.25em;
+}

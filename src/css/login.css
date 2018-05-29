@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+#profile-login {
+  margin: 2em 0;
+}
+
 #external-providers {
   margin-top: 10px;
   margin-bottom: 50px;

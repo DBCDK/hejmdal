@@ -6,6 +6,14 @@
   fill: black;
 }
 
+@svg-load userdata url(svg/user-data.svg) {
+  fill: black;
+}
+
+@svg-load deleteprofile url(svg/delete-profile.svg) {
+  fill: black;
+}
+
 .consent-img {
   background: svg-inline(consent) no-repeat;
 }
@@ -13,6 +21,15 @@
 .consent-rejected-img {
   background: svg-inline(rejected) no-repeat center;
 }
+
+.user-data-img {
+  background: svg-inline(userdata) no-repeat center;
+}
+
+.delete-profile-img {
+  background: svg-inline(deleteprofile) no-repeat center;
+}
+
 .consent-img-label {
   position: relative;
   display: inline-block;

@@ -27,9 +27,9 @@ export async function setDefaultState(ctx, next) {
     serviceAgency: handleNullFromUrl(ctx.query.agency),
     serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
     smaugToken: handleNullFromUrl(ctx.query.token),
-    ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object
+    ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
-
+  ctx.session.loginToProfile = !!ctx.query.loginToProfile;
   ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
 
   await next();
@@ -93,7 +93,7 @@ function getUser() {
  * @returns {boolean}
  */
 function hasUser() {
-  return this.session.user.userId && true || false;
+  return this.session && this.session.user && this.session.user.userId && true || false;
 }
 
 /**

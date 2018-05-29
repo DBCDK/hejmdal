@@ -180,6 +180,52 @@ export async function getConsent(ctx) {
 }
 
 /**
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+export async function findConsents(ctx) {
+  const userId = ctx.getUser().userId;
+  let consents = [];
+  try {
+    const consentObject = (await consentStore.find(userId));
+    consents = consentObject && consentObject.map(c => {
+      const match = c.key.match(/(.*):(.*)/);
+      return {
+        consentId: c.key,
+        userId: match[1],
+        serviceClientId: match[2],
+        consent: c.value
+      };
+    }).filter(consent => consent.userId === userId) || [];
+  }
+  catch (e) {
+    log.error('Error while retrieving user consents', {error: e.message, stack: e.stack});
+  }
+
+  return consents;
+}
+
+/**
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+export async function deleteConsents(ctx, next) {
+  const consents = await findConsents(ctx);
+  for (let i = 0; i < consents.length; i++) {
+    const consentId = consents[i].consentId;
+    try {
+      await consentStore.delete(consentId);
+    }
+    catch (err) {
+      log.error(`Could not delete consent with id: $${consentId}`, {error: err.message, stack: err.stack});
+    }
+  }
+  next();
+}
+
+/**
  * Adds a consent object to the state object
  *
  * @param ctx

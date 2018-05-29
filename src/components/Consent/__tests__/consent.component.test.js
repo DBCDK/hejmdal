@@ -9,7 +9,9 @@ import {
   retrieveUserConsent,
   getConsent,
   storeUserConsent,
-  shouldUserGiveConsent
+  shouldUserGiveConsent,
+  findConsents,
+  deleteConsents
 } from '../consent.component';
 import sinon from 'sinon';
 
@@ -221,6 +223,110 @@ describe('Unittesting methods in consent.component.test', () => {
 
       assert.isArray(consent);
       assert.isObject(ctx.session.state.consents[serviceClientId]);
+    });
+  });
+
+  describe('findConsents()', () => {
+
+    it('should return false', async() => {
+      const consent = await findConsents(ctx);
+
+      assert.deepEqual(consent, []);
+    });
+
+    it('should find consents for user in memory storage', async() => {
+
+      ctx.setUser({userId: 'testuser1'});
+      ctx.setState({
+        serviceClient: {
+          id: 'some-client'
+        }
+      });
+      await storeUserConsent(ctx);
+
+      ctx.setUser({userId: 'testuser2'});
+      ctx.setState({
+        serviceClient: {
+          id: 'some-client'
+        }
+      });
+      await storeUserConsent(ctx);
+      ctx.setState({
+        serviceClient: {
+          id: 'some-other-client'
+        }
+      });
+      await storeUserConsent(ctx);
+
+      const consents = await findConsents(ctx);
+      assert.deepEqual(consents, [
+        {
+          consentId: 'testuser2:some-client',
+          userId: 'testuser2',
+          serviceClientId: 'some-client',
+          consent: {
+            keys: []
+          }
+        },
+        {
+          consentId: 'testuser2:some-other-client',
+          userId: 'testuser2',
+          serviceClientId: 'some-other-client',
+          consent: {
+            keys: []
+          }
+        }
+      ]);
+    });
+
+    it('should not find consents for a prefix of a userId', async() => {
+
+      ctx.setUser({userId: 'testuser1'});
+      ctx.setState({
+        serviceClient: {
+          id: 'some-client'
+        }
+      });
+      await storeUserConsent(ctx);
+
+      ctx.setUser({userId: 't'});
+      const consents = await findConsents(ctx);
+
+      assert.deepEqual(consents, []);
+    });
+  });
+
+
+  describe('deleteConsents()', () => {
+
+    it('should delete consents for user', async() => {
+
+      ctx.setUser({userId: 'testuser1'});
+      ctx.setState({
+        serviceClient: {
+          id: 'some-client'
+        }
+      });
+      await storeUserConsent(ctx);
+
+      ctx.setUser({userId: 'testuser2'});
+      ctx.setState({
+        serviceClient: {
+          id: 'some-client'
+        }
+      });
+      await storeUserConsent(ctx);
+      ctx.setState({
+        serviceClient: {
+          id: 'some-other-client'
+        }
+      });
+      await storeUserConsent(ctx);
+      assert.isTrue((await findConsents(ctx)).length > 0);
+      await deleteConsents(ctx, next);
+      assert.isTrue((await findConsents(ctx)).length === 0);
+      ctx.setUser({userId: 'testuser1'});
+      assert.isTrue((await findConsents(ctx)).length > 0);
     });
   });
 });
