@@ -25,7 +25,7 @@ You can start the application with `node src/main.js` from the project root afte
 To install the latest database changes, run `npm run migrate:latest` to update the database tables. When installing the application, you must run the command to create the needed tables.
 
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
-  
+
 ## Example application
 The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
 
@@ -81,6 +81,10 @@ Number of seconds a ticket has lived in order to be a garbage collected. Default
 - `HASH_SHARED` : `hash.shared`  
 Hash salt secret. Generally used to generate and check hash keys
 
+- `HEJMDAL_CLIENT_ID` : `smaug.hejmdalClientId`  
+Hejmdals own smaug client id. The Hejmdal service client should be configured to not ask for consent.
+It is used in the cases where an end user logs into its Hejmdal profile, i.e. not redirected to an external service.
+
 - `HEJMDAL_DB_CONNECTIONS_POOL_MAX` : `postgres.pool.max`  
 Maximum connections in pool
 
@@ -117,7 +121,7 @@ Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 
 - `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
 set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
- 
+
 - `MOCK_OPENAGENCY`: `mock_externals.openAgency`  
 Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
 
@@ -126,13 +130,13 @@ set to `1` (`MOCK_SMAUG=1`) to mock Smaug and use a predefined response
 
 - `MOCK_UNILOGIN` : `mock_externals.unilogin`  
 set to `1` (`MOCK_UNILOGIN=1`) to mock UNI-Login and use a predefined response
- 
+
 - `MOCK_WAYF` : `mock_externals.wayf`  
 set to `1` (`MOCK_WAYF=1`) to mock WAYF and use a predefined response
- 
+
 - `NODE_ENV` : `app.env`  
 When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
- 
+
 - `OPENAGENCY_URI` : `openAgency.uri`  
 The address to the openAgency service
 
@@ -141,7 +145,7 @@ Specifies the port to expose the application. Default: `3010`
 
 - `PRETTY_LOG` : `log.pretty`  
 Set to `1` (`PRETTY_LOG=1`) for pretty printed log statements. Any other setting, will result in one-line log statements.
- 
+
 - `SESSION_LIFE_TIME` : `session.life_time`  
 The lifetime for a user session in milliseconds. Defaults to 86400000 (24 hours: 24 * 60 * 60 * 1000 = 86400000)
 
@@ -190,13 +194,11 @@ The login url takes the following parameters as arguments. All of them is testab
   Same as the above agency parameter but the field is not locked and the user will be able to change the selection. I.e `presel=743000`
   - `agencytype`  
   Use this parameter to filter the libraries available in the dropdown. By default both Folkebiblioteker (agencies) and Forskningsbiblioteker will be available.  
-  
-  By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker. 
-    
+
+  By using `agencytype` the list can be filtered to only contain one of the two types. Set `agencytype=folk` to exclude Forskningsbiblioteker and `agencytype=forsk` to exclude Folkebiblioteker.
+
 - `/login/verifyToken?token=ABC_123`  
 Check the validity of the token. Returns a json-string, containing ok (true/false), token (the token send) and if the token is valid, expires (the expiration time for the token) ike  *{"ok":true,"token":"ABC_123","expires":"2017-12-06T11:28:30.121Z"}* or *{"ok":false,"token":"ABC_123"}*
 
 - `/logout` eller `/logout?returnurl=someRelativeCallBackUrl`  
 The users session is removed. The returnurl contains the relative callback url for the calling service. If the user session contains information from an identityprovider which has some special login/logout style, a message is presented with information about how the user should handle this - some identity providers do not support a logout operation, so in order to logout properly, the user has to close all browser windows. The information is either (depending on the context setting logoutScreen) shown to the user by hejmdal or returned to the client as message=logout or message=logout_close_browser.
-
-
