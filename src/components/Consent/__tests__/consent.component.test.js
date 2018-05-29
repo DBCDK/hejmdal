@@ -261,16 +261,16 @@ describe('Unittesting methods in consent.component.test', () => {
       const consents = await findConsents(ctx);
       assert.deepEqual(consents, [
         {
-          consentId: 'testuser2:some-client',
-          userId: 'testuser2',
+          consentId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-client',
+          userId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
           serviceClientId: 'some-client',
           consent: {
             keys: []
           }
         },
         {
-          consentId: 'testuser2:some-other-client',
-          userId: 'testuser2',
+          consentId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-other-client',
+          userId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
           serviceClientId: 'some-other-client',
           consent: {
             keys: []

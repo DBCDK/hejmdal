@@ -5,6 +5,7 @@
 
 import {form} from 'co-body';
 import {CONFIG} from '../../utils/config.util';
+import {createHash} from '../../utils/hash.utils';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 import PersistentConsentStorage from '../../models/Consent/consent.persistent.storage.model';
@@ -146,7 +147,8 @@ export async function storeUserConsent(ctx) {
     return false;
   }
 
-  const consentid = `${user.userId}:${state.serviceClient.id}`;
+  const hashedUserId = createHash(user.userId);
+  const consentid = `${hashedUserId}:${state.serviceClient.id}`;
   addConsentToState(ctx, consent);
 
   await consentStore.delete(consentid);
@@ -166,11 +168,15 @@ export async function storeUserConsent(ctx) {
  */
 export async function getConsent(ctx) {
   const userId = ctx.getUser().userId;
+
   const serviceClientId = ctx.getState().serviceClient.id;
   let consent = [];
   try {
-    const consentObject = (await consentStore.read(`${userId}:${serviceClientId}`));
-    consent = consentObject && consentObject.keys || [];
+    if (userId) {
+      const hashedUserId = createHash(userId);
+      const consentObject = (await consentStore.read(`${hashedUserId}:${serviceClientId}`));
+      consent = consentObject && consentObject.keys || [];
+    }
   }
   catch (e) {
     log.error('Error while retrieving user consent', {error: e.message, stack: e.stack});
@@ -188,7 +194,8 @@ export async function findConsents(ctx) {
   const userId = ctx.getUser().userId;
   let consents = [];
   try {
-    const consentObject = (await consentStore.find(userId));
+    const hashedUserId = createHash(userId);
+    const consentObject = (await consentStore.find(hashedUserId));
     consents = consentObject && consentObject.map(c => {
       const match = c.key.match(/(.*):(.*)/);
       return {
@@ -197,7 +204,7 @@ export async function findConsents(ctx) {
         serviceClientId: match[2],
         consent: c.value
       };
-    }).filter(consent => consent.userId === userId) || [];
+    }).filter(consent => consent.userId === hashedUserId) || [];
   }
   catch (e) {
     log.error('Error while retrieving user consents', {error: e.message, stack: e.stack});
