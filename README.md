@@ -45,6 +45,9 @@ Logging use `stdout` and the levels specified in [environment variables](https:/
 
 ## Environment variables
 The variables are specified at the form `name : internal config object`. References in the log from the startup, will use the internal config object.
+- `AES_256_SECRET` : `hash.aes256Secret`  
+A secret used for encrypting stuff, needs to be 32 ASCII characters long.
+
 - `BORCHK_URI` : `borchk.uri`  
 The address of the borchk service
 
