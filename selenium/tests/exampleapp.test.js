@@ -11,7 +11,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
 
   it('should display ticket data in example application', () => {
     page.open();
-    browser.click('#example-page-login');
+    browser.url('/example/');
 
     const examplePageUrl = browser.getUrl();
 
@@ -57,14 +57,12 @@ describe('Testing the Example appliction using UNI-Login', function() {
     };
 
     assert.deepEqual(ticket, expected);
-    browser.url('/');
-    browser.click('#example-page-login');
+    browser.url('/example/');
     browser.click('#reset-to-default');
   });
 
   it('Should create new ticket if user is logged in alreay', () => {
-    browser.url('/');
-    browser.click('#example-page-login');
+    browser.url('/example/');
 
     const examplePageUrl = browser.getUrl();
 
@@ -83,8 +81,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
     assert.isOk(ticketId);
 
     // Repeating the above steps as we're now logged in
-    browser.url('/');
-    browser.click('#example-page-login');
+    browser.url('/example/');
 
     const examplePageUrl2 = browser.getUrl();
 

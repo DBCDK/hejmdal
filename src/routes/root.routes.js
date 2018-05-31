@@ -9,9 +9,7 @@ import sanityCheck from '../utils/sanityCheck.util';
 
 const router = new Router();
 
-router.get('/', (ctx) => {
-  ctx.body = renderFrontPage();
-});
+router.get('/', renderFrontPage);
 
 router.get('/health', async (ctx) => {
 
