@@ -34,8 +34,8 @@ const convertSessions = (knex) => {
     .then(res => {
       const promises = res.map(row => {
         const id = row.id;
-        const ticket = row.session;
-        const encryptedSession = encrypt(ticket);
+        const session = row.session;
+        const encryptedSession = encrypt(session);
 
         return knex('session')
           .where('id', '=', id)
