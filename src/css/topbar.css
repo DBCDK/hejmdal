@@ -2,6 +2,10 @@
   fill: white;
 }
 
+@svg-load --logo-dark url(svg/bibliotekslogin_logo.svg) {
+  fill: black;
+}
+
 @svg-load --svg-help-icon url(svg/help.svg) {
   fill: white;
 }
@@ -11,6 +15,13 @@
   background: svg-inline(--logo) no-repeat center;
   width: 200px;
   height: 50px;
+  margin-top: 5px;
+}
+
+.logo-img-dark {
+  display: block;
+  background: svg-inline(--logo-dark) no-repeat center;
+  height: 28px;
   margin-top: 5px;
 }
 

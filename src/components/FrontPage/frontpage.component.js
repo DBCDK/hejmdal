@@ -3,8 +3,11 @@
  * Functionality to rendering of frontpage
  */
 
-import {template} from './templates/frontpage.template';
+import {getText} from '../../utils/text.util';
 
-export function renderFrontPage() {
-  return template();
+export async function renderFrontPage(ctx, next) {
+  await ctx.render('Frontpage', {
+    help: getText(['deleteConsents'])
+  });
+  await next();
 }
