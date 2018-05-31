@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 
-import {createHash, validateHash} from '../hash.utils.js';
+import {createHash, validateHash, encrypt, decrypt} from '../hash.utils.js';
 
 describe('test hashing', () => {
   let hash1;
@@ -75,3 +75,16 @@ describe('test hashing', () => {
   });
 });
 
+describe('test encryption', () => {
+  it('should encrypt and decrypt object', () => {
+    const obj = {somekey: 'some value'};
+    const encrypted = encrypt(obj);
+    const decrypted = decrypt(encrypted);
+    assert.deepEqual(obj, decrypted);
+  });
+
+  it('encrypting the same object twice should lead to different hexString, due to initialization vector', () => {
+    const obj = {somekey: 'some value'};
+    assert.notEqual(encrypt(obj).hex, encrypt(obj).hex);
+  });
+});
