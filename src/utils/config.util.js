@@ -31,7 +31,8 @@ export const CONFIG = {
     }
   },
   hash: {
-    shared: process.env.HASH_SHARED
+    shared: process.env.HASH_SHARED,
+    aes256Secret: process.env.AES_256_SECRET
   },
   log: {
     level: process.env.LOG_LEVEL,

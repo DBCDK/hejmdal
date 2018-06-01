@@ -6,6 +6,7 @@
  */
 
 import {log} from '../utils/logging.util';
+import {encrypt, decrypt} from '../utils/hash.utils';
 
 export default class KeyValueStorage {
   /**
@@ -24,7 +25,7 @@ export default class KeyValueStorage {
   async insertNext(object) {
     let objectKey = false;
     try {
-      objectKey = await this.store.insertNext(object);
+      objectKey = await this.store.insertNext(encrypt(object));
     }
     catch (e) {
       log.error('Write object', {error: e.message, stack: e.stack});
@@ -44,7 +45,7 @@ export default class KeyValueStorage {
     let success = false;
 
     try {
-      success = await this.store.insert(key, object);
+      success = await this.store.insert(key, encrypt(object));
     }
     catch (e) {
       log.error('Write object with key', {error: e.message, stack: e.stack});
@@ -64,6 +65,9 @@ export default class KeyValueStorage {
     let object = false;
     try {
       object = await this.store.read(objectKey, extra);
+      if (object) {
+        object = decrypt(object);
+      }
     }
     catch (e) {
       log.error('Read object', {error: e.message, stack: e.stack});
@@ -82,6 +86,7 @@ export default class KeyValueStorage {
     let objects = false;
     try {
       objects = await this.store.find(objectKeyPrefix, extra);
+      objects = objects.map(o => ({key: o.key, value: decrypt(o.value)}));
     }
     catch (e) {
       log.error('Find objects', {error: e.message, stack: e.stack});

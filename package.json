@@ -22,8 +22,9 @@
     "test:integration": "npm run build:prod && . ./env.test && TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
     "test:integration:jenkins": "npm run build:prod && . ./env.test && TEST_ENV=jenkins wdio ./selenium/config/wdio.conf.js",
     "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
-    "migrate:latest": "knex migrate:latest",
+    "migrate:latest": "babel-node node_modules/.bin/knex migrate:latest",
     "migrate:latest:dev": "source env.env && knex migrate:latest",
+    "migrate:rollback": "babel-node node_modules/.bin/knex migrate:rollback",
     "precommit": "npm run lint && npm run test && npm run test:integration:local",
     "start": "npm run serve",
     "debug": ". ./env.env && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example"

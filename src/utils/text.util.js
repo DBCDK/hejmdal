@@ -25,12 +25,24 @@ const helpTexts = {
     ]
   },
   deleteConsents: {
-    title: 'Hjælp til sletning af godkendelser',
+    title: 'Om godkendelser',
     sections: [
       {
-        header: 'Sletning af godkendelser',
+        header: 'Hvad er en godkendelse?',
         texts: [
-          'Hvad skal hjælpeteksten være?'
+          'Når du bruger Bibliotekslogin til at logge ind på en bibliotekstjeneste, overfører Bibliotekslogin oplysninger om dig til den tjeneste,' +
+          ' du vil logge ind på, så tjenesten kan identificere dig. ',
+          'Første gang du logger ind til en tjeneste, bliver du bedt om at godkende, at Bibliotekslogin overfører dine oplysninger til tjenesten. ',
+          'Det er det, vi kalder for en godkendelse.'
+        ]
+      },
+      {
+        header: 'Hvordan sletter jeg en godkendelse?',
+        texts: [
+          'Ved at klikke på “Se dine godkendelser” på forsiden eller i sidefoden kan du se en liste  ' +
+          'over de tjenester, du har givet godkendelse til. Her kan du også slette dine godkendelser, ' +
+          'hvis du ikke længere ønsker, at Bibliotekslogin kan overføre dine oplysninger. ',
+          'Hvis du sletter dine godkendelser, skal du lave en ny godkendelse, næste gang du vil logge på med Bibliotekslogin.'
         ]
       }
     ]
