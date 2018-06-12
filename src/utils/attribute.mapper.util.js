@@ -104,7 +104,7 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
         mapped.wayfId = user.wayfId ? user.wayfId : null;
         break;
       case 'uniqueId':
-        mapped.uniqueId = createUniqueId(user.cpr, serviceId);
+        mapped.uniqueId = createUniqueId(user.cpr || user.userId, serviceId);
         break;
       default:
         log.error('Cannot map attribute: ' + field);
