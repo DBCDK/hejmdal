@@ -44,6 +44,7 @@ describe('Testing the Example appliction using UNI-Login', function() {
       "attributes": {
         "cpr": null,
         "userId": 'test1234',
+        "uniqueId": "6c58661fbd4aba8fbb3b115dc65d3b06a57db5c9e09ba0ed2163b68303c3a20e",
         "birthDate": null,
         "birthYear": null,
         "gender": null,

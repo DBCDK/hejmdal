@@ -46,6 +46,7 @@ describe('Test Consent part of authetication flow', () => {
       switch (key) {
         case 'userId':
         case 'uniloginId':
+        case 'uniqueId':
           assert.isTrue(formHtml.includes(name));
           break;
         default:
@@ -123,6 +124,7 @@ describe('Test Consent part of authetication flow', () => {
     assert.deepEqual(ticketAttributes, {
       cpr: null,
       userId: 'test1234',
+      uniqueId: '6c58661fbd4aba8fbb3b115dc65d3b06a57db5c9e09ba0ed2163b68303c3a20e',
       birthDate: null,
       birthYear: null,
       gender: null,
