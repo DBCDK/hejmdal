@@ -13,15 +13,15 @@
 .logo-img {
   display: block;
   background: svg-inline(--logo) no-repeat center;
-  width: 200px;
+  width: 140px;
   height: 50px;
-  margin-top: 5px;
+  margin-top: 3px;
 }
 
 .logo-img-dark {
   display: block;
   background: svg-inline(--logo-dark) no-repeat center;
-  height: 28px;
+  height: 40px;
   margin-top: 5px;
 }
 
@@ -45,11 +45,13 @@
   padding: 1em 15px 0 15px;
 }
 
-.modal-title, .modal-body {
+.modal-title,
+.modal-body {
   text-align: left;
 }
 
-.modal-close, .modal-title {
+.modal-close,
+.modal-title {
   font-size: 1.5em;
 }
 
