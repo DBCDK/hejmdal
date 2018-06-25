@@ -2,6 +2,7 @@
  * @file
  * Methods for dealing with agencies
  */
+import 'locale-compare-polyfill';
 import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
 
 /**

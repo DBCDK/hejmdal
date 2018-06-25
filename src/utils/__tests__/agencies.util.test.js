@@ -4,9 +4,20 @@
  */
 
 import {assert} from 'chai';
-import {getListOfAgenciesForFrontend, getAgencyName, mockSetAgencyList} from '../agencies.util.js';
+import {
+  getListOfAgenciesForFrontend,
+  getAgencyName,
+  mockSetAgencyList
+} from '../agencies.util.js';
 
 const mockAgencyList = [
+  {
+    branchId: '891011',
+    branchShortName: 'branchShortName_0',
+    agencyName: 'ægencyName_0',
+    branchName: 'branchName_0',
+    misc: 'extra info'
+  },
   {
     branchId: '710100',
     branchShortName: 'branchShortName_1',
@@ -40,15 +51,36 @@ const mockAgencyList = [
   }
 ];
 
-describe('Unittesting methods in agencies.util.js', async() => {
+describe('Unittesting methods in agencies.util.js', async () => {
   mockSetAgencyList(mockAgencyList);
 
-  it('should return a list of agencies', async() => {
+  it('should return a sorted list of agencies', async () => {
     const expected = [
-      {branchId: '710100', name: 'agencyName_1', hidden: '710100', type: 'folk'},
-      {branchId: '761500', name: 'agencyName_2', hidden: '761500', type: 'folk'},
-      {branchId: '123456', name: 'agencyName_3', hidden: '123456', type: 'forsk'},
-      {branchId: '234567', name: 'agencyName_4', hidden: '234567', type: 'forsk'}
+      {
+        branchId: '710100',
+        name: 'agencyName_1',
+        hidden: '710100',
+        type: 'folk'
+      },
+      {
+        branchId: '761500',
+        name: 'agencyName_2',
+        hidden: '761500',
+        type: 'folk'
+      },
+      {
+        branchId: '123456',
+        name: 'agencyName_3',
+        hidden: '123456',
+        type: 'forsk'
+      },
+      {
+        branchId: '234567',
+        name: 'agencyName_4',
+        hidden: '234567',
+        type: 'forsk'
+      },
+      {branchId: '891011', name: 'ægencyName_0', hidden: '891011', type: 'folk'}
     ];
 
     const result = await getListOfAgenciesForFrontend();
@@ -56,10 +88,20 @@ describe('Unittesting methods in agencies.util.js', async() => {
     assert.deepEqual(expected, result);
   });
 
-  it('should return Forskningsbiblioteker only', async() => {
+  it('should return Forskningsbiblioteker only', async () => {
     const expected = [
-      {branchId: '123456', name: 'agencyName_3', hidden: '123456', type: 'forsk'},
-      {branchId: '234567', name: 'agencyName_4', hidden: '234567', type: 'forsk'}
+      {
+        branchId: '123456',
+        name: 'agencyName_3',
+        hidden: '123456',
+        type: 'forsk'
+      },
+      {
+        branchId: '234567',
+        name: 'agencyName_4',
+        hidden: '234567',
+        type: 'forsk'
+      }
     ];
 
     const result = await getListOfAgenciesForFrontend('forsk');
@@ -67,10 +109,21 @@ describe('Unittesting methods in agencies.util.js', async() => {
     assert.deepEqual(expected, result);
   });
 
-  it('should return Folkebiblioteker only', async() => {
+  it('should return Folkebiblioteker only', async () => {
     const expected = [
-      {branchId: '710100', name: 'agencyName_1', hidden: '710100', type: 'folk'},
-      {branchId: '761500', name: 'agencyName_2', hidden: '761500', type: 'folk'}
+      {
+        branchId: '710100',
+        name: 'agencyName_1',
+        hidden: '710100',
+        type: 'folk'
+      },
+      {
+        branchId: '761500',
+        name: 'agencyName_2',
+        hidden: '761500',
+        type: 'folk'
+      },
+      {branchId: '891011', name: 'ægencyName_0', hidden: '891011', type: 'folk'}
     ];
 
     const result = await getListOfAgenciesForFrontend('folk');
@@ -78,12 +131,11 @@ describe('Unittesting methods in agencies.util.js', async() => {
     assert.deepEqual(expected, result);
   });
 
-  it('should find agency name from id', async() => {
+  it('should find agency name from id', async () => {
     assert.equal('branchName_1', await getAgencyName('710100'));
   });
 
-  it('should not find agency name from not defined id', async() => {
+  it('should not find agency name from not defined id', async () => {
     assert.equal('Ukendt bibliotek: 910100', await getAgencyName('910100'));
   });
 });
-
