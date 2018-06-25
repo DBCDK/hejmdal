@@ -1,10 +1,12 @@
 #proceed-login {
   text-align: right;
 }
-#cancel-delete-consents,
-#logout {
+#cancel-delete-consents {
   margin-top: 0.5em;
   text-align: right;
+}
+#logout {
+  margin-top: 0.5em;
 }
 #delete-btn-container {
   text-align: right;
