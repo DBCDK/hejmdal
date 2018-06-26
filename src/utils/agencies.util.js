@@ -2,7 +2,7 @@
  * @file
  * Methods for dealing with agencies
  */
-
+import 'locale-compare-polyfill';
 import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
 
 /**
@@ -29,10 +29,12 @@ export async function getListOfAgenciesForFrontend(filterParam = null) {
   let branchList = uiBranchList;
 
   if (filterParam === 'forsk' || filterParam === 'folk') {
-    branchList = uiBranchList.filter((agency) => {
+    branchList = uiBranchList.filter(agency => {
       return agency.type === filterParam;
     });
   }
+
+  branchList.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
 
   return branchList;
 }
@@ -49,7 +51,7 @@ export async function getAgencyName(agencyId) {
   let name = '';
   if (agencyId) {
     name = 'Ukendt bibliotek: ' + agencyId;
-    agencyList.forEach((agency) => {
+    agencyList.forEach(agency => {
       if (agency.branchId === agencyId) {
         name = agency.branchName;
       }
@@ -63,7 +65,7 @@ export async function getAgency(agencyId) {
 
   let ret = {};
   if (agencyId) {
-    agencyList.forEach((agency) => {
+    agencyList.forEach(agency => {
       if (agency.branchId === agencyId) {
         ret = agency;
       }
@@ -89,9 +91,14 @@ async function setUiList() {
   await setAgencyList();
 
   if (!uiBranchList || !uiBranchList.length) {
-    uiBranchList = agencyList.map((branch) => {
+    uiBranchList = agencyList.map(branch => {
       const type = branch.type === 'Forskningsbibliotek' ? 'forsk' : 'folk';
-      return {branchId: branch.branchId, name: branch.agencyName, hidden: branch.branchId, type: type};
+      return {
+        branchId: branch.branchId,
+        name: branch.agencyName,
+        hidden: branch.branchId,
+        type: type
+      };
     });
   }
 }
