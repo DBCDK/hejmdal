@@ -3,7 +3,6 @@ extends Main
 block append content
   div
     span.logout-img
-  if loginFound
     div
       div.h3
         strong Du er logget ud
@@ -20,15 +19,4 @@ block append content
       a(class="link-style" href=returnurl) Tilbage til #{serviceName}
     else
       a(class="link-style" onClick='window.history.back(); return false;') Tilbage
-  else
-    div
-      div.h3
-        strong Fejl
-      div.buffer-1-1
-        strong Du var ikke logget ind med Bibliotekslogin
-      div &nbsp;
-      div.buffer-vertical-5
-        a(class="link-style" onClick='window.history.back(); return false;') Tilbage
-    div &nbsp;
-
   div &nbsp;
