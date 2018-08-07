@@ -11,13 +11,13 @@ import {CONFIG} from '../../utils/config.util';
  * @param next
  */
 export async function getAttributes(ctx, next) {
-  try {
-    const serviceClient = await getClientInfo(ctx.getState().smaugToken);
+  const serviceClient = await getClientInfo(ctx.getState().smaugToken);
+  if (!serviceClient) {
+    ctx.status = 403;
+  }
+  else {
     ctx.setState({serviceClient});
     await next();
-  }
-  catch (err) {
-    ctx.status = 403;
   }
 }
 
