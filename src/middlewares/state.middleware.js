@@ -62,7 +62,7 @@ function setState(newValues) {
  * @returns {Object}
  */
 function getState() {
-  return this.session.state;
+  return this.session && this.session.state || null;
 }
 
 /**
