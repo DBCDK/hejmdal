@@ -17,7 +17,6 @@ import {getClientInfo} from '../Smaug/smaug.component';
  */
 export async function logout(ctx, next) {
   let returnUrl = '';
-  let loginFound = false;
   let idpLogoutInfo = false;
   let idpLogoutUrl = '';
   let logoutInfoCode = '';
@@ -27,14 +26,13 @@ export async function logout(ctx, next) {
   const user = ctx.getUser();
   const state = ctx.getState();
   if (serviceClient && state) {
-    loginFound = true;
     if (user.identityProviders && !ctx.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
       ctx.setState({logoutGatewayf: true, returnUrl: ctx.query.returnurl || ctx.getState().returnUrl});
       idpLogoutUrl = getGateWayfLogoutUrl();
     }
     else {
       returnUrl = buildReturnUrl(ctx.getState());
-      idpLogoutInfo = user.identityProviders && (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf'));
+      idpLogoutInfo = user.identityProviders && (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf')) || null;
       if (serviceClient.logoutScreen === 'skip') {
         logoutInfoCode = 'logout';
         if (idpLogoutInfo) {
@@ -56,7 +54,6 @@ export async function logout(ctx, next) {
     else {
       ctx.render('Logout', {
         idpLogoutInfo: idpLogoutInfo,
-        loginFound: loginFound,
         returnurl: returnUrl,
         serviceName: serviceClient && serviceClient.name
       });
