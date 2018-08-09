@@ -9,14 +9,14 @@ block append content
       div.buffer-1-1
         strong Du er logget ud af Bibliotekslogin.
       if idpLogoutInfo
-        div.buffer-1-1
+        div.buffer-1-1.ipdinfo
           strong Du kan stadig være logget ind på de sider, hvor du har benyttet Bibliotekslogin.
         div.buffer-1-1
           strong Hvis du vil logge ud af alle sider, skal du derfor lukke alle vinduer og faner i din browser
     div &nbsp;
     div.buffer-vertical-5
     if returnurl
-      a(class="link-style" href=returnurl) Tilbage til #{serviceName}
+      a(id="returnUrl" class="link-style" href=returnurl) Tilbage til #{serviceName}
     else
-      a(class="link-style" onClick='window.history.back(); return false;') Tilbage
+      a(id="returnUrl" class="link-style" onClick='window.history.back(); return false;') Tilbage
   div &nbsp;
