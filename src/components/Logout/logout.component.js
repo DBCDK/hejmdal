@@ -4,6 +4,7 @@
 
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
+import {getClientInfo} from '../Smaug/smaug.component';
 
 /**
  *
@@ -16,27 +17,23 @@ import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
  */
 export async function logout(ctx, next) {
   let returnUrl = '';
-  let serviceName;
-  let loginFound = false;
   let idpLogoutInfo = false;
   let idpLogoutUrl = '';
   let logoutInfoCode = '';
-
+  const token = ctx.query.token;
+  const serviceClient = await getClientInfo(token);
+  ctx.setState({serviceClient});
   const user = ctx.getUser();
-  if (ctx.session.state && user) {
-    loginFound = true;
-    if (!ctx.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
+  const state = ctx.getState();
+  if (serviceClient && state) {
+    if (user.identityProviders && !ctx.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
       ctx.setState({logoutGatewayf: true, returnUrl: ctx.query.returnurl || ctx.getState().returnUrl});
       idpLogoutUrl = getGateWayfLogoutUrl();
     }
     else {
-      if (ctx.query.returnurl) {
-        ctx.setState({returnUrl: ctx.query.returnurl});
-      }
       returnUrl = buildReturnUrl(ctx.getState());
-      idpLogoutInfo = (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf'));
-      serviceName = ctx.getState().serviceClient.name;
-      if (ctx.getState().serviceClient.logoutScreen === 'skip') {
+      idpLogoutInfo = user.identityProviders && (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf')) || null;
+      if (serviceClient.logoutScreen === 'skip') {
         logoutInfoCode = 'logout';
         if (idpLogoutInfo) {
           logoutInfoCode = 'logout_close_browser';
@@ -57,11 +54,11 @@ export async function logout(ctx, next) {
     else {
       ctx.render('Logout', {
         idpLogoutInfo: idpLogoutInfo,
-        loginFound: loginFound,
         returnurl: returnUrl,
-        serviceName: serviceName
+        serviceName: serviceClient && serviceClient.name
       });
     }
+
   }
 
   await next();

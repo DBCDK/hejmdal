@@ -11,14 +11,24 @@ import {CONFIG} from '../../utils/config.util';
  * @param next
  */
 export async function getAttributes(ctx, next) {
-  try {
-    const client = await getClientFromSmaug(ctx.getState().smaugToken);
-    ctx.setState({serviceClient: extractClientInfo(client)});
+  const serviceClient = await getClientInfo(ctx.getState().smaugToken);
+  if (!serviceClient) {
+    ctx.status = 403;
+  }
+  else {
+    ctx.setState({serviceClient});
     await next();
   }
-  catch (err) {
-    log.error('Invalid Token', {error: err.message, stack: err.stack});
-    ctx.status = 403;
+}
+
+export async function getClientInfo(smaugToken) {
+  try {
+    const smaugClient = await getClientFromSmaug(smaugToken);
+    return await extractClientInfo(smaugClient);
+  }
+  catch (error) {
+    log.info('Invalid Token', {error: error.message, stack: error.stack});
+    return null;
   }
 }
 
@@ -43,7 +53,7 @@ export async function getAuthenticatedToken(ctx, next) {
  * @param client
  * @returns {{id: String, identityProviders: Array, attributes: Array}}
  */
-function extractClientInfo(client) {
+export function extractClientInfo(client) {
   if (!client.app.clientId) {
     throw new Error('Invalid Client', client);
   }
