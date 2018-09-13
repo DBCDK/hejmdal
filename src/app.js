@@ -3,22 +3,35 @@
  * Configure and start oAuth2 hejmdal server
  */
 
-var bodyParser = require('body-parser');
-var express = require('express');
-var OAuthServer = require('express-oauth-server');
-
+const bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
 import model from './oAuth2/oAuth2.memory.model';
-console.log(model);
 
-var app = express();
-
+var OAuthServer = require('express-oauth-server');
 app.oauth = new OAuthServer({
-  model: model // See https://github.com/oauthjs/node-oauth2-server for specification
+  model, // See https://github.com/oauthjs/node-oauth2-server for specification
+  allowBearerTokensInQueryString: true,
+  grants: ['password', 'authorization_code'],
+  debug: true
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(app.oauth.authorize());
+app.use(bodyParser.urlencoded({extended: false}));
+
+/**
+ * Middleware for initializing oauth authorization.
+ */
+function authorizationMiddleware() {
+  const options = {
+    authenticateHandler: {
+      handle: req => {
+        return {id: '12345'};
+      }
+    }
+  };
+  return app.oauth.authorize(options);
+}
 
 /**
  * authorization
@@ -33,17 +46,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
  * redirects to redirect_uri and adds authorizationCode in code and state from request is echoed back
  *
  */
-app.get('/oauth/authorize', function(req, res) {
-  console.log('authorize req', req.query);
-  //console.log('app', app.oauth.authorize);
-  var autorize = app.oauth.authorize(req.query.client_id);
-  console.log('autorize', autorize);
-  autorize(req, res).then(function(result, error){
-    console.log('result.statusCode', result.statusCode);
-    console.log('result.statusMessage', result.statusMessage);
-    console.log('error', error);
-  });
-  //res.send('finito authorize\n');
+app.get(
+  '/oauth/authorize',
+  (req, res, next) => {
+    // Check if user is logged in (This could be done in a middleware)
+    // If the user is not logged in, we should redirect user to an separate login endpoint
+    next();
+  },
+  authorizationMiddleware()
+);
+
+/**
+ * Test callback endpoint
+ */
+app.get('/callback', (req, res) => {
+  res.send(
+    `curl -X POST http://localhost:3000/oauth/token -d 'grant_type=authorization_code&code=${
+      req.query.code
+    }&client_id=foo&client_secret=nightworld&redirect_uri=http://localhost:3000/callback'`
+  );
 });
 
 /**
@@ -60,26 +81,7 @@ app.get('/oauth/authorize', function(req, res) {
  * { "error":"invalid_request" }
  *
  */
-app.post('/oauth/token', function(req, res) {
-  console.log('token req', req.query);
-  var token = app.oauth.token();
-  console.log('token', token);
-  token(req, res).then(function(result, error){
-    console.log('result.statusCode', result.statusCode);
-    console.log('result.statusMessage', result.statusMessage);
-    console.log('error', error);
-  });
-  //res.send('finito token\n');
-});
-// get will cause error
-app.get('/oauth/token', app.oauth.token());
-
-/*
-app.use(function(req, res) {
-  console.log('use');
-  res.send('Secret area');
-});
-*/
+app.post('/oauth/token', app.oauth.token());
 
 module.exports = app;
-app.listen(3000);
+app.listen(process.env.port || 3000);

@@ -1,23 +1,66 @@
-
 /**
  * Module dependencies.
  */
 
-const mock =  {
-  clients: [{ clientId : 'foo', grants: 'authorization_code', clientSecret : 'nightworld', redirectUris : ['http://dbc.dk'] }],
+const mock = {
+  clients: [
+    {
+      clientId: 'foo',
+      grants: ['authorization_code'],
+      clientSecret: 'nightworld',
+      redirectUris: ['http://localhost:3000/callback']
+    }
+  ],
   tokens: [],
   grants: 'authorization_code',
-  users: [{ id : '123', username: 'foobar', password: 'nightworld' }]
+  users: [{id: '123', username: 'foobar', password: 'nightworld'}],
+  authorizationCodes: new Map()
 };
 
 /*
  * Save authorization code
  */
 
-module.exports.saveAuthorizationCode = function(par) {
-  console.log('saveAuthorizationCode', par);
+module.exports.saveAuthorizationCode = function(code, client, user) {
+  const codeToSave = {
+    authorizationCode: code.authorizationCode,
+    expiresAt: code.expiresAt,
+    redirectUri: code.redirectUri,
+    scope: code.scope,
+    client: client.clientId,
+    user: user.id
+  };
+  code = Object.assign({}, code, {
+    client: client.clientId,
+    user: user.id
+  });
+  mock.authorizationCodes.set(code.authorizationCode, codeToSave);
+  return code;
+};
 
-  return true;
+/*
+ * Save authorization code
+ */
+module.exports.getAuthorizationCode = function(authorizationCode) {
+  const code = mock.authorizationCodes.get(authorizationCode);
+
+  if (!code) {
+    return null;
+  }
+
+  code.client = {clientId: code.client};
+  code.user = {id: code.user};
+
+  return code;
+};
+
+/*
+ * Save authorization code
+ */
+module.exports.revokeAuthorizationCode = function(params) {
+  console.log('saveAuthorizationCode', params);
+
+  return params;
 };
 
 /*
@@ -37,15 +80,11 @@ module.exports.getAccessToken = function(bearerToken) {
  * Get client.
  */
 
-module.exports.getClient = function *(clientId, clientSecret) {
+module.exports.getClient = function*(clientId, clientSecret) {
   clientSecret = clientSecret ? clientSecret : 'nightworld';
-  console.log('getClient', clientId, clientSecret);
   var clients = mock.clients.filter(function(client) {
     return client.clientId === clientId && client.clientSecret === clientSecret;
   });
-
-  console.log('clients', clients);
-  console.log('return', clients.length ? clients[0] : false);
   return clients.length ? clients[0] : false;
 };
 
@@ -53,7 +92,7 @@ module.exports.getClient = function *(clientId, clientSecret) {
  * Get refresh token.
  */
 
-module.exports.getRefreshToken = function *(bearerToken) {
+module.exports.getRefreshToken = function*(bearerToken) {
   console.log('getRefreshToken', bearerToken);
   var tokens = mock.tokens.filter(function(token) {
     return token.refreshToken === bearerToken;
@@ -66,7 +105,7 @@ module.exports.getRefreshToken = function *(bearerToken) {
  * Get user.
  */
 
-module.exports.getUser = function *(username, password) {
+module.exports.getUser = function*(username, password) {
   console.log('getUser', username, password);
   var users = mock.users.filter(function(user) {
     return user.username === username && user.password === password;
@@ -79,35 +118,22 @@ module.exports.getUser = function *(username, password) {
  * Save token.
  */
 
-module.exports.saveToken = function *(token, client, user) {
+module.exports.saveToken = function*(token, client, user) {
   console.log('saveToken', token, client, user);
-  mock.tokens.push({
+  const access_token = {
     accessToken: token.accessToken,
     accessTokenExpiresAt: token.accessTokenExpiresAt,
-    clientId: client.clientId,
+    client: client.clientId,
     refreshToken: token.refreshToken,
     refreshTokenExpiresAt: token.refreshTokenExpiresAt,
-    userId: user.id
-  });
+    user: user.id
+  };
+  mock.tokens.push(access_token);
+
+  return access_token;
 };
 
-/**
- * Save Access token.
- */
-
-module.exports.saveAccessToken = function *(token, client, user) {
-  console.log('saveAccessToken', token, client, user);
-  mock.tokens.push({
-    accessToken: token.accessToken,
-    accessTokenExpiresAt: token.accessTokenExpiresAt,
-    clientId: client.clientId,
-    refreshToken: token.refreshToken,
-    refreshTokenExpiresAt: token.refreshTokenExpiresAt,
-    userId: user.id
-  });
-};
-
-module.exports.dump = function () {
+module.exports.dump = function() {
   console.log('clients', mock.clients);
   console.log('tokens', mock.tokens);
   console.log('users', mock.users);
