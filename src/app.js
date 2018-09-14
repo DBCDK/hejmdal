@@ -5,10 +5,12 @@
 
 const bodyParser = require('body-parser');
 const express = require('express');
-const app = express();
+import session from 'express-session';
 import model from './oAuth2/oAuth2.memory.model';
 
-var OAuthServer = require('express-oauth-server');
+const app = express();
+
+const OAuthServer = require('express-oauth-server');
 app.oauth = new OAuthServer({
   model, // See https://github.com/oauthjs/node-oauth2-server for specification
   allowBearerTokensInQueryString: true,
@@ -18,6 +20,13 @@ app.oauth = new OAuthServer({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(
+  session({
+    secret: 'Super Secret Session Key',
+    saveUninitialized: true,
+    resave: true
+  })
+);
 
 /**
  * Middleware for initializing oauth authorization.
@@ -50,11 +59,66 @@ app.get(
   '/oauth/authorize',
   (req, res, next) => {
     // Check if user is logged in (This could be done in a middleware)
+    if (!req.session.user) {
+      req.session.query = {
+        state: req.query.state,
+        scope: req.query.scope,
+        client_id: req.query.client_id,
+        redirect_uri: req.query.redirect_uri,
+        response_type: req.query.response_type
+      };
+
+      return res.redirect('/login');
+    }
     // If the user is not logged in, we should redirect user to an separate login endpoint
     next();
   },
   authorizationMiddleware()
 );
+
+app.post(
+  '/oauth/authorize',
+  (req, res, next) => {
+    if (!req.session.user && !req.session.query) {
+      return res.redirect('/login');
+    }
+    req.query = req.session.query;
+    next();
+  },
+  authorizationMiddleware()
+);
+
+app.get('/login', (req, res) => {
+  const html =
+    '<html><body><form action="/login" method="post">' +
+    '<h1>Log ind</h1>' +
+    '<input type="hidden" name="userId" value="123">' +
+    '<input type="submit" value="Log ind">' +
+    '</form></body></html>';
+  res.send(html);
+});
+
+app.post('/login', (req, res) => {
+  const {userId} = req.body;
+  if (!userId) {
+    return res.redirect('/login');
+  }
+
+  req.session.user = userId;
+
+  // If we were sent here from grant page, redirect back
+  if (req.session.hasOwnProperty('query')) {
+    console.log(Object.entries(req.session.query)[0]);
+    return res.redirect(
+      `/oauth/authorize/?${Object.entries(req.session.query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&')}`
+    );
+  }
+
+  // If not do whatever you fancy
+  res.redirect('/');
+});
 
 /**
  * Test callback endpoint
@@ -84,7 +148,7 @@ app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
 });
 
 app.get('/example', (req, res) => {
-  // Setup example client using
+  // Setup example client using passport
 });
 
 /**
@@ -104,4 +168,6 @@ app.get('/example', (req, res) => {
 app.post('/oauth/token', app.oauth.token());
 
 module.exports = app;
-app.listen(process.env.port || 3000);
+console.log(process.env);
+
+app.listen(process.env.PORT || 3000);
