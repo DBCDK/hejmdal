@@ -60,11 +60,31 @@ app.get(
  * Test callback endpoint
  */
 app.get('/callback', (req, res) => {
+  // Outputs curl commando for requesting access_token
   res.send(
     `curl -X POST http://localhost:3000/oauth/token -d 'grant_type=authorization_code&code=${
       req.query.code
     }&client_id=foo&client_secret=nightworld&redirect_uri=http://localhost:3000/callback'`
   );
+});
+
+/**
+ * Get userinfo
+ *
+ * // curl -X POST http://localhost:3000/userinfo -d 'access_token={token}'
+ */
+app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
+  res.send({
+    uniqueId:
+      '777c777te7ste0b8560e8339a1caf7594d6992770af3e4e5dcbf675f737cdc41',
+    municipality: '751',
+    cpr: '0102991122',
+    libraries: []
+  });
+});
+
+app.get('/example', (req, res) => {
+  // Setup example client using
 });
 
 /**
