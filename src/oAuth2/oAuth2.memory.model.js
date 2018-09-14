@@ -8,7 +8,10 @@ const mock = {
       clientId: 'foo',
       grants: ['authorization_code'],
       clientSecret: 'nightworld',
-      redirectUris: ['http://localhost:3000/callback']
+      redirectUris: [
+        'http://localhost:3000/callback',
+        'http://localhost:3010/example/provider/callback'
+      ]
     }
   ],
   tokens: [],

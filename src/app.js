@@ -3,19 +3,21 @@
  * Configure and start oAuth2 hejmdal server
  */
 
-const bodyParser = require('body-parser');
-const express = require('express');
+import bodyParser from 'body-parser';
+import express from 'express';
 import session from 'express-session';
 import model from './oAuth2/oAuth2.memory.model';
+import OAuthServer from 'express-oauth-server';
+import initPassport from './oAuth2/passport';
 
 const app = express();
-
-const OAuthServer = require('express-oauth-server');
+initPassport(app);
 app.oauth = new OAuthServer({
   model, // See https://github.com/oauthjs/node-oauth2-server for specification
   allowBearerTokensInQueryString: true,
   grants: ['password', 'authorization_code'],
-  debug: true
+  debug: true,
+  allowEmptyState: true
 });
 
 app.use(bodyParser.json());
@@ -145,10 +147,6 @@ app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
     cpr: '0102991122',
     libraries: []
   });
-});
-
-app.get('/example', (req, res) => {
-  // Setup example client using passport
 });
 
 /**
