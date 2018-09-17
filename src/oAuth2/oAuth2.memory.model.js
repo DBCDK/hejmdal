@@ -1,16 +1,18 @@
 /**
  * Module dependencies.
  */
+import os from 'os';
+console.log(process.env.HOST);
 
 const mock = {
   clients: [
     {
-      clientId: 'foo',
+      clientId: 'hejmdal',
+      clientSecret: 'hejmdal_secret',
       grants: ['authorization_code'],
-      clientSecret: 'nightworld',
       redirectUris: [
-        'http://localhost:3000/callback',
-        'http://localhost:3010/example/provider/callback'
+        `${process.env.HOST}/callback`,
+        `${process.env.HOST}/example/provider/callback`
       ]
     }
   ],
@@ -83,10 +85,9 @@ module.exports.getAccessToken = function(bearerToken) {
  * Get client.
  */
 
-module.exports.getClient = function*(clientId, clientSecret) {
-  clientSecret = clientSecret ? clientSecret : 'nightworld';
+module.exports.getClient = function*(clientId) {
   var clients = mock.clients.filter(function(client) {
-    return client.clientId === clientId && client.clientSecret === clientSecret;
+    return client.clientId === clientId;
   });
   return clients.length ? clients[0] : false;
 };

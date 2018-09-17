@@ -10,6 +10,8 @@ import model from './oAuth2/oAuth2.memory.model';
 import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
 
+const host = process.env.HOST;
+
 const app = express();
 initPassport(app);
 app.oauth = new OAuthServer({
@@ -110,7 +112,6 @@ app.post('/login', (req, res) => {
 
   // If we were sent here from grant page, redirect back
   if (req.session.hasOwnProperty('query')) {
-    console.log(Object.entries(req.session.query)[0]);
     return res.redirect(
       `/oauth/authorize/?${Object.entries(req.session.query)
         .map(([key, value]) => `${key}=${value}`)
@@ -122,15 +123,25 @@ app.post('/login', (req, res) => {
   res.redirect('/');
 });
 
+// http://oauth.bib.login.dk/oauth/authorize/?client_id=hejmdal&redirect_uri=http://oauth.login.bib.dk/callback&response_type=code
 /**
  * Test callback endpoint
  */
 app.get('/callback', (req, res) => {
   // Outputs curl commando for requesting access_token
   res.send(
-    `curl -X POST http://localhost:3000/oauth/token -d 'grant_type=authorization_code&code=${
+    `
+    <html><body>
+    <h3>Lav følgende POST kald for at hente en token:</h3>
+    <code>curl -X POST ${host}/oauth/token -d 'grant_type=authorization_code&code=${
       req.query.code
-    }&client_id=foo&client_secret=nightworld&redirect_uri=http://localhost:3000/callback'`
+    }&client_id=hejmdal&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
+    
+    <h3>Lav derefter et kald til /userinfo med returnerede access_token, for at hente brugerinformation:</h3>
+
+    <code>curl -X POST ${host}/userinfo -d 'access_token={ACCESS_TOKEN}'</code>
+    </body></html>
+    `
   );
 });
 
@@ -141,11 +152,23 @@ app.get('/callback', (req, res) => {
  */
 app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
   res.send({
-    uniqueId:
-      '777c777te7ste0b8560e8339a1caf7594d6992770af3e4e5dcbf675f737cdc41',
-    municipality: '751',
-    cpr: '0102991122',
-    libraries: []
+    attributes: {
+      userId: '0101701234',
+      uniqueId:
+        '8aa45d6b9e2cdec5322fa4c35cfd3ea271a3981ffcb5f75a994029522a3ec1a9',
+      agencies: [
+        {
+          agencyId: '710100',
+          userId: '0101701234',
+          userIdType: 'CPR'
+        },
+        {
+          agencyId: '714700',
+          userId: '12345678',
+          userIdType: 'LOCAL'
+        }
+      ]
+    }
   });
 });
 
@@ -166,6 +189,5 @@ app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
 app.post('/oauth/token', app.oauth.token());
 
 module.exports = app;
-console.log(process.env);
 
 app.listen(process.env.PORT || 3000);
