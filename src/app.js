@@ -123,7 +123,14 @@ app.post('/login', (req, res) => {
   res.redirect('/');
 });
 
-// http://oauth.bib.login.dk/oauth/authorize/?client_id=hejmdal&redirect_uri=http://oauth.login.bib.dk/callback&response_type=code
+app.get('/logout', (req, res) => {
+  req.session.user = null;
+  if (req.query.access_token) {
+    app.oauth.server.options.model.revokeToken(req.query.access_token);
+  }
+  res.send('User is logged out');
+});
+
 /**
  * Test callback endpoint
  */

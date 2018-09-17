@@ -137,6 +137,10 @@ module.exports.saveToken = function*(token, client, user) {
   return access_token;
 };
 
+module.exports.revokeToken = token => {
+  mock.tokens = mock.tokens.filter(t => t.accessToken !== token);
+};
+
 module.exports.dump = function() {
   console.log('clients', mock.clients);
   console.log('tokens', mock.tokens);
