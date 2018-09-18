@@ -22,6 +22,8 @@ const mock = {
   authorizationCodes: new Map()
 };
 
+module.exports.mock = mock;
+
 /*
  * Save authorization code
  */

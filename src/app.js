@@ -62,6 +62,8 @@ function authorizationMiddleware() {
 app.get(
   '/oauth/authorize',
   (req, res, next) => {
+    // This is a hack to allow all redirect_uris. This should only be included in the mock implementation.
+    model.mock.clients[0].redirectUris.push(req.query.redirect_uri);
     // Check if user is logged in (This could be done in a middleware)
     if (!req.session.user) {
       req.session.query = {
