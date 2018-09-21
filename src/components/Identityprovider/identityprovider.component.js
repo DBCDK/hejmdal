@@ -9,10 +9,7 @@ import {
   getUniloginURL,
   validateUniloginTicket
 } from '../UniLogin/unilogin.component';
-import {
-  validateUserInLibrary,
-  getBorchkResponse
-} from '../Borchk/borchk.component';
+import {borchkCallback} from '../Borchk/borchk.component';
 import {
   getGateWayfLoginResponse,
   getGateWayfLoginUrl
@@ -23,7 +20,6 @@ import {
 } from '../../utils/agencies.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
-import {ERRORS} from '../../utils/errors.util';
 import _ from 'lodash';
 
 /**
@@ -155,39 +151,6 @@ export async function uniloginCallback(ctx) {
 }
 
 /**
- * Parses the callback parameters for borchk. Parameters from form comes as post
- *
- * @param req
- * @returns {*}
- */
-export async function borchkCallback(req, res) {
-  let validated = {error: true, message: 'unknown_eror'};
-  const response = req.body;
-
-  if (response && response.userId && response.libraryId && response.pincode) {
-    validated = await validateUserInLibrary(req, res, response);
-  } else {
-    validated.message = ERRORS.missing_fields;
-  }
-
-  if (!validated.error) {
-    req.session.rememberMe = response.rememberMe;
-    req.setUser({
-      userId: response.userId,
-      cpr: isValidCpr(response.userId) ? response.userId : null,
-      userType: 'borchk',
-      libraryId: response.libraryId,
-      pincode: response.pincode,
-      userValidated: true
-    });
-  } else {
-    const librayId = response.libraryId || null;
-    idenityProviderValidationFailed(req, res, validated, librayId);
-  }
-  return req;
-}
-
-/**
  * Parses the callback parameters for nemlogin (via gatewayf).
  *
  * @param ctx
@@ -232,9 +195,13 @@ export async function identityProviderCallback(req, res, next) {
     if (!validateHash(req.params.token, req.getState().smaugToken)) {
       req.status = 403;
     } else {
+      let response;
       switch (req.params.type) {
         case 'borchk':
-          await borchkCallback(req, res);
+          response = await borchkCallback(
+            req.getState().serviceClient.borchkServiceName,
+            req.body
+          );
           break;
         case 'nemlogin':
           await nemloginCallback(req);
@@ -248,6 +215,18 @@ export async function identityProviderCallback(req, res, next) {
         default:
           break;
       }
+      console.log(response);
+      if (response.error) {
+        return idenityProviderValidationFailed(
+          req,
+          res,
+          response.error,
+          response.libraryId
+        );
+      }
+      const {rememberMe, user} = response;
+      req.session.rememberMe = rememberMe;
+      req.setUser(user);
     }
   } catch (e) {
     log.error('Error in identityProviderCallback', {
@@ -270,6 +249,24 @@ export async function identityProviderCallback(req, res, next) {
 
   // If not do whatever you fancy
   res.redirect('/');
+}
+
+/**
+ *
+ * @param {object} ctx
+ * @param {object} error
+ * @param {string} libraryId
+ */
+function idenityProviderValidationFailed(ctx, res, error, libraryId) {
+  const agencyParameter = ctx.getState().serviceAgency
+    ? '&agency=' + ctx.getState().serviceAgency
+    : '';
+  const errorParameter = error.error ? `&error=${error.message}` : '';
+  const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
+  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${
+    ctx.getState().returnUrl
+  }${agencyParameter}${errorParameter}${preselctedLibrary}`;
+  res.redirect(302, startOver);
 }
 
 /**
@@ -313,56 +310,4 @@ function getIdentityProviders(state) {
   }
 
   return providers;
-}
-
-/**
- *
- * @param {object} ctx
- * @param {object} error
- * @param {string} libraryId
- */
-function idenityProviderValidationFailed(ctx, res, error, libraryId) {
-  const agencyParameter = ctx.getState().serviceAgency
-    ? '&agency=' + ctx.getState().serviceAgency
-    : '';
-  const errorParameter = error.error ? `&error=${error.message}` : '';
-  const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
-  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${
-    ctx.getState().returnUrl
-  }${agencyParameter}${errorParameter}${preselctedLibrary}`;
-  res.redirect(302, startOver);
-}
-
-/**
- * Check if user is logged in with a valid serviceProvider
- *
- * @param ctx
- * @returns {boolean}
- */
-function userIsLoggedIn(ctx) {
-  const ips = isLoggedInWith(ctx);
-  if (ips.length) {
-    if (!ips.includes('borck')) {
-      const link = getIdentityProviders(ctx.getState())[ips[0]].link;
-      ctx.redirect(link);
-    }
-    return true;
-  }
-  return false;
-}
-
-/**
- * Returns the valid identityproviders a user is logged in with.
- *
- * @param ctx
- * @returns {*}
- */
-function isLoggedInWith(ctx) {
-  if (!ctx.hasUser()) {
-    return [];
-  }
-  const identityProviders = ctx.getState().serviceClient.identityProviders;
-  return ctx
-    .getUser()
-    .identityProviders.filter(ip => identityProviders.includes(ip));
 }

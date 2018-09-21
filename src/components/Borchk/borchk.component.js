@@ -7,6 +7,7 @@ import {form} from 'co-body';
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
+import {isValidCpr} from '../../utils/cpr.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -15,18 +16,16 @@ import {ERRORS} from '../../utils/errors.util';
  * @param {object} userInput
  * @returns {*}
  */
-export async function validateUserInLibrary(ctx, res, userInput) {
+export async function validateUserInLibrary(requester, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
 
-  try {
-    const requester = ctx.getState().serviceClient.borchkServiceName;
-    const response = await getClient(userInput.libraryId, userInput.userId, userInput.pincode, requester);
-    userValidate = extractInfo(response);
-  }
-  catch (e) {
-    log.error('Invalid service call', {error: e.message, stack: e.stack});
-    res.status = 403;
-  }
+  const response = await getClient(
+    userInput.libraryId,
+    userInput.userId,
+    userInput.pincode,
+    requester
+  );
+  userValidate = extractInfo(response);
 
   return userValidate;
 }
@@ -41,12 +40,46 @@ export async function getBorchkResponse(ctx) {
   let response = null;
   try {
     response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
-  }
-  catch (e) {
-    log.error('Could not retrieve borchk response', {error: e.message, stack: e.stack});
+  } catch (e) {
+    log.error('Could not retrieve borchk response', {
+      error: e.message,
+      stack: e.stack
+    });
   }
 
   return response;
+}
+
+/**
+ * Parses the callback parameters for borchk. Parameters from form comes as post
+ *
+ * @param req
+ * @returns {*}
+ */
+export async function borchkCallback(requestUri, formData) {
+  let validated = {error: true, message: 'unknown_eror'};
+
+  if (formData && formData.userId && formData.libraryId && formData.pincode) {
+    validated = await validateUserInLibrary(requestUri, formData);
+  } else {
+    validated.message = ERRORS.missing_fields;
+  }
+
+  if (!validated.error) {
+    return {
+      user: {
+        userId: formData.userId,
+        cpr: isValidCpr(formData.userId) ? formData.userId : null,
+        userType: 'borchk',
+        libraryId: formData.libraryId,
+        pincode: formData.pincode,
+        userValidated: true
+      },
+      rememberMe: formData.rememberMe
+    };
+  } else {
+    return {error: validated, libraryId: formData.libraryId};
+  }
 }
 
 /**
@@ -73,7 +106,11 @@ function extractInfo(response) {
     message: 'unknown_error'
   };
 
-  if (response && response.borrowerCheckResponse && response.borrowerCheckResponse.requestStatus) {
+  if (
+    response &&
+    response.borrowerCheckResponse &&
+    response.borrowerCheckResponse.requestStatus
+  ) {
     const message = response.borrowerCheckResponse.requestStatus.$;
     switch (message) {
       case 'ok':
@@ -81,7 +118,9 @@ function extractInfo(response) {
         statusResponse.message = 'OK';
         break;
       case 'service_not_licensed':
-        log.error('Invalid borchk request. Service not licensed', {response: response});
+        log.error('Invalid borchk request. Service not licensed', {
+          response: response
+        });
         statusResponse.message = ERRORS[message];
         break;
       case 'service_unavailable':
@@ -89,7 +128,9 @@ function extractInfo(response) {
         statusResponse.message = ERRORS[message];
         break;
       case 'library_not_found':
-        log.error('Borchk: The requested library was not found', {response: response});
+        log.error('Borchk: The requested library was not found', {
+          response: response
+        });
         statusResponse.message = ERRORS[message];
         break;
       case 'borrowercheck_not_allowed':
@@ -105,7 +146,9 @@ function extractInfo(response) {
         statusResponse.message = ERRORS[message];
         break;
       case 'municipality_check_not_supported_by_library':
-        log.error('Borchk: Municipality check not supported by library', {response: response});
+        log.error('Borchk: Municipality check not supported by library', {
+          response: response
+        });
         statusResponse.message = ERRORS[message];
         break;
       case 'no_user_in_request':
@@ -120,13 +163,10 @@ function extractInfo(response) {
         log.error('Unknown borchk library', {response: response});
         break;
     }
-  }
-  else {
+  } else {
     log.error('Invalid borchk response', {response: response});
     statusResponse.message = 'invalid_borchk_response';
   }
 
   return statusResponse;
 }
-
-
