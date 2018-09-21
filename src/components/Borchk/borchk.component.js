@@ -15,7 +15,7 @@ import {ERRORS} from '../../utils/errors.util';
  * @param {object} userInput
  * @returns {*}
  */
-export async function validateUserInLibrary(ctx, userInput) {
+export async function validateUserInLibrary(ctx, res, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
 
   try {
@@ -25,7 +25,7 @@ export async function validateUserInLibrary(ctx, userInput) {
   }
   catch (e) {
     log.error('Invalid service call', {error: e.message, stack: e.stack});
-    ctx.status = 403;
+    res.status = 403;
   }
 
   return userValidate;

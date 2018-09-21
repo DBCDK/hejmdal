@@ -10,13 +10,13 @@ import {CONFIG} from '../../utils/config.util';
  * @param ctx
  * @param next
  */
-export async function getAttributes(ctx, next) {
-  const serviceClient = await getClientInfo(ctx.getState().smaugToken);
+export async function getAttributes(req, res, next) {
+  const serviceClient = await getClientInfo(req.getState().smaugToken);
   if (!serviceClient) {
-    ctx.status = 403;
-  }
-  else {
-    ctx.setState({serviceClient});
+    res.status = 403;
+    res.send();
+  } else {
+    req.setState({serviceClient});
     await next();
   }
 }
@@ -25,8 +25,7 @@ export async function getClientInfo(smaugToken) {
   try {
     const smaugClient = await getClientFromSmaug(smaugToken);
     return await extractClientInfo(smaugClient);
-  }
-  catch (error) {
+  } catch (error) {
     log.info('Invalid Token', {error: error.message, stack: error.stack});
     return null;
   }
@@ -36,12 +35,17 @@ export async function getClientFromSmaug(smaugToken) {
   return await getClient(smaugToken);
 }
 
-export async function getAuthenticatedToken(ctx, next) {
+export async function getAuthenticatedToken(ctx, res, next) {
   const {userId, libraryId, pincode} = ctx.getUser();
   const state = ctx.getState();
   const {authenticatedToken} = state.serviceClient.attributes;
   if (authenticatedToken && userId && libraryId && pincode) {
-    const accessToken = await getToken(state.serviceClient.id, libraryId, userId, pincode);
+    const accessToken = await getToken(
+      state.serviceClient.id,
+      libraryId,
+      userId,
+      pincode
+    );
     ctx.setState({authenticatedToken: accessToken});
   }
   await next();

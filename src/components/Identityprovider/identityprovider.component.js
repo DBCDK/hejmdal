@@ -5,10 +5,22 @@
 import {log} from '../../utils/logging.util';
 import {createHash, validateHash} from '../../utils/hash.utils';
 import {isValidCpr} from '../../utils/cpr.util';
-import {getUniloginURL, validateUniloginTicket} from '../UniLogin/unilogin.component';
-import {validateUserInLibrary, getBorchkResponse} from '../Borchk/borchk.component';
-import {getGateWayfLoginResponse, getGateWayfLoginUrl} from '../GateWayf/gatewayf.component';
-import {getListOfAgenciesForFrontend, getAgency} from '../../utils/agencies.util';
+import {
+  getUniloginURL,
+  validateUniloginTicket
+} from '../UniLogin/unilogin.component';
+import {
+  validateUserInLibrary,
+  getBorchkResponse
+} from '../Borchk/borchk.component';
+import {
+  getGateWayfLoginResponse,
+  getGateWayfLoginUrl
+} from '../GateWayf/gatewayf.component';
+import {
+  getListOfAgenciesForFrontend,
+  getAgency
+} from '../../utils/agencies.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {ERRORS} from '../../utils/errors.util';
@@ -21,78 +33,100 @@ import _ from 'lodash';
  * @param {function} next
  * @returns {*}
  */
-export async function authenticate(ctx, next) {
-  const state = ctx.getState();
-  const loginURL = `/login?token=${state.smaugToken}`;
-  const loginToProfileURL = `/profile?token=${state.smaugToken}&loginToProfile=1`;
-  const loginToProfile = !!ctx.session.loginToProfile;
+export async function authenticate(req, res, next) {
+  const state = req.getState();
+
+  // Skal dette bruges til noget. Det virker til at være relateret til profil consent siden.
+  const loginURL = '#';
+  const loginToProfileURL = `/profile?token=${
+    state.smaugToken
+  }&loginToProfile=1`;
+  const loginToProfile = !!req.session.loginToProfile;
 
   try {
-    if (!userIsLoggedIn(ctx)) {
-      const identityProviders = getIdentityProviders(state);
+    const identityProviders = getIdentityProviders(state);
 
-      if (_.uniq(_.values(identityProviders)).length === 1 && _.head(_.uniq(_.values(identityProviders))) === null) {
-        const serviceClient = state.serviceClient;
-        log.error('The service has no valid identityproviders configured', {
-          serviceClient: {
-            id: serviceClient.id,
-            name: serviceClient.name,
-            identityProviders: serviceClient.identityProviders
-          }
-        });
-
-        throw new Error('The service has no valid identityproviders configured');
-      }
-
-      if (state.serviceClient.identityProviders.length === 1 && state.serviceClient.identityProviders[0] !== 'borchk') {
-        ctx.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
-        return;
-      }
-
-      let preselctedName = null;
-      let preselectedId = null;
-      if (ctx.query.presel) {
-        const preselectedLibrary = await getAgency(ctx.query.presel);
-        preselctedName = preselectedLibrary.agencyName;
-        preselectedId = preselectedLibrary.branchId;
-      }
-
-      const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
-      const lockedAgencyName = branch ? branch.agencyName : null;
-      const agencyTypeFilter = ctx.query.agencytype || null;
-      const branches = identityProviders.borchk && !lockedAgencyName ? await getListOfAgenciesForFrontend(agencyTypeFilter) : null;
-      const error = ctx.query.error ? ctx.query.error : null;
-      const loginHelpReplacers = setLoginReplacersFromAgency(branch);
-      const helpText = getText(state.serviceClient.identityProviders, loginHelpReplacers, 'login_');
-
-      ctx.render('Login', {
-        error: error,
-        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
-        serviceClient: state.serviceClient.name,
-        loginURL,
-        identityProviders,
-        branches: branches,
-        preselctedName: preselctedName,
-        preselectedId: preselectedId,
-        lockedAgency: state.serviceAgency || null,
-        lockedAgencyName: lockedAgencyName,
-        help: helpText,
-        loginToProfile,
-        loginToProfileURL
+    if (
+      _.uniq(_.values(identityProviders)).length === 1 &&
+      _.head(_.uniq(_.values(identityProviders))) === null
+    ) {
+      const serviceClient = state.serviceClient;
+      log.error('The service has no valid identityproviders configured', {
+        serviceClient: {
+          id: serviceClient.id,
+          name: serviceClient.name,
+          identityProviders: serviceClient.identityProviders
+        }
       });
 
-      ctx.status = 200;
-      ctx.setState({error: null});
+      throw new Error('The service has no valid identityproviders configured');
     }
-  }
-  catch (e) {
-    const error = 'Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.';
+
+    if (
+      state.serviceClient.identityProviders.length === 1 &&
+      state.serviceClient.identityProviders[0] !== 'borchk'
+    ) {
+      res.redirect(
+        identityProviders[state.serviceClient.identityProviders[0]].link
+      );
+      return;
+    }
+
+    let preselctedName = null;
+    let preselectedId = null;
+    if (req.query.presel) {
+      const preselectedLibrary = await getAgency(req.query.presel);
+      preselctedName = preselectedLibrary.agencyName;
+      preselectedId = preselectedLibrary.branchId;
+    }
+
+    const branch = state.serviceAgency
+      ? await getAgency(state.serviceAgency)
+      : null;
+    const lockedAgencyName = branch ? branch.agencyName : null;
+    const agencyTypeFilter = req.query.agencytype || null;
+    const branches =
+      identityProviders.borchk && !lockedAgencyName
+        ? await getListOfAgenciesForFrontend(agencyTypeFilter)
+        : null;
+    const error = req.query.error ? req.query.error : null;
+    const loginHelpReplacers = setLoginReplacersFromAgency(branch);
+    const helpText = getText(
+      state.serviceClient.identityProviders,
+      loginHelpReplacers,
+      'login_'
+    );
+
+    res.render('Login', {
+      error: error,
+      returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
+      serviceClient: state.serviceClient.name,
+      loginURL,
+      identityProviders,
+      branches: branches,
+      preselctedName: preselctedName,
+      preselectedId: preselectedId,
+      lockedAgency: state.serviceAgency || null,
+      lockedAgencyName: lockedAgencyName,
+      help: helpText,
+      loginToProfile,
+      loginToProfileURL
+    });
+
+    res.status = 200;
+    //ctx.setState({error: null});
+  } catch (e) {
+    const error =
+      'Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.';
     const link = {
       href: loginURL,
       value: 'Prøv igen'
     };
-    ctx.render('Error', {error, link});
-    log.error('Error in autheticate method', {error: e.message, stack: e.stack});
+    res.render('Error', {error, link});
+    log.error('Error in autheticate method', {
+      error: e.message,
+      stack: e.stack
+    });
   }
 
   await next();
@@ -108,8 +142,7 @@ export async function uniloginCallback(ctx) {
   let userId = null;
   if (validateUniloginTicket(ctx.query)) {
     userId = ctx.query.user;
-  }
-  else {
+  } else {
     idenityProviderValidationFailed(ctx);
   }
 
@@ -124,23 +157,22 @@ export async function uniloginCallback(ctx) {
 /**
  * Parses the callback parameters for borchk. Parameters from form comes as post
  *
- * @param ctx
+ * @param req
  * @returns {*}
  */
-export async function borchkCallback(ctx) {
+export async function borchkCallback(req, res) {
   let validated = {error: true, message: 'unknown_eror'};
-  const response = await getBorchkResponse(ctx);
+  const response = req.body;
 
   if (response && response.userId && response.libraryId && response.pincode) {
-    validated = await validateUserInLibrary(ctx, response);
-  }
-  else {
+    validated = await validateUserInLibrary(req, res, response);
+  } else {
     validated.message = ERRORS.missing_fields;
   }
 
   if (!validated.error) {
-    ctx.session.rememberMe = response.rememberMe;
-    ctx.setUser({
+    req.session.rememberMe = response.rememberMe;
+    req.setUser({
       userId: response.userId,
       cpr: isValidCpr(response.userId) ? response.userId : null,
       userType: 'borchk',
@@ -148,13 +180,11 @@ export async function borchkCallback(ctx) {
       pincode: response.pincode,
       userValidated: true
     });
-  }
-  else {
+  } else {
     const librayId = response.libraryId || null;
-    idenityProviderValidationFailed(ctx, validated, librayId);
+    idenityProviderValidationFailed(req, res, validated, librayId);
   }
-
-  return ctx;
+  return req;
 }
 
 /**
@@ -197,42 +227,49 @@ export async function wayfCallback(ctx) {
  * @param ctx
  * @param next
  */
-export async function identityProviderCallback(ctx, next) {
+export async function identityProviderCallback(req, res, next) {
   try {
-    if (!validateHash(ctx.params.token, ctx.getState().smaugToken)) {
-      ctx.status = 403;
-    }
-    else {
-      switch (ctx.params.type) {
+    if (!validateHash(req.params.token, req.getState().smaugToken)) {
+      req.status = 403;
+    } else {
+      switch (req.params.type) {
         case 'borchk':
-          await borchkCallback(ctx);
+          await borchkCallback(req, res);
           break;
         case 'nemlogin':
-          await nemloginCallback(ctx);
+          await nemloginCallback(req);
           break;
         case 'unilogin':
-          await uniloginCallback(ctx);
+          await uniloginCallback(req);
           break;
         case 'wayf':
-          await wayfCallback(ctx);
+          await wayfCallback(req);
           break;
         default:
           break;
       }
     }
-  }
-  catch (e) {
+  } catch (e) {
     log.error('Error in identityProviderCallback', {
       error: e.message,
       stack: e.stack,
-      params: ctx.params,
-      state: ctx.getState()
+      params: req.params,
+      state: req.getState()
     });
 
-    ctx.status = 500;
+    res.status = 500;
   }
 
-  await next();
+  if (req.session.hasOwnProperty('query')) {
+    return res.redirect(
+      `/oauth/authorize/?${Object.entries(req.session.query)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('&')}`
+    );
+  }
+
+  // If not do whatever you fancy
+  res.redirect('/');
 }
 
 /**
@@ -241,8 +278,7 @@ export async function identityProviderCallback(ctx, next) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-
-  const authToken = createHash(state.smaugToken);
+  const authToken = createHash('asdfg');
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
@@ -285,12 +321,16 @@ function getIdentityProviders(state) {
  * @param {object} error
  * @param {string} libraryId
  */
-function idenityProviderValidationFailed(ctx, error, libraryId) {
-  const agencyParameter = ctx.getState().serviceAgency ? '&agency=' + ctx.getState().serviceAgency : '';
+function idenityProviderValidationFailed(ctx, res, error, libraryId) {
+  const agencyParameter = ctx.getState().serviceAgency
+    ? '&agency=' + ctx.getState().serviceAgency
+    : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
   const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
-  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${ctx.getState().returnUrl}${agencyParameter}${errorParameter}${preselctedLibrary}`;
-  ctx.redirect(startOver);
+  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${
+    ctx.getState().returnUrl
+  }${agencyParameter}${errorParameter}${preselctedLibrary}`;
+  res.redirect(302, startOver);
 }
 
 /**
@@ -322,5 +362,7 @@ function isLoggedInWith(ctx) {
     return [];
   }
   const identityProviders = ctx.getState().serviceClient.identityProviders;
-  return ctx.getUser().identityProviders.filter(ip => identityProviders.includes(ip));
+  return ctx
+    .getUser()
+    .identityProviders.filter(ip => identityProviders.includes(ip));
 }

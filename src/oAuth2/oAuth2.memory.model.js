@@ -10,6 +10,7 @@ const mock = {
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
       grants: ['authorization_code'],
+      identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       redirectUris: [
         `${process.env.HOST}/callback`,
         `${process.env.HOST}/example/provider/callback`
@@ -75,7 +76,6 @@ module.exports.revokeAuthorizationCode = function(params) {
  */
 
 module.exports.getAccessToken = function(bearerToken) {
-  console.log('getAccessToken', bearerToken);
   var tokens = mock.tokens.filter(function(token) {
     return token.accessToken === bearerToken;
   });
@@ -87,7 +87,7 @@ module.exports.getAccessToken = function(bearerToken) {
  * Get client.
  */
 
-module.exports.getClient = function*(clientId) {
+module.exports.getClient = clientId => {
   var clients = mock.clients.filter(function(client) {
     return client.clientId === clientId;
   });
@@ -112,7 +112,6 @@ module.exports.getRefreshToken = function*(bearerToken) {
  */
 
 module.exports.getUser = function*(username, password) {
-  console.log('getUser', username, password);
   var users = mock.users.filter(function(user) {
     return user.username === username && user.password === password;
   });
@@ -125,7 +124,6 @@ module.exports.getUser = function*(username, password) {
  */
 
 module.exports.saveToken = function*(token, client, user) {
-  console.log('saveToken', token, client, user);
   const access_token = {
     accessToken: token.accessToken,
     accessTokenExpiresAt: token.accessTokenExpiresAt,

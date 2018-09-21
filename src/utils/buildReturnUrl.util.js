@@ -35,10 +35,14 @@ function objectToQueryString(queryObject) {
   const keys = Object.keys(queryObject);
 
   if (keys.length) {
-    queryString = '?' + keys.map(key => {
-      const value = encodeURIComponent(queryObject[key]);
-      return `${key}=${value}`;
-    }).join('&');
+    queryString =
+      '?' +
+      keys
+        .map(key => {
+          const value = encodeURIComponent(queryObject[key]);
+          return `${key}=${value}`;
+        })
+        .join('&');
   }
 
   return queryString;

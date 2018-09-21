@@ -9,9 +9,17 @@
  * @param {object} ctx
  * @param {function} next
  */
-export async function stateMiddleware(ctx, next) {
-  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser, resetUser});
-  await next();
+export async function stateMiddleware(req, res, next) {
+  Object.assign(req, {
+    getState,
+    setState,
+    getUser,
+    setUser,
+    hasUser,
+    resetUser
+  });
+
+  next();
 }
 
 /**
@@ -20,19 +28,15 @@ export async function stateMiddleware(ctx, next) {
  * @param ctx
  * @param next
  */
-export async function setDefaultState(ctx, next) {
-  ctx.session.state = {
-    consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
-    returnUrl: handleNullFromUrl(ctx.query.returnurl),
-    serviceAgency: handleNullFromUrl(ctx.query.agency),
-    serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
-    smaugToken: handleNullFromUrl(ctx.query.token),
-    ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
+export async function setDefaultState(req, res, next) {
+  req.session.state = {
+    smaugToken: 'asdfg', // TODO: find alternative to token. Maybe use client ID
+    consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
+    returnUrl: handleNullFromUrl(req.query.return_url),
+    serviceAgency: handleNullFromUrl(req.query.agency),
+    serviceClient: {} // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
   };
-  ctx.session.loginToProfile = !!ctx.query.loginToProfile;
-  ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
-
-  await next();
+  return next();
 }
 
 /**
@@ -62,7 +66,7 @@ function setState(newValues) {
  * @returns {Object}
  */
 function getState() {
-  return this.session && this.session.state || null;
+  return (this.session && this.session.state) || null;
 }
 
 /**
@@ -72,9 +76,15 @@ function getState() {
  * @returns {Object}
  */
 function setUser(newValues) {
-  const existingIps = this.session.user && this.session.user.identityProviders || [];
-  const identityProviders = !existingIps.includes(newValues.userType) && existingIps.concat([newValues.userType]) || existingIps;
-  this.session.user = Object.assign({}, this.session.user || {}, newValues, {identityProviders});
+  const existingIps =
+    (this.session.user && this.session.user.identityProviders) || [];
+  const identityProviders =
+    (!existingIps.includes(newValues.userType) &&
+      existingIps.concat([newValues.userType])) ||
+    existingIps;
+  this.session.user = Object.assign({}, this.session.user || {}, newValues, {
+    identityProviders
+  });
   return this.session.user;
 }
 
@@ -93,7 +103,10 @@ function getUser() {
  * @returns {boolean}
  */
 function hasUser() {
-  return this.session && this.session.user && this.session.user.userId && true || false;
+  return (
+    (this.session && this.session.user && this.session.user.userId && true) ||
+    false
+  );
 }
 
 /**
@@ -101,6 +114,8 @@ function hasUser() {
  * @param idp
  */
 function resetUser(idp) {
-  const identityProviders = this.getUser().identityProviders.filter(identityProvider => identityProvider !== idp);
+  const identityProviders = this.getUser().identityProviders.filter(
+    identityProvider => identityProvider !== idp
+  );
   this.session.user = {identityProviders: identityProviders};
 }

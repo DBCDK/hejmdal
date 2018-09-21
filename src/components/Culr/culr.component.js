@@ -12,7 +12,7 @@ import {log} from '../../utils/logging.util';
  * @param {object} ctx
  * @param {function} next
  */
-export async function getCulrAttributes(ctx, next) {
+export async function getCulrAttributes(ctx, res, next) {
   const userId = ctx.getUser().userId || null;
 
   let culrAttributes = {};
@@ -22,7 +22,7 @@ export async function getCulrAttributes(ctx, next) {
     ctx.setState({culr: culrAttributes});
   }
 
-  await next();
+  next();
 }
 
 /**
@@ -37,8 +37,7 @@ async function getUserAttributesFromCulr(userId) {
 
   try {
     response = await culr.getAccountsByGlobalId({userIdValue: userId});
-  }
-  catch (e) {
+  } catch (e) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
     return attributes;
   }
@@ -48,12 +47,12 @@ async function getUserAttributesFromCulr(userId) {
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
     attributes.municipalityNumber = response.result.MunicipalityNo || null;
-  }
-  else if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
+  } else if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
     log.info('Brugeren blev ikke fundet');
-  }
-  else {
-    log.error('Der skete en fejl i kommuikationen med CULR', {response: response});
+  } else {
+    log.error('Der skete en fejl i kommuikationen med CULR', {
+      response: response
+    });
   }
 
   return attributes;
