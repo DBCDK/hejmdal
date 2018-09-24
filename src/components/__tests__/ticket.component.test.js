@@ -6,10 +6,9 @@ import {mockContext} from '../../utils/test.util';
 describe('test store and get ticket', () => {
   const ctx = mockContext();
 
-  const next = () => {
-  };
+  const next = () => {};
 
-  it('should return false for nonexisting ticket', async() => {
+  it('should return false for nonexisting ticket', async () => {
     ctx.setState({ticket: {attributes: null, id: 'foo', token: 'bar'}});
     ctx.params = {};
     await getTicket(ctx, next);
@@ -21,7 +20,7 @@ describe('test store and get ticket', () => {
 
   it('should create a ticket-identifier and -token', () => {
     ctx.setState({ticket: {attributes: attributes, id: null}});
-    return storeTicket(ctx, next).then(() => {
+    return storeTicket(ctx, null, next).then(() => {
       assert.isNumber(ctx.getState().ticket.id);
       assert.isString(ctx.getState().ticket.token);
       params.token = ctx.getState().ticket.token;
@@ -47,4 +46,3 @@ describe('test store and get ticket', () => {
     });
   });
 });
-

@@ -26,7 +26,7 @@ describe('Test Smaug component', () => {
   });
 
   it('should add client token', async() => {
-    await smaug.getAttributes(ctx, () => {});
+    await smaug.getAttributes(ctx, null, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
@@ -83,16 +83,16 @@ describe('Test Smaug component', () => {
   });
 
   it('should return validated user token', async() => {
-    await smaug.getAttributes(ctx, () => {});
+    await smaug.getAttributes(ctx, null, () => {});
     ctx.setUser({libraryId: '724000', userId: '87654321', pincode: '1234'});
-    await smaug.getAuthenticatedToken(ctx, () => {});
+    await smaug.getAuthenticatedToken(ctx, null, () => {});
     assert.equal(ctx.session.state.authenticatedToken, 'qwerty123456asdfgh');
   });
 
   it('should add empty default attributes', async() => {
     delete mockData.identityProviders;
     delete mockData.attributes;
-    await smaug.getAttributes(ctx, () => {});
+    await smaug.getAttributes(ctx, null, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {
       id: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
       name: 'Test Service',
@@ -109,14 +109,14 @@ describe('Test Smaug component', () => {
 
   it('should not set client with invalid token', async() => {
     ctx = mockContext('invalid_token');
-    await smaug.getAttributes(ctx, () => {});
+    await smaug.getAttributes(ctx, ctx, () => {});
     assert.deepEqual(ctx.session.state.serviceClient, {});
     assert.equal(ctx.status, 403);
   });
 
   it('should throw error when invalid client', async() => {
     delete mockData.app.clientId;
-    await smaug.getAttributes(ctx, () => {});
+    await smaug.getAttributes(ctx, ctx, () => {});
     assert.equal(ctx.status, 403);
     assert.deepEqual(ctx.session.state.serviceClient, {});
   });

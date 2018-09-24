@@ -33,7 +33,7 @@ export function isUserLoggedIn(req, res, next) {
 export function authorizationMiddleware(req, res, next) {
   const options = {
     authenticateHandler: {
-      handle: req => {
+      handle: () => {
         return {id: '12345'};
       },
       continueMiddleware: false

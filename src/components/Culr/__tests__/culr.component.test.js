@@ -22,14 +22,14 @@ describe('Unittesting methods in culr.component:', () => {
     });
 
     it('remain undefined when no userId is given', async() => {
-      await getCulrAttributes(ctx, next);
+      await getCulrAttributes(ctx, ctx, next);
 
       assert.isUndefined(ctx.getState().culr);
     });
 
     it('should set culr object on state -- OK200', async() => {
       ctx.setUser({userId: '5555666677'});
-      await getCulrAttributes(ctx, next);
+      await getCulrAttributes(ctx, ctx, next);
 
       assert.deepEqual(ctx.getState().culr, {
         accounts: [
@@ -50,7 +50,7 @@ describe('Unittesting methods in culr.component:', () => {
 
     it('should return empty object -- ACCOUNT_DOES_NOT_EXIST', async() => {
       ctx.setUser({userId: 'not_existing_user'});
-      await getCulrAttributes(ctx, next);
+      await getCulrAttributes(ctx, ctx, next);
 
       assert.deepEqual(ctx.getState().culr, {});
     });

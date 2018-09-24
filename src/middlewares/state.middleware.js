@@ -30,12 +30,15 @@ export async function stateMiddleware(req, res, next) {
  */
 export async function setDefaultState(req, res, next) {
   req.session.state = {
-    smaugToken: 'asdfg', // TODO: find alternative to token. Maybe use client ID
+    smaugToken: handleNullFromUrl(req.query.token || 'asdfg'), // TODO: find alternative to token. Maybe use client ID
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
     serviceAgency: handleNullFromUrl(req.query.agency),
-    serviceClient: {} // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
+    serviceClient: {}, // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
+    ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
+  req.session.loginToProfile = !!req.query.loginToProfile;
+  req.session.user = req.session.user || {};
   return next();
 }
 

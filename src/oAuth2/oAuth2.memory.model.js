@@ -1,8 +1,8 @@
+/* eslint-disable */
+
 /**
  * Module dependencies.
  */
-import os from 'os';
-console.log(process.env.HOST);
 
 const mock = {
   clients: [

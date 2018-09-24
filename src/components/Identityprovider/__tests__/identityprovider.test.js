@@ -31,7 +31,7 @@ describe('test authenticate method', () => {
       }
     });
     ctx.render = sandbox.mock();
-    await authenticate(ctx, next);
+    await authenticate(ctx, ctx, next);
     assert.equal(ctx.status, 200);
     sandbox.restore();
   });
@@ -41,7 +41,7 @@ describe('test authenticate method', () => {
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
     assert.isFalse(spy.called);
 
-    await authenticate(ctx, next);
+    await authenticate(ctx, ctx, next);
 
     assert.isTrue(spy.called);
     assert.isString(spy.args[0][1].error);
@@ -82,7 +82,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['unilogin']
     };
 
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
 
     assert.deepEqual(ctx.getUser(), expected);
   });
@@ -95,7 +95,7 @@ describe('test identityProviderCallback method', () => {
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
   });
 
@@ -111,7 +111,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['borchk'],
       userValidated: true
     };
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
   });
 });

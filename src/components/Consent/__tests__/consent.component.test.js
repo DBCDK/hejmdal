@@ -26,7 +26,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
   beforeEach(() => {
     ctx = mockContext();
-    setDefaultState(ctx, next);
+    setDefaultState(ctx, ctx, next);
     sandbox = sinon.sandbox.create();
   });
 
@@ -39,7 +39,7 @@ describe('Unittesting methods in consent.component.test', () => {
     it('should redirect if state is unavailable on ctx.session object', () => {
       ctx.redirect = sandbox.stub();
 
-      giveConsentUI(ctx, next);
+      giveConsentUI(ctx, ctx, next);
       assert.isTrue(ctx.redirect.called);
       assert.equal(ctx.redirect.args[0][0], '/fejl');
     });
@@ -49,7 +49,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
     beforeEach(() => {
       ctx = mockContext();
-      setDefaultState(ctx, next);
+      setDefaultState(ctx, ctx, next);
       ctx.setUser({userId: 'testUser'});
 
       ctx.setState({
@@ -106,7 +106,7 @@ describe('Unittesting methods in consent.component.test', () => {
     it('should call next when no user or serviceClient.id is found', async() => {
       const _next = sandbox.stub();
 
-      await retrieveUserConsent(ctx, _next);
+      await retrieveUserConsent(ctx, ctx, _next);
       assert.isTrue(_next.called);
     });
 
@@ -131,7 +131,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       });
 
-      await retrieveUserConsent(ctx, next);
+      await retrieveUserConsent(ctx, ctx, next);
       assert.isTrue(ctx.redirect.called);
     });
 
@@ -149,7 +149,7 @@ describe('Unittesting methods in consent.component.test', () => {
       });
 
       await storeUserConsent(ctx);
-      await retrieveUserConsent(ctx, _next);
+      await retrieveUserConsent(ctx, ctx, _next);
 
       assert.isFalse(ctx.redirect.called);
       assert.isTrue(_next.called);
@@ -190,7 +190,7 @@ describe('Unittesting methods in consent.component.test', () => {
         }
       });
 
-      await retrieveUserConsent(ctx, next);
+      await retrieveUserConsent(ctx, ctx, next);
 
       // ensuring the user is redirected to the consent page
       assert.isTrue(ctx.redirect.called);

@@ -77,9 +77,8 @@ export async function borchkCallback(requestUri, formData) {
       },
       rememberMe: formData.rememberMe
     };
-  } else {
-    return {error: validated, libraryId: formData.libraryId};
   }
+  return {error: validated, libraryId: formData.libraryId};
 }
 
 /**

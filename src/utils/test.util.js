@@ -12,10 +12,12 @@ export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides 
   const ctx = {
     query: {token, returnurl},
     session: {},
-    render: () => {}
+    render: () => {},
+    send: () => {},
+    redirect: () => {}
   };
-  setDefaultState(ctx, () => {});
-  stateMiddleware(ctx, () => {});
+  setDefaultState(ctx, ctx, () => {});
+  stateMiddleware(ctx, ctx, () => {});
   Object.keys(overrides).forEach(key => {
     ctx[key] = Object.assign(ctx[key] || {}, overrides[key]);
   });

@@ -2,8 +2,6 @@
  * @file
  * Consent component handling the nessecary consent
  */
-
-import {form} from 'co-body';
 import {CONFIG} from '../../utils/config.util';
 import {createHash} from '../../utils/hash.utils';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
@@ -84,26 +82,6 @@ export async function consentSubmit(req, res, next) {
 }
 
 /**
- * Retrieving consent response through co-body module
- *
- * @param ctx
- * @return {{}}
- */
-async function getConsentResponse(ctx) {
-  let response = null;
-  try {
-    response = await form(ctx);
-  } catch (e) {
-    log.error('Could not retrieve consent response', {
-      error: e.message,
-      stack: e.stack
-    });
-  }
-
-  return response;
-}
-
-/**
  * Requests a check for existing user consent and continues the flow if it's found.
  * If no consent is found the user is redirected to the page where the consent can be made.
  *
@@ -161,12 +139,14 @@ export async function storeUserConsent(ctx) {
 
   const hashedUserId = createHash(user.userId);
   const consentid = `${hashedUserId}:${state.serviceClient.id}`;
+
+
   addConsentToState(ctx, consent);
 
   await consentStore.delete(consentid);
 
   try {
-    //await consentStore.insert(consentid, {keys: Object.keys(consent)});
+    await consentStore.insert(consentid, {keys: Object.keys(consent)});
   } catch (e) {
     log.error('Failed saving of user consent', {
       error: e.message,
@@ -182,7 +162,6 @@ export async function storeUserConsent(ctx) {
  */
 export async function getConsent(ctx) {
   const userId = ctx.getUser().userId;
-
   const serviceClientId = ctx.getState().serviceClient.id;
   let consent = [];
   try {

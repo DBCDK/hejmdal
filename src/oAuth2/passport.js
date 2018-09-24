@@ -57,7 +57,7 @@ export default app => {
     passport.authenticate('provider', {
       failureRedirect: '/error'
     }),
-    (req, res) => {
+    (req, res) => { //eslint-disable-line
       // Login was succesful. What to do.
     }
   );

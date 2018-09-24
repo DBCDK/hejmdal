@@ -110,7 +110,7 @@ export async function authenticate(req, res, next) {
     });
 
     res.status = 200;
-    //ctx.setState({error: null});
+    req.setState({error: null});
   } catch (e) {
     const error =
       'Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.';
@@ -190,7 +190,7 @@ export async function wayfCallback(ctx) {
  * @param ctx
  * @param next
  */
-export async function identityProviderCallback(req, res, next) {
+export async function identityProviderCallback(req, res) {
   try {
     if (!validateHash(req.params.token, req.getState().smaugToken)) {
       req.status = 403;
@@ -200,7 +200,7 @@ export async function identityProviderCallback(req, res, next) {
         case 'borchk':
           response = await borchkCallback(
             req.getState().serviceClient.borchkServiceName,
-            req.body
+            req.fakeBorchkPost || req.body
           );
           break;
         case 'nemlogin':
@@ -215,7 +215,6 @@ export async function identityProviderCallback(req, res, next) {
         default:
           break;
       }
-      console.log(response);
       if (response.error) {
         return idenityProviderValidationFailed(
           req,
@@ -310,4 +309,40 @@ function getIdentityProviders(state) {
   }
 
   return providers;
+}
+
+/**
+ * Check if user is logged in with a valid serviceProvider
+ *
+ * TODO: Should this be implementet in the authorize endpoint?
+ *
+ * @param ctx
+ * @returns {boolean}
+ */
+export default function userIsLoggedIn(ctx) {
+  const ips = isLoggedInWith(ctx);
+  if (ips.length) {
+    if (!ips.includes('borck')) {
+      const link = getIdentityProviders(ctx.getState())[ips[0]].link;
+      ctx.redirect(link);
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Returns the valid identityproviders a user is logged in with.
+ *
+ * @param ctx
+ * @returns {*}
+ */
+function isLoggedInWith(ctx) {
+  if (!ctx.hasUser()) {
+    return [];
+  }
+  const identityProviders = ctx.getState().serviceClient.identityProviders;
+  return ctx
+    .getUser()
+    .identityProviders.filter(ip => identityProviders.includes(ip));
 }
