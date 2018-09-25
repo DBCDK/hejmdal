@@ -11,7 +11,11 @@ const stores = [];
 export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides = {}) {
   const ctx = {
     query: {token, returnurl},
-    session: {},
+    session: {
+      query: {
+        state: 'mock_state_value'
+      }
+    },
     render: () => {},
     send: () => {},
     redirect: () => {}

@@ -35,6 +35,10 @@ export async function getClientFromSmaug(smaugToken) {
   return await getClient(smaugToken);
 }
 
+/**
+ * @deprecated
+ * This function has no value in oAuth2 implementation. Token is required through /oauth/token
+ */
 export async function getAuthenticatedToken(ctx, res, next) {
   const {userId, libraryId, pincode} = ctx.getUser();
   const state = ctx.getState();

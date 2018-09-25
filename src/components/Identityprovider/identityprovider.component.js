@@ -192,7 +192,7 @@ export async function wayfCallback(ctx) {
  */
 export async function identityProviderCallback(req, res) {
   try {
-    if (!validateHash(req.params.token, req.getState().smaugToken)) {
+    if (!validateHash(req.params.state, req.getState().stateHash)) {
       req.status = 403;
     } else {
       let response;

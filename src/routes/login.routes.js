@@ -11,8 +11,8 @@ import {setDefaultState} from '../middlewares/state.middleware';
 
 router.get('/', setDefaultState, getAttributes, authenticate);
 
-router.get('/identityProviderCallback/:type/:token', identityProviderCallback);
+router.get('/identityProviderCallback/:type/:state', identityProviderCallback);
 
-router.post('/identityProviderCallback/:type/:token', identityProviderCallback);
+router.post('/identityProviderCallback/:type/:state', identityProviderCallback);
 
 export default router;

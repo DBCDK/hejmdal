@@ -59,7 +59,7 @@ describe('test identityProviderCallback method', () => {
         id: 'testId'
       }
     });
-    ctx.params.token = createHash(ctx.getState().smaugToken);
+    ctx.params.state = createHash(ctx.getState().stateHash);
   });
 
   const next = () => {

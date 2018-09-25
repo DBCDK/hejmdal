@@ -34,7 +34,7 @@ export async function giveConsentUI(req, res, next) {
     });
     res.render('Consent', {
       attributes: getConsentAttributes(req),
-      consentAction: '/login/consentsubmit/' + state.smaugToken,
+      consentAction: '/login/consentsubmit/' + state.stateHash,
       consentFailed: false,
       returnUrl: returnUrl,
       serviceName: state.serviceClient.name,

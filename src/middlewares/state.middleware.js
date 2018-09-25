@@ -1,3 +1,4 @@
+import { createHash } from '../utils/hash.utils';
 /**
  * @file
  * Add methods for handling the state object
@@ -30,7 +31,8 @@ export async function stateMiddleware(req, res, next) {
  */
 export async function setDefaultState(req, res, next) {
   req.session.state = {
-    smaugToken: handleNullFromUrl(req.query.token || 'asdfg'), // TODO: find alternative to token. Maybe use client ID
+    smaugToken: req.query.token || '',
+    stateHash: req.session.query ? generateStateHash(req.session.query) : '',
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
     serviceAgency: handleNullFromUrl(req.query.agency),
@@ -40,6 +42,15 @@ export async function setDefaultState(req, res, next) {
   req.session.loginToProfile = !!req.query.loginToProfile;
   req.session.user = req.session.user || {};
   return next();
+}
+
+/**
+ * Generate hash values for validating redirects.
+ * 
+ * @param {Object} query
+ */
+function generateStateHash(query) {
+  return query.state || createHash(`${query.clientId}:${Date.now()}`);
 }
 
 /**
