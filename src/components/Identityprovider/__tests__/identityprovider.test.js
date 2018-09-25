@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {authenticate, identityProviderCallback} from '../identityprovider.component';
-import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
@@ -31,7 +30,7 @@ describe('test authenticate method', () => {
       }
     });
     ctx.render = sandbox.mock();
-    await authenticate(ctx, next);
+    await authenticate(ctx, ctx, next);
     assert.equal(ctx.status, 200);
     sandbox.restore();
   });
@@ -41,7 +40,7 @@ describe('test authenticate method', () => {
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
     assert.isFalse(spy.called);
 
-    await authenticate(ctx, next);
+    await authenticate(ctx, ctx, next);
 
     assert.isTrue(spy.called);
     assert.isString(spy.args[0][1].error);
@@ -59,7 +58,7 @@ describe('test identityProviderCallback method', () => {
         id: 'testId'
       }
     });
-    ctx.params.token = createHash(ctx.getState().smaugToken);
+    ctx.params.state = ctx.getState().stateHash;
   });
 
   const next = () => {
@@ -82,7 +81,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['unilogin']
     };
 
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
 
     assert.deepEqual(ctx.getUser(), expected);
   });
@@ -95,7 +94,7 @@ describe('test identityProviderCallback method', () => {
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
   });
 
@@ -111,7 +110,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['borchk'],
       userValidated: true
     };
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
     assert.deepEqual(ctx.getUser(), expected);
   });
 });

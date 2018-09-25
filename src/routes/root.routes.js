@@ -3,22 +3,25 @@
  * Specifying the most simple routes
  */
 
-import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
+import {Router} from 'express';
+
+const router = Router();
+
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 import sanityCheck from '../utils/sanityCheck.util';
 
-const router = new Router();
-
 router.get('/', renderFrontPage);
 
-router.get('/health', async (ctx) => {
+router.get('/health', async (req, res) => {
 
   const health = await sanityCheck();
-  ctx.status = 200;
-  ctx.body = health;
+  res.status = 200;
   if (health.filter(e => e.state === 'fail').length) {
-    ctx.status = 503;
+    res.status = 503;
   }
+
+  res.send(health);
+
 });
 
 router.get('/fejl', (ctx) => {

@@ -1,22 +1,26 @@
 import passport from 'passport';
 import {Strategy} from 'passport-oauth2';
 
-passport.use(
-  'provider',
-  new Strategy(
-    {
-      authorizationURL: 'http://localhost:3010/oauth/authorize',
-      tokenURL: 'http://localhost:3010/oauth/token',
-      clientID: 'foo',
-      clientSecret: 'nightworld',
-      callbackURL: 'http://localhost:3010/example/provider/callback'
-    },
-    function(token, tokenSecret, profile, done) {
-      console.log(token, tokenSecret, profile);
-      done(null, profile.id);
-    }
-  )
+const strategy = new Strategy(
+  {
+    authorizationURL: 'http://localhost:3010/oauth/authorize',
+    tokenURL: 'http://localhost:3010/oauth/token',
+    clientID: 'foo',
+    clientSecret: 'nightworld',
+    callbackURL: 'http://localhost:3010/example/provider/callback'
+  },
+  function(token, tokenSecret, profile, done) {
+    done(null, profile.id);
+  }
 );
+
+strategy.authorizationParams = function() {
+  return {
+    APIName: 'OpenApiActivity'
+  };
+};
+
+passport.use('provider', strategy);
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -53,7 +57,7 @@ export default app => {
     passport.authenticate('provider', {
       failureRedirect: '/error'
     }),
-    (req, res) => {
+    (req, res) => { //eslint-disable-line
       // Login was succesful. What to do.
     }
   );

@@ -4,7 +4,7 @@ import {stateMiddleware, setDefaultState} from '../state.middleware';
 describe('stateMiddleware tests', () => {
   it('should add functions to ctx', () => {
     const ctx = {};
-    stateMiddleware(ctx, () => {});
+    stateMiddleware(ctx, ctx, () => {});
     assert.isFunction(ctx.setState);
     assert.isFunction(ctx.getState);
     assert.isFunction(ctx.setUser);
@@ -16,7 +16,7 @@ describe('stateMiddleware tests', () => {
       session: {}
     };
     const newState = {test: 'some value'};
-    stateMiddleware(ctx, () => {});
+    stateMiddleware(ctx, ctx, () => {});
     ctx.setState(newState);
     assert.deepEqual(ctx.session.state, newState);
     assert.deepEqual(ctx.getState(), newState);
@@ -29,7 +29,7 @@ describe('stateMiddleware tests', () => {
       }
     };
     const newState = {test: 'some value'};
-    stateMiddleware(ctx, () => {});
+    stateMiddleware(ctx, ctx, () => {});
     ctx.setState(newState);
     assert.deepEqual(ctx.session.state.old, 'value');
     assert.deepEqual(ctx.getState().old, 'value');
@@ -41,7 +41,7 @@ describe('stateMiddleware tests', () => {
       session: {}
     };
     const newState = {test: 'some value', userType: 'testType'};
-    stateMiddleware(ctx, () => {});
+    stateMiddleware(ctx, ctx, () => {});
     ctx.setUser(newState);
     assert.deepEqual(ctx.getUser(), Object.assign(newState, {identityProviders: ['testType']}));
   });
@@ -50,10 +50,10 @@ describe('stateMiddleware tests', () => {
     const ctx = {
       session: {},
       query: {
-        returnurl: 'some_url'
+        return_url: 'some_url'
       }
     };
-    setDefaultState(ctx, () => {});
+    setDefaultState(ctx, ctx, () => {});
     assert.deepEqual(ctx.session.user, {});
     assert.isDefined(ctx.session.state.consents);
     assert.equal(ctx.session.state.returnUrl, 'some_url');

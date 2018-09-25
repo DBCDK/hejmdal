@@ -5,18 +5,16 @@
 
 import buildReturnUrl from '../utils/buildReturnUrl.util';
 
-export async function redirectToClient(ctx, next) {
+export async function redirectToClient(ctx, res, next) {
   const state = ctx.getState();
   const {token, id} = state.ticket;
   if (token && id) {
     if (ctx.session.loginToProfile) {
-      ctx.redirect(`/profile?token=${state.smaugToken}`);
+      res.redirect(`/profile?token=${state.smaugToken}`);
+    } else {
+      res.redirect(buildReturnUrl(state, {token, id}));
     }
-    else {
-      ctx.redirect(buildReturnUrl(state, {token, id}));
-    }
-  }
-  else {
+  } else {
     await next();
   }
 }

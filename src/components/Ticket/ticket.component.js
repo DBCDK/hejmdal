@@ -16,9 +16,9 @@ import KeyValueStorage from '../../models/keyvalue.storage.model';
 import PersistentTicketStorage from '../../models/Ticket/ticket.persistent.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 
-const storage = CONFIG.mock_storage ?
-  new KeyValueStorage(new MemoryStorage()) :
-  new KeyValueStorage(new PersistentTicketStorage());
+const storage = CONFIG.mock_storage
+  ? new KeyValueStorage(new MemoryStorage())
+  : new KeyValueStorage(new PersistentTicketStorage());
 
 /**
  * Write a attribute object to storage, and returns an identifier and token for later retrieval
@@ -27,13 +27,20 @@ const storage = CONFIG.mock_storage ?
  * @param next
  * @returns {*}
  */
-export async function storeTicket(ctx, next) {
+export async function storeTicket(ctx, res, next) {
   const ticket = ctx.getState().ticket;
-  if (ticket !== null && ticket.attributes === Object(ticket.attributes) && !ticket.identifier) {
+  if (
+    ticket !== null &&
+    ticket.attributes === Object(ticket.attributes) &&
+    !ticket.identifier
+  ) {
     ticket.id = await storage.insertNext(ticket.attributes);
     ticket.token = createHash(ticket.id);
 
-    storage.garbageCollect(CONFIG.garbageCollect.ticket.divisor, CONFIG.garbageCollect.ticket.seconds);
+    storage.garbageCollect(
+      CONFIG.garbageCollect.ticket.divisor,
+      CONFIG.garbageCollect.ticket.seconds
+    );
     ctx.setState({ticket: ticket});
   }
 

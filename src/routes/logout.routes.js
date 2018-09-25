@@ -2,12 +2,15 @@
  * @file
  * Handles logout
  */
-import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
-import {logout} from '../components/Logout/logout.component';
-import {setDefaultState} from '../middlewares/state.middleware';
+import {Router} from 'express';
+const router = Router();
 
-const router = new Router({prefix: '/logout'});
-
-router.get('/', setDefaultState, logout);
+router.get('/', (req, res) => {
+  req.session.user = null;
+  if (req.query.access_token) {
+    req.app.oauth.server.options.model.revokeToken(req.query.access_token);
+  }
+  res.send('User is logged out');
+});
 
 export default router;

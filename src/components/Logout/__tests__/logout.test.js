@@ -40,7 +40,7 @@ describe('Test Logout component', () => {
     await logout(ctx, () => {});
     assert.deepEqual(ctx.render.args[0][1], {
       idpLogoutInfo: null,
-      returnurl: 'http://localhost:3011/some_url',
+      returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
     });
   });
@@ -51,7 +51,7 @@ describe('Test Logout component', () => {
     await logout(ctx, () => {});
     assert.deepEqual(ctx.render.args[0][1], {
       idpLogoutInfo: true,
-      returnurl: 'http://localhost:3011/some_url',
+      returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
     });
   });
@@ -61,7 +61,7 @@ describe('Test Logout component', () => {
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
     await logout(ctx, () => {});
-    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/some_url?message=logout');
+    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout');
   });
   it('should redirect to returnurl with close browser message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
@@ -69,6 +69,6 @@ describe('Test Logout component', () => {
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
     await logout(ctx, () => {});
-    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/some_url?message=logout_close_browser');
+    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout_close_browser');
   });
 });

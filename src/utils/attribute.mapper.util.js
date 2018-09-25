@@ -16,14 +16,20 @@ import {createHash} from './hash.utils';
  * @param next
  * @returns {*}
  */
-export default async function mapAttributesToTicket(ctx, next) {
+export default async function mapAttributesToTicket(ctx, res, next) {
   const state = ctx.getState();
   const user = ctx.getUser();
 
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
-    const ticketAttributes = mapCulrResponse(culr, state.authenticatedToken, serviceAttributes, user, state.serviceClient.id);
+    const ticketAttributes = mapCulrResponse(
+      culr,
+      state.authenticatedToken,
+      serviceAttributes,
+      user,
+      state.serviceClient.id
+    );
 
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
@@ -41,7 +47,13 @@ export default async function mapAttributesToTicket(ctx, next) {
  * @see ATTRIBUTES
  * @return {{}}
  */
-function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) {
+function mapCulrResponse(
+  culr,
+  authenticatedToken,
+  attributes,
+  user,
+  serviceId
+) {
   let mapped = {};
 
   let cpr = user.cpr || null;
@@ -49,7 +61,7 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
   let fromCpr = {};
 
   if (culr.accounts && Array.isArray(culr.accounts)) {
-    culr.accounts.forEach((account) => {
+    culr.accounts.forEach(account => {
       if (account.userIdType === 'CPR' && !cpr) {
         cpr = account.userIdValue;
       }
@@ -60,8 +72,7 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
         userIdType: account.userIdType
       });
     });
-  }
-  else if (cpr && user.libraryId) {
+  } else if (cpr && user.libraryId) {
     agencies.push({
       agencyId: user.libraryId,
       userId: cpr,
@@ -74,7 +85,7 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
   }
 
   const fields = Object.keys(attributes);
-  fields.forEach((field) => {
+  fields.forEach(field => {
     switch (field) {
       case 'birthDate':
       case 'birthYear':
@@ -92,7 +103,8 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
         mapped.municipality = culr.municipalityNumber || null;
         break;
       case 'uniloginId':
-        mapped.uniloginId = user.userType === 'unilogin' && user.userId ? user.userId : null;
+        mapped.uniloginId =
+          user.userType === 'unilogin' && user.userId ? user.userId : null;
         break;
       case 'userId':
         mapped.userId = user.userId;
