@@ -13,7 +13,7 @@ So far, the oAuth implementation is only a mock that exposes the API. You must u
 
 The user to be returned will always be the following:
 
-`` `
+```
 {
   "attributes": {
     "userId": "0101701234",
@@ -32,7 +32,7 @@ The user to be returned will always be the following:
     ]
   }
 }
-`` `
+```
 
 ## Login flow
 
