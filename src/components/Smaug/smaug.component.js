@@ -1,58 +1,25 @@
-import {getClient, getToken} from './smaug.client';
+import {getClientById, getClientByToken} from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
-/**
- * Validate token.
- *
- * If a token does not validate an http error (403) is returned.
- *
- * @param ctx
- * @param next
- */
-export async function getAttributes(req, res, next) {
-  const serviceClient = await getClientInfo(req.getState().smaugToken);
-  if (!serviceClient) {
-    res.status = 403;
-    res.send();
-  } else {
-    req.setState({serviceClient});
-    await next();
-  }
-}
-
-export async function getClientInfo(smaugToken) {
+export async function getClientInfoByClientId(clientId) {
   try {
-    const smaugClient = await getClientFromSmaug(smaugToken);
+    const smaugClient = await getClientById(clientId);
     return await extractClientInfo(smaugClient);
   } catch (error) {
-    log.info('Invalid Token', {error: error.message, stack: error.stack});
+    log.info('Invalid client', {error: error.message, stack: error.stack});
     return null;
   }
 }
 
-export async function getClientFromSmaug(smaugToken) {
-  return await getClient(smaugToken);
-}
-
-/**
- * @deprecated
- * This function has no value in oAuth2 implementation. Token is required through /oauth/token
- */
-export async function getAuthenticatedToken(ctx, res, next) {
-  const {userId, libraryId, pincode} = ctx.getUser();
-  const state = ctx.getState();
-  const {authenticatedToken} = state.serviceClient.attributes;
-  if (authenticatedToken && userId && libraryId && pincode) {
-    const accessToken = await getToken(
-      state.serviceClient.id,
-      libraryId,
-      userId,
-      pincode
-    );
-    ctx.setState({authenticatedToken: accessToken});
+export async function getClientInfoByToken(token) {
+  try {
+    const smaugClient = await getClientByToken(token);
+    return await extractClientInfo(smaugClient);
+  } catch (error) {
+    log.info('Invalid client', {error: error.message, stack: error.stack});
+    return null;
   }
-  await next();
 }
 
 /**
@@ -67,13 +34,16 @@ export function extractClientInfo(client) {
   }
 
   const serviceClient = {
-    id: client.app.clientId,
+    clientId: client.app.clientId,
     name: client.displayName,
     logoutScreen: client.logoutScreen || 'include',
     identityProviders: client.identityProviders || [],
     attributes: client.attributes || [],
     borchkServiceName: client.borchkServiceName || null,
-    urls: client.urls || {}
+    urls: client.urls || {},
+    grants: client.grants,
+    redirectUris: client.redirectUris,
+    clientSecret: client.app.clientSecret
   };
 
   if (CONFIG.app.env === 'test') {

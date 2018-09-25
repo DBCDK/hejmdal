@@ -3,7 +3,6 @@
  *
  */
 import {log} from '../../utils/logging.util';
-import {createHash, validateHash} from '../../utils/hash.utils';
 import {isValidCpr} from '../../utils/cpr.util';
 import {
   getUniloginURL,
@@ -187,8 +186,8 @@ export async function wayfCallback(ctx) {
 /**
  * Callback function from external identityproviders
  *
- * @param ctx
- * @param next
+ * @param {Object} req
+ * @param {Object} res
  */
 export async function identityProviderCallback(req, res) {
   try {
@@ -274,7 +273,7 @@ function idenityProviderValidationFailed(ctx, res, error, libraryId) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-  const authToken = state.stateHash;
+  const {stateHash} = state;
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
@@ -285,26 +284,26 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
-      action: `/login/identityProviderCallback/borchk/${authToken}`,
+      action: `/login/identityProviderCallback/borchk/${stateHash}`,
       abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
     };
   }
 
   if (identityProviders.includes('unilogin')) {
     providers.unilogin = {
-      link: getUniloginURL(authToken)
+      link: getUniloginURL(stateHash)
     };
   }
 
   if (identityProviders.includes('nemlogin')) {
     providers.nemlogin = {
-      link: getGateWayfLoginUrl('nemlogin', authToken)
+      link: getGateWayfLoginUrl('nemlogin', stateHash)
     };
   }
 
   if (identityProviders.includes('wayf')) {
     providers.wayf = {
-      link: getGateWayfLoginUrl('wayf', authToken)
+      link: getGateWayfLoginUrl('wayf', stateHash)
     };
   }
 

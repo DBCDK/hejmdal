@@ -2,14 +2,20 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
-  displayName: 'Test Service',
+  grants: ['authorization_code'],
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
+  redirectUris: [
+    `${process.env.HOST}/callback`,
+    `${process.env.HOST}/example/provider/callback`
+  ],
+  displayName: 'Test Service',
   borchkServiceName: 'bibliotek.dk',
   attributes: ATTRIBUTES,
   logoutScreen: 'include',
   app: {
     orderpolicyrequester: '190101',
-    clientId: 'a40f3dd8-e426-4e49-b7df-f16a64a3b62f',
+    clientId: 'hejmdal',
+    clientSecret: 'hejmdal_secret',
     clientName: 'Test Service'
   },
   urls: {
@@ -38,35 +44,23 @@ export const hejmdalMockData = {
 /**
  * Mock Client for test and development
  *
- * @param token
+ * @param clientId
  * @returns {*}
  */
-export default function getMockClient(token) {
-  if (token === CONFIG.test.token) {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(mockData)
-    };
+export default function getMockClient(clientId) {
+  if (clientId === 'hejmdal' || clientId === CONFIG.test.token) {
+    return mockData;
   }
 
-  if (token === 'd83a6fba8a7847d1add4703cc237cb72') {
-    const mockUni = Object.assign({}, mockData, {identityProviders: ['unilogin'], attributes: {uniloginId: ATTRIBUTES.uniloginId}});
-    return {
-      statusCode: 200,
-      body: JSON.stringify(mockUni)
-    };
+  if (clientId === 'd83a6fba8a7847d1add4703cc237cb72') {
+    return Object.assign({}, mockData, {identityProviders: ['unilogin'], attributes: {uniloginId: ATTRIBUTES.uniloginId}});
   }
 
-  if (token === 'hejmdal-access-token') {
-    return {
-      statusCode: 200,
-      body: JSON.stringify(hejmdalMockData)
-    };
+  if (clientId === 'hejmdal-access-token') {
+    return hejmdalMockData;
   }
 
-  return {
-    statusCode: 404
-  };
+  return null;
 }
 
 /**

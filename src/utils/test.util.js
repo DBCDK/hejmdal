@@ -1,4 +1,5 @@
 import {setDefaultState, stateMiddleware} from '../middlewares/state.middleware';
+import {mockData} from '../components/Smaug/mock/smaug.client.mock';
 import {CONFIG} from './config.util';
 
 const stores = [];
@@ -12,6 +13,7 @@ export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides 
   const ctx = {
     query: {token, returnurl},
     session: {
+      client: mockData,
       query: {
         state: 'mock_state_value'
       }

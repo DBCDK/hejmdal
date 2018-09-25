@@ -11,6 +11,8 @@ branches:
   only:
   - master
   - oAuth2
-script: npm run test
+script: 
+  - npm run test
+  - npm run lint
 addons:
   postgresql: "9.4"
