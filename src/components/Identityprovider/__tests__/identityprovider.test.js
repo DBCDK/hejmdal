@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
 import {authenticate, identityProviderCallback} from '../identityprovider.component';
-import {createHash} from '../../../utils/hash.utils';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
@@ -59,7 +58,7 @@ describe('test identityProviderCallback method', () => {
         id: 'testId'
       }
     });
-    ctx.params.state = createHash(ctx.getState().stateHash);
+    ctx.params.state = ctx.getState().stateHash;
   });
 
   const next = () => {

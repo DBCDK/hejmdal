@@ -31,7 +31,7 @@ export async function stateMiddleware(req, res, next) {
  */
 export async function setDefaultState(req, res, next) {
   req.session.state = {
-    smaugToken: req.query.token || '',
+    smaugToken: req.query.token || 'asdfg',
     stateHash: req.session.query ? generateStateHash(req.session.query) : '',
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),

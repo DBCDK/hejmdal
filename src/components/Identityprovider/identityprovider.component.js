@@ -192,41 +192,41 @@ export async function wayfCallback(ctx) {
  */
 export async function identityProviderCallback(req, res) {
   try {
-    if (!validateHash(req.params.state, req.getState().stateHash)) {
-      req.status = 403;
-    } else {
-      let response;
-      switch (req.params.type) {
-        case 'borchk':
-          response = await borchkCallback(
-            req.getState().serviceClient.borchkServiceName,
-            req.fakeBorchkPost || req.body
-          );
-          break;
-        case 'nemlogin':
-          await nemloginCallback(req);
-          break;
-        case 'unilogin':
-          await uniloginCallback(req);
-          break;
-        case 'wayf':
-          await wayfCallback(req);
-          break;
-        default:
-          break;
-      }
-      if (response.error) {
-        return idenityProviderValidationFailed(
-          req,
-          res,
-          response.error,
-          response.libraryId
-        );
-      }
-      const {rememberMe, user} = response;
-      req.session.rememberMe = rememberMe;
-      req.setUser(user);
+    if (req.params.state !== req.getState().stateHash) {
+      res.status = 403;
+      return res.send('invalid state');
     }
+    let response;
+    switch (req.params.type) {
+      case 'borchk':
+        response = await borchkCallback(
+          req.getState().serviceClient.borchkServiceName,
+          req.fakeBorchkPost || req.body
+        );
+        break;
+      case 'nemlogin':
+        await nemloginCallback(req);
+        break;
+      case 'unilogin':
+        await uniloginCallback(req);
+        break;
+      case 'wayf':
+        await wayfCallback(req);
+        break;
+      default:
+        break;
+    }
+    if (response.error) {
+      return idenityProviderValidationFailed(
+        req,
+        res,
+        response.error,
+        response.libraryId
+      );
+    }
+    const {rememberMe, user} = response;
+    req.session.rememberMe = rememberMe;
+    req.setUser(user);
   } catch (e) {
     log.error('Error in identityProviderCallback', {
       error: e.message,
@@ -274,7 +274,7 @@ function idenityProviderValidationFailed(ctx, res, error, libraryId) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-  const authToken = createHash('asdfg');
+  const authToken = state.stateHash;
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
