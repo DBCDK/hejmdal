@@ -2,14 +2,13 @@ import {Router} from 'express';
 
 const router = Router();
 
-import {getAttributes} from '../components/Smaug/smaug.component';
 import {
   authenticate,
   identityProviderCallback
 } from '../components/Identityprovider/identityprovider.component';
-import {setDefaultState} from '../middlewares/state.middleware';
+import {setDefaultState, validateClientIsSet} from '../middlewares/state.middleware';
 
-router.get('/', setDefaultState, getAttributes, authenticate);
+router.get('/', validateClientIsSet, setDefaultState, authenticate);
 
 router.get('/identityProviderCallback/:type/:state', identityProviderCallback);
 

@@ -9,19 +9,17 @@ import {promiseRequest} from '../../utils/request.util';
  * @return {Object}
  * @throws {Error|TokenError}
  */
-export async function getClient(token) {
+export async function getClientByToken(token) {
   let response;
 
   // for test and development
   if (CONFIG.mock_externals.smaug) {
-    response = mockClient(token);
+    return mockClient(token);
   }
-  else {
-    response = await promiseRequest('get', {
-      uri: CONFIG.smaug.uri + '/configuration',
-      qs: {token: token}
-    });
-  }
+  response = await promiseRequest('get', {
+    uri: CONFIG.smaug.uri + '/configuration',
+    qs: {token: token}
+  });
 
   if (response.statusCode === 200) {
     const obj = JSON.parse(response.body);
@@ -34,15 +32,27 @@ export async function getClient(token) {
 /**
  * Retreives context based on given clientId
  *
- * @param {String} token
+ * @param {String} clientId
  * @return {Object}
- * @throws {Error|TokenError}
  */
 export async function getClientById(clientId) {
+
+  if (CONFIG.mock_externals.smaug) {
+    return mockClient(clientId);
+  }
   const token = await getToken(clientId, null, '@', '@');
-  return (await getClient(token));
+  return (await getClientByToken(token));
 }
 
+/**
+ * Get smaug token.
+ *
+ * @param {String} clientId
+ * @param {String} library
+ * @param {String} username
+ * @param {String} password
+ * @throws {Error|TokenError}
+ */
 export async function getToken(clientId, library, username, password) {
   let response;
 

@@ -1,4 +1,4 @@
-import { createHash } from '../utils/hash.utils';
+import {createHash} from '../utils/hash.utils';
 /**
  * @file
  * Add methods for handling the state object
@@ -31,12 +31,11 @@ export async function stateMiddleware(req, res, next) {
  */
 export async function setDefaultState(req, res, next) {
   req.session.state = {
-    smaugToken: req.query.token || 'asdfg',
     stateHash: req.session.query ? generateStateHash(req.session.query) : '',
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
     serviceAgency: handleNullFromUrl(req.query.agency),
-    serviceClient: {}, // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
+    serviceClient: req.session.client,
     ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
   req.session.loginToProfile = !!req.query.loginToProfile;
@@ -45,8 +44,26 @@ export async function setDefaultState(req, res, next) {
 }
 
 /**
+ * Check that endpoint is not called directly, but only through oauth endpoints
+ *
+ * @param {Express request} req
+ * @param {Express response} res
+ * @param {Express middleware callback} next
+ */
+export function validateClientIsSet(req, res, next) {
+  if (!req.session.client || !req.session.query) {
+    res.status(403);
+    res.send('Login cannot called directly. Please authorize through /oauth/authorize. '
+    + 'For more information on how to implement login through login.bib.dk goto login.bib.dk/example');
+  } else {
+    next();
+  }
+}
+
+
+/**
  * Generate hash values for validating redirects.
- * 
+ *
  * @param {Object} query
  */
 function generateStateHash(query) {

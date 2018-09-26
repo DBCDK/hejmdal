@@ -4,7 +4,7 @@
 
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
-import {getClientInfo} from '../Smaug/smaug.component';
+import {getClientInfoByToken} from '../Smaug/smaug.component';
 
 /**
  *
@@ -21,7 +21,7 @@ export async function logout(ctx, next) {
   let idpLogoutUrl = '';
   let logoutInfoCode = '';
   const token = ctx.query.token;
-  const serviceClient = await getClientInfo(token);
+  const serviceClient = await getClientInfoByToken(token);
   ctx.setState({serviceClient});
   const user = ctx.getUser();
   const state = ctx.getState();

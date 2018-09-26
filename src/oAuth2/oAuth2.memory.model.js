@@ -1,23 +1,13 @@
 /* eslint-disable */
 
+import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+
 /**
  * Module dependencies.
  */
 
 const mock = {
-  clients: [
-    {
-      clientId: 'hejmdal',
-      clientSecret: 'hejmdal_secret',
-      grants: ['authorization_code'],
-      identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
-      redirectUris: [
-        `${process.env.HOST}/callback`,
-        `${process.env.HOST}/example/provider/callback`
-      ]
-    }
-  ],
-  tokens: [],
+   tokens: [],
   grants: 'authorization_code',
   users: [{id: '123', username: 'foobar', password: 'nightworld'}],
   authorizationCodes: new Map()
@@ -87,11 +77,8 @@ module.exports.getAccessToken = function(bearerToken) {
  * Get client.
  */
 
-module.exports.getClient = clientId => {
-  var clients = mock.clients.filter(function(client) {
-    return client.clientId === clientId;
-  });
-  return clients.length ? clients[0] : false;
+module.exports.getClient = async (clientId) => {
+  return await getClientInfoByClientId(clientId);
 };
 
 /**

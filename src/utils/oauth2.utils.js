@@ -1,6 +1,8 @@
+import {mockData} from '../components/Smaug/mock/smaug.client.mock';
+
 export function disableRedirectUrlCheck(req, res, next) {
   // This is a hack to allow all redirect_uris. This should only be included in the mock implementation.
-  req.app.model.mock.clients[0].redirectUris.push(req.query.redirect_uri);
+  mockData.redirectUris.push(req.query.redirect_uri);
   next();
 }
 
