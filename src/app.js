@@ -27,6 +27,7 @@ import {stateMiddleware} from './middlewares/state.middleware';
 
 import loginRoutes from './routes/login.routes';
 import logoutRoutes from './routes/logout.routes';
+import consentRoutes from './routes/consent.routes';
 import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
 
@@ -65,6 +66,7 @@ app.use('/', rootRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/oauth', oAuthRoutes);
+app.use('/consent', consentRoutes);
 
 /**
  * Test callback endpoint

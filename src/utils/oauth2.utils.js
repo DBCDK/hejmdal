@@ -14,15 +14,14 @@ export async function validateAuthRequest(req, res, next) {
 }
 
 export function isUserLoggedIn(req, res, next) {
+  req.session.query = {
+    state: req.query.state,
+    scope: req.query.scope,
+    client_id: req.query.client_id,
+    redirect_uri: req.query.redirect_uri,
+    response_type: req.query.response_type
+  };
   if (!req.session.user && req.session.client) {
-    req.session.query = {
-      state: req.query.state,
-      scope: req.query.scope,
-      client_id: req.query.client_id,
-      redirect_uri: req.query.redirect_uri,
-      response_type: req.query.response_type
-    };
-
     return res.redirect('/login');
   }
   // If the user is not logged in, we should redirect user to an separate login endpoint

@@ -13,7 +13,7 @@ import {log} from '../../utils/logging.util';
  * @param {function} next
  */
 export async function getCulrAttributes(ctx, res, next) {
-  const userId = ctx.getUser().userId || null;
+  const userId = ctx.getUser().userId;
 
   let culrAttributes = {};
 
