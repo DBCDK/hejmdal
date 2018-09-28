@@ -19,11 +19,11 @@ const consentStore = CONFIG.mock_storage
  * Renders the consent UI
  *
  * @param {object} req
- * @param {function} next
+ * @param {object} res
  */
-export async function giveConsentUI(req, res, next) {
+export async function giveConsentUI(req, res) {
   const state = req.getState();
-  if (!state || !state.serviceClient || !state.serviceClient.id) {
+  if (!state || !state.serviceClient || !state.serviceClient.clientId) {
     res.redirect('/fejl');
   } else {
     const returnUrl = state.returnUrl
@@ -33,14 +33,13 @@ export async function giveConsentUI(req, res, next) {
       __SERVICE_CLIENT_NAME__: state.serviceClient.name
     });
     res.render('Consent', {
-      attributes: getConsentAttributes(req),
-      consentAction: '/login/consentsubmit/' + state.stateHash,
+      attributes: getConsentAttributes(state),
+      consentAction: '/consent/' + state.stateHash,
       consentFailed: false,
       returnUrl: returnUrl,
       serviceName: state.serviceClient.name,
       help: helpText
     });
-    next();
   }
 }
 
@@ -49,9 +48,9 @@ export async function giveConsentUI(req, res, next) {
  * If consent is given, it is saved and the flow continues.
  *
  * @param {object} req
- * @param {function} next
+ * @param {object} res
  */
-export async function consentSubmit(req, res, next) {
+export async function consentSubmit(req, res) {
   const response = req.body || req.query;
 
   if (
@@ -76,29 +75,40 @@ export async function consentSubmit(req, res, next) {
       help: helpText
     });
   } else {
-    await storeUserConsent(req);
+    try {
+      await storeUserConsent(req);
+    } catch (error) {
+      log.error('Can not store consent', {error});
+    }
+    if (req.session.hasOwnProperty('query')) {
+      return res.redirect(
+        `/oauth/authorize/?${Object.entries(req.session.query)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')}`
+      );
+    }
+    res.redirect('/');
   }
-  await next();
 }
 
 /**
  * Requests a check for existing user consent and continues the flow if it's found.
  * If no consent is found the user is redirected to the page where the consent can be made.
  *
- * @param {object} ctx
+ * @param {object} req
  * @param {function} next
  */
-export async function retrieveUserConsent(ctx, res, next) {
-  const userShouldGiveConsent = await shouldUserGiveConsent(ctx);
-  if (userShouldGiveConsent) {
-    res.redirect('/login/consent');
+export async function retrieveMissingUserConsent(req, res, next) {
+  const missingConsents = await shouldUserGiveConsent(req.getState(), req.getUser());
+  if (missingConsents) {
+    res.redirect('/consent');
   } else {
-    await next();
+    next();
   }
 }
 
 /**
- * Check if a user should give consent.
+ * Check if a user has given
  *
  * A user should give consent if there are attributes in the ticket the service client requests, that the user have not
  * given consent to before.
@@ -106,13 +116,10 @@ export async function retrieveUserConsent(ctx, res, next) {
  * @param ctx
  * @returns {boolean}
  */
-export async function shouldUserGiveConsent(ctx) {
-  const consent = await getConsent(ctx);
-  const attributes = getConsentAttributes(ctx);
-  return (
-    Object.keys(attributes).filter(attribute => !consent.includes(attribute))
-      .length > 0
-  );
+export async function shouldUserGiveConsent(state, user) {
+  const consent = await getConsent(user.userId, state.serviceClient.clientId);
+  const attributes = getConsentAttributes(state);
+  return Object.keys(attributes).filter(attribute => !consent.includes(attribute)).length > 0;
 }
 
 /**
@@ -123,23 +130,22 @@ export async function shouldUserGiveConsent(ctx) {
  * @return {*}
  */
 export async function storeUserConsent(ctx) {
-  const consent = getConsentAttributes(ctx);
-  const user = ctx.getUser();
+  const userId = ctx.getUser().userId;
   const state = ctx.getState();
+  const consent = getConsentAttributes(state);
 
-  if (!user.userId) {
+  if (!userId) {
     log.error('Can not store consent without a userId');
     return false;
   }
 
-  if (!state.serviceClient.id) {
+  if (!state.serviceClient.clientId) {
     log.error('Can not store consent without a serviceClient ID');
     return false;
   }
 
-  const hashedUserId = createHash(user.userId);
-  const consentid = `${hashedUserId}:${state.serviceClient.id}`;
-
+  const hashedUserId = createHash(userId);
+  const consentid = `${hashedUserId}:${state.serviceClient.clientId}`;
 
   addConsentToState(ctx, consent);
 
@@ -160,9 +166,7 @@ export async function storeUserConsent(ctx) {
  * @param ctx
  * @returns {boolean}
  */
-export async function getConsent(ctx) {
-  const userId = ctx.getUser().userId;
-  const serviceClientId = ctx.getState().serviceClient.id;
+export async function getConsent(userId, serviceClientId) {
   let consent = [];
   try {
     if (userId) {
@@ -247,7 +251,7 @@ export async function deleteConsents(ctx, next) {
 function addConsentToState(ctx, consent) {
   const state = ctx.getState();
   const consents = Object.assign({}, state.consents, {
-    [state.serviceClient.id]: consent
+    [state.serviceClient.clientId]: consent
   });
   ctx.setState({consents});
 }
@@ -257,10 +261,10 @@ function addConsentToState(ctx, consent) {
  * @param ctx
  * @returns {object}
  */
-function getConsentAttributes(ctx) {
-  const state = ctx.getState();
-  const definitionAttributes = state.serviceClient.attributes || {};
-  const ticketAttributes = state.ticket.attributes || {};
+function getConsentAttributes(state) {
+  const {serviceClient, ticket} = state;
+  const definitionAttributes = serviceClient.attributes || {};
+  const ticketAttributes = ticket.attributes || {};
   const consentAttributes = {};
   Object.keys(definitionAttributes).forEach(key => {
     if (

@@ -5,8 +5,18 @@ import {
   authorizationMiddleware
 } from '../utils/oauth2.utils';
 import {Router} from 'express';
+import {retrieveMissingUserConsent} from '../components/Consent/consent.component';
+import {setDefaultState} from '../middlewares/state.middleware';
+import {getCulrAttributes} from '../components/Culr/culr.component';
+import mapAttributesToTicket from '../utils/attribute.mapper.util';
+import {compose} from 'compose-middleware';
 
 const router = Router();
+
+const collectAndCreateAttributesRoute = async(req, res, next) => {
+  await compose([getCulrAttributes, mapAttributesToTicket])(req, res, next);
+};
+
 
 /**
  * authorization
@@ -26,6 +36,9 @@ router.get(
   disableRedirectUrlCheck,
   validateAuthRequest,
   isUserLoggedIn,
+  setDefaultState,
+  collectAndCreateAttributesRoute,
+  retrieveMissingUserConsent,
   authorizationMiddleware
 );
 

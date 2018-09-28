@@ -30,7 +30,6 @@ export default async function mapAttributesToTicket(ctx, res, next) {
       user,
       state.serviceClient.id
     );
-
     ctx.setState({ticket: {attributes: ticketAttributes}});
   }
 
