@@ -27,7 +27,7 @@ To install the latest database changes, run `npm run migrate:latest` to update t
 For development you use `npm run migrate:latest:dev` to source the env.env file before updating the tables.
 
 ## Example application
-The frontpage links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
+The frontpage (https://login.bib.dk/example) links to an example application, demonstrating the flow through the application.  You need to fill out the url, path and token. After a succesfull login, you can fetch the ticket.
 
 ## Tests
 
