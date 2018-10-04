@@ -48,7 +48,6 @@ export function isUserLoggedIn(req, res, next) {
   if (!req.session.user && req.session.client) {
     return res.redirect('/login');
   }
-  // TODO should we load the user from db here?
   next();
 }
 

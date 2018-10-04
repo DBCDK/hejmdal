@@ -19,7 +19,7 @@ const storage = new PersistentUserStorage();
  * @param req
  * @param res
  */
-export async function getTicket(req, res, next) {
+export async function getUser(req, res, next) {
   const {user: userId, client: clientId} = res.locals.oauth.token;
   try {
     const [user, culrAttributes, client] = await Promise.all([
