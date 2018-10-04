@@ -9,16 +9,9 @@ import {saveUser} from '../components/User/user.component';
  */
 
 const mock = {
-   tokens: [
-    { accessToken: 'f4c6b382ac937b7d9d5875140884dd574e125e4d',
-  accessTokenExpiresAt: new Date("2018-12-02T13:24:31.965Z"),
-  client: 'hejmdal',
-  refreshToken: '682cc736488e455add9dd200585be67c7c94d9f2',
-  refreshTokenExpiresAt: new Date("2018-10-16T12:24:31.965Z"),
-  user: '20080593' }
-   ],
+   tokens: [],
   grants: 'authorization_code',
-  users: [{id: '123', username: 'foobar', password: 'nightworld'}],
+  users: [],
   authorizationCodes: new Map()
 };
 

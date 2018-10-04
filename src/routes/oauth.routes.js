@@ -27,10 +27,6 @@ router.get(
   '/authorize',
   disableRedirectUrlCheck,
   validateAuthRequest,
-  (req, res, next) => {
-    req.setUser({userId: '0212791431'});
-    next();
-  },
   isUserLoggedIn,
   setDefaultState,
   retrieveMissingUserConsent,
