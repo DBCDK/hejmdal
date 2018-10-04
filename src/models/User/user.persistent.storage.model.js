@@ -19,8 +19,8 @@ export default class PersistentUserStorage {
       });
   }
 
-  insert(user) {
-    return User.query().insert({userId: user.userId, user})
+  insert(userId, user) {
+    return User.query().insert({userId, user})
       .then((result) => {
         return result.id ? result.id : null;
       })
@@ -43,10 +43,6 @@ export default class PersistentUserStorage {
 
 
   async update(userId, user) {
-    const userInDb = await this.read(userId);
-    if (!userInDb) {
-      return this.insert(user);
-    }
     return User.query().update({user}).where('userId', userId)
       .then((res) => {
         return res;

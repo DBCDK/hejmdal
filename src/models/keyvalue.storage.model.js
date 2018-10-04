@@ -53,6 +53,27 @@ export default class KeyValueStorage {
 
     return success;
   }
+  /**
+   * Update an object in a DB by the given key
+   *
+   * @param {string} key
+   * @param {object} object
+   * @returns {boolean} Returns true if succesfully stored otherwise false
+   */
+  async update(key, object) {
+    const objectInDb = await this.store.read(key);
+    if (!objectInDb) {
+      return this.insert(key, object);
+    }
+    try {
+      return await this.store.update(key, encrypt(object));
+    }
+    catch (e) {
+      log.error('Write object with key', {error: e.message, stack: e.stack});
+    }
+
+    return false;
+  }
 
   /**
    * Read an on object from store

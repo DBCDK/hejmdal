@@ -1,8 +1,8 @@
 /* eslint-disable */
 
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
-import PersistentUserStorage from '../models/User/user.persistent.storage.model';
-const storage = new PersistentUserStorage();
+import {saveUser} from '../components/User/user.component';
+
 
 /**
  * Module dependencies.
@@ -42,7 +42,7 @@ module.exports.saveAuthorizationCode = function(code, client, user) {
     user: user.userId
   });
 
-  storage.update(user.userId, user);
+  saveUser(user);
 
   mock.authorizationCodes.set(code.authorizationCode, codeToSave);
   return code;
