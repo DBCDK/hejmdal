@@ -42,7 +42,7 @@ export default class PersistentUserStorage {
   }
 
 
-  async update(userId, user) {   // eslint-disable-line no-unused-vars
+  async update(userId, user) {
     const userInDb = await this.read(userId);
     if (!userInDb) {
       return this.insert(user);

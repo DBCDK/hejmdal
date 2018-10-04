@@ -30,6 +30,7 @@ import logoutRoutes from './routes/logout.routes';
 import consentRoutes from './routes/consent.routes';
 import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
+import userinfoRoutes from './routes/userinfo.routes';
 
 const host = process.env.HOST;
 
@@ -40,7 +41,8 @@ app.oauth = new OAuthServer({
   allowBearerTokensInQueryString: true,
   grants: ['password', 'authorization_code'],
   debug: true,
-  allowEmptyState: true
+  allowEmptyState: true,
+  continueMiddleware: false
 });
 
 app.model = model;
@@ -67,6 +69,7 @@ app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/oauth', oAuthRoutes);
 app.use('/consent', consentRoutes);
+app.use('/userinfo', userinfoRoutes);
 
 /**
  * Test callback endpoint
@@ -94,7 +97,8 @@ app.get('/callback', (req, res) => {
  *
  * // curl -X POST http://localhost:3000/userinfo -d 'access_token={token}'
  */
-app.post('/userinfo', app.oauth.authenticate(), (req, res) => {
+app.post('/_userinfo', app.oauth.authenticate(), (req, res) => {
+  // res.locals.oauth = {code: code};;
   res.send({
     attributes: {
       userId: '0101701234',

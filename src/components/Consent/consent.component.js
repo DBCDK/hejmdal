@@ -10,6 +10,8 @@ import PersistentConsentStorage from '../../models/Consent/consent.persistent.st
 import {log} from '../../utils/logging.util';
 import {getText} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
+import {getUserAttributesFromCulr} from '../Culr/culr.component';
+import {mapCulrResponse} from '../../utils/attribute.mapper.util';
 
 const consentStore = CONFIG.mock_storage
   ? new KeyValueStorage(new MemoryStorage())
@@ -33,7 +35,7 @@ export async function giveConsentUI(req, res) {
       __SERVICE_CLIENT_NAME__: state.serviceClient.name
     });
     res.render('Consent', {
-      attributes: getConsentAttributes(state),
+      attributes: Object.entries(state.consentAttributes).filter(([key, attribute]) => state.missingConsents.includes(key)).map(([key, value]) => value),
       consentAction: '/consent/' + state.stateHash,
       consentFailed: false,
       returnUrl: returnUrl,
@@ -99,27 +101,26 @@ export async function consentSubmit(req, res) {
  * @param {function} next
  */
 export async function retrieveMissingUserConsent(req, res, next) {
-  const missingConsents = await shouldUserGiveConsent(req.getState(), req.getUser());
-  if (missingConsents) {
+  const user = req.getUser();
+  const culrAttributes = await getUserAttributesFromCulr(user.userId);
+  const {serviceClient} = req.getState();
+  const ticketAttributes = mapCulrResponse(
+    culrAttributes,
+    serviceClient.attributes,
+    user,
+    serviceClient.clientId
+  );
+
+  const consent = await getConsent(user.userId, serviceClient.clientId);
+  const attributes = getConsentAttributes(serviceClient.attributes, ticketAttributes);
+  console.log({ticketAttributes, culrAttributes});
+  const missingConsents = Object.keys(attributes).filter(attribute => !consent.includes(attribute));
+  if (missingConsents.length > 0) {
+    req.setState({missingConsents, consentAttributes: attributes});
     res.redirect('/consent');
   } else {
     next();
   }
-}
-
-/**
- * Check if a user has given
- *
- * A user should give consent if there are attributes in the ticket the service client requests, that the user have not
- * given consent to before.
- *
- * @param ctx
- * @returns {boolean}
- */
-export async function shouldUserGiveConsent(state, user) {
-  const consent = await getConsent(user.userId, state.serviceClient.clientId);
-  const attributes = getConsentAttributes(state);
-  return Object.keys(attributes).filter(attribute => !consent.includes(attribute)).length > 0;
 }
 
 /**
@@ -132,7 +133,7 @@ export async function shouldUserGiveConsent(state, user) {
 export async function storeUserConsent(ctx) {
   const userId = ctx.getUser().userId;
   const state = ctx.getState();
-  const consent = getConsentAttributes(state);
+  const consent = state.consentAttributes;
 
   if (!userId) {
     log.error('Can not store consent without a userId');
@@ -147,8 +148,6 @@ export async function storeUserConsent(ctx) {
   const hashedUserId = createHash(userId);
   const consentid = `${hashedUserId}:${state.serviceClient.clientId}`;
 
-  addConsentToState(ctx, consent);
-
   await consentStore.delete(consentid);
 
   try {
@@ -162,7 +161,8 @@ export async function storeUserConsent(ctx) {
 }
 
 /**
- *
+ * Returns a list of consents given by a user to a serviceClient.
+ * 
  * @param ctx
  * @returns {boolean}
  */
@@ -243,35 +243,18 @@ export async function deleteConsents(ctx, next) {
 }
 
 /**
- * Adds a consent object to the state object
- *
- * @param ctx
- * @param consent
- */
-function addConsentToState(ctx, consent) {
-  const state = ctx.getState();
-  const consents = Object.assign({}, state.consents, {
-    [state.serviceClient.clientId]: consent
-  });
-  ctx.setState({consents});
-}
-
-/**
  *
  * @param ctx
  * @returns {object}
  */
-function getConsentAttributes(state) {
-  const {serviceClient, ticket} = state;
-  const definitionAttributes = serviceClient.attributes || {};
-  const ticketAttributes = ticket.attributes || {};
+function getConsentAttributes(serviceClientAttributes = {}, ticketAttributes = {}) {
   const consentAttributes = {};
-  Object.keys(definitionAttributes).forEach(key => {
+  Object.entries(serviceClientAttributes).forEach(([key, value]) => {
     if (
       attributeIsSet(ticketAttributes[key]) &&
-      definitionAttributes[key].skipConsent !== true
+      value.skipConsent !== true
     ) {
-      consentAttributes[key] = Object.assign({}, definitionAttributes[key]);
+      consentAttributes[key] = Object.assign({}, value);
       consentAttributes[key].key = key;
     }
   });

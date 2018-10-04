@@ -7,31 +7,12 @@ import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 
 /**
- * If a userId is found a request will be submitted to CULR otherwise an empty object is returned.
- *
- * @param {object} ctx
- * @param {function} next
- */
-export async function getCulrAttributes(ctx, res, next) {
-  const userId = ctx.getUser().userId;
-
-  let culrAttributes = {};
-
-  if (userId) {
-    culrAttributes = await getUserAttributesFromCulr(userId);
-    ctx.setState({culr: culrAttributes});
-  }
-
-  next();
-}
-
-/**
  * Retrieval of user from CULR webservice
  *
  * @param {string} userId
  * @return {{}}
  */
-async function getUserAttributesFromCulr(userId) {
+export async function getUserAttributesFromCulr(userId) {
   let attributes = {};
   let response = null;
 

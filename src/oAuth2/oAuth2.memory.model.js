@@ -1,13 +1,22 @@
 /* eslint-disable */
 
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+import PersistentUserStorage from '../models/User/user.persistent.storage.model';
+const storage = new PersistentUserStorage();
 
 /**
  * Module dependencies.
  */
 
 const mock = {
-   tokens: [],
+   tokens: [
+    { accessToken: 'f4c6b382ac937b7d9d5875140884dd574e125e4d',
+  accessTokenExpiresAt: new Date("2018-12-02T13:24:31.965Z"),
+  client: 'hejmdal',
+  refreshToken: '682cc736488e455add9dd200585be67c7c94d9f2',
+  refreshTokenExpiresAt: new Date("2018-10-16T12:24:31.965Z"),
+  user: '20080593' }
+   ],
   grants: 'authorization_code',
   users: [{id: '123', username: 'foobar', password: 'nightworld'}],
   authorizationCodes: new Map()
@@ -26,12 +35,15 @@ module.exports.saveAuthorizationCode = function(code, client, user) {
     redirectUri: code.redirectUri,
     scope: code.scope,
     client: client.clientId,
-    user: user.id
+    user: user.userId
   };
   code = Object.assign({}, code, {
     client: client.clientId,
-    user: user.id
+    user: user.userId
   });
+
+  storage.update(user.userId, user);
+
   mock.authorizationCodes.set(code.authorizationCode, codeToSave);
   return code;
 };
