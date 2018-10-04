@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import sinon from 'sinon';
-import {storeTicket, getTicket} from '../Ticket/ticket.component.js';
+import {getTicket} from '../Ticket/ticket.component.js';
 import {mockContext} from '../../utils/test.util';
 
 describe('test store and get ticket', () => {

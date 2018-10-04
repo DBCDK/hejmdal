@@ -9,7 +9,7 @@ import PersistentUserStorage from '../../models/User/user.persistent.storage.mod
 import {getUserAttributesFromCulr} from '../Culr/culr.component';
 import {mapCulrResponse} from '../../utils/attribute.mapper.util';
 import {getClientById} from '../Smaug/smaug.client';
-import { log } from '../../utils/logging.util';
+import {log} from '../../utils/logging.util';
 
 const storage = new PersistentUserStorage();
 
@@ -35,7 +35,7 @@ export async function getTicket(req, res, next) {
     );
     res.json(ticketAttributes);
   } catch (error) {
-    log.error('Could not generate user info', {error})
+    log.error('Could not generate user info', {error});
     next();
   }
 }

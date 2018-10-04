@@ -41,7 +41,7 @@ describe('User store tests', () => {
     const userFromDb = await store.read(user.userId);
     assert.deepEqual(user, userFromDb);
   });
- 
+
   it('should delete user', async () => {
     const user = {
       userId: '1122334455'

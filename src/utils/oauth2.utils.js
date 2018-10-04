@@ -8,14 +8,14 @@ export function disableRedirectUrlCheck(req, res, next) {
 
 /**
  * Middleware for validating request.
- * 
- * Checks if a valid oauth request is made. 
+ *
+ * Checks if a valid oauth request is made.
  * For now we only tests if clientId is valid and saves client on session.
- * 
+ *
  * TODO: Check
  *  - return_uri
  *  - response_type
- * 
+ *
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -29,13 +29,13 @@ export async function validateAuthRequest(req, res, next) {
 
 /**
  * Middleware that checks if a user is logged in.
- * 
+ *
  * If the user is not logged in, the user is redirected to the login flow.
- * Query params are saved on the session for later use. 
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * Query params are saved on the session for later use.
+ *
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
  */
 export function isUserLoggedIn(req, res, next) {
   req.session.query = {
@@ -67,7 +67,7 @@ export function authorizationMiddleware(req, res, next) {
 
 /**
  * Helper function used in the authenticateHander to return a user.
- * 
+ *
  * @param {Object} req
  */
 function getUserFromState(req) {

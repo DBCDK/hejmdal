@@ -35,6 +35,7 @@ export async function giveConsentUI(req, res) {
       __SERVICE_CLIENT_NAME__: state.serviceClient.name
     });
     res.render('Consent', {
+      // eslint-disable-next-line no-unused-vars
       attributes: Object.entries(state.consentAttributes).filter(([key, attribute]) => state.missingConsents.includes(key)).map(([key, value]) => value),
       consentAction: '/consent/' + state.stateHash,
       consentFailed: false,
@@ -113,7 +114,6 @@ export async function retrieveMissingUserConsent(req, res, next) {
 
   const consent = await getConsent(user.userId, serviceClient.clientId);
   const attributes = getConsentAttributes(serviceClient.attributes, ticketAttributes);
-  console.log({ticketAttributes, culrAttributes});
   const missingConsents = Object.keys(attributes).filter(attribute => !consent.includes(attribute));
   if (missingConsents.length > 0) {
     req.setState({missingConsents, consentAttributes: attributes});
@@ -162,7 +162,7 @@ export async function storeUserConsent(ctx) {
 
 /**
  * Returns a list of consents given by a user to a serviceClient.
- * 
+ *
  * @param ctx
  * @returns {boolean}
  */
