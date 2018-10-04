@@ -10,8 +10,13 @@ import {getUserAttributesFromCulr} from '../Culr/culr.component';
 import {mapCulrResponse} from '../../utils/attribute.mapper.util';
 import {getClientById} from '../Smaug/smaug.client';
 import {log} from '../../utils/logging.util';
+import KeyValueStorage from '../../models/keyvalue.storage.model';
+import MemoryStorage from '../../models/memory.storage.model';
+import {CONFIG} from '../../utils/config.util';
 
-const storage = new PersistentUserStorage();
+const storage = CONFIG.mock_storage ?
+  new KeyValueStorage(new MemoryStorage()) :
+  new KeyValueStorage(new PersistentUserStorage());
 
 /**
  * Fetch an attribute object from storage from the identifier and token.

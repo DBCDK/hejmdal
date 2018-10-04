@@ -52,7 +52,6 @@ export function mapCulrResponse(
   serviceId
 ) {
   let mapped = {};
-
   let cpr = user.cpr || null;
   let agencies = [];
   let fromCpr = {};

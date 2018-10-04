@@ -9,10 +9,14 @@ import {Model} from 'objection';
 import {CONFIG} from '../../../utils/config.util';
 
 // Initialize knex.
-const knex = Knex(CONFIG.postgres);
-Model.knex(knex);
+const db = Knex(CONFIG.postgres);
+Model.knex(db);
 
 describe('User store tests', () => {
+  if (CONFIG.mock_storage) {
+    // These tests are only valuable against a db.
+    return;
+  }
   let sandbox;
   let store;
 
