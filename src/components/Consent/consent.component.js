@@ -102,9 +102,12 @@ export async function consentSubmit(req, res) {
  * @param {function} next
  */
 export async function retrieveMissingUserConsent(req, res, next) {
+  const {serviceClient} = req.getState();
+  if (!serviceClient.requireConsent) {
+    return next();
+  }
   const user = req.getUser();
   const culrAttributes = await getUserAttributesFromCulr(user.userId);
-  const {serviceClient} = req.getState();
   const ticketAttributes = mapCulrResponse(
     culrAttributes,
     serviceClient.attributes,
