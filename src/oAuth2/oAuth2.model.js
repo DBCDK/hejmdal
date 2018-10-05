@@ -1,36 +1,153 @@
 /* eslint-disable */
 
-const model = {
-  // We support returning promises.
-  getAccessToken: function() {
-    console.log('getAcc');
-    return new Promise('works!');
-  },
+import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+import {saveUser} from '../components/User/user.component';
+import PersistentAuthCodeStorage from '../models/AuthCode/authcode.persistent.storage.model';
+import { CONFIG } from '../utils/config.util';
+import KeyValueStorage from '../models/keyvalue.storage.model';
+import MemoryStorage from '../models/memory.storage.model';
 
-  // Or, calling a Node-style callback.
-  getAuthorizationCode: function(done) {
-    console.log('getAuth', done);
-    done(null, 'works!');
-  },
+const authStorage = CONFIG.mock_storage ?
+  new KeyValueStorage(new MemoryStorage()) :
+  new KeyValueStorage(new PersistentAuthCodeStorage());
 
-  saveAuthorizationCode: function(done) {
-    console.log('saveAuth', done);
-    done(null, 'works!');
-  },
+/**
+ * Module dependencies.
+ */
 
-  // Or, using generators.
-  getClient: function*(a, b) {
-    console.log('getClient', a, b);
-    yield somethingAsync();
-    return 'works!';
-  },
+const mock = {
+   tokens: [],
+  grants: 'authorization_code',
+  users: [],
+  authorizationCodes: new Map()
+};
 
-  // Or, async/wait (using Babel).
-  getUser: async function() {
-    console.log('getUser');
-    await somethingAsync();
-    return 'works!';
+module.exports.mock = mock;
+
+/*
+ * Save authorization code
+ */
+
+module.exports.saveAuthorizationCode = function(code, client, user) {
+  const codeToSave = {
+    authorizationCode: code.authorizationCode,
+    expiresAt: code.expiresAt,
+    redirectUri: code.redirectUri,
+    scope: code.scope,
+    client: client.clientId,
+    user: user.userId
+  };
+  code = Object.assign({}, code, {
+    client: client.clientId,
+    user: user.userId
+  });
+
+  saveUser(user);
+  authStorage.insert(code.authorizationCode, codeToSave);
+  
+  return code;
+};
+
+/*
+ * Save authorization code
+ */
+module.exports.getAuthorizationCode = async (authorizationCode)  => {
+  const code = await authStorage.read(authorizationCode);
+
+  if (!code) {
+    return null;
+  }
+
+  console.log(code);
+
+  code.expiresAt = new Date(code.expiresAt);
+  code.client = {clientId: code.client};
+  code.user = {id: code.user};
+
+  return code;
+};
+
+/*
+ * Save authorization code
+ */
+module.exports.revokeAuthorizationCode = function(params) {
+  console.log('saveAuthorizationCode', params);
+
+  return params;
+};
+
+/*
+ * Get access token.
+ */
+
+module.exports.getAccessToken = function(bearerToken) {
+  var tokens = mock.tokens.filter(function(token) {
+    return token.accessToken === bearerToken;
+  });
+
+  return tokens.length ? tokens[0] : false;
+};
+
+/**
+ * Get client.
+ */
+
+module.exports.getClient = async (clientId) => {
+  try {
+    return await getClientInfoByClientId(clientId);
+  } catch(e) {
+    console.log(e);
+    return null;
   }
 };
 
-export default model;
+/**
+ * Get refresh token.
+ */
+
+module.exports.getRefreshToken = function*(bearerToken) {
+  console.log('getRefreshToken', bearerToken);
+  var tokens = mock.tokens.filter(function(token) {
+    return token.refreshToken === bearerToken;
+  });
+
+  return tokens.length ? tokens[0] : false;
+};
+
+/*
+ * Get user.
+ */
+
+module.exports.getUser = function*(username, password) {
+  var users = mock.users.filter(function(user) {
+    return user.username === username && user.password === password;
+  });
+
+  return users.length ? users[0] : false;
+};
+
+/**
+ * Save token.
+ */
+
+module.exports.saveToken = function*(token, client, user) {
+  const access_token = {
+    accessToken: token.accessToken,
+    accessTokenExpiresAt: token.accessTokenExpiresAt,
+    client: client.clientId,
+    user: user.id
+  };
+  mock.tokens.push(access_token);
+
+  return access_token;
+};
+
+module.exports.revokeToken = token => {
+  mock.tokens = mock.tokens.filter(t => t.accessToken !== token);
+};
+
+module.exports.dump = function() {
+  console.log('clients', mock.clients);
+  console.log('tokens', mock.tokens);
+  console.log('users', mock.users);
+};

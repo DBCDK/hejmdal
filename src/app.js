@@ -7,7 +7,7 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import path from 'path';
 import session from 'express-session';
-import model from './oAuth2/oAuth2.memory.model';
+import model from './oAuth2/oAuth2.model';
 import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
 import Knex from 'knex';
@@ -89,34 +89,6 @@ app.get('/callback', (req, res) => {
     </body></html>
     `
   );
-});
-
-/**
- * Get userinfo
- *
- * // curl -X POST http://localhost:3000/userinfo -d 'access_token={token}'
- */
-app.post('/_userinfo', app.oauth.authenticate(), (req, res) => {
-  // res.locals.oauth = {code: code};;
-  res.send({
-    attributes: {
-      userId: '0101701234',
-      uniqueId:
-        '8aa45d6b9e2cdec5322fa4c35cfd3ea271a3981ffcb5f75a994029522a3ec1a9',
-      agencies: [
-        {
-          agencyId: '710100',
-          userId: '0101701234',
-          userIdType: 'CPR'
-        },
-        {
-          agencyId: '714700',
-          userId: '12345678',
-          userIdType: 'LOCAL'
-        }
-      ]
-    }
-  });
 });
 
 app.listen(process.env.PORT || 3000);
