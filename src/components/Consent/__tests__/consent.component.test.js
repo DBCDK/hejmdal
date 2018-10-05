@@ -61,6 +61,7 @@ describe('Unittesting methods in consent.component.test', () => {
       ctx.setUser({userId: userId});
       ctx.setState({
         serviceClient: {
+          requireConsent: true,
           clientId: serviceClientId,
           attributes: {
             cpr: {}
@@ -119,6 +120,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       ctx.setState({
         serviceClient: {
+          requireConsent: true,
           clientId: serviceClientId,
           attributes: ATTRIBUTES
         }

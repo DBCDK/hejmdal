@@ -23,6 +23,7 @@ describe('Test Smaug component', () => {
       grants: ['authorization_code'],
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
+      requireConsent: true,
       redirectUris: [
         'http://localhost:3011/callback',
         'http://localhost:3011/example/provider/callback'

@@ -43,7 +43,8 @@ export function extractClientInfo(client) {
     urls: client.urls || {},
     grants: client.grants,
     redirectUris: client.redirectUris,
-    clientSecret: client.app.clientSecret
+    clientSecret: client.app.clientSecret,
+    requireConsent: !!client.requireConsent
   };
 
   if (CONFIG.app.env === 'test') {

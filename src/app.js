@@ -24,7 +24,6 @@ const knex = Knex(CONFIG.postgres);
 Model.knex(knex);
 
 import {stateMiddleware} from './middlewares/state.middleware';
-
 import loginRoutes from './routes/login.routes';
 import logoutRoutes from './routes/logout.routes';
 import consentRoutes from './routes/consent.routes';

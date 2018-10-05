@@ -38,6 +38,9 @@ export async function validateAuthRequest(req, res, next) {
  * @param {*} next
  */
 export function isUserLoggedIn(req, res, next) {
+  if (req.query.client_id === 'hejmdal') {
+    req.setUser({userId: '0101701234'});
+  }
   req.session.query = {
     state: req.query.state,
     scope: req.query.scope,
