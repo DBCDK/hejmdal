@@ -7,6 +7,8 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import path from 'path';
 import session from 'express-session';
+const KnexSessionStore = require('connect-session-knex')(session);
+
 import model from './oAuth2/oAuth2.model';
 import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
@@ -22,6 +24,8 @@ const knex = Knex(CONFIG.postgres);
 // your server this is all you have to do. For multi database systems, see
 // the Model.bindKnex method.
 Model.knex(knex);
+
+const sessionStore = new KnexSessionStore({knex});
 
 import {stateMiddleware} from './middlewares/state.middleware';
 import loginRoutes from './routes/login.routes';
@@ -55,8 +59,10 @@ app.use(
   session({
     secret: 'Super Secret Session Key',
     saveUninitialized: true,
-    resave: true
-  })
+    resave: true,
+    store: sessionStore
+  }
+  )
 );
 
 app.use(stateMiddleware);
@@ -81,7 +87,7 @@ app.get('/callback', (req, res) => {
     <h3>Lav følgende POST kald for at hente en token:</h3>
     <code>curl -X POST ${host}/oauth/token -d 'grant_type=authorization_code&code=${
       req.query.code
-    }&client_id=hejmdal&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
+    }&client_id=${req.session.query.client_id}&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
     
     <h3>Lav derefter et kald til /userinfo med returnerede access_token, for at hente brugerinformation:</h3>
 
