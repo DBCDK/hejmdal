@@ -9,7 +9,6 @@ import {
   retrieveMissingUserConsent,
   getConsent,
   storeUserConsent,
-  shouldUserGiveConsent,
   findConsents,
   deleteConsents
 } from '../consent.component';
@@ -45,62 +44,6 @@ describe('Unittesting methods in consent.component.test', () => {
     });
   });
 
-  describe('shouldUserGiveConsent()', () => {
-
-    beforeEach(() => {
-      ctx = mockContext();
-      setDefaultState(ctx, ctx, next);
-      ctx.setUser({userId: 'testUser'});
-
-      ctx.setState({
-        serviceClient: {
-          id: 'some id',
-          attributes: {
-            cpr: {},
-            token: {
-              skipConsent: true
-            }
-          }
-        },
-        ticket: {
-          attributes: {
-            cpr: '1234'
-          }
-        }
-      });
-    });
-
-    it('should give consent if valid attributes and no consent', async() => {
-      assert.isTrue(await shouldUserGiveConsent(ctx.getState(), ctx.getUser()));
-    });
-
-    it('should not give consent if no valid attributes', async() => {
-      ctx.setUser({userId: 'testUser'});
-
-      ctx.setState({
-        ticket: {
-          attributes: {}
-        }
-      });
-
-      assert.isFalse(await shouldUserGiveConsent(ctx.getState(), ctx.getUser()));
-    });
-    it('should not give consent if no attributes requires consent', async() => {
-      ctx.setUser({userId: 'testUser'});
-
-      ctx.setState({
-        ticket: {
-          attributes: {
-            token: 123123123
-          }
-        }
-      });
-
-      assert.isFalse(await shouldUserGiveConsent(ctx.getState(), ctx.getUser()));
-    });
-  });
-
-
   describe('retrieveMissingUserConsent()', () => {
 
     it('should call next when no user or serviceClient.id is found', async() => {
@@ -113,22 +56,17 @@ describe('Unittesting methods in consent.component.test', () => {
     it('should redirect when no consent is found', async() => {
       ctx.redirect = sandbox.stub();
       const serviceClientId = Date.now();
-      const userId = 'testuser';
+      const userId = '5555666677';
 
       ctx.setUser({userId: userId});
       ctx.setState({
         serviceClient: {
-          id: serviceClientId,
+          requireConsent: true,
+          clientId: serviceClientId,
           attributes: {
             cpr: {}
           }
-        },
-        ticket: {
-          attributes: {
-            cpr: '1234'
-          }
         }
-
       });
 
       await retrieveMissingUserConsent(ctx, ctx, next);
@@ -139,13 +77,15 @@ describe('Unittesting methods in consent.component.test', () => {
       ctx.redirect = sandbox.stub();
       const _next = sandbox.stub();
       const serviceClientId = Date.now();
-      const userId = 'testuser';
+      const userId = '5555666677';
 
       ctx.setUser({userId: userId});
       ctx.setState({
         serviceClient: {
-          id: serviceClientId
-        }
+          clientId: serviceClientId,
+          attributes: ATTRIBUTES
+        },
+        consentAttributes: ATTRIBUTES
       });
 
       await storeUserConsent(ctx);
@@ -158,35 +98,31 @@ describe('Unittesting methods in consent.component.test', () => {
     it('should delete old consent and redirect user to consent page', async() => {
       ctx.redirect = sandbox.stub();
       const serviceClientId = Date.now();
-      const userId = 'testUser';
+      const userId = '5555666677';
+
+      const ALT_ATTRIBUTES = Object.assign({}, ATTRIBUTES);
+      delete ALT_ATTRIBUTES.cpr;
 
       ctx.setUser({userId: userId});
       ctx.setState({
         serviceClient: {
           clientId: serviceClientId,
-          attributes: ATTRIBUTES
+          attributes: ALT_ATTRIBUTES
         },
-        ticket: {
-          attributes: ATTRIBUTES
-        }
+        consentAttributes: ALT_ATTRIBUTES
       });
 
       // first we store the consent object and verify it has been stored
       await storeUserConsent(ctx);
       const consent = await getConsent(userId, serviceClientId);
-      const consent_expected = ['cpr', 'birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'uniloginId', 'userId', 'wayfId', 'uniqueId'];
+      const consent_expected = ['birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'uniloginId', 'userId', 'wayfId', 'uniqueId', 'authenticatedToken'];
       assert.deepEqual(consent, consent_expected, 'consent was stored as expected');
 
-      // then we create sets a new attributes object and makes a request for the users consent.
-      // The check between the old and the consent objekt is implicitly part of the retrival process.
-      const newAttrbutes = Object.assign({}, ATTRIBUTES, {newAtt: {name: 'some value'}});
       ctx.setState({
         serviceClient: {
+          requireConsent: true,
           clientId: serviceClientId,
-          attributes: newAttrbutes
-        },
-        ticket: {
-          attributes: newAttrbutes
+          attributes: ATTRIBUTES
         }
       });
 
@@ -222,7 +158,6 @@ describe('Unittesting methods in consent.component.test', () => {
       const consent = await getConsent(ctx);
 
       assert.isArray(consent);
-      assert.isObject(ctx.session.state.consents[serviceClientId]);
     });
   });
 
@@ -238,6 +173,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
+        consentAttributes: {},
         serviceClient: {
           clientId: 'some-client'
         }
@@ -246,12 +182,14 @@ describe('Unittesting methods in consent.component.test', () => {
 
       ctx.setUser({userId: 'testuser2'});
       ctx.setState({
+        consentAttributes: {},
         serviceClient: {
           clientId: 'some-client'
         }
       });
       await storeUserConsent(ctx);
       ctx.setState({
+        consentAttributes: {},
         serviceClient: {
           clientId: 'some-other-client'
         }
@@ -283,6 +221,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
+        consentAttributes: {a: 'a', b: 'b'},
         serviceClient: {
           id: 'some-client'
         }
@@ -303,6 +242,7 @@ describe('Unittesting methods in consent.component.test', () => {
 
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
+        consentAttributes: {a: 'a', b: 'b'},
         serviceClient: {
           clientId: 'some-client'
         }

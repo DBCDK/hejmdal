@@ -1,6 +1,8 @@
 /* eslint-disable */
 
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+import {saveUser} from '../components/User/user.component';
+
 
 /**
  * Module dependencies.
@@ -9,7 +11,7 @@ import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
 const mock = {
    tokens: [],
   grants: 'authorization_code',
-  users: [{id: '123', username: 'foobar', password: 'nightworld'}],
+  users: [],
   authorizationCodes: new Map()
 };
 
@@ -26,12 +28,15 @@ module.exports.saveAuthorizationCode = function(code, client, user) {
     redirectUri: code.redirectUri,
     scope: code.scope,
     client: client.clientId,
-    user: user.id
+    user: user.userId
   };
   code = Object.assign({}, code, {
     client: client.clientId,
-    user: user.id
+    user: user.userId
   });
+
+  saveUser(user);
+
   mock.authorizationCodes.set(code.authorizationCode, codeToSave);
   return code;
 };
