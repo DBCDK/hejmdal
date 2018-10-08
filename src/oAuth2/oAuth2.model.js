@@ -99,7 +99,14 @@ module.exports.getClient = async clientId => {
  */
 module.exports.saveToken = async (token, client, user) => {
   try {
-    const smaugToken = await getTokenForUser({clientId: client.clientId});
+    const params = {clientId: client.clientId};
+    if (user.pincode && user.libraryId) {
+       params.password = user.pincode;
+       params.username = user.userId;
+       params.library = user.libraryId; 
+
+    }
+    const smaugToken = await getTokenForUser(params);
     const access_token = {
       accessToken: smaugToken.access_token,
       accessTokenExpiresAt: new Date(Date.now() + smaugToken.expires_in * 1000),
