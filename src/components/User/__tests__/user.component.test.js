@@ -3,12 +3,12 @@ import sinon from 'sinon';
 import {getUser} from '../user.component.js';
 import {mockContext} from '../../../utils/test.util.js';
 
-describe('test store and get ticket', () => {
+describe('test store and get user', () => {
   const ctx = mockContext();
   ctx.locals = {
     oauth: {
       token: {
-        user: '5555666677',
+        user: {userId: '5555666677'},
         client: 'hejmdal'
       }
     }
@@ -16,7 +16,7 @@ describe('test store and get ticket', () => {
 
   const next = () => {};
 
-  it('should fetch the ticket', async () => {
+  it('should fetch the user', async () => {
     ctx.json = sinon.stub();
     await getUser(ctx, ctx, next);
     assert.isTrue(ctx.json.called);

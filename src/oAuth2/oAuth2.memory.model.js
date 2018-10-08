@@ -83,7 +83,12 @@ module.exports.getAccessToken = function(bearerToken) {
  */
 
 module.exports.getClient = async (clientId) => {
-  return await getClientInfoByClientId(clientId);
+  try {
+    return await getClientInfoByClientId(clientId);
+  } catch(e) {
+    console.log(e);
+    return null;
+  }
 };
 
 /**
@@ -120,8 +125,6 @@ module.exports.saveToken = function*(token, client, user) {
     accessToken: token.accessToken,
     accessTokenExpiresAt: token.accessTokenExpiresAt,
     client: client.clientId,
-    refreshToken: token.refreshToken,
-    refreshTokenExpiresAt: token.refreshTokenExpiresAt,
     user: user.id
   };
   mock.tokens.push(access_token);

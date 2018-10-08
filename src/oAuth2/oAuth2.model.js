@@ -1,33 +1,24 @@
 /* eslint-disable */
 
-import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
-import {saveUser} from '../components/User/user.component';
+import {
+  getClientInfoByClientId,
+  getTokenForUser
+} from '../components/Smaug/smaug.component';
+import {saveUser, readUser} from '../components/User/user.component';
 import PersistentAuthCodeStorage from '../models/AuthCode/authcode.persistent.storage.model';
-import { CONFIG } from '../utils/config.util';
+import {CONFIG} from '../utils/config.util';
 import KeyValueStorage from '../models/keyvalue.storage.model';
 import MemoryStorage from '../models/memory.storage.model';
+import {getClientByToken} from '../components/Smaug/smaug.client';
+import {log} from '../utils/logging.util';
 
-const authStorage = CONFIG.mock_storage ?
-  new KeyValueStorage(new MemoryStorage()) :
-  new KeyValueStorage(new PersistentAuthCodeStorage());
-
-/**
- * Module dependencies.
- */
-
-const mock = {
-   tokens: [],
-  grants: 'authorization_code',
-  users: [],
-  authorizationCodes: new Map()
-};
-
-module.exports.mock = mock;
+const authStorage = CONFIG.mock_storage
+  ? new KeyValueStorage(new MemoryStorage())
+  : new KeyValueStorage(new PersistentAuthCodeStorage());
 
 /*
  * Save authorization code
  */
-
 module.exports.saveAuthorizationCode = function(code, client, user) {
   const codeToSave = {
     authorizationCode: code.authorizationCode,
@@ -35,119 +26,93 @@ module.exports.saveAuthorizationCode = function(code, client, user) {
     redirectUri: code.redirectUri,
     scope: code.scope,
     client: client.clientId,
-    user: user.userId
+    user
   };
   code = Object.assign({}, code, {
     client: client.clientId,
     user: user.userId
   });
 
-  saveUser(user);
   authStorage.insert(code.authorizationCode, codeToSave);
-  
+
   return code;
 };
 
 /*
- * Save authorization code
+ * Get authorization code
  */
-module.exports.getAuthorizationCode = async (authorizationCode)  => {
+module.exports.getAuthorizationCode = async authorizationCode => {
   const code = await authStorage.read(authorizationCode);
 
   if (!code) {
     return null;
   }
 
-  console.log(code);
-
   code.expiresAt = new Date(code.expiresAt);
   code.client = {clientId: code.client};
-  code.user = {id: code.user};
 
   return code;
 };
 
 /*
- * Save authorization code
+ * Revoke authorization code
  */
-module.exports.revokeAuthorizationCode = function(params) {
-  console.log('saveAuthorizationCode', params);
-
+module.exports.revokeAuthorizationCode = async params => {
+  authStorage.delete(params.authorizationCode);
   return params;
 };
 
 /*
  * Get access token.
  */
-
-module.exports.getAccessToken = function(bearerToken) {
-  var tokens = mock.tokens.filter(function(token) {
-    return token.accessToken === bearerToken;
-  });
-
-  return tokens.length ? tokens[0] : false;
+module.exports.getAccessToken = async bearerToken => {
+  const smaugResponse = await getClientByToken(bearerToken);
+  if (!smaugResponse) {
+    return false;
+  }
+  const user = await readUser(bearerToken);
+  if (!user) {
+    return false;
+  }
+  return {
+    accessToken: bearerToken,
+    accessTokenExpiresAt: new Date(smaugResponse.expires),
+    user,
+    client: smaugResponse.app.clientId
+  };
 };
 
 /**
  * Get client.
  */
-
-module.exports.getClient = async (clientId) => {
+module.exports.getClient = async clientId => {
   try {
     return await getClientInfoByClientId(clientId);
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return null;
   }
 };
 
 /**
- * Get refresh token.
- */
-
-module.exports.getRefreshToken = function*(bearerToken) {
-  console.log('getRefreshToken', bearerToken);
-  var tokens = mock.tokens.filter(function(token) {
-    return token.refreshToken === bearerToken;
-  });
-
-  return tokens.length ? tokens[0] : false;
-};
-
-/*
- * Get user.
- */
-
-module.exports.getUser = function*(username, password) {
-  var users = mock.users.filter(function(user) {
-    return user.username === username && user.password === password;
-  });
-
-  return users.length ? users[0] : false;
-};
-
-/**
  * Save token.
  */
-
-module.exports.saveToken = function*(token, client, user) {
-  const access_token = {
-    accessToken: token.accessToken,
-    accessTokenExpiresAt: token.accessTokenExpiresAt,
-    client: client.clientId,
-    user: user.id
-  };
-  mock.tokens.push(access_token);
-
-  return access_token;
+module.exports.saveToken = async (token, client, user) => {
+  try {
+    const smaugToken = await getTokenForUser({clientId: client.clientId});
+    const access_token = {
+      accessToken: smaugToken.access_token,
+      accessTokenExpiresAt: new Date(Date.now() + smaugToken.expires_in * 1000),
+      client: client.clientId,
+      user: user.userId
+    };
+    saveUser(smaugToken.access_token, user);
+    return access_token;
+  } catch (error) {
+    log.error('Could not save token', {error});
+  }
 };
 
 module.exports.revokeToken = token => {
-  mock.tokens = mock.tokens.filter(t => t.accessToken !== token);
-};
-
-module.exports.dump = function() {
-  console.log('clients', mock.clients);
-  console.log('tokens', mock.tokens);
-  console.log('users', mock.users);
+  // TODO: revoke token from smaug.
 };

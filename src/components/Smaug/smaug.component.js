@@ -1,4 +1,4 @@
-import {getClientById, getClientByToken} from './smaug.client';
+import {getClientById, getClientByToken, getToken} from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
@@ -52,4 +52,8 @@ export function extractClientInfo(client) {
   }
 
   return serviceClient;
+}
+
+export function getTokenForUser({clientId, library = '', username = '@', password = '@'}) {
+  return getToken(clientId, library, username, password);
 }
