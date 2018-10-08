@@ -1,8 +1,9 @@
 /* eslint-disable */
 
 import {
-  getClientInfoByClientId,
-  getTokenForUser
+    getClientInfoByClientId,
+    getTokenForUser,
+    extractClientInfo
 } from '../components/Smaug/smaug.component';
 import {saveUser, readUser} from '../components/User/user.component';
 import PersistentAuthCodeStorage from '../models/AuthCode/authcode.persistent.storage.model';
@@ -11,10 +12,13 @@ import KeyValueStorage from '../models/keyvalue.storage.model';
 import MemoryStorage from '../models/memory.storage.model';
 import {getClientByToken} from '../components/Smaug/smaug.client';
 import {log} from '../utils/logging.util';
+import { mockData } from '../components/Smaug/mock/smaug.client.mock';
 
 const authStorage = CONFIG.mock_storage
   ? new KeyValueStorage(new MemoryStorage())
   : new KeyValueStorage(new PersistentAuthCodeStorage());
+
+const mockTokens = new Map();
 
 /*
  * Save authorization code
@@ -66,6 +70,10 @@ module.exports.revokeAuthorizationCode = async params => {
  * Get access token.
  */
 module.exports.getAccessToken = async bearerToken => {
+  console.log(mockTokens.get(bearerToken));
+  if (mockTokens.has(bearerToken)) {
+    return mockTokens.get(bearerToken);
+  }
   const smaugResponse = await getClientByToken(bearerToken);
   if (!smaugResponse) {
     return false;
@@ -86,6 +94,9 @@ module.exports.getAccessToken = async bearerToken => {
  * Get client.
  */
 module.exports.getClient = async clientId => {
+  if (clientId === 'hejmdal') {
+    return extractClientInfo(mockData);
+  }
   try {
     return await getClientInfoByClientId(clientId);
   } catch (e) {
@@ -98,6 +109,13 @@ module.exports.getClient = async clientId => {
  * Save token.
  */
 module.exports.saveToken = async (token, client, user) => {
+  if (client.clientId === 'hejmdal') {
+    token.client = client.clientId;
+    token.user = user.userId;
+    mockTokens.set(token.accessToken, token);
+    return token;
+  }
+  
   try {
     const params = {clientId: client.clientId};
     if (user.pincode && user.libraryId) {

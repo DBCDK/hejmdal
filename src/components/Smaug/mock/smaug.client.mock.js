@@ -12,7 +12,7 @@ export const mockData = {
   borchkServiceName: 'bibliotek.dk',
   attributes: ATTRIBUTES,
   logoutScreen: 'include',
-  requireConsent: true,
+  requireConsent: false,
   app: {
     orderpolicyrequester: '190101',
     clientId: 'hejmdal',
