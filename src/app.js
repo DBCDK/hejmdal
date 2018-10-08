@@ -62,7 +62,7 @@ app.use(
     saveUninitialized: true,
     secure: CONFIG.app.env === 'production',
     resave: true,
-    store: sessionStore
+    store: !CONFIG.mock_storage && sessionStore
   }
   )
 );
