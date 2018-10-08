@@ -57,8 +57,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(
   session({
-    secret: 'Super Secret Session Key',
+    secret: CONFIG.session.secret,
+    maxAge: CONFIG.session.life_time,
     saveUninitialized: true,
+    secure: CONFIG.app.env === 'production',
     resave: true,
     store: sessionStore
   }
