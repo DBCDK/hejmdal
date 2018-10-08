@@ -41,7 +41,7 @@ export async function getClientById(clientId) {
     return mockClient(clientId);
   }
   const token = await getToken(clientId, null, '@', '@');
-  return (await getClientByToken(token));
+  return (await getClientByToken(token.access_token));
 }
 
 /**
@@ -76,7 +76,7 @@ export async function getToken(clientId, library, username, password) {
   }
   if (response.statusCode === 200) {
     const obj = JSON.parse(response.body);
-    return obj.access_token;
+    return obj;
   }
 
   throw new TokenError(response.statusMessage);

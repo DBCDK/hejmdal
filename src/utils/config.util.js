@@ -69,7 +69,8 @@ export const CONFIG = {
     }
   },
   session: {
-    life_time: Number(process.env.SESSION_LIFE_TIME)
+    life_time: Number(process.env.SESSION_LIFE_TIME),
+    secret: process.env.SESSION_SECRET
   },
   smaug: {
     uri: process.env.SMAUG_URI,
