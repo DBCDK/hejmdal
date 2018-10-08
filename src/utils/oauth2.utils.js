@@ -12,10 +12,6 @@ export function disableRedirectUrlCheck(req, res, next) {
  * Checks if a valid oauth request is made.
  * For now we only tests if clientId is valid and saves client on session.
  *
- * TODO: Check
- *  - return_uri
- *  - response_type
- *
  * @param {*} req
  * @param {*} res
  * @param {*} next
@@ -24,7 +20,12 @@ export async function validateAuthRequest(req, res, next) {
   if (req.query.client_id) {
     req.session.client = await req.app.model.getClient(req.query.client_id);
   }
-  next();
+
+  if (!req.session.client) {
+    authorizationMiddleware(req, res, next);
+  } else {
+    next();
+  }
 }
 
 /**
@@ -48,7 +49,7 @@ export function isUserLoggedIn(req, res, next) {
     redirect_uri: req.query.redirect_uri,
     response_type: req.query.response_type
   };
-  if (!req.session.user && req.session.client) {
+  if ((!req.session.user || !req.session.user.userId) && req.session.client) {
     return res.redirect('/login');
   }
   next();

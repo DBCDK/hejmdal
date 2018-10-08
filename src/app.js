@@ -7,7 +7,9 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import path from 'path';
 import session from 'express-session';
-import model from './oAuth2/oAuth2.memory.model';
+const KnexSessionStore = require('connect-session-knex')(session);
+
+import model from './oAuth2/oAuth2.model';
 import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
 import Knex from 'knex';
@@ -22,6 +24,8 @@ const knex = Knex(CONFIG.postgres);
 // your server this is all you have to do. For multi database systems, see
 // the Model.bindKnex method.
 Model.knex(knex);
+
+const sessionStore = new KnexSessionStore({knex});
 
 import {stateMiddleware} from './middlewares/state.middleware';
 import loginRoutes from './routes/login.routes';
@@ -55,8 +59,10 @@ app.use(
   session({
     secret: 'Super Secret Session Key',
     saveUninitialized: true,
-    resave: true
-  })
+    resave: true,
+    store: sessionStore
+  }
+  )
 );
 
 app.use(stateMiddleware);
@@ -81,7 +87,7 @@ app.get('/callback', (req, res) => {
     <h3>Lav følgende POST kald for at hente en token:</h3>
     <code>curl -X POST ${host}/oauth/token -d 'grant_type=authorization_code&code=${
       req.query.code
-    }&client_id=hejmdal&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
+    }&client_id=${req.session.query.client_id}&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
     
     <h3>Lav derefter et kald til /userinfo med returnerede access_token, for at hente brugerinformation:</h3>
 
@@ -89,34 +95,6 @@ app.get('/callback', (req, res) => {
     </body></html>
     `
   );
-});
-
-/**
- * Get userinfo
- *
- * // curl -X POST http://localhost:3000/userinfo -d 'access_token={token}'
- */
-app.post('/_userinfo', app.oauth.authenticate(), (req, res) => {
-  // res.locals.oauth = {code: code};;
-  res.send({
-    attributes: {
-      userId: '0101701234',
-      uniqueId:
-        '8aa45d6b9e2cdec5322fa4c35cfd3ea271a3981ffcb5f75a994029522a3ec1a9',
-      agencies: [
-        {
-          agencyId: '710100',
-          userId: '0101701234',
-          userIdType: 'CPR'
-        },
-        {
-          agencyId: '714700',
-          userId: '12345678',
-          userIdType: 'LOCAL'
-        }
-      ]
-    }
-  });
 });
 
 app.listen(process.env.PORT || 3000);

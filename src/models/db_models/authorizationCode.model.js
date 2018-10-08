@@ -5,12 +5,12 @@
 
 import {Model} from 'objection';
 
-export default class Ticket extends Model {
-  static tableName = 'ticket';
-
+export default class AuthCode extends Model {
+  static tableName = 'authcode';
   static jsonSchema = {
     properties: {
-      ticket: {type: 'object'}
+      cid: {type: 'string'},
+      code: {type: 'object'}
     }
   };
 }
