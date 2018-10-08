@@ -12,10 +12,6 @@ export function disableRedirectUrlCheck(req, res, next) {
  * Checks if a valid oauth request is made.
  * For now we only tests if clientId is valid and saves client on session.
  *
- * TODO: Check
- *  - return_uri
- *  - response_type
- *
  * @param {*} req
  * @param {*} res
  * @param {*} next
