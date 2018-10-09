@@ -3,7 +3,7 @@
  * Perform sanityCheck of external resources
  */
 
-import User from '../models/db_models/User.model';
+import User from '../models/db_models/user.model';
 import * as Borchk from '../components/Borchk/borchk.client';
 import * as Culr from '../components/Culr/culr.client';
 import * as Smaug from '../components/Smaug/smaug.client';
