@@ -35,8 +35,7 @@ export async function giveConsentUI(req, res) {
       __SERVICE_CLIENT_NAME__: state.serviceClient.name
     });
     res.render('Consent', {
-      // eslint-disable-next-line no-unused-vars
-      attributes: Object.entries(state.consentAttributes).filter(([key, attribute]) => state.missingConsents.includes(key)).map(([key, value]) => value),
+      attributes: extractConsentAttributesInfo(state),
       consentAction: '/consent/' + state.stateHash,
       consentFailed: false,
       returnUrl: returnUrl,
@@ -44,6 +43,15 @@ export async function giveConsentUI(req, res) {
       help: helpText
     });
   }
+}
+/**
+ * Helper function for extracting consent Attributes.
+ * @param {object} state
+ */
+function extractConsentAttributesInfo({consentAttributes, missingConsents}) {
+  return Object.keys(consentAttributes)
+    .filter(key => missingConsents.includes(key))
+    .map(key => consentAttributes[key]);
 }
 
 /**
@@ -102,27 +110,38 @@ export async function consentSubmit(req, res) {
  * @param {function} next
  */
 export async function retrieveMissingUserConsent(req, res, next) {
-  const {serviceClient} = req.getState();
-  if (!serviceClient.requireConsent) {
-    return next();
-  }
-  const user = req.getUser();
-  const culrAttributes = await getUserAttributesFromCulr(user.userId);
-  const ticketAttributes = mapCulrResponse(
-    culrAttributes,
-    serviceClient.attributes,
-    user,
-    serviceClient.clientId
-  );
+  try {
+    const {serviceClient} = req.getState();
+    if (!serviceClient.requireConsent) {
+      return next();
+    }
+    const user = req.getUser();
+    const culrAttributes = await getUserAttributesFromCulr(user.userId);
+    const ticketAttributes = mapCulrResponse(
+      culrAttributes,
+      serviceClient.attributes,
+      user,
+      serviceClient.clientId
+    );
 
-  const consent = await getConsent(user.userId, serviceClient.clientId);
-  const attributes = getConsentAttributes(serviceClient.attributes, ticketAttributes);
-  const missingConsents = Object.keys(attributes).filter(attribute => !consent.includes(attribute));
-  if (missingConsents.length > 0) {
-    req.setState({missingConsents, consentAttributes: attributes});
-    res.redirect('/consent');
-  } else {
-    next();
+    const consent = await getConsent(user.userId, serviceClient.clientId);
+    const attributes = getConsentAttributes(
+      serviceClient.attributes,
+      ticketAttributes
+    );
+    const missingConsents = Object.keys(attributes).filter(
+      attribute => !consent.includes(attribute)
+    );
+    if (missingConsents.length > 0) {
+      req.setState({missingConsents, consentAttributes: attributes});
+      req.session.save(() => {
+        res.redirect('/consent');
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    log.error('Failed to retrieve culr attributes', {error});
   }
 }
 
@@ -250,13 +269,13 @@ export async function deleteConsents(ctx, next) {
  * @param ctx
  * @returns {object}
  */
-function getConsentAttributes(serviceClientAttributes = {}, ticketAttributes = {}) {
+function getConsentAttributes(
+  serviceClientAttributes = {},
+  ticketAttributes = {}
+) {
   const consentAttributes = {};
   Object.entries(serviceClientAttributes).forEach(([key, value]) => {
-    if (
-      attributeIsSet(ticketAttributes[key]) &&
-      value.skipConsent !== true
-    ) {
+    if (attributeIsSet(ticketAttributes[key]) && value.skipConsent !== true) {
       consentAttributes[key] = Object.assign({}, value);
       consentAttributes[key].key = key;
     }

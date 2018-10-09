@@ -2,7 +2,6 @@
  * @file
  */
 
-import {form} from 'co-body';
 import {CONFIG} from '../../utils/config.util';
 import {log} from '../../utils/logging.util';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
@@ -18,14 +17,14 @@ import {getMockedGateWayfLoginUrl, getMockedGateWayfLogoutUrl, getMockedGateWayf
  *
  * Garbage collection of the gateWayf Ticket is handled by gateWayf
  *
- * @param ctx
+ * @param req
  * @param idp
  * @returns {{userId: *}}
  */
-export async function getGateWayfLoginResponse(ctx, idp) {
+export async function getGateWayfLoginResponse(req, idp) {
   let userInfo = {userId: null, wayfId: null};
   try {
-    const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfLoginResponse(idp) : await form(ctx);
+    const wayfObj = CONFIG.mock_externals[idp] ? getMockedGateWayfLoginResponse(idp) : req.query;
     userInfo = Array.isArray(wayfObj.id) ? await getUserDataFromDb(wayfObj) : getUserDataFromWayfObject(wayfObj);
   }
   catch (e) {
