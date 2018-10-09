@@ -236,17 +236,17 @@ export async function identityProviderCallback(req, res) {
 
     res.status = 500;
   }
-
-  if (req.session.hasOwnProperty('query')) {
-    return res.redirect(
-      `/oauth/authorize/?${Object.entries(req.session.query)
-        .map(([key, value]) => `${key}=${value}`)
-        .join('&')}`
-    );
-  }
-
-  // If not do whatever you fancy
-  res.redirect('/');
+  req.session.save(() => {
+    if (req.session.hasOwnProperty('query')) {
+      return res.redirect(
+        `/oauth/authorize/?${Object.entries(req.session.query)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')}`
+      );
+    }
+    // If not do whatever you fancy
+    res.redirect('/');
+  });
 }
 
 /**

@@ -53,9 +53,12 @@ export function isUserLoggedIn(req, res, next) {
     response_type: req.query.response_type
   };
   if ((!req.session.user || !req.session.user.userId) && req.session.client) {
-    return res.redirect('/login');
+    req.session.save(() => {
+      return res.redirect('/login');
+    });
+  } else {
+    next();
   }
-  next();
 }
 
 /**
