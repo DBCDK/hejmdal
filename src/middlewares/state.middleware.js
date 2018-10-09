@@ -34,7 +34,7 @@ export async function setDefaultState(req, res, next) {
     stateHash: req.session.query ? generateStateHash(req.session.query) : '',
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
-    serviceAgency: handleNullFromUrl(req.query.agency),
+    serviceAgency: req.session.query && handleNullFromUrl(req.session.query.agency),
     serviceClient: req.session.client,
     ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };

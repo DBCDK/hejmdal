@@ -70,8 +70,8 @@ export async function authenticate(req, res, next) {
 
     let preselctedName = null;
     let preselectedId = null;
-    if (req.query.presel) {
-      const preselectedLibrary = await getAgency(req.query.presel);
+    if (req.query.presel || req.session.query.presel) {
+      const preselectedLibrary = await getAgency(req.query.presel || req.session.query.presel);
       preselctedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
     }
@@ -80,7 +80,7 @@ export async function authenticate(req, res, next) {
       ? await getAgency(state.serviceAgency)
       : null;
     const lockedAgencyName = branch ? branch.agencyName : null;
-    const agencyTypeFilter = req.query.agencytype || null;
+    const agencyTypeFilter = req.session.query.agencytype || null;
     const branches =
       identityProviders.borchk && !lockedAgencyName
         ? await getListOfAgenciesForFrontend(agencyTypeFilter)
