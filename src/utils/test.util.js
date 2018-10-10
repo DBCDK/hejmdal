@@ -13,6 +13,7 @@ export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides 
   const ctx = {
     query: {token, returnurl},
     session: {
+      save: cb => cb(),
       client: mockData,
       query: {
         state: 'mock_state_value'

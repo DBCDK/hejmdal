@@ -3,11 +3,9 @@
  *
  *
  */
-import {form} from 'co-body';
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
-import {isValidCpr} from '../../utils/cpr.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -28,57 +26,6 @@ export async function validateUserInLibrary(requester, userInput) {
   userValidate = extractInfo(response);
 
   return userValidate;
-}
-
-/**
- * Retrieving borchk response through co-body module
- *
- * @param ctx
- * @return {{}}
- */
-export async function getBorchkResponse(ctx) {
-  let response = null;
-  try {
-    response = ctx.fakeBorchkPost ? ctx.fakeBorchkPost : await form(ctx);
-  } catch (e) {
-    log.error('Could not retrieve borchk response', {
-      error: e.message,
-      stack: e.stack
-    });
-  }
-
-  return response;
-}
-
-/**
- * Parses the callback parameters for borchk. Parameters from form comes as post
- *
- * @param req
- * @returns {*}
- */
-export async function borchkCallback(requestUri, formData) {
-  let validated = {error: true, message: 'unknown_eror'};
-
-  if (formData && formData.userId && formData.libraryId && formData.pincode) {
-    validated = await validateUserInLibrary(requestUri, formData);
-  } else {
-    validated.message = ERRORS.missing_fields;
-  }
-
-  if (!validated.error) {
-    return {
-      user: {
-        userId: formData.userId,
-        cpr: isValidCpr(formData.userId) ? formData.userId : null,
-        userType: 'borchk',
-        libraryId: formData.libraryId,
-        pincode: formData.pincode,
-        userValidated: true
-      },
-      rememberMe: formData.rememberMe
-    };
-  }
-  return {error: validated, libraryId: formData.libraryId};
 }
 
 /**

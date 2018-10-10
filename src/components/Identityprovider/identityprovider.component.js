@@ -8,7 +8,6 @@ import {
   getUniloginURL,
   validateUniloginTicket
 } from '../UniLogin/unilogin.component';
-import {borchkCallback} from '../Borchk/borchk.component';
 import {
   getGateWayfLoginResponse,
   getGateWayfLoginUrl
@@ -20,6 +19,8 @@ import {
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
+import {validateUserInLibrary} from '../Borchk/borchk.component';
+import {ERRORS} from '../../utils/errors.util';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -128,6 +129,40 @@ export async function authenticate(req, res, next) {
 }
 
 /**
+ * Parses the callback parameters for borchk. Parameters from form comes as post
+ *
+ * @param req
+ * @returns {*}
+ */
+export async function borchkCallback(req, res) {
+  const requestUri = req.getState().serviceClient.borchkServiceName;
+  const formData = req.fakeBorchkPost || req.body;
+  let validated = {error: true, message: 'unknown_eror'};
+
+  if (formData && formData.userId && formData.libraryId && formData.pincode) {
+    validated = await validateUserInLibrary(requestUri, formData);
+  } else {
+    validated.message = ERRORS.missing_fields;
+  }
+
+  if (!validated.error) {
+    const user = {
+      userId: formData.userId,
+      cpr: isValidCpr(formData.userId) ? formData.userId : null,
+      userType: 'borchk',
+      libraryId: formData.libraryId,
+      pincode: formData.pincode,
+      userValidated: true
+    };
+    req.session.rememberMe = formData.rememberMe;
+    req.setUser(user);
+    return true;
+  }
+  idenityProviderValidationFailed(req, res, validated, formData.libraryId);
+  return false;
+}
+
+/**
  * Parses the callback parameters for unilogin.
  *
  * @param ctx
@@ -195,13 +230,9 @@ export async function identityProviderCallback(req, res) {
       res.status = 403;
       return res.send('invalid state');
     }
-    let response;
     switch (req.params.type) {
       case 'borchk':
-        response = await borchkCallback(
-          req.getState().serviceClient.borchkServiceName,
-          req.fakeBorchkPost || req.body
-        );
+        await borchkCallback(req, res);
         break;
       case 'nemlogin':
         await nemloginCallback(req);
@@ -215,17 +246,6 @@ export async function identityProviderCallback(req, res) {
       default:
         break;
     }
-    if (response.error) {
-      return idenityProviderValidationFailed(
-        req,
-        res,
-        response.error,
-        response.libraryId
-      );
-    }
-    const {rememberMe, user} = response;
-    req.session.rememberMe = rememberMe;
-    req.setUser(user);
   } catch (e) {
     log.error('Error in identityProviderCallback', {
       error: e.message,
@@ -234,7 +254,10 @@ export async function identityProviderCallback(req, res) {
       state: req.getState()
     });
 
-    res.status = 500;
+    idenityProviderValidationFailed(req, res, ERRORS.error_in_request);
+  }
+  if (res.headersSent) {
+    return; // Something went wrong, and redirect is initiated.
   }
   req.session.save(() => {
     if (req.session.hasOwnProperty('query')) {

@@ -40,7 +40,9 @@ export async function setDefaultState(req, res, next) {
   };
   req.session.loginToProfile = !!req.query.loginToProfile;
   req.session.user = req.session.user || {};
-  return next();
+  req.session.save(() => {
+    return next();
+  });
 }
 
 /**
