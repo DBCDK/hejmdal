@@ -5,6 +5,7 @@
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
 import {getClientInfoByToken} from '../Smaug/smaug.component';
+import { deleteuser } from '../User/user.component';
 
 /**
  *
@@ -12,26 +13,31 @@ import {getClientInfoByToken} from '../Smaug/smaug.component';
  * If a returnurl is set, this will be used to create a link
  * For all Identity Providers used but borchk, show a message about closing browser to end sessions at the Identity Provider
  *
- * @param ctx
+ * @param req
+ * @param res
  * @param next
  */
-export async function logout(ctx, next) {
+export async function logout(req, res, next) {
   let returnUrl = '';
   let idpLogoutInfo = false;
   let idpLogoutUrl = '';
   let logoutInfoCode = '';
-  const token = ctx.query.token;
-  const serviceClient = await getClientInfoByToken(token);
-  ctx.setState({serviceClient});
-  const user = ctx.getUser();
-  const state = ctx.getState();
+  const token = req.query.token;
+  let serviceClient;
+  if (token) {
+    deleteuser(token);
+    serviceClient = await getClientInfoByToken(token);
+    req.setState({serviceClient});
+  }
+  const user = req.getUser();
+  const state = req.getState();
   if (serviceClient && state) {
-    if (user.identityProviders && !ctx.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
-      ctx.setState({logoutGatewayf: true, returnUrl: ctx.query.returnurl || ctx.getState().returnUrl});
+    if (user.identityProviders && !req.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
+      req.setState({logoutGatewayf: true, returnUrl: req.query.returnurl || req.getState().returnUrl});
       idpLogoutUrl = getGateWayfLogoutUrl();
     }
     else {
-      returnUrl = buildReturnUrl(ctx.getState());
+      returnUrl = buildReturnUrl(req.getState());
       idpLogoutInfo = user.identityProviders && (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf')) || null;
       if (serviceClient.logoutScreen === 'skip') {
         logoutInfoCode = 'logout';
@@ -43,16 +49,15 @@ export async function logout(ctx, next) {
   }
 
   if (idpLogoutUrl) {
-    ctx.redirect(idpLogoutUrl);
+    res.redirect(idpLogoutUrl);
   }
   else {
-    ctx.session = null;
-
+    req.session = null;
     if (logoutInfoCode) {
-      ctx.redirect(returnUrl + (returnUrl.indexOf('?') ? '?' : '&') + 'message=' + logoutInfoCode);
+      res.redirect(returnUrl + (returnUrl.indexOf('?') ? '?' : '&') + 'message=' + logoutInfoCode);
     }
     else {
-      ctx.render('Logout', {
+      res.render('Logout', {
         idpLogoutInfo: idpLogoutInfo,
         returnurl: returnUrl,
         serviceName: serviceClient && serviceClient.name
@@ -61,5 +66,5 @@ export async function logout(ctx, next) {
 
   }
 
-  await next();
+  next();
 }

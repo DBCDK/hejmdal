@@ -47,11 +47,11 @@ export async function getUser(req, res, next) {
 /**
  * Get user from storage.
  *
- * @param {String} userId
+ * @param {String} token
  */
-export async function readUser(userId) {
-  const hashedUserId = createHash(userId);
-  return await storage.read(hashedUserId);
+export async function readUser(token) {
+  const hashedToken = createHash(token);
+  return await storage.read(hashedToken);
 }
 
 /**
@@ -59,7 +59,17 @@ export async function readUser(userId) {
  *
  * @param {Object} user
  */
-export async function saveUser(userId, user) {
-  const hashedUserId = createHash(userId);
-  storage.update(hashedUserId, user);
+export async function saveUser(token, user) {
+  const hashedToken = createHash(token);
+  storage.update(hashedToken, user);
+}
+
+/**
+ * Delete user from storage.
+ *
+ * @param {String} token
+ */
+export async function deleteuser(token) {
+  const hashedToken = createHash(token);
+  storage.delete(hashedToken);
 }
