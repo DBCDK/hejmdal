@@ -5,7 +5,7 @@
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
 import {getClientInfoByToken} from '../Smaug/smaug.component';
-import { deleteuser } from '../User/user.component';
+import {deleteuser} from '../User/user.component';
 
 /**
  *

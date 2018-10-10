@@ -27,7 +27,7 @@ describe('Test Logout component', () => {
   it('should render generic logout screen', async () => {
     ctx = mockContext();
     ctx.render = sinon.spy();
-    await logout(ctx, () => {});
+    await logout(ctx, ctx, () => {});
     assert.deepEqual(ctx.render.args[0][1], {
       idpLogoutInfo: false,
       returnurl: '',
@@ -37,7 +37,7 @@ describe('Test Logout component', () => {
 
   it('should render returnurl and name for serviceclient', async () => {
     ctx.render = sinon.spy();
-    await logout(ctx, () => {});
+    await logout(ctx, ctx, () => {});
     assert.deepEqual(ctx.render.args[0][1], {
       idpLogoutInfo: null,
       returnurl: 'http://localhost:3011/example/',
@@ -48,7 +48,7 @@ describe('Test Logout component', () => {
   it('should render idp message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
     ctx.render = sinon.spy();
-    await logout(ctx, () => {});
+    await logout(ctx, ctx, () => {});
     assert.deepEqual(ctx.render.args[0][1], {
       idpLogoutInfo: true,
       returnurl: 'http://localhost:3011/example/',
@@ -60,7 +60,7 @@ describe('Test Logout component', () => {
     mockData.logoutScreen = 'skip';
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
-    await logout(ctx, () => {});
+    await logout(ctx, ctx, () => {});
     assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout');
   });
   it('should redirect to returnurl with close browser message', async () => {
@@ -68,7 +68,7 @@ describe('Test Logout component', () => {
     mockData.logoutScreen = 'skip';
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
-    await logout(ctx, () => {});
+    await logout(ctx, ctx, () => {});
     assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout_close_browser');
   });
 });
