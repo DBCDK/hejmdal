@@ -1,7 +1,8 @@
 import passport from 'passport';
 import {Strategy} from 'passport-oauth2';
+import {CONFIG} from '../utils/config.util';
 
-const strategy = new Strategy(
+const exampleStrategy = new Strategy(
   {
     authorizationURL: 'http://localhost:3010/oauth/authorize',
     tokenURL: 'http://localhost:3010/oauth/token',
@@ -14,16 +15,32 @@ const strategy = new Strategy(
   }
 );
 
-strategy.authorizationParams = function() {
+exampleStrategy.authorizationParams = function() {
   return {
     APIName: 'OpenApiActivity'
   };
 };
 
-passport.use('provider', strategy);
+const profileStrategy = new Strategy(
+  {
+    authorizationURL: CONFIG.app.host + '/oauth/authorize',
+    tokenURL: CONFIG.app.host + '/oauth/token',
+    clientID: CONFIG.smaug.hejmdalClientId,
+    clientSecret: 'foo',
+    callbackURL: CONFIG.app.host + '/profile/provider/callback'
+  },
+  function(token, tokenSecret, profile, done) {
+    done(null, token);
+  }
+
+);
+
+
+passport.use('example', exampleStrategy);
+passport.use('profile', profileStrategy);
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
 passport.deserializeUser(function(userId, done) {
@@ -46,7 +63,7 @@ export default app => {
   // Redirect the user to the OAuth provider for authentication.  When
   // complete, the provider will redirect the user back to the application at
   //     /auth/provider/callback
-  app.get('/example/provider', passport.authenticate('provider'));
+  app.get('/example/provider', passport.authenticate('example'));
 
   // The OAuth provider has redirected the user back to the application.
   // Finish the authentication process by attempting to obtain an access
@@ -55,7 +72,6 @@ export default app => {
   app.get(
     '/example/provider/callback',
     passport.authenticate('provider', {
-      failureRedirect: '/error'
     }),
     (req, res) => { //eslint-disable-line
       // Login was succesful. What to do.

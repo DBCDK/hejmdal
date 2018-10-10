@@ -245,11 +245,12 @@ export async function findConsents(ctx) {
 
 /**
  *
- * @param ctx
+ * @param req
+ * @param res
  * @returns {boolean}
  */
-export async function deleteConsents(ctx, next) {
-  const consents = await findConsents(ctx);
+export async function deleteConsents(req, res, next) {
+  const consents = await findConsents(req);
   for (let i = 0; i < consents.length; i++) {
     const consentId = consents[i].consentId;
     try {

@@ -34,6 +34,7 @@ import consentRoutes from './routes/consent.routes';
 import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
 import userinfoRoutes from './routes/userinfo.routes';
+import profileRoutes from './routes/profile.routes';
 
 const host = process.env.HOST;
 
@@ -77,6 +78,7 @@ app.use('/logout', logoutRoutes);
 app.use('/oauth', oAuthRoutes);
 app.use('/consent', consentRoutes);
 app.use('/userinfo', userinfoRoutes);
+app.use('/profile', profileRoutes);
 
 /**
  * Test callback endpoint

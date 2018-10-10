@@ -52,7 +52,7 @@ export async function logout(req, res, next) {
     res.redirect(idpLogoutUrl);
   }
   else {
-    req.session = null;
+    req.session.destroy();
     if (logoutInfoCode) {
       res.redirect(returnUrl + (returnUrl.indexOf('?') ? '?' : '&') + 'message=' + logoutInfoCode);
     }
