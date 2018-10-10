@@ -70,7 +70,6 @@ module.exports.revokeAuthorizationCode = async params => {
  * Get access token.
  */
 module.exports.getAccessToken = async bearerToken => {
-  console.log(mockTokens.get(bearerToken));
   if (mockTokens.has(bearerToken)) {
     return mockTokens.get(bearerToken);
   }
@@ -99,8 +98,8 @@ module.exports.getClient = async clientId => {
   }
   try {
     return await getClientInfoByClientId(clientId);
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    log.error('Error getting smaug client', {error});
     return null;
   }
 };
@@ -121,7 +120,7 @@ module.exports.saveToken = async (token, client, user) => {
     if (user.pincode && user.libraryId) {
        params.password = user.pincode;
        params.username = user.userId;
-       params.library = user.libraryId; 
+       params.library = user.libraryId;
 
     }
     const smaugToken = await getTokenForUser(params);
