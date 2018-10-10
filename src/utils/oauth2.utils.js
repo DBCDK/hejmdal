@@ -50,7 +50,10 @@ export function isUserLoggedIn(req, res, next) {
     scope: req.query.scope,
     client_id: req.query.client_id,
     redirect_uri: req.query.redirect_uri,
-    response_type: req.query.response_type
+    response_type: req.query.response_type,
+    agency: req.query.agency,
+    presel: req.query.presel,
+    agencytype: req.query.agencytype
   };
   if ((!req.session.user || !req.session.user.userId) && req.session.client) {
     req.session.save(() => {
