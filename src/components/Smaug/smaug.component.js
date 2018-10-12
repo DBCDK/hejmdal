@@ -5,6 +5,9 @@ import {CONFIG} from '../../utils/config.util';
 export async function getClientInfoByClientId(clientId) {
   try {
     const smaugClient = await getClientById(clientId);
+    if (smaugClient) {
+      smaugClient.redirectUris = [...(smaugClient.redirectUris || []), `${CONFIG.app.host}/example`]
+    }
     return await extractClientInfo(smaugClient);
   } catch (error) {
     log.info('Invalid client', {error: error.message, stack: error.stack});

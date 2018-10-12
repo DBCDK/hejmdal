@@ -36,9 +36,7 @@ function mockUser(req, res, next) {
   }
 }
 
-
 router.get('/', authenticate, mockUser, getUser);
 router.post('/', authenticate, mockUser, getUser);
 
 export default router;
-

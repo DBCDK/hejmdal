@@ -1,9 +1,9 @@
 /* eslint-disable */
 
 import {
-    getClientInfoByClientId,
-    getTokenForUser,
-    extractClientInfo
+  getClientInfoByClientId,
+  getTokenForUser,
+  extractClientInfo
 } from '../components/Smaug/smaug.component';
 import {saveUser, readUser} from '../components/User/user.component';
 import PersistentAuthCodeStorage from '../models/AuthCode/authcode.persistent.storage.model';
@@ -12,7 +12,7 @@ import KeyValueStorage from '../models/keyvalue.storage.model';
 import MemoryStorage from '../models/memory.storage.model';
 import {getClientByToken} from '../components/Smaug/smaug.client';
 import {log} from '../utils/logging.util';
-import { mockData } from '../components/Smaug/mock/smaug.client.mock';
+import {mockData} from '../components/Smaug/mock/smaug.client.mock';
 
 const authStorage = CONFIG.mock_storage
   ? new KeyValueStorage(new MemoryStorage())
@@ -114,15 +114,15 @@ module.exports.saveToken = async (token, client, user) => {
     mockTokens.set(token.accessToken, token);
     return token;
   }
-  
+
   try {
     const params = {clientId: client.clientId};
     if (user.pincode && user.libraryId) {
-       params.password = user.pincode;
-       params.username = user.userId;
-       params.library = user.libraryId;
-
+      params.password = user.pincode;
+      params.username = user.userId;
+      params.library = user.libraryId;
     }
+    console.log('sDFSDFSDFSDSDF', params);
     const smaugToken = await getTokenForUser(params);
     const access_token = {
       accessToken: smaugToken.access_token,

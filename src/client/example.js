@@ -1,23 +1,35 @@
 /* eslint-disable */
-window.hejmdal = {
-  host: `${window.location.origin}`,
+
+const sessionId = 'hejmdal-example-applications';
+
+const defaultState = {
+  authorizationURL: `${window.location.origin}/oauth/authorization`,
+  tokenURL: `${window.location.origin}/oauth/token`,
+  userinfoURL: `${window.location.origin}/userinfo/`,
+  redirectUri: `${window.location.origin}/example`,
   path: `/login`,
-  token: '',
-  tickettoken: null,
-  ticketid: null,
-  ticket: null,
+  clientId: '',
+  code: null,
+  token: null,
+  acces_token: null,
+  user: null,
   presel: '',
   agency: '',
-  agencytype: null,
+  agencyType: null,
+  loginUrl: ''
 };
 
-const queryObj = parseQueryString();
+window.hejmdal = Object.assign(
+  {},
+  defaultState,
+  JSON.parse(sessionStorage.getItem(sessionId)) || {}
+);
+
 
 /**
  * OnChange callback for inputfields
  */
 function onChange({key, val}) {
-  console.log(key, val);
   window.hejmdal[key] = val;
   setState();
 }
@@ -25,20 +37,47 @@ function onChange({key, val}) {
 /**
  * OnClick callback for Login-button
  */
-function onClick() {
-  window.location = document.getElementById('currenturl').textContent;
+function login() {
+  window.location = hejmdal.loginUrl;
 }
 
 /**
  * OnClick callback for GetTicket-button
  */
-function getTicket() {
+function getToken() {
   const xhr = new XMLHttpRequest();
-  const url = document.getElementById('ticketurl').innerHTML;
+  const url = `${hejmdal.tokenURL}`;
+  xhr.open('POST', url, true);
+  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  xhr.onload = () => {
+    if (xhr.responseText.length) {
+      const token = JSON.parse(xhr.responseText);
+      hejmdal.token = token;
+      if (token && token.access_token) {
+        hejmdal.access_token = token.access_token;
+      }
+      setState();
+    }
+  };
+
+  xhr.send(
+    `grant_type=authorization_code&code=${hejmdal.code}&client_id=${
+      hejmdal.clientId
+    }&client_secret=secret&redirect_uri=${hejmdal.redirectUri}`
+  );
+}
+
+/**
+ * OnClick callback for getUserinfo-button
+ */
+function getUserinfo() {
+  const xhr = new XMLHttpRequest();
+  const url = `${hejmdal.userinfoURL}`;
   xhr.open('GET', url, true);
-  xhr.onreadystatechange = () => {
-    if (xhr.statusText === 'OK' && xhr.status === 200 && xhr.responseText.length) {
-      window.hejmdal.ticket = xhr.responseText;
+  xhr.setRequestHeader('Authorization', `Bearer ${hejmdal.access_token}`);
+  xhr.onload = () => {
+    if (xhr.responseText.length) {
+      window.hejmdal.userinfo = JSON.parse(xhr.responseText);
       setState();
     }
   };
@@ -51,8 +90,10 @@ function openTicket() {
   window.open(url, '_blank');
 }
 
-function resetToDefault() {
-  window.location = `${window.hejmdal.host}/logout?returnurl=/example/`;
+function logout() {
+  hejmdal = defaultState;
+  setState();
+  window.location = '/logout';
 }
 
 /**
@@ -63,7 +104,7 @@ function resetToDefault() {
 function parseQueryString() {
   const qObj = {};
   const queries = window.location.search.substring(1).split('&');
-  queries.forEach((query) => {
+  queries.forEach(query => {
     const params = query.split('=');
     qObj[params[0]] = params[1];
   });
@@ -71,57 +112,111 @@ function parseQueryString() {
   return qObj;
 }
 
+function getAuthUrl({clientId, redirectUri, presel, agency, agencyType}) {
+  let url = `${
+    window.location.origin
+  }/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  if (presel) {
+    url += `&presel=${presel}`;
+  }
+
+  if (agency) {
+    url += `&agency=${agency}`;
+  }
+
+  if (agencyType) {
+    url += `&agencytype=${agencyType}`;
+  }
+
+  return url;
+}
+function getTokenCUrl({tokenURL, redirectUri, code, clientId}) {
+  return `curl -X POST ${tokenURL} -d "grant_type=authorization_code&code=${code}&client_id=${clientId}&client_secret=secret&redirect_uri=${redirectUri}"`;
+}
+
+function getUserinfoCUrl({userinfoURL, access_token}) {
+  return `curl ${userinfoURL} -H "Authorization: Bearer ${access_token}"`;
+}
+
+function toString(value) {
+  return typeof value !== 'string' ? JSON.stringify(value, null, '  ') : value;
+}
+
+function setActiveStep({code, access_token}) {
+  const stepValue = access_token ? 'userinfo' : code ? 'code' : 'authorization';
+  const steps = document.querySelectorAll('[data-step]');
+  steps.forEach(step => {
+    if (step.getAttribute('data-step') === stepValue) {
+      step.classList.add('active');
+    } else {
+      step.classList.remove('active');
+    }
+  });
+  const hash = `#${stepValue}`;
+  if (window.location.hash !== hash) {
+    window.location = hash;
+  }
+}
+
+function checkRequirements(state) {
+  const elements = document.querySelectorAll('[data-requirement]');
+  elements.forEach(element => {
+    const requirement = element.getAttribute('data-requirement');
+    if (state[requirement]) {
+      element.classList.add('req-ok');
+    } else {
+      element.classList.remove('req-ok');
+    }
+  });
+}
+function updateBindings(state) {
+  const elements = document.querySelectorAll('[data-bind]');
+  elements.forEach(element => {
+    const requirement = element.getAttribute('data-bind');
+    if (state[requirement]) {
+      if (typeof element.value !== 'undefined') {
+        element.value = toString(state[requirement]);
+      } else {
+        element.textContent = toString(state[requirement]);
+      }
+    }
+  });
+}
+
 /**
  * Updates the UI based on the current state
  */
 function setState() {
-  document.getElementById('input-login-host').value = window.hejmdal.host;
-  document.getElementById('input-login-path').value = window.hejmdal.path;
-  document.getElementById('input-login-token').value = window.hejmdal.token;
-  document.getElementById('input-preselected-library').value = window.hejmdal.presel;
-  document.getElementById('input-locked-library').value = window.hejmdal.agency;
+  hejmdal.loginUrl = getAuthUrl(hejmdal);
+  hejmdal.tokenCUrl = getTokenCUrl(hejmdal);
+  hejmdal.userinfoCUrl = getUserinfoCUrl(hejmdal);
 
-  let url = `${window.hejmdal.host}${window.hejmdal.path}?token=${window.hejmdal.token}`;
-  if(window.hejmdal.presel.length >= 1){
-    url += `&presel=${window.hejmdal.presel}`;
-  }
+  updateBindings(hejmdal);
+  checkRequirements(hejmdal);
+  setActiveStep(hejmdal);
 
-  if(window.hejmdal.agency.length >= 1){
-    url += `&agency=${window.hejmdal.agency}`;
-  }
-
-  if(window.hejmdal.agencytype){
-    url += `&agencytype=${window.hejmdal.agencytype}`;
-  }
-
-  document.getElementById('currenturl').textContent = url;
-
-  document.getElementById('tickettoken').innerHTML = window.hejmdal.tickettoken || '&nbsp;';
-  document.getElementById('ticketid').innerHTML = window.hejmdal.ticketid || '&nbsp;';
-  document.getElementById('post-success').className = window.hejmdal.tickettoken ? '' : 'hide';
-  document.getElementById('ticketurl').innerHTML = window.hejmdal.tickettoken ?
-    `${window.hejmdal.host}/getTicket/${window.hejmdal.tickettoken}/${window.hejmdal.ticketid}` :
-    '&nbsp;';
-
-  // Ticket
-  if (window.hejmdal.ticket) {
-    if (typeof window.hejmdal.ticket === 'string') {
-      window.hejmdal.ticket = JSON.parse(window.hejmdal.ticket);
-    }
-    document.getElementById('ticketcontainer').classList.remove('hide');
-  }
-
-  document.getElementById('ticket').textContent = JSON.stringify(window.hejmdal.ticket, null, '  ') || '&nbsp;';
+  sessionStorage.setItem(sessionId, JSON.stringify(hejmdal));
 }
 
 /**
  * Init method called by the end of HTML rendering
  */
-function init() {
-  if (queryObj.token) {
-    window.hejmdal.tickettoken = queryObj.token;
-    window.hejmdal.ticketid = queryObj.id;
+(function init() {
+  const queryObj = parseQueryString();
+  if (queryObj.code) {
+    if (!hejmdal.initialized) {
+      window.location = '/example';
+    }
+    if (hejmdal.code !== queryObj.code) {
+      hejmdal.access_token = null;
+      hejmdal.token = null;
+      hejmdal.userinfo = null;
+      hejmdal.code = queryObj.code;
+    }
+  } else {
+    hejmdal.initialized = true;
+    hejmdal.code = false;
   }
 
   setState();
-}
+})();
