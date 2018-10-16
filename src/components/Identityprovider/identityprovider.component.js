@@ -32,13 +32,6 @@ import {ERRORS} from '../../utils/errors.util';
 export async function authenticate(req, res, next) {
   const state = req.getState();
 
-  // Skal dette bruges til noget. Det virker til at være relateret til profil consent siden.
-  const loginURL = '#';
-  const loginToProfileURL = `/profile?token=${
-    state.smaugToken
-  }&loginToProfile=1`;
-  const loginToProfile = !!req.session.loginToProfile;
-
   try {
     const identityProviders = getIdentityProviders(state);
 
@@ -97,7 +90,6 @@ export async function authenticate(req, res, next) {
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
       serviceClient: state.serviceClient.name,
-      loginURL,
       identityProviders,
       branches: branches,
       preselctedName: preselctedName,
@@ -105,8 +97,7 @@ export async function authenticate(req, res, next) {
       lockedAgency: state.serviceAgency || null,
       lockedAgencyName: lockedAgencyName,
       help: helpText,
-      loginToProfile,
-      loginToProfileURL
+      loginToProfile: !!req.session.loginToProfil
     });
 
     res.status = 200;
@@ -115,7 +106,7 @@ export async function authenticate(req, res, next) {
     const error =
       'Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.';
     const link = {
-      href: loginURL,
+      href: '/login',
       value: 'Prøv igen'
     };
     res.render('Error', {error, link});

@@ -263,7 +263,7 @@ describe('Unittesting methods in consent.component.test', () => {
       });
       await storeUserConsent(ctx);
       assert.isTrue((await findConsents(ctx)).length > 0);
-      await deleteConsents(ctx, next);
+      await deleteConsents(ctx, ctx, next);
       assert.isTrue((await findConsents(ctx)).length === 0);
       ctx.setUser({userId: 'testuser1'});
       assert.isTrue((await findConsents(ctx)).length > 0);

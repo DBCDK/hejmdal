@@ -11,13 +11,13 @@ import {log} from '../../utils/logging.util';
 /**
  * Renders profile component
  *
- * @param ctx
- * @param next
+ * @param req
+ * @param res
  */
-export async function profile(ctx, next) {
-  const state = ctx.getState();
+export async function profile(req, res) {
+  const state = req.getState();
   const {serviceClient, smaugToken} = state;
-  let consents = await findConsents(ctx);
+  let consents = await findConsents(req);
   for (let i = 0; i < consents.length; i++) {
     const consent = consents[i];
 
@@ -29,7 +29,7 @@ export async function profile(ctx, next) {
     }
   }
   consents = consents.filter(consent => consent.name);
-  await ctx.render('Profile', {
+  await res.render('Profile', {
     consents,
     deleteConsentsAction: '/profile/confirmDeleteConsents',
     proceed: serviceClient && serviceClient.id !== CONFIG.smaug.hejmdalClientId ? {
@@ -38,30 +38,28 @@ export async function profile(ctx, next) {
     } : null,
     help: getText(['deleteConsents'])
   });
-  await next();
 }
 
 /**
  * Renders consents deleted page
  *
- * @param ctx
- * @param next
+ * @param req
+ * @param res
  */
-export async function consentsDeleted(ctx, next) {
-  await ctx.render('ConsentsDeleted');
-  await next();
+export async function consentsDeleted(req, res) {
+  req.session.destroy();
+  res.render('ConsentsDeleted');
 }
 
 /**
  * Renders consents deleted page
  *
- * @param ctx
- * @param next
+ * @param req
+ * @param res
  */
-export async function confirmDeleteConsents(ctx, next) {
-  await ctx.render('ConfirmDeleteConsents', {
+export async function confirmDeleteConsents(req, res) {
+  await res.render('ConfirmDeleteConsents', {
     deleteConsentsAction: '/profile/deleteConsents',
     help: getText(['deleteConsents'])
   });
-  await next();
 }
