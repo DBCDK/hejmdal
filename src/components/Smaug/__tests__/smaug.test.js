@@ -3,7 +3,6 @@ import {CONFIG} from '../../../utils/config.util';
 import * as smaug from '../smaug.component';
 
 describe('Test Smaug component', () => {
-
   // Save original config so it can be restored
   const _SMAUG_CONFIG = CONFIG.mock_externals.smaug;
 
@@ -15,7 +14,7 @@ describe('Test Smaug component', () => {
     CONFIG.mock_externals.smaug = _SMAUG_CONFIG;
   });
 
-  it('should return client with valid client_id', async() => {
+  it('should return client with valid client_id', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('hejmdal');
     assert.deepEqual(clientinfo, {
       clientId: 'hejmdal',
@@ -26,7 +25,8 @@ describe('Test Smaug component', () => {
       requireConsent: false,
       redirectUris: [
         'http://localhost:3011/callback',
-        'http://localhost:3011/example/provider/callback'
+        'http://localhost:3011/example/provider/callback',
+        'http://localhost:3011/example'
       ],
       logoutScreen: 'include',
       borchkServiceName: 'bibliotek.dk',
@@ -58,8 +58,7 @@ describe('Test Smaug component', () => {
         },
         userId: {
           name: 'Biblioteks bruger-id',
-          description:
-            'Brugerens identitet på biblioteket - oftest CPR-nummer'
+          description: 'Brugerens identitet på biblioteket - oftest CPR-nummer'
         },
         wayfId: {
           name: 'WAYF id',
@@ -80,7 +79,7 @@ describe('Test Smaug component', () => {
     });
   });
 
-  it('should not return client with invalid token', async() => {
+  it('should not return client with invalid token', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('invalid_client_id');
     assert.isNull(clientinfo);
   });

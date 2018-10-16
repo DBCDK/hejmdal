@@ -6,7 +6,10 @@ export async function getClientInfoByClientId(clientId) {
   try {
     const smaugClient = await getClientById(clientId);
     if (smaugClient) {
-      smaugClient.redirectUris = [...(smaugClient.redirectUris || []), `${CONFIG.app.host}/example`]
+      smaugClient.redirectUris = [
+        ...(smaugClient.redirectUris || []),
+        `${CONFIG.app.host}/example`
+      ];
     }
     return await extractClientInfo(smaugClient);
   } catch (error) {
@@ -57,6 +60,11 @@ export function extractClientInfo(client) {
   return serviceClient;
 }
 
-export function getTokenForUser({clientId, library = '', username = '@', password = '@'}) {
+export function getTokenForUser({
+  clientId,
+  library = '',
+  username = '@',
+  password = '@'
+}) {
   return getToken(clientId, library, username, password);
 }
