@@ -16,6 +16,7 @@ const defaultState = {
   presel: '',
   agency: '',
   agencyType: null,
+  idp: '',
   loginUrl: ''
 };
 
@@ -24,7 +25,6 @@ window.hejmdal = Object.assign(
   defaultState,
   JSON.parse(sessionStorage.getItem(sessionId)) || {}
 );
-
 
 /**
  * OnChange callback for inputfields
@@ -112,7 +112,7 @@ function parseQueryString() {
   return qObj;
 }
 
-function getAuthUrl({clientId, redirectUri, presel, agency, agencyType}) {
+function getAuthUrl({clientId, redirectUri, presel, agency, agencyType, idp}) {
   let url = `${
     window.location.origin
   }/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
@@ -126,6 +126,10 @@ function getAuthUrl({clientId, redirectUri, presel, agency, agencyType}) {
 
   if (agencyType) {
     url += `&agencytype=${agencyType}`;
+  }
+
+  if (idp) {
+    url += `&idp=${idp}`;
   }
 
   return url;
