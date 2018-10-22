@@ -35,6 +35,7 @@ import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
 import userinfoRoutes from './routes/userinfo.routes';
 import profileRoutes from './routes/profile.routes';
+import infoRoutes from './routes/info.routes';
 
 const host = process.env.HOST;
 
@@ -64,8 +65,7 @@ app.use(
     secure: CONFIG.app.env === 'production',
     resave: true,
     store: !CONFIG.mock_storage && sessionStore
-  }
-  )
+  })
 );
 
 app.use(stateMiddleware);
@@ -79,6 +79,7 @@ app.use('/oauth', oAuthRoutes);
 app.use('/consent', consentRoutes);
 app.use('/userinfo', userinfoRoutes);
 app.use('/profile', profileRoutes);
+app.use('/info', infoRoutes);
 
 /**
  * Test callback endpoint
@@ -91,7 +92,9 @@ app.get('/callback', (req, res) => {
     <h3>Lav følgende POST kald for at hente en token:</h3>
     <code>curl -X POST ${host}/oauth/token -d 'grant_type=authorization_code&code=${
       req.query.code
-    }&client_id=${req.session.query.client_id}&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
+    }&client_id=${
+      req.session.query.client_id
+    }&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
     
     <h3>Lav derefter et kald til /userinfo med returnerede access_token, for at hente brugerinformation:</h3>
 
