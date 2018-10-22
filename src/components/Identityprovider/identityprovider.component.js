@@ -55,7 +55,7 @@ export async function authenticate(req, res, next) {
       req.session.query.idp &&
       state.serviceClient.identityProviders.includes(req.session.query.idp)
     ) {
-      return res.redirect(identityProviders[req.session.query.idp].link);
+      state.serviceClient.identityProviders = [req.session.query.idp];
     }
     if (
       state.serviceClient.identityProviders.length === 1 &&
