@@ -8,7 +8,9 @@ import {CONFIG} from './config.util';
 const stores = [];
 
 /**
- * create mock context for tests
+ * Create mock context for tests.
+ *
+ * Works as either an express request or response.
  *
  * @returns {{}}
  */

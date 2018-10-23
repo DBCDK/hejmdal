@@ -13,7 +13,6 @@ import sanityCheck from '../utils/sanityCheck.util';
 router.get('/', renderFrontPage);
 
 router.get('/health', async (req, res) => {
-
   const health = await sanityCheck();
   res.status = 200;
   if (health.filter(e => e.state === 'fail').length) {
@@ -21,11 +20,10 @@ router.get('/health', async (req, res) => {
   }
 
   res.send(health);
-
 });
 
-router.get('/fejl', (ctx) => {
-  const state = ctx.getState();
+router.get('/fejl', req => {
+  const state = req.getState();
   let link = null;
   if (state && state.smaugToken) {
     link = {
@@ -33,8 +31,9 @@ router.get('/fejl', (ctx) => {
       value: 'Prøv igen'
     };
   }
-  const error = 'Der er sket en fejl. Dette kan skyldes at du har klikket på et ugyldigt link.';
-  ctx.render('Error', {error, link});
+  const error =
+    'Der er sket en fejl. Dette kan skyldes at du har klikket på et ugyldigt link.';
+  req.render('Error', {error, link});
 });
 
 export default router;
