@@ -52,6 +52,12 @@ export async function authenticate(req, res, next) {
     }
 
     if (
+      req.session.query.idp &&
+      state.serviceClient.identityProviders.includes(req.session.query.idp)
+    ) {
+      state.serviceClient.identityProviders = [req.session.query.idp];
+    }
+    if (
       state.serviceClient.identityProviders.length === 1 &&
       state.serviceClient.identityProviders[0] !== 'borchk'
     ) {
@@ -64,7 +70,9 @@ export async function authenticate(req, res, next) {
     let preselctedName = null;
     let preselectedId = null;
     if (req.query.presel || req.session.query.presel) {
-      const preselectedLibrary = await getAgency(req.query.presel || req.session.query.presel);
+      const preselectedLibrary = await getAgency(
+        req.query.presel || req.session.query.presel
+      );
       preselctedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
     }

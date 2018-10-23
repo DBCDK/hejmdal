@@ -1,4 +1,7 @@
-import {setDefaultState, stateMiddleware} from '../middlewares/state.middleware';
+import {
+  setDefaultState,
+  stateMiddleware
+} from '../middlewares/state.middleware';
 import {mockData} from '../components/Smaug/mock/smaug.client.mock';
 import {CONFIG} from './config.util';
 
@@ -9,13 +12,17 @@ const stores = [];
  *
  * @returns {{}}
  */
-export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides = {}) {
+export function mockContext(
+  token = 'qwerty',
+  returnurl = 'some_url',
+  overrides = {}
+) {
   const ctx = {
     query: {token, returnurl},
     session: {
       save: cb => cb(),
       destroy: () => {},
-      client: mockData,
+      client: Object.assign({}, mockData),
       query: {
         state: 'mock_state_value'
       }
@@ -45,7 +52,7 @@ export function registerStore(store) {
  */
 export function wipeStores() {
   if (CONFIG.app.env === 'test') {
-    stores.forEach((store) => {
+    stores.forEach(store => {
       store.wipeout();
     });
   }

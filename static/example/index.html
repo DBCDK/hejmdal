@@ -113,6 +113,14 @@
           required />
       </div>
       <h3>Optional customizations</h3>
+
+      <div class="input-pair">
+        <label for="input-preselected-library">Enforce identityprovider</label><br />
+        <input id="input-preselected-idp" placeholder="E.g. nemlogin" type="text" value="" size="50" data-bind="idp"
+          oninput="onChange({key: 'idp', val: this.value})" />
+        <p class="description">Can be either nemlogin or borchk</p>
+      </div>
+
       <div class="input-pair">
         <label for="input-preselected-library">Preselected library</label><br />
         <input id="input-preselected-library" placeholder="E.g. 785100" type="text" value="" size="50" data-bind="presel"
