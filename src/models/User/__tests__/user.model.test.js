@@ -15,6 +15,9 @@ Model.knex(db);
 describe('User store tests', () => {
   if (CONFIG.mock_storage) {
     // These tests are only valuable against a db.
+    it('should not run the tests', async () => {
+      assert.isTrue(true);
+    });
     return;
   }
   let sandbox;
