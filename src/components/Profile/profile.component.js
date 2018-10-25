@@ -31,15 +31,18 @@ export async function profile(req, res) {
     }
   }
   consents = consents.filter(consent => consent.name);
+
+  const proceed = {
+    name: serviceClient.name,
+    url: `/login?token=${smaugToken}`
+  };
+
   await res.render('Profile', {
     consents,
     deleteConsentsAction: '/profile/confirmDeleteConsents',
     proceed:
       serviceClient && serviceClient.id !== CONFIG.smaug.hejmdalClientId
-        ? {
-            name: serviceClient.name,
-            url: `/login?token=${smaugToken}`
-          }
+        ? proceed
         : null,
     help: getText(['deleteConsents'])
   });

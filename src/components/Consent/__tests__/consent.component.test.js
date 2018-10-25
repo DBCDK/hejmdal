@@ -3,7 +3,6 @@
  * Unittesting methods in consent.component.test
  */
 
-import {assert} from 'chai';
 import {
   giveConsentUI,
   retrieveMissingUserConsent,
@@ -34,26 +33,23 @@ describe('Unittesting methods in consent.component.test', () => {
   });
 
   describe('giveConsentUI()', () => {
-
     it('should redirect if state is unavailable on ctx.session object', () => {
-      ctx.redirect = sandbox.stub();
+      ctx.redirect = jest.fn();
 
       giveConsentUI(ctx, ctx, next);
-      assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0][0], '/fejl');
+      expect(ctx.redirect).toBeCalledWith('/fejl');
     });
   });
 
   describe('retrieveMissingUserConsent()', () => {
-
-    it('should call next when no user or serviceClient.id is found', async() => {
-      const _next = sandbox.stub();
+    it('should call next when no user or serviceClient.id is found', async () => {
+      const _next = jest.fn();
 
       await retrieveMissingUserConsent(ctx, ctx, _next);
-      assert.isTrue(_next.called);
+      expect(_next).toBeCalled();
     });
 
-    it('should redirect when no consent is found', async() => {
+    it('should redirect when no consent is found', async () => {
       ctx.redirect = sandbox.stub();
       const serviceClientId = Date.now();
       const userId = '5555666677';
@@ -70,10 +66,10 @@ describe('Unittesting methods in consent.component.test', () => {
       });
 
       await retrieveMissingUserConsent(ctx, ctx, next);
-      assert.isTrue(ctx.redirect.called);
+      expect(ctx.redirect.called).toBe(true);
     });
 
-    it('should invoke next when consent is found', async() => {
+    it('should invoke next when consent is found', async () => {
       ctx.redirect = sandbox.stub();
       const _next = sandbox.stub();
       const serviceClientId = Date.now();
@@ -91,12 +87,12 @@ describe('Unittesting methods in consent.component.test', () => {
       await storeUserConsent(ctx);
       await retrieveMissingUserConsent(ctx, ctx, _next);
 
-      assert.isFalse(ctx.redirect.called);
-      assert.isTrue(_next.called);
+      expect(ctx.redirect.called).toBe(false);
+      expect(_next.called).toBe(true);
     });
 
-    it('should delete old consent and redirect user to consent page', async() => {
-      ctx.redirect = sandbox.stub();
+    it('should delete old consent and redirect user to consent page', async () => {
+      ctx.redirect = jest.fn();
       const serviceClientId = Date.now();
       const userId = '5555666677';
 
@@ -115,8 +111,19 @@ describe('Unittesting methods in consent.component.test', () => {
       // first we store the consent object and verify it has been stored
       await storeUserConsent(ctx);
       const consent = await getConsent(userId, serviceClientId);
-      const consent_expected = ['birthDate', 'birthYear', 'gender', 'libraries', 'municipality', 'uniloginId', 'userId', 'wayfId', 'uniqueId', 'authenticatedToken'];
-      assert.deepEqual(consent, consent_expected, 'consent was stored as expected');
+      const consent_expected = [
+        'birthDate',
+        'birthYear',
+        'gender',
+        'libraries',
+        'municipality',
+        'uniloginId',
+        'userId',
+        'wayfId',
+        'uniqueId',
+        'authenticatedToken'
+      ];
+      expect(consent).toEqual(consent_expected);
 
       ctx.setState({
         serviceClient: {
@@ -129,20 +136,19 @@ describe('Unittesting methods in consent.component.test', () => {
       await retrieveMissingUserConsent(ctx, ctx, next);
 
       // ensuring the user is redirected to the consent page
-      assert.isTrue(ctx.redirect.called);
-      assert.equal(ctx.redirect.args[0], '/consent');
+      expect(ctx.redirect).toBeCalled();
+      expect(ctx.redirect).toBeCalledWith('/consent');
     });
   });
 
   describe('checkForExistingConsent()', () => {
-
-    it('should return false', async() => {
+    it('should return false', async () => {
       const consent = await getConsent(ctx);
 
-      assert.deepEqual(consent, []);
+      expect(consent).toEqual([]);
     });
 
-    it('should retrieve consent form memory storage', async() => {
+    it('should retrieve consent form memory storage', async () => {
       const serviceClientId = Date.now();
       const userId = 'testuser';
 
@@ -157,20 +163,18 @@ describe('Unittesting methods in consent.component.test', () => {
 
       const consent = await getConsent(ctx);
 
-      assert.isArray(consent);
+      expect(Array.isArray(consent)).toBe(true);
     });
   });
 
   describe('findConsents()', () => {
-
-    it('should return false', async() => {
+    it('should return false', async () => {
       const consent = await findConsents(ctx);
 
-      assert.deepEqual(consent, []);
+      expect(consent).toEqual([]);
     });
 
-    it('should find consents for user in memory storage', async() => {
-
+    it('should find consents for user in memory storage', async () => {
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
         consentAttributes: {},
@@ -196,19 +200,23 @@ describe('Unittesting methods in consent.component.test', () => {
       });
       await storeUserConsent(ctx);
 
-      const consents = await findConsents(ctx);
-      assert.deepEqual(consents, [
+      const consents = await findConsents(ctx.getUser().userId);
+      expect(consents).toEqual([
         {
-          consentId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-client',
-          userId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
+          consentId:
+            '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-client',
+          userId:
+            '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
           serviceClientId: 'some-client',
           consent: {
             keys: []
           }
         },
         {
-          consentId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-other-client',
-          userId: '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
+          consentId:
+            '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3:some-other-client',
+          userId:
+            '2bffdc16e6622922465819191b0f7919bf897329701bf55632bc728c4d5e6cc3',
           serviceClientId: 'some-other-client',
           consent: {
             keys: []
@@ -217,8 +225,7 @@ describe('Unittesting methods in consent.component.test', () => {
       ]);
     });
 
-    it('should not find consents for a prefix of a userId', async() => {
-
+    it('should not find consents for a prefix of a userId', async () => {
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
         consentAttributes: {a: 'a', b: 'b'},
@@ -231,15 +238,12 @@ describe('Unittesting methods in consent.component.test', () => {
       ctx.setUser({userId: 't'});
       const consents = await findConsents(ctx);
 
-      assert.deepEqual(consents, []);
+      expect(consents).toEqual([]);
     });
   });
 
-
   describe('deleteConsents()', () => {
-
-    it('should delete consents for user', async() => {
-
+    it('should delete consents for user', async () => {
       ctx.setUser({userId: 'testuser1'});
       ctx.setState({
         consentAttributes: {a: 'a', b: 'b'},
@@ -262,11 +266,10 @@ describe('Unittesting methods in consent.component.test', () => {
         }
       });
       await storeUserConsent(ctx);
-      assert.isTrue((await findConsents(ctx)).length > 0);
+      expect((await findConsents('testuser2')).length > 0).toBe(true);
       await deleteConsents(ctx, ctx, next);
-      assert.isTrue((await findConsents(ctx)).length === 0);
-      ctx.setUser({userId: 'testuser1'});
-      assert.isTrue((await findConsents(ctx)).length > 0);
+      expect((await findConsents(ctx.getUser.userId)).length === 0).toBe(true);
+      expect((await findConsents('testuser1')).length > 0).toBe(true);
     });
   });
 });

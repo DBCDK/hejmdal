@@ -1,10 +1,11 @@
 /* eslint-disable no-undefined */
-import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
-import {libraryListFromName, libraryListFromPosition} from '../openAgency.client';
+import {
+  libraryListFromName,
+  libraryListFromPosition
+} from '../openAgency.client';
 
 describe('Test openAgency component', () => {
-
   const _SAVE_CONFIG = CONFIG.mock_externals.openAgency;
   beforeEach(() => {
     CONFIG.mock_externals.openAgency = true;
@@ -14,7 +15,7 @@ describe('Test openAgency component', () => {
     CONFIG.mock_externals.openAgency = _SAVE_CONFIG;
   });
 
-  it('Lookup a library from name', async() => {
+  it('Lookup a library from name', async () => {
     const list = [
       {
         agencyId: '761500',
@@ -68,12 +69,13 @@ describe('Test openAgency component', () => {
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: undefined
-      }];
+      }
+    ];
 
-    assert.deepEqual(list, await libraryListFromName('horsen?'));
+    expect(list).toEqual(await libraryListFromName('horsen?'));
   });
 
-  it('Lookup a library from position', async() => {
+  it('Lookup a library from position', async () => {
     const list = [
       {
         agencyId: '715100',
@@ -102,13 +104,14 @@ describe('Test openAgency component', () => {
         registrationFormUrlText: '',
         branchEmail: '',
         distance: '2905'
-      }];
+      }
+    ];
 
-    assert.deepEqual(list, await libraryListFromPosition('55.72', '12.35'));
+    expect(list).toEqual(await libraryListFromPosition('55.72', '12.35'));
   });
 
-  it('Lookup a library not there', async() => {
+  it('Lookup a library not there', async () => {
     const empty = [];
-    assert.deepEqual(empty, await libraryListFromName('notFound'));
+    expect(empty).toEqual(await libraryListFromName('notFound'));
   });
 });

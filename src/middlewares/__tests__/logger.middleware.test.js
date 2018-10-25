@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import sinon from 'sinon';
 
 import {LoggerMiddleware} from '../logger.middleware';
@@ -33,9 +32,9 @@ describe('LoggerMiddleware tests', () => {
     const res = LoggerMiddleware(ctx, next);
 
     return res.then(() => {
-      assert.isTrue(next.called, 'next was invoked');
-      assert.isTrue(spy.called, 'log.info was invoked');
-      assert.equal(spy.args[0][0], 'page request');
+      expect(next.called).toBe(true);
+      expect(spy.called).toBe(true);
+      expect(spy.args[0][0]).toEqual('page request');
     });
   });
 
@@ -47,9 +46,9 @@ describe('LoggerMiddleware tests', () => {
     const res = LoggerMiddleware(ctx, next);
 
     return res.then(() => {
-      assert.isTrue(next.called, 'next was invoked');
-      assert.isTrue(spy.called, 'log.error was invoked');
-      assert.equal(spy.args[0][0], 'parsing of ctx object failed');
+      expect(next.called).toBe(true);
+      expect(spy.called).toBe(true);
+      expect(spy.args[0][0]).toEqual('parsing of ctx object failed');
     });
   });
 });

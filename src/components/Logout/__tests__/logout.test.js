@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import {logout} from '../logout.component';
 import {mockContext} from '../../../utils/test.util';
@@ -6,7 +5,6 @@ import sinon from 'sinon';
 import {mockData} from '../../Smaug/mock/smaug.client.mock';
 
 describe('Test Logout component', () => {
-
   // Contains the context object
   let ctx;
 
@@ -19,16 +17,15 @@ describe('Test Logout component', () => {
     mockData.logoutScreen = 'include';
   });
 
-
   it('should export functions', () => {
-    assert.isFunction(logout);
+    expect(typeof logout).toBe('function');
   });
 
   it('should render generic logout screen', async () => {
     ctx = mockContext();
     ctx.render = sinon.spy();
     await logout(ctx, ctx, () => {});
-    assert.deepEqual(ctx.render.args[0][1], {
+    expect(ctx.render.args[0][1]).toEqual({
       idpLogoutInfo: false,
       returnurl: '',
       serviceName: null
@@ -38,7 +35,7 @@ describe('Test Logout component', () => {
   it('should render returnurl and name for serviceclient', async () => {
     ctx.render = sinon.spy();
     await logout(ctx, ctx, () => {});
-    assert.deepEqual(ctx.render.args[0][1], {
+    expect(ctx.render.args[0][1]).toEqual({
       idpLogoutInfo: null,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
@@ -49,7 +46,7 @@ describe('Test Logout component', () => {
     ctx.session.user.identityProviders = ['unilogin'];
     ctx.render = sinon.spy();
     await logout(ctx, ctx, () => {});
-    assert.deepEqual(ctx.render.args[0][1], {
+    expect(ctx.render.args[0][1]).toEqual({
       idpLogoutInfo: true,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
@@ -61,7 +58,9 @@ describe('Test Logout component', () => {
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
     await logout(ctx, ctx, () => {});
-    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout');
+    expect(ctx.redirect.args[0][0]).toEqual(
+      'http://localhost:3011/example/?message=logout'
+    );
   });
   it('should redirect to returnurl with close browser message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
@@ -69,6 +68,8 @@ describe('Test Logout component', () => {
     ctx.render = sinon.spy();
     ctx.redirect = sinon.spy();
     await logout(ctx, ctx, () => {});
-    assert.deepEqual(ctx.redirect.args[0][0], 'http://localhost:3011/example/?message=logout_close_browser');
+    expect(ctx.redirect.args[0][0]).toEqual(
+      'http://localhost:3011/example/?message=logout_close_browser'
+    );
   });
 });

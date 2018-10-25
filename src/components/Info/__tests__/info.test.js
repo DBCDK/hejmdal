@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import sinon from 'sinon';
 import {showInfo} from '../info.component';
 import {mockContext} from '../../../utils/test.util';
@@ -22,8 +21,8 @@ describe('test showinfo method', () => {
       infoId: 'cookies'
     };
     showInfo(ctx, ctx);
-    assert.isTrue(spy.called);
-    assert.isObject(spy.args[0][1].textObj);
+    expect(spy.called).toBe(true);
+    expect(typeof spy.args[0][1].textObj).toBe('object');
   });
 
   it('Should not render info page', async () => {
@@ -33,7 +32,7 @@ describe('test showinfo method', () => {
       infoId: 'not_valid'
     };
     showInfo(ctx, ctx, next);
-    assert.isTrue(next.called);
-    assert.isFalse(spy.called);
+    expect(next.called).toBe(true);
+    expect(spy.called).toBe(false);
   });
 });

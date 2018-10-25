@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import {CONFIG} from '../../../utils/config.util';
 import * as smaug from '../smaug.component';
 
@@ -16,7 +15,7 @@ describe('Test Smaug component', () => {
 
   it('should return client with valid client_id', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('hejmdal');
-    assert.deepEqual(clientinfo, {
+    expect(clientinfo).toEqual({
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
       grants: ['authorization_code'],
@@ -81,6 +80,6 @@ describe('Test Smaug component', () => {
 
   it('should not return client with invalid token', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('invalid_client_id');
-    assert.isNull(clientinfo);
+    expect(clientinfo).toBeNull();
   });
 });

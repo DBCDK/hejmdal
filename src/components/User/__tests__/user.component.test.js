@@ -1,4 +1,3 @@
-import {assert} from 'chai';
 import sinon from 'sinon';
 import {getUser} from '../user.component.js';
 import {mockContext} from '../../../utils/test.util.js';
@@ -19,8 +18,8 @@ describe('test store and get user', () => {
   it('should fetch the user', async () => {
     ctx.json = sinon.stub();
     await getUser(ctx, ctx, next);
-    assert.isTrue(ctx.json.called);
-    assert.deepEqual(ctx.json.args[0][0], {
+    expect(ctx.json.called).toBe(true);
+    expect(ctx.json.args[0][0]).toEqual({
       agencies: [
         {
           agencyId: '790900',
