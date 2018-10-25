@@ -4,6 +4,7 @@
  */
 
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import express from 'express';
 import path from 'path';
 import session from 'express-session';
@@ -14,6 +15,10 @@ import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
 import Knex from 'knex';
 import {Model} from 'objection';
+import {setHeaders} from './middlewares/headers.middleware';
+import {loggerMiddleware} from './middlewares/logger.middleware';
+import errorMiddleware from './middlewares/error.middleware';
+import {cacheAgencies} from './utils/agencies.util';
 
 // Utils
 import {CONFIG} from './utils/config.util';
@@ -37,8 +42,6 @@ import userinfoRoutes from './routes/userinfo.routes';
 import profileRoutes from './routes/profile.routes';
 import infoRoutes from './routes/info.routes';
 
-const host = process.env.HOST;
-
 const app = express();
 initPassport(app);
 app.oauth = new OAuthServer({
@@ -55,6 +58,13 @@ app.model = model;
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/Templates'));
 
+const corsOptions = {
+  origin: '*',
+  methods: 'GET POST OPTIONS',
+  headers: 'Authorization, Origin, X-Requested-With, Content-Type, Accept'
+};
+app.use(cors(corsOptions));
+app.use(setHeaders);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(
@@ -72,6 +82,8 @@ app.use(stateMiddleware);
 
 app.use(express.static('static'));
 
+app.use(loggerMiddleware);
+
 app.use('/', rootRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
@@ -81,27 +93,8 @@ app.use('/userinfo', userinfoRoutes);
 app.use('/profile', profileRoutes);
 app.use('/info', infoRoutes);
 
-/**
- * Test callback endpoint
- */
-app.get('/callback', (req, res) => {
-  // Outputs curl commando for requesting access_token
-  res.send(
-    `
-    <html><body>
-    <h3>Lav følgende POST kald for at hente en token:</h3>
-    <code>curl -X POST ${host}/oauth/token -d 'grant_type=authorization_code&code=${
-      req.query.code
-    }&client_id=${
-      req.session.query.client_id
-    }&client_secret=hejmdal_secret&redirect_uri=${host}/callback'</code>
-    
-    <h3>Lav derefter et kald til /userinfo med returnerede access_token, for at hente brugerinformation:</h3>
-
-    <code>curl -X POST ${host}/userinfo -d 'access_token={ACCESS_TOKEN}'</code>
-    </body></html>
-    `
-  );
-});
+app.use(errorMiddleware);
 
 app.listen(process.env.PORT || 3000);
+
+cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');

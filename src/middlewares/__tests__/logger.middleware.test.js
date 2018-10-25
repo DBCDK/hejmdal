@@ -1,4 +1,4 @@
-import {LoggerMiddleware} from '../logger.middleware';
+import {loggerMiddleware} from '../logger.middleware';
 import {log} from '../../utils/logging.util';
 
 describe('LoggerMiddleware tests', () => {
@@ -18,7 +18,7 @@ describe('LoggerMiddleware tests', () => {
       }
     };
 
-    const res = LoggerMiddleware(ctx, next);
+    const res = loggerMiddleware(ctx, ctx, next);
 
     return res.then(() => {
       expect(next).toBeCalled();
@@ -31,7 +31,7 @@ describe('LoggerMiddleware tests', () => {
     const next = jest.fn();
     const ctx = {};
 
-    const res = LoggerMiddleware(ctx, next);
+    const res = loggerMiddleware(ctx, ctx, next);
 
     return res.then(() => {
       expect(next).toBeCalled();

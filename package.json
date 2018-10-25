@@ -53,6 +53,8 @@
     "babel-register": "^6.18.0",
     "body-parser": "^1.18.3",
     "connect-session-knex": "^1.4.0",
+    "cors": "^2.8.4",
+    "dezalgo": "^1.0.3",
     "express": "~4.16.0",
     "express-oauth-server": "^2.0.0",
     "express-session": "^1.15.6",

@@ -11,7 +11,7 @@ import {log} from '../utils/logging.util';
  * @param {object} ctx
  * @param {function} next
  */
-export default async function errorMiddleware(ctx, next) {
+export default async function errorMiddleware(ctx, res, next) {
   try {
     await next();
 
