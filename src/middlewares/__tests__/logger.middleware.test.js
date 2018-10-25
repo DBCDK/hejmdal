@@ -1,22 +1,11 @@
-import sinon from 'sinon';
-
 import {LoggerMiddleware} from '../logger.middleware';
 import {log} from '../../utils/logging.util';
 
 describe('LoggerMiddleware tests', () => {
-  let sandbox;
-
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-  });
-
   it('Should invoke next and make call to log.info', () => {
-    const spy = sandbox.spy(log, 'info');
-    const next = sandbox.mock();
+    log.info = jest.fn();
+    // const spy = sandbox.spy(log, 'info');
+    const next = jest.fn();
     const ctx = {
       request: {
         method: 'method',
@@ -32,23 +21,24 @@ describe('LoggerMiddleware tests', () => {
     const res = LoggerMiddleware(ctx, next);
 
     return res.then(() => {
-      expect(next.called).toBe(true);
-      expect(spy.called).toBe(true);
-      expect(spy.args[0][0]).toEqual('page request');
+      expect(next).toBeCalled();
+      expect(log.info).toBeCalledWith('page request', ctx);
     });
   });
 
   it('Should invoke next and make call to log.error', () => {
-    const spy = sandbox.spy(log, 'error');
-    const next = sandbox.mock();
+    log.error = jest.fn();
+    const next = jest.fn();
     const ctx = {};
 
     const res = LoggerMiddleware(ctx, next);
 
     return res.then(() => {
-      expect(next.called).toBe(true);
-      expect(spy.called).toBe(true);
-      expect(spy.args[0][0]).toEqual('parsing of ctx object failed');
+      expect(next).toBeCalled();
+      expect(log.error).toBeCalledWith('parsing of ctx object failed', {
+        ctx,
+        error: expect.any(Error)
+      });
     });
   });
 });

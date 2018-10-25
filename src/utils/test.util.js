@@ -29,9 +29,9 @@ export function mockContext(
         state: 'mock_state_value'
       }
     },
-    render: () => {},
-    send: () => {},
-    redirect: () => {}
+    render: jest.fn(),
+    send: jest.fn(),
+    redirect: jest.fn()
   };
   setDefaultState(ctx, ctx, () => {});
   stateMiddleware(ctx, ctx, () => {});

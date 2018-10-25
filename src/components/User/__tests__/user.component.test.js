@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {getUser} from '../user.component.js';
 import {mockContext} from '../../../utils/test.util.js';
 
@@ -16,10 +15,9 @@ describe('test store and get user', () => {
   const next = () => {};
 
   it('should fetch the user', async () => {
-    ctx.json = sinon.stub();
+    ctx.json = jest.fn();
     await getUser(ctx, ctx, next);
-    expect(ctx.json.called).toBe(true);
-    expect(ctx.json.args[0][0]).toEqual({
+    expect(ctx.json).toBeCalledWith({
       agencies: [
         {
           agencyId: '790900',

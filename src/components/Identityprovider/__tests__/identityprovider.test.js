@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import {
   authenticate,
   identityProviderCallback
@@ -11,15 +10,9 @@ import {CONFIG} from '../../../utils/config.util';
 describe('test authenticate method', () => {
   const next = () => {};
   let ctx;
-  let sandbox;
 
   beforeEach(() => {
     ctx = mockContext();
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
   });
 
   it('Should return content page', async () => {
@@ -31,39 +24,30 @@ describe('test authenticate method', () => {
         }
       }
     });
-    ctx.render = sandbox.mock();
     await authenticate(ctx, ctx, next);
     expect(ctx.status).toEqual(200);
-    sandbox.restore();
   });
 
   it('Should render error page', async () => {
-    const spy = sandbox.spy(ctx, 'render');
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
-    expect(spy.called).toBe(false);
 
     await authenticate(ctx, ctx, next);
 
-    expect(spy.called).toBe(true);
-    expect(typeof spy.args[0][1].error).toBe('string');
-    expect(typeof spy.args[0][1].link).toBe('object');
+    expect(ctx.render).toMatchSnapshot();
   });
 
   it('Should redirect to nemlogin', async () => {
-    const spy = sandbox.spy(ctx, 'redirect');
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
-    expect(spy.called).toBe(true);
-    expect(spy.args[0][0]).toEqual(
+    expect(ctx.redirect).toBeCalledWith(
       '/login/identityProviderCallback/nemlogin/mock_state_value'
     );
   });
   it('Should not redirect to nemlogin', async () => {
-    const spy = sandbox.spy(ctx, 'redirect');
     ctx.session.client.identityProviders = ['borchk'];
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
-    expect(spy.called).toBe(false);
+    expect(ctx.redirect).not.toBeCalled();
   });
 });
 

@@ -11,7 +11,6 @@ import {
   findConsents,
   deleteConsents
 } from '../consent.component';
-import sinon from 'sinon';
 
 import {setDefaultState} from '../../../middlewares/state.middleware';
 import {mockContext} from '../../../utils/test.util';
@@ -20,16 +19,10 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 describe('Unittesting methods in consent.component.test', () => {
   let ctx;
   const next = () => {};
-  let sandbox;
 
   beforeEach(() => {
     ctx = mockContext();
     setDefaultState(ctx, ctx, next);
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
   });
 
   describe('giveConsentUI()', () => {
@@ -50,7 +43,7 @@ describe('Unittesting methods in consent.component.test', () => {
     });
 
     it('should redirect when no consent is found', async () => {
-      ctx.redirect = sandbox.stub();
+      ctx.redirect = jest.fn();
       const serviceClientId = Date.now();
       const userId = '5555666677';
 
@@ -66,12 +59,12 @@ describe('Unittesting methods in consent.component.test', () => {
       });
 
       await retrieveMissingUserConsent(ctx, ctx, next);
-      expect(ctx.redirect.called).toBe(true);
+      expect(ctx.redirect).toBeCalled();
     });
 
     it('should invoke next when consent is found', async () => {
-      ctx.redirect = sandbox.stub();
-      const _next = sandbox.stub();
+      ctx.redirect = jest.fn();
+      const _next = jest.fn();
       const serviceClientId = Date.now();
       const userId = '5555666677';
 
@@ -87,8 +80,8 @@ describe('Unittesting methods in consent.component.test', () => {
       await storeUserConsent(ctx);
       await retrieveMissingUserConsent(ctx, ctx, _next);
 
-      expect(ctx.redirect.called).toBe(false);
-      expect(_next.called).toBe(true);
+      expect(ctx.redirect).not.toBeCalled();
+      expect(_next).toBeCalled();
     });
 
     it('should delete old consent and redirect user to consent page', async () => {

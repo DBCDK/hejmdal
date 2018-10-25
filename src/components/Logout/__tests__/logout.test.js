@@ -1,7 +1,6 @@
 import {CONFIG} from '../../../utils/config.util';
 import {logout} from '../logout.component';
 import {mockContext} from '../../../utils/test.util';
-import sinon from 'sinon';
 import {mockData} from '../../Smaug/mock/smaug.client.mock';
 
 describe('Test Logout component', () => {
@@ -11,6 +10,7 @@ describe('Test Logout component', () => {
   beforeEach(() => {
     CONFIG.mock_externals.smaug = true;
     ctx = mockContext(CONFIG.test.token);
+    ctx.redirect = jest.fn();
   });
 
   afterEach(() => {
@@ -23,9 +23,9 @@ describe('Test Logout component', () => {
 
   it('should render generic logout screen', async () => {
     ctx = mockContext();
-    ctx.render = sinon.spy();
-    await logout(ctx, ctx, () => {});
-    expect(ctx.render.args[0][1]).toEqual({
+    await logout(ctx, ctx, jest.fn());
+
+    expect(ctx.render).toBeCalledWith('Logout', {
       idpLogoutInfo: false,
       returnurl: '',
       serviceName: null
@@ -33,9 +33,8 @@ describe('Test Logout component', () => {
   });
 
   it('should render returnurl and name for serviceclient', async () => {
-    ctx.render = sinon.spy();
     await logout(ctx, ctx, () => {});
-    expect(ctx.render.args[0][1]).toEqual({
+    expect(ctx.render).toBeCalledWith('Logout', {
       idpLogoutInfo: null,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
@@ -44,9 +43,8 @@ describe('Test Logout component', () => {
 
   it('should render idp message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
-    ctx.render = sinon.spy();
     await logout(ctx, ctx, () => {});
-    expect(ctx.render.args[0][1]).toEqual({
+    expect(ctx.render).toBeCalledWith('Logout', {
       idpLogoutInfo: true,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
@@ -55,20 +53,16 @@ describe('Test Logout component', () => {
 
   it('should redirect to returnurl', async () => {
     mockData.logoutScreen = 'skip';
-    ctx.render = sinon.spy();
-    ctx.redirect = sinon.spy();
     await logout(ctx, ctx, () => {});
-    expect(ctx.redirect.args[0][0]).toEqual(
+    expect(ctx.redirect).toBeCalledWith(
       'http://localhost:3011/example/?message=logout'
     );
   });
   it('should redirect to returnurl with close browser message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
     mockData.logoutScreen = 'skip';
-    ctx.render = sinon.spy();
-    ctx.redirect = sinon.spy();
     await logout(ctx, ctx, () => {});
-    expect(ctx.redirect.args[0][0]).toEqual(
+    expect(ctx.redirect).toBeCalledWith(
       'http://localhost:3011/example/?message=logout_close_browser'
     );
   });

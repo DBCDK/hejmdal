@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
 import {createHash} from '../../utils/hash.utils';
 import {mockContext} from '../../utils/test.util';
@@ -180,7 +178,7 @@ describe('Attribute mapper unittest', () => {
   });
 
   it('log an error for unknown attribute', () => {
-    const spy = sinon.spy(log, 'error');
+    log.error = jest.fn();
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
@@ -191,7 +189,6 @@ describe('Attribute mapper unittest', () => {
     });
     mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({});
-    expect(spy.called).toBe(true);
-    expect(spy.args[0][0]).toEqual('Cannot map attribute: notThere');
+    expect(log.error).toBeCalledWith('Cannot map attribute: notThere');
   });
 });

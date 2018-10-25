@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import Store from '../user.persistent.storage.model';
 
 import Knex from 'knex';
@@ -19,16 +18,10 @@ describe('User store tests', () => {
     });
     return;
   }
-  let sandbox;
   let store;
 
   beforeEach(() => {
     store = new Store();
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
   });
 
   it('should upsert user', async () => {
