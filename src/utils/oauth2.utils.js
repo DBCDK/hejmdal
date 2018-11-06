@@ -8,7 +8,6 @@ export function disableRedirectUrlCheck(req, res, next) {
   if (req.query.client_id === 'hejmdal') {
     mockData.redirectUris.push(req.query.redirect_uri);
     req.session.client = extractClientInfo(mockData);
-    req.setUser({userId: '0101701234'});
   } else {
     req.session.client = null;
   }
