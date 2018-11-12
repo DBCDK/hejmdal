@@ -3,7 +3,6 @@
  * Unittesting methods in agencies.util.js
  */
 
-import {assert} from 'chai';
 import {
   getListOfAgenciesForFrontend,
   getAgencyName,
@@ -85,7 +84,7 @@ describe('Unittesting methods in agencies.util.js', async () => {
 
     const result = await getListOfAgenciesForFrontend();
 
-    assert.deepEqual(expected, result);
+    expect(expected).toEqual(result);
   });
 
   it('should return Forskningsbiblioteker only', async () => {
@@ -106,7 +105,7 @@ describe('Unittesting methods in agencies.util.js', async () => {
 
     const result = await getListOfAgenciesForFrontend('forsk');
 
-    assert.deepEqual(expected, result);
+    expect(expected).toEqual(result);
   });
 
   it('should return Folkebiblioteker only', async () => {
@@ -128,14 +127,14 @@ describe('Unittesting methods in agencies.util.js', async () => {
 
     const result = await getListOfAgenciesForFrontend('folk');
 
-    assert.deepEqual(expected, result);
+    expect(expected).toEqual(result);
   });
 
   it('should find agency name from id', async () => {
-    assert.equal('branchName_1', await getAgencyName('710100'));
+    expect('branchName_1').toEqual(await getAgencyName('710100'));
   });
 
   it('should not find agency name from not defined id', async () => {
-    assert.equal('Ukendt bibliotek: 910100', await getAgencyName('910100'));
+    expect('Ukendt bibliotek: 910100').toEqual(await getAgencyName('910100'));
   });
 });

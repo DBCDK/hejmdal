@@ -1,7 +1,6 @@
 import {log} from '../utils/logging.util';
 
-export async function LoggerMiddleware(ctx, next) {
-  await next();
+export async function loggerMiddleware(ctx, res, next) {
   try {
     log.info('page request', {
       request: {
@@ -14,8 +13,8 @@ export async function LoggerMiddleware(ctx, next) {
         message: ctx.response.message
       }
     });
-  }
-  catch (e) {
+  } catch (e) {
     log.error('parsing of ctx object failed', {error: e, ctx: ctx});
   }
+  next();
 }

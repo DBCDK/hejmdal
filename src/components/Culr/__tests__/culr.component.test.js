@@ -3,22 +3,20 @@
  * Unittesting methods in culr.component
  */
 
-import {assert} from 'chai';
 import {getUserAttributesFromCulr} from '../culr.component';
 
 describe('Unittesting methods in culr.component:', () => {
-
   describe('getCulrAttributes', () => {
-    it('should return no attributes when no userId is given', async() => {
+    it('should return no attributes when no userId is given', async () => {
       const attributes = await getUserAttributesFromCulr();
 
-      assert.isEmpty(attributes);
+      expect(attributes).toEqual({});
     });
 
-    it('should return culr attributes -- OK200', async() => {
+    it('should return culr attributes -- OK200', async () => {
       const attributes = await getUserAttributesFromCulr('5555666677');
 
-      assert.deepEqual(attributes, {
+      expect(attributes).toEqual({
         accounts: [
           {
             provider: '790900',
@@ -35,9 +33,9 @@ describe('Unittesting methods in culr.component:', () => {
       });
     });
 
-    it('should return empty object -- ACCOUNT_DOES_NOT_EXIST', async() => {
+    it('should return empty object -- ACCOUNT_DOES_NOT_EXIST', async () => {
       const attributes = await getUserAttributesFromCulr('not_existing_user');
-      assert.isEmpty(attributes);
+      expect(attributes).toEqual({});
     });
   });
 });

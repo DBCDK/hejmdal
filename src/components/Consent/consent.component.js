@@ -149,12 +149,12 @@ export async function retrieveMissingUserConsent(req, res, next) {
  * Stores the given consent in the storage.
  * Exported only to make testable.
  *
- * @param {object} ctx
+ * @param {object} req
  * @return {*}
  */
-export async function storeUserConsent(ctx) {
-  const userId = ctx.getUser().userId;
-  const state = ctx.getState();
+export async function storeUserConsent(req) {
+  const userId = req.getUser().userId;
+  const state = req.getState();
   const consent = state.consentAttributes;
 
   if (!userId) {
@@ -185,8 +185,8 @@ export async function storeUserConsent(ctx) {
 /**
  * Returns a list of consents given by a user to a serviceClient.
  *
- * @param ctx
- * @returns {boolean}
+ * @param {string} userId
+ * @param {string} serviceClientId
  */
 export async function getConsent(userId, serviceClientId) {
   let consent = [];
@@ -209,12 +209,12 @@ export async function getConsent(userId, serviceClientId) {
 }
 
 /**
+ * Find consenst for a specified user.
  *
- * @param ctx
+ * @param {string} userId
  * @returns {boolean}
  */
-export async function findConsents(ctx) {
-  const userId = ctx.getUser().userId;
+export async function findConsents(userId) {
   let consents = [];
   try {
     const hashedUserId = createHash(userId);
@@ -250,7 +250,7 @@ export async function findConsents(ctx) {
  * @returns {boolean}
  */
 export async function deleteConsents(req, res, next) {
-  const consents = await findConsents(req);
+  const consents = await findConsents(req.getUser().userId);
   for (let i = 0; i < consents.length; i++) {
     const consentId = consents[i].consentId;
     try {
@@ -266,9 +266,10 @@ export async function deleteConsents(req, res, next) {
 }
 
 /**
+ * Get attributes that needs consent.
  *
- * @param ctx
- * @returns {object}
+ * @param {object} serviceClientAttributes
+ * @param {object} ticketAttributes
  */
 function getConsentAttributes(
   serviceClientAttributes = {},

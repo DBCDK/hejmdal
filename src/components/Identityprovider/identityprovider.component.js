@@ -25,7 +25,8 @@ import {ERRORS} from '../../utils/errors.util';
 /**
  * Returns Identityprovider screen if user is not logged in.
  *
- * @param {object} ctx
+ * @param {object} req
+ * @param {object} res
  * @param {function} next
  * @returns {*}
  */
@@ -164,58 +165,55 @@ export async function borchkCallback(req, res) {
 /**
  * Parses the callback parameters for unilogin.
  *
- * @param ctx
- * @returns {*}
+ * @param {object} req
  */
-export async function uniloginCallback(ctx) {
+export async function uniloginCallback(req) {
   let userId = null;
-  if (validateUniloginTicket(ctx.query)) {
-    userId = ctx.query.user;
+  if (validateUniloginTicket(req.query)) {
+    userId = req.query.user;
   } else {
-    idenityProviderValidationFailed(ctx);
+    idenityProviderValidationFailed(req);
   }
 
-  ctx.setUser({
+  req.setUser({
     userId: userId,
     userType: 'unilogin'
   });
 
-  return ctx;
+  return req;
 }
 
 /**
  * Parses the callback parameters for nemlogin (via gatewayf).
  *
- * @param ctx
- * @returns {*}
+ * @param req
  */
-export async function nemloginCallback(ctx) {
-  const response = await getGateWayfLoginResponse(ctx, 'nemlogin');
+export async function nemloginCallback(req) {
+  const response = await getGateWayfLoginResponse(req, 'nemlogin');
 
-  ctx.setUser({
+  req.setUser({
     userId: response.userId,
     cpr: isValidCpr(response.userId) ? response.userId : null,
     userType: 'nemlogin'
   });
 
-  return ctx;
+  return req;
 }
 
 /**
  * Parses the call parameters for wayf (via gatewayf)
- * @param ctx
- * @returns {*}
+ * @param req
  */
-export async function wayfCallback(ctx) {
-  const response = await getGateWayfLoginResponse(ctx, 'wayf');
+export async function wayfCallback(req) {
+  const response = await getGateWayfLoginResponse(req, 'wayf');
 
-  ctx.setUser({
+  req.setUser({
     userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
     wayfId: response.wayfId,
     userType: 'wayf'
   });
 
-  return ctx;
+  return req;
 }
 /**
  * Callback function from external identityproviders
@@ -273,18 +271,18 @@ export async function identityProviderCallback(req, res) {
 
 /**
  *
- * @param {object} ctx
+ * @param {object} req
  * @param {object} error
  * @param {string} libraryId
  */
-function idenityProviderValidationFailed(ctx, res, error, libraryId) {
-  const agencyParameter = ctx.getState().serviceAgency
-    ? '&agency=' + ctx.getState().serviceAgency
+function idenityProviderValidationFailed(req, res, error, libraryId) {
+  const agencyParameter = req.getState().serviceAgency
+    ? '&agency=' + req.getState().serviceAgency
     : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
   const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
-  const startOver = `/login?token=${ctx.getState().smaugToken}&returnurl=${
-    ctx.getState().returnUrl
+  const startOver = `/login?token=${req.getState().smaugToken}&returnurl=${
+    req.getState().returnUrl
   }${agencyParameter}${errorParameter}${preselctedLibrary}`;
   res.redirect(302, startOver);
 }
@@ -337,15 +335,15 @@ function getIdentityProviders(state) {
  *
  * TODO: Should this be implementet in the authorize endpoint?
  *
- * @param ctx
+ * @param req
  * @returns {boolean}
  */
-export default function userIsLoggedIn(ctx) {
-  const ips = isLoggedInWith(ctx);
+export default function userIsLoggedIn(req) {
+  const ips = isLoggedInWith(req);
   if (ips.length) {
     if (!ips.includes('borck')) {
-      const link = getIdentityProviders(ctx.getState())[ips[0]].link;
-      ctx.redirect(link);
+      const link = getIdentityProviders(req.getState())[ips[0]].link;
+      req.redirect(link);
     }
     return true;
   }
@@ -355,15 +353,15 @@ export default function userIsLoggedIn(ctx) {
 /**
  * Returns the valid identityproviders a user is logged in with.
  *
- * @param ctx
- * @returns {*}
+ * @param req
+ * @returns {array}
  */
-function isLoggedInWith(ctx) {
-  if (!ctx.hasUser()) {
+function isLoggedInWith(req) {
+  if (!req.hasUser()) {
     return [];
   }
-  const identityProviders = ctx.getState().serviceClient.identityProviders;
-  return ctx
+  const identityProviders = req.getState().serviceClient.identityProviders;
+  return req
     .getUser()
     .identityProviders.filter(ip => identityProviders.includes(ip));
 }

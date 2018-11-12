@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test authenticate method Should render error page 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Error",
+      Object {
+        "error": "Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.",
+        "link": Object {
+          "href": "/login",
+          "value": "Prøv igen",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;

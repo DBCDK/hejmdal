@@ -7,7 +7,8 @@ import {createHash} from '../utils/hash.utils';
 /**
  * Adds the get- and setState methods to the context object
  *
- * @param {object} ctx
+ * @param {object} req
+ * @param {object} res
  * @param {function} next
  */
 export async function stateMiddleware(req, res, next) {
@@ -26,7 +27,8 @@ export async function stateMiddleware(req, res, next) {
 /**
  * Sets the default values on the context
  *
- * @param ctx
+ * @param req
+ * @param res
  * @param next
  */
 export async function setDefaultState(req, res, next) {
@@ -34,7 +36,8 @@ export async function setDefaultState(req, res, next) {
     stateHash: req.session.query ? generateStateHash(req.session.query) : '',
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
-    serviceAgency: req.session.query && handleNullFromUrl(req.session.query.agency),
+    serviceAgency:
+      req.session.query && handleNullFromUrl(req.session.query.agency),
     serviceClient: req.session.client,
     ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
@@ -48,20 +51,21 @@ export async function setDefaultState(req, res, next) {
 /**
  * Check that endpoint is not called directly, but only through oauth endpoints
  *
- * @param {Express request} req
- * @param {Express response} res
- * @param {Express middleware callback} next
+ * @param {object} req
+ * @param {object} res
+ * @param {function} next
  */
 export function validateClientIsSet(req, res, next) {
   if (!req.session.client || !req.session.query) {
     res.status(403);
-    res.send('Login cannot called directly. Please authorize through /oauth/authorize. '
-    + 'For more information on how to implement login through login.bib.dk goto login.bib.dk/example');
+    res.send(
+      'Login cannot called directly. Please authorize through /oauth/authorize. ' +
+        'For more information on how to implement login through login.bib.dk goto login.bib.dk/example'
+    );
   } else {
     next();
   }
 }
-
 
 /**
  * Generate hash values for validating redirects.
@@ -76,7 +80,7 @@ function generateStateHash(query) {
  * return null if value is the string 'null'
  *
  * @param urlValue
- * @returns {*}
+ * @returns {string|null}
  */
 function handleNullFromUrl(urlValue) {
   return urlValue === 'null' ? null : urlValue || null;

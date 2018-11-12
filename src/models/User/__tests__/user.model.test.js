@@ -1,5 +1,3 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
 import Store from '../user.persistent.storage.model';
 
 import Knex from 'knex';
@@ -15,18 +13,15 @@ Model.knex(db);
 describe('User store tests', () => {
   if (CONFIG.mock_storage) {
     // These tests are only valuable against a db.
+    it('should not run the tests', async () => {
+      expect(true).toBe(true);
+    });
     return;
   }
-  let sandbox;
   let store;
 
   beforeEach(() => {
     store = new Store();
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
   });
 
   it('should upsert user', async () => {
@@ -34,7 +29,7 @@ describe('User store tests', () => {
       userId: '1122334455'
     };
     const res = await store.insert(user);
-    assert.isTrue(res > 0);
+    expect(res > 0).toBe(true);
   });
 
   it('should get user', async () => {
@@ -43,7 +38,7 @@ describe('User store tests', () => {
     };
     await store.update(user.userId, user);
     const userFromDb = await store.read(user.userId);
-    assert.deepEqual(user, userFromDb);
+    expect(user).toEqual(userFromDb);
   });
 
   it('should delete user', async () => {
@@ -51,9 +46,9 @@ describe('User store tests', () => {
       userId: '1122334455'
     };
     const res = await store.insert(user);
-    assert.isTrue(res > 0);
+    expect(res > 0).toBe(true);
     await store.delete(user.userId);
     const userFromDb = await store.read(user.userId);
-    assert.isNull(userFromDb);
+    expect(userFromDb).toBeNull();
   });
 });

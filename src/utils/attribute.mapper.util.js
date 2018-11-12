@@ -12,13 +12,14 @@ import {createHash} from './hash.utils';
 /**
  * Attribute mapper
  *
- * @param ctx
+ * @param req
+ * @param res
  * @param next
  * @returns {*}
  */
-export default async function mapAttributesToTicket(ctx, res, next) {
-  const state = ctx.getState();
-  const user = ctx.getUser();
+export default async function mapAttributesToTicket(req, res, next) {
+  const state = req.getState();
+  const user = req.getUser();
 
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
@@ -29,7 +30,7 @@ export default async function mapAttributesToTicket(ctx, res, next) {
       user,
       state.serviceClient.id
     );
-    ctx.setState({ticket: {attributes: ticketAttributes}});
+    req.setState({ticket: {attributes: ticketAttributes}});
   }
 
   await next();
@@ -43,14 +44,9 @@ export default async function mapAttributesToTicket(ctx, res, next) {
  * @param {object} user data returned by the idp
  * @param {string} serviceId string
  * @see ATTRIBUTES
- * @return {{}}
+ * @return {object}
  */
-export function mapCulrResponse(
-  culr,
-  attributes,
-  user,
-  serviceId
-) {
+export function mapCulrResponse(culr, attributes, user, serviceId) {
   let mapped = {};
   let cpr = user.cpr || null;
   let agencies = [];

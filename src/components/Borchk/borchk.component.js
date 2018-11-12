@@ -10,18 +10,18 @@ import {ERRORS} from '../../utils/errors.util';
 /**
  * Validate a user against a given library, using the borchk service
  *
- * @param {object} ctx
+ * @param {object} serviceRequester
  * @param {object} userInput
  * @returns {*}
  */
-export async function validateUserInLibrary(requester, userInput) {
+export async function validateUserInLibrary(serviceRequester, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
 
   const response = await getClient(
     userInput.libraryId,
     userInput.userId,
     userInput.pincode,
-    requester
+    serviceRequester
   );
   userValidate = extractInfo(response);
 

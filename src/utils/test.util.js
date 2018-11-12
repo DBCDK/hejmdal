@@ -8,7 +8,9 @@ import {CONFIG} from './config.util';
 const stores = [];
 
 /**
- * create mock context for tests
+ * Create mock context for tests.
+ *
+ * Works as either an express request or response.
  *
  * @returns {{}}
  */
@@ -27,9 +29,9 @@ export function mockContext(
         state: 'mock_state_value'
       }
     },
-    render: () => {},
-    send: () => {},
-    redirect: () => {}
+    render: jest.fn(),
+    send: jest.fn(),
+    redirect: jest.fn()
   };
   setDefaultState(ctx, ctx, () => {});
   stateMiddleware(ctx, ctx, () => {});

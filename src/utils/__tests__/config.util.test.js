@@ -3,7 +3,6 @@
  * Unittesting methods in config.util.js
  */
 
-import {assert} from 'chai';
 import {validateConfig} from '../config.util.js';
 
 describe('Unittesting methods in config.util.js', () => {
@@ -42,7 +41,7 @@ describe('Unittesting methods in config.util.js', () => {
       validateConfig(CONFIG);
     };
 
-    assert.throws(result, 'app.port: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler');
+    expect(result).toThrow();
   });
 
   it('Should throw when a value is undefined', () => {
@@ -52,6 +51,6 @@ describe('Unittesting methods in config.util.js', () => {
       validateConfig(CONFIG);
     };
 
-    assert.throws(result, 'host was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler');
+    expect(result).toThrow();
   });
 });

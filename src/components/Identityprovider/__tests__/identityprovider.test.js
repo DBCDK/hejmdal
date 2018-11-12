@@ -1,5 +1,3 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
 import {
   authenticate,
   identityProviderCallback
@@ -12,15 +10,9 @@ import {CONFIG} from '../../../utils/config.util';
 describe('test authenticate method', () => {
   const next = () => {};
   let ctx;
-  let sandbox;
 
   beforeEach(() => {
     ctx = mockContext();
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
   });
 
   it('Should return content page', async () => {
@@ -32,40 +24,30 @@ describe('test authenticate method', () => {
         }
       }
     });
-    ctx.render = sandbox.mock();
     await authenticate(ctx, ctx, next);
-    assert.equal(ctx.status, 200);
-    sandbox.restore();
+    expect(ctx.status).toEqual(200);
   });
 
   it('Should render error page', async () => {
-    const spy = sandbox.spy(ctx, 'render');
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
-    assert.isFalse(spy.called);
 
     await authenticate(ctx, ctx, next);
 
-    assert.isTrue(spy.called);
-    assert.isString(spy.args[0][1].error);
-    assert.isObject(spy.args[0][1].link);
+    expect(ctx.render).toMatchSnapshot();
   });
 
   it('Should redirect to nemlogin', async () => {
-    const spy = sandbox.spy(ctx, 'redirect');
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
-    assert.isTrue(spy.called);
-    assert.equal(
-      spy.args[0][0],
+    expect(ctx.redirect).toBeCalledWith(
       '/login/identityProviderCallback/nemlogin/mock_state_value'
     );
   });
   it('Should not redirect to nemlogin', async () => {
-    const spy = sandbox.spy(ctx, 'redirect');
     ctx.session.client.identityProviders = ['borchk'];
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
-    assert.isFalse(spy.called);
+    expect(ctx.redirect).not.toBeCalled();
   });
 });
 
@@ -105,7 +87,7 @@ describe('test identityProviderCallback method', () => {
 
     await identityProviderCallback(ctx, ctx, next);
 
-    assert.deepEqual(ctx.getUser(), expected);
+    expect(ctx.getUser()).toEqual(expected);
   });
 
   it('Should add nemlogin user and cpr to context', async () => {
@@ -117,7 +99,7 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['nemlogin']
     };
     await identityProviderCallback(ctx, ctx, next);
-    assert.deepEqual(ctx.getUser(), expected);
+    expect(ctx.getUser()).toEqual(expected);
   });
 
   it('Should add borchk user to context', async () => {
@@ -137,6 +119,6 @@ describe('test identityProviderCallback method', () => {
       userValidated: true
     };
     await identityProviderCallback(ctx, ctx, next);
-    assert.deepEqual(ctx.getUser(), expected);
+    expect(ctx.getUser()).toEqual(expected);
   });
 });
