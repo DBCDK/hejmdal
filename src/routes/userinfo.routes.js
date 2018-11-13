@@ -11,7 +11,10 @@ export function authenticate(req, res, next) {
 
 function mockUser(req, res, next) {
   const {user: userId, client: clientId} = res.locals.oauth.token;
-  if (clientId === 'hejmdal' && userId === '0101701234') {
+  if (
+    clientId === 'hejmdal' &&
+    (userId === '0101701234' || userId === '87654321')
+  ) {
     res.json({
       attributes: {
         userId: '0101701234',
