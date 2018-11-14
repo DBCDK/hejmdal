@@ -5,15 +5,16 @@
     "node": true,
     "es6": true,
     "mocha": true,
-    "jest": true
+    "jest": true,
+    "cypress/globals": true
   },
   "ecmaFeatures": {
     "ecmascript": 6,
     "jsx": true
   },
   "globals": {},
-  "plugins": [],
-  "extends": ["eslint:recommended"],
+  "plugins": ["cypress"],
+  "extends": ["eslint:recommended", "plugin:cypress/recommended"],
   "rules": {
     // Possible Errors
     "comma-dangle": [2],

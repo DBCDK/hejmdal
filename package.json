@@ -34,6 +34,7 @@
     "precommit": "npm run lint && npm run test && npm run test:integration:local",
     "start": "npm run serve",
     "start:test": ". ./env.test && npm run build:prod && node src/main.js",
+    "debug:dev": ". ./env.test && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example --ignore ./cypress",
     "debug": ". ./env.env && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example"
   },
   "repository": {
@@ -80,6 +81,7 @@
     "cssnano": "^3.7.7",
     "cypress": "^3.1.1",
     "eslint": "^3.16.0",
+    "eslint-plugin-cypress": "^2.1.2",
     "jest": "^23.6.0",
     "mocha-jenkins-reporter": "0.3.8",
     "neo-async": "^2.5.2",
