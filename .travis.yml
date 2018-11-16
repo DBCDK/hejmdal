@@ -3,6 +3,8 @@ sudo: false
 dist: trusty
 services:
   - postgresql
+install:
+  - npm ci
 cache:
   bundler: true
   directories:
@@ -12,9 +14,13 @@ branches:
   only:
     - master
     - oAuth2
+env:
+  - TEST_SUITE=lint
+  - TEST_SUITE=test
+  - TEST_SUITE=test:cy
+
 script:
-  - npm run lint
-  - npm run test
-  - npm run test:cy
+  - 'npm run $TEST_SUITE'
+
 addons:
   postgresql: '9.4'
