@@ -107,7 +107,7 @@ module.exports.getClient = async clientId => {
 /**
  * Save token.
  */
-module.exports.saveToken = async (token, client, user) => {
+module.exports.saveToken = async function(token, client, user) {
   if (client.clientId === 'hejmdal') {
     token.client = client.clientId;
     token.user = user.userId;
@@ -122,8 +122,7 @@ module.exports.saveToken = async (token, client, user) => {
       params.username = user.userId;
       params.library = user.libraryId;
     }
-    console.log('sDFSDFSDFSDSDF', params);
-    const smaugToken = await getTokenForUser(params);
+    const smaugToken = user.smaugToken || (await getTokenForUser(params));
     const access_token = {
       accessToken: smaugToken.access_token,
       accessTokenExpiresAt: new Date(Date.now() + smaugToken.expires_in * 1000),
@@ -139,4 +138,20 @@ module.exports.saveToken = async (token, client, user) => {
 
 module.exports.revokeToken = token => {
   // TODO: revoke token from smaug.
+};
+
+/*
+ * Get user.
+ */
+module.exports.getUser = async function(user) {
+  try {
+    const {username, password, agency: library, client_id: clientId} = user;
+    const params = {username, password, library, clientId};
+    const smaugToken = await getTokenForUser(params);
+    user.smaugToken = smaugToken;
+    user.userId = username;
+    return user;
+  } catch (e) {
+    return false;
+  }
 };

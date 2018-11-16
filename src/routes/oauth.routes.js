@@ -48,6 +48,15 @@ router.get(
  *
  */
 router.post('/token', (req, res, next) => {
+  const {grant_type, agency, username, password, client_id} = req.body;
+  if (grant_type === 'password') {
+    req.body.username = {
+      username,
+      agency,
+      client_id,
+      password
+    };
+  }
   req.app.oauth.token()(req, res, next);
 });
 
