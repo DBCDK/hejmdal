@@ -66,32 +66,26 @@ context('Login flow', () => {
     cy.get('#pin-input').should('have.attr', 'type', 'tel');
     cy.get('#pin-input').should('have.value', '1234');
   });
-  it.only('Should validate forms', () => {
+  it('Should validate forms', () => {
     // Library input
     cy.get('#borchk-submit').click();
     cy.get('#libraryname-input').should(field => {
       expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.contain(
-        'Please fill in this field.'
-      );
+      expect(field.get(0).validationMessage).to.be.a('string');
     });
     // user ID
     cy.get('#libraryname-input').type('733000');
     cy.get('#borchk-submit').click();
     cy.get('#userid-input').should(field => {
       expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.contain(
-        'Please fill in this field.'
-      );
+      expect(field.get(0).validationMessage).to.be.a('string');
     });
     // pincode
     cy.get('#userid-input').type('12345678');
     cy.get('#borchk-submit').click();
     cy.get('#pin-input').should(field => {
       expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.contain(
-        'Please fill in this field.'
-      );
+      expect(field.get(0).validationMessage).to.be.a('string');
     });
   });
 });
