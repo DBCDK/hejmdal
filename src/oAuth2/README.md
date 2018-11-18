@@ -1,10 +1,16 @@
 # Description of oAuth2 login flow.
 
-Login.bib.dk implements the "Authorization Code Grant" as specified in https://tools.ietf.org/html/rfc6749#section-4.1. This documents how to use this implementation-
+This is documentation for how to implement login.bib.dk using an oAuth2 authorization flow.
 
-## Login flow
+# 1. Authorization
 
-### 1. Make redirect to https://oauth.login.bib.dk/oauth/authorize
+Login.bib.dk implements two different grant types that can be used for authorization. "Authorization Code Grant" and "Password Grant". If possible the "Authorization Code Grant" flow should used.
+
+## 1.1. Authentication Code Grant
+
+This describes how login.bib.dk implements the "Authorization Code Grant" as specified in https://tools.ietf.org/html/rfc6749#section-4.1.
+
+### 1.1.1. Make redirect to https://oauth.login.bib.dk/oauth/authorize
 
 **Authorization Request**
 
@@ -41,7 +47,7 @@ If login goes well, a redirect will be returned to the defined {REDIRECT_URI} wi
 
 An authorization_code indicates that a user has logged in with the access platform. An authorization_code is a one-time code that can be used to retrieve an access token. This is done in cold 2.
 
-### 2. Access Token Request.
+### 1.1.2. Access Token Request.
 
 **request:**
 
@@ -49,6 +55,7 @@ See https://tools.ietf.org/html/rfc6749#section-4.1.3
 
 The client makes a request to the token endpoint by sending the, following parameters using the "application/x-www-form-urlencoded" format to `https://oauth.login.bib.dk/oauth/token`
 
+- grant_type: Value MUST be set to "authorization_code".
 - code: authorization code that was returned from previous call to `oauth/authorize`.
 - redirect_uri: Must be the same redirect_uri, which is used to retrieve authorization code.
 - client_id: client ID (In the mock implementation, it is hardcoded to hejmdal).
@@ -62,13 +69,48 @@ See https://tools.ietf.org/html/rfc6749#section-4.1.4
 
 `{"access_token": "RsT5OjbzRn430zqMLgV3Ia", "expires_in": 3600`
 
-### 3. User info request http://oauth.login.bib.dk/userinfo
+## 1.2. Password Grant
+
+see https://tools.ietf.org/html/rfc6749#section-4.3
+
+This type of authorization can be used for login in client applications that cannot make use of the authorization code grant method. This could be native applications. When using this type of authorization, single-signon will not possible.
+
+### 1.2.1. Obtain credentials
+
+It is up to the client application to obtain the user credentials. It is good practice for the client application to discard the user credentials when a valid token is obtained.
+
+### 1.2.2. Access Token Request.
+
+**request:**
+
+See https://tools.ietf.org/html/rfc6749#section-4.3.2
+
+The client makes a request to the token endpoint by sending the, following parameters using the "application/x-www-form-urlencoded" format to `https://oauth.login.bib.dk/oauth/token`
+
+- grant_type: Value MUST be set to `password`.
+- username: borchk user userId
+- password: borchk user password.
+- agency: Agency ID is the library the user needs to authenticate against.
+
+The client application needs to authenticate using client ID and client Secrect.
+
+`curl --user "{CLIENT_ID}":"{CLIENT_SECRET}" -X POST https://oauth.login.bib.dk/oauth/token -d 'grant_type=password&password={PASSWORD}&username={username}&agency=${AGENCY_ID}'`
+
+**response**
+
+See https://tools.ietf.org/html/rfc6749#section-4.3.3
+
+`{"access_token": "RsT5OjbzRn430zqMLgV3Ia", "expires_in": 3600`
+
+# 2. Get userinfo
+
+### 2.1. User info request http://oauth.login.bib.dk/userinfo
 
 The client makes a request to the token endpoint by sending the, following parameters using the "application/x-www-form-urlencoded" format to `https://oauth.login.bib.dk/userinfo`
 
 - access_code: access_token retrieved from through `oauth/token`.
 
-`curl https://oauth.login.bib.dk/userinfo -H 'Authorization:: Bearer {ACCESS_TOKEN}'`
+`curl https://oauth.login.bib.dk/userinfo -H 'Authorization: Bearer {ACCESS_TOKEN}'`
 
 response:
 
@@ -119,6 +161,12 @@ Returns a map of attributes. Which attributes that a returned depends on the cli
 
 As default only municipality and uniqueId is returned. If any other attributes is required, it needs to be configurated in the client.
 
-## Log out
+# 3. Log out
 
-To log out of the access platform, redirect to `https://oauth.login.bib.dk/logout/?access_token={ACCESS_TOKEN}`
+To log out of the access platform, redirect to: `https://oauth.login.bib.dk/logout/?access_token={ACCESS_TOKEN}`
+
+This will also remove the single-signon cookie.
+
+If authorization was done using a password grant, it is possible to revoke the access_token by making a POST request to the `/revoke` endpoint:
+
+`curl -X POST https://oauth.login.bib.dk/revoke/?access_token={ACCESS_TOKEN}`
