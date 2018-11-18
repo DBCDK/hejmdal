@@ -117,10 +117,10 @@ module.exports.saveToken = async function(token, client, user) {
 
   try {
     const params = {clientId: client.clientId};
-    if (user.pincode && user.libraryId) {
+    if (user.pincode && user.agency) {
       params.password = user.pincode;
       params.username = user.userId;
-      params.library = user.libraryId;
+      params.agency = user.agency;
     }
     const smaugToken = user.smaugToken || (await getTokenForUser(params));
     const access_token = {
@@ -145,8 +145,8 @@ module.exports.revokeToken = token => {
  */
 module.exports.getUser = async function(user) {
   try {
-    const {username, password, agency: library, client_id: clientId} = user;
-    const params = {username, password, library, clientId};
+    const {username, password, agency, client_id: clientId} = user;
+    const params = {username, password, agency, clientId};
     const smaugToken = await getTokenForUser(params);
     user.smaugToken = smaugToken;
     user.userId = username;

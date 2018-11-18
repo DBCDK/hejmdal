@@ -75,7 +75,7 @@ export default function getMockClient(clientId) {
  */
 export function getMockValidateUserTokenClient(
   clientId,
-  library,
+  agency,
   username,
   password
 ) {
@@ -84,7 +84,7 @@ export function getMockValidateUserTokenClient(
       statusCode: 403
     };
   }
-  if (library === '724000' && username === '87654321' && password === '1234') {
+  if (agency === '724000' && username === '87654321' && password === '1234') {
     return {
       statusCode: 200,
       body: JSON.stringify({access_token: 'qwerty123456asdfgh'})
@@ -96,7 +96,7 @@ export function getMockValidateUserTokenClient(
       body: JSON.stringify({access_token: CONFIG.test.token})
     };
   }
-  if (library === null && username === '@' && password === '@') {
+  if (agency === null && username === '@' && password === '@') {
     return {
       statusCode: 200,
       body: JSON.stringify({access_token: 'hejmdal-access-token'})

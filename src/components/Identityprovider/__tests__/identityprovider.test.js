@@ -107,13 +107,13 @@ describe('test identityProviderCallback method', () => {
     ctx.fakeBorchkPost = {
       userId: 'testId',
       pincode: 'testPincode',
-      libraryId: '710100'
+      agency: '710100'
     };
     const expected = {
       userId: 'testId',
       cpr: null,
       userType: 'borchk',
-      libraryId: '710100',
+      agency: '710100',
       pincode: 'testPincode',
       identityProviders: ['borchk'],
       userValidated: true

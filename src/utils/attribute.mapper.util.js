@@ -64,9 +64,9 @@ export function mapCulrResponse(culr, attributes, user, serviceId) {
         userIdType: account.userIdType
       });
     });
-  } else if (cpr && user.libraryId) {
+  } else if (cpr && user.agency) {
     agencies.push({
-      agencyId: user.libraryId,
+      agencyId: user.agency,
       userId: cpr,
       userIdType: 'CPR'
     });

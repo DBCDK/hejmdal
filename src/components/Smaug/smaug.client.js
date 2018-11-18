@@ -49,18 +49,18 @@ export async function getClientById(clientId) {
  * Get smaug token.
  *
  * @param {String} clientId
- * @param {String} library
+ * @param {String} agency
  * @param {String} username
  * @param {String} password
  * @throws {Error|TokenError}
  */
-export async function getToken(clientId, library, username, password) {
+export async function getToken(clientId, agency, username, password) {
   let response;
   // for test and development
   if (CONFIG.mock_externals.smaug) {
     response = getMockValidateUserTokenClient(
       clientId,
-      library,
+      agency,
       username,
       password
     );
@@ -73,7 +73,7 @@ export async function getToken(clientId, library, username, password) {
       },
       form: {
         grant_type: 'password',
-        username: library ? `${username}@DK-${library}` : username,
+        username: agency ? `${username}@DK-${agency}` : username,
         password: `${password}`
       }
     });
