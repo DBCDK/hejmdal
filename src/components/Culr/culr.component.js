@@ -28,6 +28,7 @@ export async function getUserAttributesFromCulr(userId) {
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
     attributes.municipalityNumber = response.result.MunicipalityNo || null;
+    attributes.culrId = response.result.Guid || null;
   } else if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
     log.info('Brugeren blev ikke fundet');
   } else {

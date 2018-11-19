@@ -7,7 +7,6 @@
 
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
-import {createHash} from './hash.utils';
 
 /**
  * Attribute mapper
@@ -46,7 +45,7 @@ export default async function mapAttributesToTicket(req, res, next) {
  * @see ATTRIBUTES
  * @return {object}
  */
-export function mapCulrResponse(culr, attributes, user, serviceId) {
+export function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
   let cpr = user.cpr || null;
   let agencies = [];
@@ -105,7 +104,7 @@ export function mapCulrResponse(culr, attributes, user, serviceId) {
         mapped.wayfId = user.wayfId ? user.wayfId : null;
         break;
       case 'uniqueId':
-        mapped.uniqueId = createUniqueId(user.cpr || user.userId, serviceId);
+        mapped.uniqueId = culr.culrId;
         break;
       default:
         log.error('Cannot map attribute: ' + field);
@@ -114,16 +113,4 @@ export function mapCulrResponse(culr, attributes, user, serviceId) {
   });
 
   return mapped;
-}
-
-/**
- * Creates a unique user id for the
- * @param {string} userId - user identification
- * @param {string} serviceId - aservice identification
- * @returns {string}
- */
-function createUniqueId(userId, serviceId) {
-  if (userId && serviceId) {
-    return createHash(userId + ':' + serviceId);
-  }
 }

@@ -14,9 +14,9 @@ import MemoryStorage from '../../models/memory.storage.model';
 import {CONFIG} from '../../utils/config.util';
 import {createHash} from '../../utils/hash.utils';
 
-const storage = CONFIG.mock_storage ?
-  new KeyValueStorage(new MemoryStorage()) :
-  new KeyValueStorage(new PersistentUserStorage());
+const storage = CONFIG.mock_storage
+  ? new KeyValueStorage(new MemoryStorage())
+  : new KeyValueStorage(new PersistentUserStorage());
 
 /**
  * Fetch an attribute object from storage from the identifier and token.
@@ -37,7 +37,7 @@ export async function getUser(req, res, next) {
       user,
       clientId
     );
-    res.json(ticketAttributes);
+    res.json({attributes: ticketAttributes});
   } catch (error) {
     log.error('Could not generate user info', {error});
     next();

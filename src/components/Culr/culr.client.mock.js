@@ -12,7 +12,11 @@ export const CulrMockClient = {
    * @param {function} cb
    */
   getAccountsByGlobalId: (params, cb) => {
-    const response = params.userCredentials.userIdValue === '5555666677' ? OK200() : ACCOUNT_DOES_NOT_EXIST();
+    const response =
+      params.userCredentials.userIdValue === '5555666677' ||
+      params.userCredentials.userIdValue === '87654321'
+        ? OK200()
+        : ACCOUNT_DOES_NOT_EXIST();
     cb(null, response);
   }
 };
@@ -33,6 +37,7 @@ function OK200() {
         }
       ],
       MunicipalityNo: '909',
+      Guid: 'some-random-curl-id',
       responseStatus: {
         responseCode: 'OK200'
       }

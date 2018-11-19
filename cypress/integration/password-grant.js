@@ -6,7 +6,7 @@ context('Password grant', () => {
       method: 'post',
       body: {
         grant_type: 'password',
-        username: '87654321',
+        username: '5555666677',
         password: '1234',
         agency: '724000',
         client_id: 'hejmdal',
@@ -59,34 +59,33 @@ context('Password grant', () => {
       .its('error_description')
       .should('include', 'user credentials are invalid');
   });
-  it('should return user information', async () => {
-    const res = await cy.request({
+  it('should return user information', () => {
+    cy.request({
       form: true,
       url: 'oauth/token',
       method: 'post',
       body: {
         grant_type: 'password',
-        username: '87654321',
+        username: '5555666677',
         password: '1234',
         agency: '724000',
         client_id: 'hejmdal',
         client_secret: 'test'
       }
+    }).then(res => {
+      const {access_token} = res.body;
+      cy.request({
+        form: false,
+        method: 'post',
+        url: 'userinfo',
+        headers: {
+          Authorization: `Bearer ${access_token}`
+        }
+      })
+        .its('body')
+        .its('attributes')
+        .its('uniqueId')
+        .should('eq', 'some-random-curl-id');
     });
-    const {access_token} = res.body;
-    cy.request({
-      method: 'post',
-      url: 'userinfo',
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    })
-      .its('body')
-      .its('attributes')
-      .its('uniqueId')
-      .should(
-        'eq',
-        '8aa45d6b9e2cdec5322fa4c35cfd3ea271a3981ffcb5f75a994029522a3ec1a9'
-      );
   });
 });

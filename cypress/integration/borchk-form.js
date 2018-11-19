@@ -1,4 +1,4 @@
-context('Login flow', () => {
+context('Borchk form', () => {
   beforeEach(() => {
     const authorize =
       '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
