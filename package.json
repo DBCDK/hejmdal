@@ -22,12 +22,9 @@
     "test": ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 MOCK_SMAUG=1 jest",
     "test:watch": "npm run test -- --watch",
     "test:cy": "npm run start:test & wait-on http://localhost:3011 && npm run cy:run",
-    "test:cy-open": "run-p --race dev:test cy:open",
+    "test:cy-local": "dev:test & cy:open",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test:integration": "npm run build:prod && . ./env.test && TEST_ENV=saucelabs wdio ./selenium/config/wdio.conf.js",
-    "test:integration:jenkins": "npm run build:prod && . ./env.test && TEST_ENV=jenkins wdio ./selenium/config/wdio.conf.js",
-    "test:integration:local": ". ./env.test && TEST_ENV=local wdio ./selenium/config/wdio.conf.js",
     "migrate:latest": "babel-node node_modules/.bin/knex migrate:latest",
     "migrate:latest:dev": ". ./env.env && npm run migrate:latest",
     "migrate:rollback": "babel-node node_modules/.bin/knex migrate:rollback",
@@ -60,7 +57,6 @@
     "body-parser": "^1.18.3",
     "connect-session-knex": "^1.4.0",
     "cors": "^2.8.4",
-    "dezalgo": "^1.0.3",
     "express": "~4.16.0",
     "express-oauth-server": "^2.0.0",
     "express-session": "^1.15.6",
@@ -94,11 +90,6 @@
     "postcss-inline-svg": "^3.1.1",
     "postcss-simple-vars": "^4.0.0",
     "precss": "^1.4.0",
-    "wait-on": "^3.2.0",
-    "wdio-junit-reporter": "^0.3.0",
-    "wdio-mocha-framework": "^0.5.13",
-    "wdio-sauce-service": "^0.4.10",
-    "wdio-selenium-standalone-service": "0.0.8",
-    "webdriverio": "^4.13.2"
+    "wait-on": "^3.2.0"
   }
 }
