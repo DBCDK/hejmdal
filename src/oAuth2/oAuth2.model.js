@@ -122,6 +122,8 @@ module.exports.saveToken = async function(token, client, user) {
       params.username = user.userId;
       params.agency = user.agency;
     }
+    // If the user is already validated the smaugToken property is added to the user object.
+    // If not, a new token is fetched.
     const smaugToken = user.smaugToken || (await getTokenForUser(params));
     const access_token = {
       accessToken: smaugToken.access_token,
@@ -146,9 +148,13 @@ module.exports.revokeToken = token => {
 module.exports.getUser = async function(user) {
   try {
     const {username, password, agency, client_id: clientId} = user;
+    // User and tokens a fetched from auth.dbc.dk.
+    // Therefore we are both validating the user and getting an autherized token in the same step.
+    // If user is authorized we add the token object to the user, so we can reuse it in the saveToken method
     const params = {username, password, agency, clientId};
     const smaugToken = await getTokenForUser(params);
     user.smaugToken = smaugToken;
+    // user object requires an userId property
     user.userId = username;
     return user;
   } catch (e) {
