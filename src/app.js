@@ -30,8 +30,6 @@ const knex = Knex(CONFIG.postgres);
 // the Model.bindKnex method.
 Model.knex(knex);
 
-const sessionStore = new KnexSessionStore({knex});
-
 import {stateMiddleware} from './middlewares/state.middleware';
 import loginRoutes from './routes/login.routes';
 import logoutRoutes from './routes/logout.routes';
@@ -74,7 +72,7 @@ app.use(
     saveUninitialized: true,
     secure: CONFIG.app.env === 'production',
     resave: true,
-    store: !CONFIG.mock_storage && sessionStore
+    store: !CONFIG.mock_storage && new KnexSessionStore({knex})
   })
 );
 
