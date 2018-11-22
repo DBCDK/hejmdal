@@ -107,7 +107,7 @@ module.exports.getClient = async clientId => {
 /**
  * Save token.
  */
-module.exports.saveToken = async (token, client, user) => {
+module.exports.saveToken = async function(token, client, user) {
   if (client.clientId === 'hejmdal') {
     token.client = client.clientId;
     token.user = user.userId;
@@ -117,13 +117,14 @@ module.exports.saveToken = async (token, client, user) => {
 
   try {
     const params = {clientId: client.clientId};
-    if (user.pincode && user.libraryId) {
+    if (user.pincode && user.agency) {
       params.password = user.pincode;
       params.username = user.userId;
-      params.library = user.libraryId;
+      params.agency = user.agency;
     }
-    console.log('sDFSDFSDFSDSDF', params);
-    const smaugToken = await getTokenForUser(params);
+    // If the user is already validated the smaugToken property is added to the user object.
+    // If not, a new token is fetched.
+    const smaugToken = user.smaugToken || (await getTokenForUser(params));
     const access_token = {
       accessToken: smaugToken.access_token,
       accessTokenExpiresAt: new Date(Date.now() + smaugToken.expires_in * 1000),
@@ -139,4 +140,24 @@ module.exports.saveToken = async (token, client, user) => {
 
 module.exports.revokeToken = token => {
   // TODO: revoke token from smaug.
+};
+
+/*
+ * Get user.
+ */
+module.exports.getUser = async function(user) {
+  try {
+    const {username, password, agency, client_id: clientId} = user;
+    // User and tokens a fetched from auth.dbc.dk.
+    // Therefore we are both validating the user and getting an autherized token in the same step.
+    // If user is authorized we add the token object to the user, so we can reuse it in the saveToken method
+    const params = {username, password, agency, clientId};
+    const smaugToken = await getTokenForUser(params);
+    user.smaugToken = smaugToken;
+    // user object requires an userId property
+    user.userId = username;
+    return user;
+  } catch (e) {
+    return false;
+  }
 };

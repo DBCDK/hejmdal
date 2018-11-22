@@ -10,7 +10,7 @@ import {promiseRequest} from '../../utils/request.util';
 /**
  * Retreives if a user is known on a given library
  *
- * @param library
+ * @param agency
  * @param userId
  * @param pinCode
  * @param serviceName
@@ -20,19 +20,18 @@ import {promiseRequest} from '../../utils/request.util';
 /**
  *
  */
-export async function getClient(library, userId, pinCode, serviceRequester) {
+export async function getClient(agency, userId, pinCode, serviceRequester) {
   let response;
 
   // for test and development
   if (CONFIG.mock_externals.borchk) {
-    response = getMockClient(library);
-  }
-  else {
+    response = getMockClient(agency);
+  } else {
     response = await promiseRequest('get', {
       uri: CONFIG.borchk.uri,
       qs: {
         serviceRequester: serviceRequester,
-        libraryCode: 'DK-' + library,
+        libraryCode: 'DK-' + agency,
         userId: userId,
         userPincode: pinCode
       }
@@ -45,4 +44,3 @@ export async function getClient(library, userId, pinCode, serviceRequester) {
 
   throw new BorchkError(response.statusMessage);
 }
-

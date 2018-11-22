@@ -62,9 +62,9 @@ export function extractClientInfo(client) {
 
 export function getTokenForUser({
   clientId,
-  library = '',
+  agency = '',
   username = '@',
   password = '@'
 }) {
-  return getToken(clientId, library, username, password);
+  return getToken(clientId, agency, username, password);
 }

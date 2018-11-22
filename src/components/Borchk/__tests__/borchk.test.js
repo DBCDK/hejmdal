@@ -16,14 +16,14 @@ describe('Test borchk component', () => {
   const ctx = mockContext();
 
   it('Lookup a known user', async () => {
-    const user = {libraryId: '710100', userId: '1234567890', pincode: ''};
+    const user = {agency: '710100', userId: '1234567890', pincode: ''};
     const response = await validateUserInLibrary(ctx, user);
     expect(response.error).toBe(false);
     expect(response.message).toEqual('OK');
   });
 
   it('Lookup a unknown user', async () => {
-    const user = {libraryId: '761500', userId: '1234567890', pincode: ''};
+    const user = {agency: '761500', userId: '1234567890', pincode: ''};
     const response = await validateUserInLibrary(ctx, user);
     expect(response.error).toBe(true);
     expect(response.message).toEqual('bonfd');

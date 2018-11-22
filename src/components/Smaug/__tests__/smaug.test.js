@@ -18,7 +18,7 @@ describe('Test Smaug component', () => {
     expect(clientinfo).toEqual({
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
-      grants: ['authorization_code'],
+      grants: ['authorization_code', 'password'],
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,

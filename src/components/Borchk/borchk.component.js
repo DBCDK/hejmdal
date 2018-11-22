@@ -18,7 +18,7 @@ export async function validateUserInLibrary(serviceRequester, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
 
   const response = await getClient(
-    userInput.libraryId,
+    userInput.agency,
     userInput.userId,
     userInput.pincode,
     serviceRequester

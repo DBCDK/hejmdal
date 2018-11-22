@@ -139,7 +139,7 @@ export async function borchkCallback(req, res) {
   const formData = req.fakeBorchkPost || req.body;
   let validated = {error: true, message: 'unknown_eror'};
 
-  if (formData && formData.userId && formData.libraryId && formData.pincode) {
+  if (formData && formData.userId && formData.agency && formData.pincode) {
     validated = await validateUserInLibrary(requestUri, formData);
   } else {
     validated.message = ERRORS.missing_fields;
@@ -150,7 +150,7 @@ export async function borchkCallback(req, res) {
       userId: formData.userId,
       cpr: isValidCpr(formData.userId) ? formData.userId : null,
       userType: 'borchk',
-      libraryId: formData.libraryId,
+      agency: formData.agency,
       pincode: formData.pincode,
       userValidated: true
     };
@@ -158,7 +158,7 @@ export async function borchkCallback(req, res) {
     req.setUser(user);
     return true;
   }
-  idenityProviderValidationFailed(req, res, validated, formData.libraryId);
+  idenityProviderValidationFailed(req, res, validated, formData.agency);
   return false;
 }
 
@@ -273,14 +273,14 @@ export async function identityProviderCallback(req, res) {
  *
  * @param {object} req
  * @param {object} error
- * @param {string} libraryId
+ * @param {string} agency
  */
-function idenityProviderValidationFailed(req, res, error, libraryId) {
+function idenityProviderValidationFailed(req, res, error, agency) {
   const agencyParameter = req.getState().serviceAgency
     ? '&agency=' + req.getState().serviceAgency
     : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
-  const preselctedLibrary = libraryId ? `&presel=${libraryId}` : '';
+  const preselctedLibrary = agency ? `&presel=${agency}` : '';
   const startOver = `/login?token=${req.getState().smaugToken}&returnurl=${
     req.getState().returnUrl
   }${agencyParameter}${errorParameter}${preselctedLibrary}`;

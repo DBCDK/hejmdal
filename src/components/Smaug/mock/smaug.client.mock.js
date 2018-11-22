@@ -2,7 +2,7 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
-  grants: ['authorization_code'],
+  grants: ['authorization_code', 'password'],
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
   redirectUris: [
     `${process.env.HOST}/callback`,
@@ -54,7 +54,10 @@ export default function getMockClient(clientId) {
   }
 
   if (clientId === 'd83a6fba8a7847d1add4703cc237cb72') {
-    return Object.assign({}, mockData, {identityProviders: ['unilogin'], attributes: {uniloginId: ATTRIBUTES.uniloginId}});
+    return Object.assign({}, mockData, {
+      identityProviders: ['unilogin'],
+      attributes: {uniloginId: ATTRIBUTES.uniloginId}
+    });
   }
 
   if (clientId === 'hejmdal-access-token') {
@@ -70,8 +73,18 @@ export default function getMockClient(clientId) {
  * @param token
  * @returns {*}
  */
-export function getMockValidateUserTokenClient(clientId, library, username, password) {
-  if (library === '724000' && username === '87654321' && password === '1234') {
+export function getMockValidateUserTokenClient(
+  clientId,
+  agency,
+  username,
+  password
+) {
+  if (username === 'wrong_user') {
+    return {
+      statusCode: 403
+    };
+  }
+  if (agency === '724000' && username === '87654321' && password === '1234') {
     return {
       statusCode: 200,
       body: JSON.stringify({access_token: 'qwerty123456asdfgh'})
@@ -83,7 +96,7 @@ export function getMockValidateUserTokenClient(clientId, library, username, pass
       body: JSON.stringify({access_token: CONFIG.test.token})
     };
   }
-  if (library === null && username === '@' && password === '@') {
+  if (agency === null && username === '@' && password === '@') {
     return {
       statusCode: 200,
       body: JSON.stringify({access_token: 'hejmdal-access-token'})
