@@ -22,7 +22,7 @@
     "test": ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 MOCK_SMAUG=1 jest",
     "test:watch": "npm run test -- --watch",
     "test:cy": "npm run start:test & wait-on http://localhost:3011 && npm run cy:run",
-    "test:cy-local": "dev:test & cy:open",
+    "test:cy-local": "npm run dev:test & npm run cy:open",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
     "migrate:latest": "babel-node node_modules/.bin/knex migrate:latest",
@@ -31,7 +31,7 @@
     "precommit": "npm run lint && npm run test && npm run test:integration:local",
     "start": "npm run serve",
     "start:test": ". ./env.test && npm run build:prod && node src/main.js",
-    "debug:dev": ". ./env.test && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example --ignore ./cypress",
+    "debug:test": ". ./env.test && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example --ignore ./cypress",
     "debug": ". ./env.env && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example"
   },
   "repository": {

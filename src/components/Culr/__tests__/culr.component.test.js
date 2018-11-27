@@ -29,7 +29,8 @@ describe('Unittesting methods in culr.component:', () => {
             userIdValue: '456456'
           }
         ],
-        municipalityNumber: '909'
+        municipalityNumber: '909',
+        culrId: 'some-random-curl-id'
       });
     });
 

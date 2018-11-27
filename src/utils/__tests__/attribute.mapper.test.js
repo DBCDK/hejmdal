@@ -1,5 +1,4 @@
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
-import {createHash} from '../../utils/hash.utils';
 import {mockContext} from '../../utils/test.util';
 import {log} from '../../utils/logging.util';
 
@@ -21,7 +20,8 @@ describe('Attribute mapper unittest', () => {
         userIdValue: '222333'
       }
     ],
-    municipalityNumber: '333'
+    municipalityNumber: '333',
+    culrId: 'some-random-curl-id'
   };
 
   it('do nothing', () => {
@@ -61,7 +61,7 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
-      uniqueId: createHash('0102456789:' + serviceId),
+      uniqueId: 'some-random-curl-id',
       municipality: '333'
     });
   });
