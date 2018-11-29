@@ -1,14 +1,8 @@
 context('Login flow', () => {
-  beforeEach(() => {});
+  const authorize =
+    '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example&presel=733000';
 
   it('cy.url() - get the current URL', () => {
-    const authorize =
-      '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example&presel=733000';
-    cy.server();
-    cy.route(authorize).as('authorize');
-    cy.route('/login').as('login');
-    cy.clearCookies();
-
     cy.log('Setup client using example endpoint');
     cy.visit('example');
     cy.get('h3')
@@ -59,5 +53,13 @@ context('Login flow', () => {
 
     cy.visit(authorize);
     cy.location('pathname').should('eq', '/login');
+  });
+
+  it('carries through state parameter', () => {
+    cy.visit(`${authorize}&state=test-state-string`);
+    cy.get('#userid-input').type('87654321');
+    cy.get('#pin-input').type('1234');
+    cy.get('#borchk-submit').click();
+    cy.location('search').should('contain', 'state=test-state-string');
   });
 });

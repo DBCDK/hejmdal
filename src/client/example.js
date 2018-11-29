@@ -113,7 +113,15 @@ function parseQueryString() {
   return qObj;
 }
 
-function getAuthUrl({clientId, redirectUri, presel, agency, agencyType, idp, state}) {
+function getAuthUrl({
+  clientId,
+  redirectUri,
+  presel,
+  agency,
+  agencyType,
+  idp,
+  state
+}) {
   let url = `${
     window.location.origin
   }/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
@@ -212,9 +220,6 @@ function setState() {
 (function init() {
   const queryObj = parseQueryString();
   if (queryObj.code) {
-    if (!hejmdal.initialized) {
-      window.location = '/example';
-    }
     if (hejmdal.code !== queryObj.code) {
       hejmdal.access_token = null;
       hejmdal.token = null;
