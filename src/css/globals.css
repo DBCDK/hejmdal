@@ -1,6 +1,40 @@
-html, body {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'Arial', sans-serif;
+}
+
+html,
+body {
   height: 100%;
   background-color: var(--background-color-body);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.container,
+.content-container {
+  width: 100%;
+  height: 100%;
+}
+
+.content-container {
+  padding: 15px;
+}
+
+@media (min-width: 486px) {
+  .content-container {
+    width: 486px;
+    margin: auto;
+    padding: 0;
+  }
+}
+
+.modal,
+.dropdown {
+  display: none;
 }
 
 .link-style {
@@ -24,12 +58,6 @@ html, body {
   width: 26px;
 }
 
-.content {
-  margin-top: 20px;
-  z-index: 1;
-  margin-bottom: 50px;
-}
-
 .hasfocus {
   border: none;
   border-radius: 0;
@@ -37,7 +65,7 @@ html, body {
   border-bottom: solid var(--dark-grey) 2px;
 }
 
-input[type="password"] {
+input[type='password'] {
   &.form-control {
     font-size: 22px;
     letter-spacing: 1px;

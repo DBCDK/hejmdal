@@ -1,27 +1,60 @@
-.link-style {
-  cursor: pointer;
+@svg-load --svg-cube-logo-large url(svg/logo/logo_orange.svg) {
+  fill: black;
 }
 
-#profile-login {
-  margin: 2em 0;
-}
+#login {
+  .content-container {
+    .top {
+      #logo {
+        display: block;
+        width: 47px;
+        height: 41px;
+        background: svg-inline(--svg-cube-logo-large) no-repeat center center;
+        background-size: contain;
+        margin: 60px 0 20px 0;
+      }
 
-#external-providers {
-  margin-top: 10px;
-  margin-bottom: 50px;
+      h1 {
+        color: var(--black-lighten-1);
+        font-size: 30px;
+        line-height: 34px;
+        font-weight: lighter;
+      }
 
-  .btn {
-    margin-right: 10px;
-    padding: 5px 9px;
-  }
+      p {
+        margin: 20px 0 20px 0;
 
-  .btn-grey {
-    width: inherit;
-  }
-}
+        a {
+          font-size: 12px;
+          color: var(--grey-lighten-1);
+        }
+      }
+    }
+    .bottom {
+      margin: 119px 0 0 0;
 
-.external-providers-btn-container {
-  a:last-of-type {
-    margin-right: 0 !important;
+      #external-providers {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          align-self: center;
+          font-size: 16px;
+          line-height: 19px;
+          color: var(--black-lighten-1);
+        }
+
+        #external-providers-btn-container {
+          display: flex;
+          justify-content: space-between;
+          margin: 30px 0 40px 0;
+
+          a {
+            border: 1px solid var(--grey-lighten-4);
+            padding: 12px 30px;
+          }
+        }
+      }
+    }
   }
 }
