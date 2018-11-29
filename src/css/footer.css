@@ -1,18 +1,38 @@
 #footer {
-  border-top: 1px solid var(--dark-grey);
-  font-size: 13px;
-  color: var(--dark-grey);
-}
+  background-color: var(--background-color);
+  height: 148px;
 
-.footer-container {
-  margin-top: 10px;
-}
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
-.footer-link {
-  color: var(--dark-grey);
-  text-decoration: underline;
-}
+    .medias,
+    .links {
+      display: flex;
+      height: 50%;
+    }
 
-#footer .login-profile-link {
-  margin-top: 0.25em;
+    .medias {
+      justify-content: space-between;
+      align-items: flex-end;
+
+      .media {
+        width: 100px;
+        height: 30px;
+        background-color: red;
+        padding: 12px 20px;
+      }
+    }
+
+    .links {
+      justify-content: space-around;
+      align-items: center;
+
+      span,
+      a {
+        color: var(--grey-lighten-1);
+      }
+    }
+  }
 }

@@ -7,25 +7,30 @@ block append content
     div#profile-login.header
       h4.title
         strong Log ind for at se dine data
-  div
-    div.borchk-component
+
+  div#login
+    div.content-container
+      div.top
+        span#logo
+        h1 Log ind
+        p Log in lorem ipsum ala nqkakv tekst otnosno a la poke neshto za bibliotekerne tehniq lorem iåsum. 
+          a.link-style#helptext-link(data-toggle="modal" data-target="#helpModal") Brug for hjælp?
+
       if identityProviders.borchk
-        include Components/Borchk
+          include Components/Borchk
 
-    if identityProviders.unilogin || identityProviders.nemlogin
-      div#external-providers
+      if identityProviders.unilogin || identityProviders.nemlogin
+        div.bottom
+          div#external-providers
 
-        div.buffer-hor-10.buffer-vertical-5 Du kan også logge ind med
+            p Andre log ind muligheder
 
-        div.external-providers-btn-container
-          if identityProviders.unilogin
-            include Components/Unilogin
+            div#external-providers-btn-container
+              if identityProviders.unilogin
+                include Components/Unilogin
 
-          if identityProviders.nemlogin
-            include Components/Nemlogin
+              if identityProviders.nemlogin
+                include Components/Nemlogin
 
-          if identityProviders.wayf
-            include Components/Wayf
-
-
-  include Components/Helptext.container.pug
+              if identityProviders.wayf
+                include Components/Wayf
