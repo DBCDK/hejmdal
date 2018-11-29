@@ -17,6 +17,7 @@ const defaultState = {
   agency: '',
   agencyType: null,
   idp: '',
+  state: '',
   loginUrl: ''
 };
 
@@ -112,7 +113,7 @@ function parseQueryString() {
   return qObj;
 }
 
-function getAuthUrl({clientId, redirectUri, presel, agency, agencyType, idp}) {
+function getAuthUrl({clientId, redirectUri, presel, agency, agencyType, idp, state}) {
   let url = `${
     window.location.origin
   }/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
@@ -130,6 +131,9 @@ function getAuthUrl({clientId, redirectUri, presel, agency, agencyType, idp}) {
 
   if (idp) {
     url += `&idp=${idp}`;
+  }
+  if (state) {
+    url += `&state=${state}`;
   }
 
   return url;
@@ -216,10 +220,12 @@ function setState() {
       hejmdal.token = null;
       hejmdal.userinfo = null;
       hejmdal.code = queryObj.code;
+      hejmdal.state = queryObj.state || '';
     }
   } else {
     hejmdal.initialized = true;
     hejmdal.code = false;
+    hejmdal.state = '';
   }
 
   setState();
