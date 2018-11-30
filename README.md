@@ -194,5 +194,5 @@ The variables are specified at the form `name : internal config object`. Referen
 
 # Dokumentation
 
-- [Documentation of endpoints](src/oauth)
+- [Documentation of endpoints](src/oAuth2)
 - [Example klient](https://oauth.login.bib.dk/example)
