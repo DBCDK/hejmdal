@@ -2,11 +2,11 @@
   fill: black;
 }
 
-@svg-load --eye-open url(svg/icons/eye_large.svg) {
+@svg-load --eyeopen url(svg/icons/eye_large.svg) {
   fill: black;
 }
 
-@svg-load --eye-closed url(svg/icons/eye_large_hidden.svg) {
+@svg-load --eyeclosed url(svg/icons/eye_large_hidden.svg) {
   fill: black;
 }
 
@@ -44,13 +44,15 @@
       .input-container {
         margin: 10px 0;
         display: flex;
+        flex-wrap: wrap;
         border: 1px solid var(--grey-lighten-4);
         border-radius: 2px;
         transition-duration: 0.2s;
+        position: relative;
 
         &:focus-within,
         &:hover {
-          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+          box-shadow: var(--shadow);
         }
 
         input,
@@ -61,6 +63,7 @@
         }
 
         input {
+          width: calc(100% - 50px);
           padding: 16px 20px;
           font-size: 14px;
           color: var(--grey);
@@ -75,10 +78,82 @@
             background: svg-inline(--caret) no-repeat center;
           }
           &.eye-closed {
-            background: svg-inline(--eye-closed) no-repeat center;
+            background: svg-inline(--eyeclosed) no-repeat center;
           }
           &.eye-open {
-            background: svg-inline(--eye-open) no-repeat center;
+            background: svg-inline(--eyeopen) no-repeat center;
+          }
+        }
+
+        /* Dropdown */
+        &:focus-within #libraries-dropdown-container {
+          top: 51px;
+          opacity: 1;
+          pointer-events: auto;
+        }
+
+        #libraries-dropdown-container {
+          width: calc(100% + 2px);
+          background-color: var(--white);
+          border: 1px solid var(--grey-lighten-4);
+          position: absolute;
+          overflow: hidden;
+          left: -1px;
+          z-index: 1;
+          height: 300px;
+          box-shadow: var(--shadow);
+
+          transition-duration: 0.2s;
+          transition-timing-function: ease-out;
+
+          /* animation */
+          top: 65px;
+          pointer-events: none;
+          opacity: 0;
+
+          ul#libraries-dropdown {
+            height: 100%;
+            overflow-y: auto;
+            padding: 22px 0 22px 0;
+
+            &::-webkit-scrollbar-track {
+              background-color: var(--grey-lighten-4);
+            }
+
+            &::-webkit-scrollbar {
+              width: 6px;
+              background-color: #f5f5f5;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: var(--grey);
+            }
+
+            li {
+              list-style: none;
+              padding: 5px 22px 5px 22px;
+
+              a {
+                font-size: 16px;
+                display: block;
+                color: var(--black-lighten-1);
+                cursor: pointer;
+              }
+
+              &:hover {
+                background-color: var(--grey-lighten-4);
+              }
+            }
+
+            li.subject {
+              color: var(--grey-lighten-1);
+              font-size: 10px;
+              padding: 0 22px 0 22px;
+
+              &:hover {
+                background-color: transparent;
+              }
+            }
           }
         }
       }
@@ -131,32 +206,8 @@
   }
 }
 
-.libraries-dropdown {
-  max-height: 200px;
-  width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-.agency {
-  font-size: 16px;
-  :hover {
-    cursor: pointer;
-  }
-}
-
-.selected {
-  background-color: var(--dropdown-selected-bg);
-}
-
 .hide {
-  display: none;
-}
-
-.login-actions {
-  margin-bottom: 50px;
-  padding: 0;
+  display: none !important;
 }
 
 .icon-eye-closed {
@@ -165,50 +216,4 @@
 
 .icon-eye-open {
   background: svg-inline(--svg-eye-open) no-repeat center;
-}
-
-.remember-me-container {
-  padding-left: 0;
-  display: inline-block;
-  text-align: left;
-
-  .remember {
-    cursor: pointer;
-  }
-}
-
-.login-buttons-container {
-  padding-right: 0;
-  text-align: right;
-  display: inline-block;
-}
-
-.inline {
-  display: inline-block;
-}
-
-input[type='checkbox'] {
-  display: none;
-}
-input[type='checkbox'] + span {
-  display: inline-block;
-}
-
-input[type='checkbox']:checked + span:before {
-  background: svg-inline(checkmark) no-repeat center;
-  background-color: var(--btn-green);
-  background-size: 15px 15px;
-  border: none;
-}
-
-input[type='checkbox'] + span:before {
-  content: ' ';
-  position: relative;
-  margin-right: 10px;
-  top: 5px;
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid;
-  border-radius: 4px;
 }
