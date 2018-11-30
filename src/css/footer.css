@@ -1,3 +1,15 @@
+@svg-load --biblotekslogin-logo url(svg/icons/caret.svg) {
+  fill: black;
+}
+
+@svg-load --eye-open url(svg/icons/eye_large.svg) {
+  fill: black;
+}
+
+@svg-load --eye-closed url(svg/icons/eye_large_hidden.svg) {
+  fill: black;
+}
+
 #footer {
   background-color: var(--background-color);
   height: 148px;
@@ -20,7 +32,7 @@
       .media {
         width: 100px;
         height: 30px;
-        background-color: red;
+        background-color: var(--error);
         padding: 12px 20px;
       }
     }
