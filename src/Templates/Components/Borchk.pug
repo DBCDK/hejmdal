@@ -14,8 +14,8 @@ div#borchk
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
           input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselectedName)
-          button.caret(type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
-
+          button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
+          button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 
           if branches
             div(id='libraries-dropdown-container' aria-hidden='true')
@@ -27,22 +27,14 @@ div#borchk
                     li.agency
                       a(data-aid=branch.branchId data-name=branch.name onclick='OnClick(this);') #{branch.name}
 
-
-
         span Lorem ipsum dolor sit amet
-
-        //-div.input-group-btn.black
-          //-button.btn.inline-btn-default(type='button' class=preselctedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
-            //-span(class='glyphicon glyphicon-remove')
-
-
 
     div.form-group
       label(for='userid-input') CPR eller lånernummer
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete="password")
-        button.eye-open(type='button' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
+        button(type='button' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
       span Lånernummer  dopalnitelna informacia la la lorem ipsum
 
 
@@ -50,7 +42,7 @@ div#borchk
       label(for='pin-input') Indtast din kode
       div.input-container
         input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete="new-pincode")
-        button.eye-open(type='button' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
+        button(type='button' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
       span Lånernummer  dopalnitelna informacia la la lorem ipsum
 
     div.action-container
