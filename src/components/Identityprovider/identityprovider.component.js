@@ -95,9 +95,6 @@ export async function authenticate(req, res, next) {
       'login_'
     );
 
-    // const body = `<div>body</div>`;
-    // res.send(`<html>${body}</html>`);
-
     res.render('Login', {
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
