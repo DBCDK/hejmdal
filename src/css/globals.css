@@ -37,17 +37,17 @@ body {
   }
 }
 
-.link-style {
-  cursor: pointer;
-  color: black;
-  text-decoration: underline;
+/* validation utils */
+
+.input-inValid {
+  border: 1px solid var(--error) !important;
 }
 
-.link-style:hover {
-  color: black;
+.text-inValid {
+  color: var(--error) !important;
 }
 
-.btn-grey {
+/* .btn-grey {
   width: 100px;
   background-color: white;
 }
@@ -70,4 +70,4 @@ input[type='password'] {
     font-size: 22px;
     letter-spacing: 1px;
   }
-}
+} */

@@ -1,19 +1,19 @@
 div#borchk
-  form(action=identityProviders.borchk.action autocomplete='off' method='post')
+  form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form')
 
     div.form-group
 
       if lockedAgency
         label(for='libraryid-input') Bibliotek
         input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
-        input(type="text" disabled value=lockedAgencyName class="form-control" id="libraryid-input-disabled" name="libraryName" aria-hidden='false' aria-disabled='true')
+        input(type="text" disabled value=lockedAgencyName class="form-control" id="libraryname-input" name="libraryName" aria-hidden='false' aria-disabled='true')
       else
 
-        input(type="hidden" name="agency" id="libraryid-input-hidden" aria-hidden='true' value=preselectedId )
+        input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId )
 
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselectedName)
+          input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselectedName tabindex='0')
           button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 
@@ -24,29 +24,29 @@ div#borchk
                 li(class='subject' id='alphabetical') Alfabetisk
                 each branch in branches
                   if branch.name
-                    li.agency
+                    li(class="agency" data-aid=branch.branchId data-name=branch.name)
                       a(data-aid=branch.branchId data-name=branch.name onclick='OnClick(this);') #{branch.name}
 
-        span Lorem ipsum dolor sit amet
+        span(id='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
 
     div.form-group
-      label(for='userid-input') CPR eller lånernummer
+      label(for='userid-input') Cpr- eller lånernummer
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-        input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete="password")
+        input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete='password' tabindex='1')
         button(type='button' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
-      span Lånernummer  dopalnitelna informacia la la lorem ipsum
+      span(id='userid-input-text' data-text='Lånernummer dopalnitelna informacia la la lorem ipsum') Lånernummer dopalnitelna informacia la la lorem ipsum
 
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
-        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete="new-pincode")
+        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete='new-pincode' tabindex='2')
         button(type='button' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
-      span Lånernummer  dopalnitelna informacia la la lorem ipsum
+      span(id='pin-input-text' data-text='Indtast din 4- eller 5-cifrede bibliotekskode') Indtast din 4- eller 5-cifrede bibliotekskode
 
     div.action-container
-        button(type='submit' id='borchk-submit') Log ind
+        button(type='button' id='borchk-submit' onclick='loginSubmit()' tabindex='3') Log ind
         div.other-actions
           a(href='') Ny Bruger?
           a(href='') Læs om vores behandling af dine personoplysninger

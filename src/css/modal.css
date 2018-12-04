@@ -121,12 +121,13 @@
     width: 70vw;
     height: 60vh;
     right: 15vw;
-    top: 10vh;
+    top: 0vh;
     transform: scale(0.75);
     pointer-events: none;
 
     &.visible {
       right: 15vw;
+      top: 10vh;
       opacity: 1;
       pointer-events: auto;
       transform: scale(1);
