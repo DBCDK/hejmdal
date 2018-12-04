@@ -2,6 +2,8 @@ extends Head
 
 block append body
   body
+    include Components/modal-help
+
     div.container
       div(id='topbar-container' aria-hidden = error ? 'true' : 'false')
         //-include Components/Topbar

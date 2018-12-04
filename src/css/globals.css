@@ -1,3 +1,7 @@
+@svg-load --close url(svg/icons/close.svg) {
+  fill: black;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +16,7 @@ body {
   background-color: var(--background-color-body);
   font-size: 14px;
   line-height: 22px;
+  color: var(--black-lighten-1);
 }
 
 .container,
@@ -30,10 +35,6 @@ body {
     margin: auto;
     padding: 0;
   }
-}
-
-.modal {
-  display: none;
 }
 
 .link-style {
