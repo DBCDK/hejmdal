@@ -1,3 +1,7 @@
+@svg-load --close url(svg/icons/close.svg) {
+  fill: black;
+}
+
 * {
   margin: 0;
   padding: 0;
