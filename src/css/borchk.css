@@ -162,7 +162,9 @@
                 background-color: var(--grey-lighten-4);
               }
             }
-
+            li.selected {
+              background-color: var(--grey-lighten-4);
+            }
             li.subject {
               color: var(--grey-lighten-1);
               font-size: 10px;
@@ -195,6 +197,13 @@
         color: var(--white);
         border-radius: 2px;
         border: 0;
+        transition-duration: 0.2s;
+        transition-timing-function: ease-out;
+
+        &:hover,
+        &:focus {
+          background-color: var(--success);
+        }
       }
       .other-actions {
         display: flex;

@@ -2,11 +2,18 @@ div#footer
     div.content-container
 
       div.medias
-        span.media
-        span.media
-        span.media
+        div.media-group
+          span.media.visible
+          span.media.visible
+          span.media.visible
+        div.media-group
+          span.media.visible
+          span.media.visible
+          span.media.visible
 
       if (!info)
         div.links
-          span Læs mere om 
-            a(href='/info/cookies' target='hjemdal-cookie') vores brug af cookies
+          span Vi behandler dine data i overensstemmelse med vores &#160;
+            a(href='/info/persondatapolitik') persondatapolitik
+          span Læs mere om
+            a(href='/info/cookies') vores brug af cookies

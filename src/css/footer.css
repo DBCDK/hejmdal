@@ -12,34 +12,64 @@
 
 #footer {
   background-color: var(--background-color);
-  height: 148px;
+  height: auto;
 
   .content-container {
+    min-height: 148px;
+    padding: 40px 0;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 
     .medias,
     .links {
-      display: flex;
       height: 50%;
     }
 
     .medias {
-      justify-content: space-between;
-      align-items: flex-end;
+      padding: 0 0 20px 0;
 
-      .media {
-        width: 100px;
-        height: 30px;
-        background-color: var(--error);
-        padding: 12px 20px;
+      .media-group {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: auto;
+
+        .media {
+          width: 200px;
+          height: 30px;
+          background-color: var(--error);
+          opacity: 0;
+          margin: 0 auto 20px auto;
+
+          &.visible {
+            opacity: 1;
+          }
+        }
+      }
+
+      @media (min-width: 335px) {
+        .media-group {
+          flex-direction: row;
+
+          .media {
+            width: 100px;
+            margin: 0 0 20px 0;
+          }
+        }
       }
     }
 
     .links {
+      display: flex;
       justify-content: space-around;
+      flex-direction: column;
       align-items: center;
+
+      span {
+        text-align: center;
+        padding: 5px 0;
+      }
 
       span,
       a {
