@@ -13,8 +13,9 @@ block append content
       div.top
         span#logo
         h1 Log ind
-        p Log in lorem ipsum ala nqkakv tekst otnosno a la poke neshto za bibliotekerne tehniq lorem iåsum.
-          a.link-style#helptext-link(data-toggle="modal" data-target="#helpModal") Brug for hjælp?
+        p Log in lorem ipsum ala nqkakv tekst otnosno a la poke neshto za bibliotekerne tehniq lorem iåsum.&#160;
+          if (help && help.title && help.sections)
+            a(onclick='toggleModal("helpModal")') Brug for hjælp?
 
       if identityProviders.borchk
           include Components/Borchk

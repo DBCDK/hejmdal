@@ -2,10 +2,6 @@
   fill: black;
 }
 
-@svg-load --close url(svg/icons/close.svg) {
-  fill: black;
-}
-
 @svg-load --eyeopen url(svg/icons/eye_small.svg) {
   fill: black;
 }
