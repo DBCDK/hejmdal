@@ -25,9 +25,9 @@
   --shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
 
   /* fonts */
-  --primary: 'FaktPro-Blond', Halvetica, Ariel, sans-serif;
-  --secondary: 'FaktPro-Medium', Halvetica, Ariel, sans-serif;
-  --tertiary: 'FaktPro-Normal', Halvetica, Ariel, sans-serif;
+  --primary: 'FaktPro-Blond';
+  --secondary: 'FaktPro-Medium';
+  --tertiary: 'FaktPro-Normal';
 
   /* old TODO delete when done */
   --red: #ff0000;
