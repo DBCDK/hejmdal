@@ -1,4 +1,7 @@
-@import 'colors.css';
+/* TODO remove unused files*/
+
+@import 'resources.css';
+@import 'variables.css';
 @import 'globals.css';
 @import 'utils.css';
 @import 'borchk.css';

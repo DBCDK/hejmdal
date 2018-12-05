@@ -10,20 +10,20 @@
   top: 0;
   z-index: 99;
   background-color: var(--white);
-  box-shadow: var(--shadow);
+  transition-timing-function: ease-out;
+  box-shadow: -2px 0 3px rgba(0, 0, 0, 0.07);
+  opacity: 1;
 
   /* animation props */
   transition-duration: 0.2s;
   right: -100vw;
-  opacity: 0;
 
   &.visible {
     transition-duration: 0.3s;
     right: 0;
-    opacity: 1;
   }
 
-  .modal-header {
+  #modal-header {
     position: relative;
     padding: 80px 16px 40px 16px;
     height: 25%;
@@ -38,7 +38,7 @@
       width: 60px;
       height: 60px;
       cursor: pointer;
-      background: svg-inline(--close) no-repeat center;
+      background: svg-inline(--close-large) no-repeat center;
       background-size: 15px;
       position: absolute;
       top: 0px;
@@ -52,13 +52,13 @@
       padding: 16px;
     }
 
-    &.onScroll ~ .modal-body {
+    &.onScroll ~ #modal-body {
       padding: 50px 16px 0 16px;
       height: calc(100% - 60px);
     }
   }
 
-  .modal-body {
+  #modal-body {
     padding: 0px 16px;
     height: 75%;
     overflow-y: auto;
@@ -106,6 +106,7 @@
     z-index: 98;
     cursor: pointer;
     display: block;
+    box-shadow: var(--shadow);
 
     /* animation props */
     opacity: 0;
@@ -124,6 +125,8 @@
     top: 0vh;
     transform: scale(0.75);
     pointer-events: none;
+    opacity: 0;
+    box-shadow: var(--shadow);
 
     &.visible {
       right: 15vw;
@@ -133,22 +136,23 @@
       transform: scale(1);
     }
 
-    .modal-header {
+    #modal-header {
       padding: 80px 50px 40px 50px;
 
       &.onScroll {
         padding: 16px 50px;
       }
 
-      &.onScroll ~ .modal-body {
+      &.onScroll ~ #modal-body {
         padding: 60px 50px 0 50px;
       }
 
       button {
         background-size: 10px;
+        background: svg-inline(--close-small) no-repeat center;
       }
     }
-    .modal-body {
+    #modal-body {
       padding: 0px 50px;
     }
   }
@@ -163,19 +167,19 @@
       right: 20vw;
     }
 
-    .modal-header {
+    #modal-header {
       padding: 80px 100px 40px 100px;
 
       &.onScroll {
         padding: 16px 100px;
       }
 
-      &.onScroll ~ .modal-body {
+      &.onScroll ~ #modal-body {
         padding: 60px 100px 0 100px;
       }
     }
 
-    .modal-body {
+    #modal-body {
       padding: 0px 100px;
     }
   }

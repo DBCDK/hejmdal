@@ -21,9 +21,15 @@
   --error: #fe4d3d;
   --success: #009a61;
 
+  /* shadow */
   --shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
 
-  /* old */
+  /* fonts */
+  --primary: 'FaktPro-Blond';
+  --secondary: 'FaktPro-Medium';
+  --tertiary: 'FaktPro-Normal';
+
+  /* old TODO delete when done */
   --red: #ff0000;
   --dropdown-selected-bg: #f5f5f5;
   --dark-grey: #7e7c77;

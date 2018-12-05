@@ -1,13 +1,10 @@
-@svg-load --close url(svg/icons/close.svg) {
-  fill: black;
-}
+/* Global styles */
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   outline: none;
-  font-family: 'Arial', sans-serif;
 }
 
 html,
@@ -17,6 +14,7 @@ body {
   font-size: 14px;
   line-height: 22px;
   color: var(--black-lighten-1);
+  font-family: var(--primary);
 }
 
 .container,
@@ -46,28 +44,3 @@ body {
 .text-inValid {
   color: var(--error) !important;
 }
-
-/* .btn-grey {
-  width: 100px;
-  background-color: white;
-}
-
-.icon-btn {
-  display: block;
-  height: 20px;
-  width: 26px;
-}
-
-.hasfocus {
-  border: none;
-  border-radius: 0;
-  background-color: transparent;
-  border-bottom: solid var(--dark-grey) 2px;
-}
-
-input[type='password'] {
-  &.form-control {
-    font-size: 22px;
-    letter-spacing: 1px;
-  }
-} */
