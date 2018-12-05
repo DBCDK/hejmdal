@@ -55,10 +55,15 @@
             border: 1px solid var(--grey-lighten-4);
             padding: 6px 15px;
             margin-bottom: 10px;
+            transition-duration: 0.2s;
 
             span {
               margin: auto;
               height: 30px;
+            }
+
+            &:hover {
+              box-shadow: var(--shadow);
             }
           }
         }

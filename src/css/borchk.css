@@ -36,8 +36,8 @@
         width: 100%;
       }
       label {
+        font-family: var(--secondary);
         font-size: 18px;
-        font-weight: 500;
         color: var(--black-lighten-1);
       }
 
@@ -86,7 +86,7 @@
             background: svg-inline(--caret) no-repeat center;
           }
           &.close {
-            background: svg-inline(--close) no-repeat center;
+            background: svg-inline(--close-small) no-repeat center;
             background-size: 10px;
           }
           &.eye-closed {
@@ -211,6 +211,7 @@
         margin: 20px 0 0 0;
 
         a {
+          font-family: var(--tertiary);
           color: var(--grey-lighten-1);
           font-size: 12px;
         }
