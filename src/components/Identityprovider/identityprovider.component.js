@@ -95,20 +95,6 @@ export async function authenticate(req, res, next) {
       'login_'
     );
 
-    console.log('da Obj: ', {
-      error: error,
-      returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
-      serviceClient: state.serviceClient.name,
-      identityProviders,
-      branches: branches,
-      preselectedName: preselectedName,
-      preselectedId: preselectedId,
-      lockedAgency: state.serviceAgency || null,
-      lockedAgencyName: lockedAgencyName,
-      help: helpText,
-      loginToProfile: !!req.session.loginToProfil
-    });
-
     res.render('Login', {
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
