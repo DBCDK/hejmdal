@@ -1,5 +1,4 @@
 /* SVG */
-<<<<<<< 723bd3b72462e85eccc159f3559e827a88409776
 @svg-load --close-small url(svg/icons/close_small.svg) {
   fill: #252525;
 }
@@ -14,15 +13,6 @@
 
 @svg-load --close-large-white url(svg/icons/close_large.svg) {
   fill: white;
-=======
-
-@svg-load --close-small url(svg/icons/close_small.svg) {
-  fill: black;
-}
-
-@svg-load --close-large url(svg/icons/close_large.svg) {
-  fill: black;
->>>>>>> fixed modal + implemented new font
 }
 
 /* Fonts */
