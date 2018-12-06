@@ -40,6 +40,40 @@
 
 @media (min-width: 486px) {
   #error-container {
+    width: 486px;
+    padding: 5px 15px 15px 15px;
+    right: auto;
+    top: 0;
+    animation: 0.3s ease-out 0s 1 slideInFromTop;
+
+    #error-header {
+      padding: 10px 0;
+
+      #error-close-btn {
+        background-size: 10px;
+      }
+    }
+    #error-body {
+      p {
+        display: inline;
+      }
+    }
+    #error-actions {
+      display: inline;
+      margin-left: 5px;
+      #helptext-link {
+        font-size: 12px;
+        color: var(--white);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+/* TODO Delete if other solution is apporved */
+/* @media (min-width: 486px) {
+  #error-container {
     position: relative;
     background-color: transparent;
     padding: 25px 0 0 0;
@@ -60,7 +94,6 @@
       }
     }
     #error-body {
-      /* */
       p {
         color: var(--error);
       }
@@ -75,6 +108,15 @@
         cursor: pointer;
       }
     }
+  }
+} */
+
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-200px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
 
