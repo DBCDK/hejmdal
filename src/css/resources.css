@@ -1,11 +1,18 @@
 /* SVG */
-
 @svg-load --close-small url(svg/icons/close_small.svg) {
-  fill: black;
+  fill: #252525;
+}
+
+@svg-load --close-small-white url(svg/icons/close_small.svg) {
+  fill: white;
 }
 
 @svg-load --close-large url(svg/icons/close_large.svg) {
-  fill: black;
+  fill: #252525;
+}
+
+@svg-load --close-large-white url(svg/icons/close_large.svg) {
+  fill: white;
 }
 
 /* Fonts */

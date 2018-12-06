@@ -68,13 +68,13 @@ export async function authenticate(req, res, next) {
       return;
     }
 
-    let preselctedName = null;
+    let preselectedName = null;
     let preselectedId = null;
     if (req.query.presel || req.session.query.presel) {
       const preselectedLibrary = await getAgency(
         req.query.presel || req.session.query.presel
       );
-      preselctedName = preselectedLibrary.agencyName;
+      preselectedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
     }
 
@@ -95,13 +95,27 @@ export async function authenticate(req, res, next) {
       'login_'
     );
 
+    console.log('da Obj: ', {
+      error: error,
+      returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
+      serviceClient: state.serviceClient.name,
+      identityProviders,
+      branches: branches,
+      preselectedName: preselectedName,
+      preselectedId: preselectedId,
+      lockedAgency: state.serviceAgency || null,
+      lockedAgencyName: lockedAgencyName,
+      help: helpText,
+      loginToProfile: !!req.session.loginToProfil
+    });
+
     res.render('Login', {
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
       serviceClient: state.serviceClient.name,
       identityProviders,
       branches: branches,
-      preselctedName: preselctedName,
+      preselectedName: preselectedName,
       preselectedId: preselectedId,
       lockedAgency: state.serviceAgency || null,
       lockedAgencyName: lockedAgencyName,

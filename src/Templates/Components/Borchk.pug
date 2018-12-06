@@ -1,19 +1,17 @@
 div#borchk
   form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form')
 
-    div.form-group
+    if lockedAgency
+      input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
+      input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
+    else
 
-      if lockedAgency
-        label(for='libraryid-input') Bibliotek
-        input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
-        input(type="text" disabled value=lockedAgencyName class="form-control" id="libraryname-input" name="libraryName" aria-hidden='false' aria-disabled='true')
-      else
-
-        input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId )
+      div.form-group
+        input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
 
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselectedName tabindex='1')
+          input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
           button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 
@@ -44,6 +42,10 @@ div#borchk
         input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete='new-pincode' tabindex='3')
         button(type='button' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
       span(id='pin-input-text' data-text='Indtast din 4- eller 5-cifrede bibliotekskode') Indtast din 4- eller 5-cifrede bibliotekskode
+
+    if error
+      div#error-container
+        include Error
 
     div.action-container
         button(type='button' id='borchk-submit' onclick='loginSubmit()' tabindex='4') Log ind
