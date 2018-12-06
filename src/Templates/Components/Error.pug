@@ -1,29 +1,29 @@
-div.col-xs-2.col-xs-offset-10
-  a(class="link-style" href='/login' id='error-overlay-close-btn')
-    span(class='glyphicon glyphicon-remove close-btn')
+//-div.col-xs-2.col-xs-offset-10
+  //-a(href='/login' id='error-overlay-close-btn')
+    //-span(class='glyphicon glyphicon-remove close-btn')
 
 // Headline
-div.col-xs-12.col-sm-8.col-sm-offset-2
-  div
-    h2.red Fejl i login
+div#error-header
+  a(href='/login?presel='+preselectedId id='error-close-btn')
+  h2 Noget gik galt :(
 
 // Message
-div.col-xs-12.col-sm-8.col-sm-offset-2.error-message
+div#error-body
   case error
     when 'snotl'
       p Den side, du vil logge ind på, har ikke ret til at benytte bibliotekslogin. Du er derfor ikke logget ind.
     when 'sevua'
-      p Vi kunne ikke få forbindelse, så du er ikke logget ind. Prøv igen senere.
+      p Vi kunne ikke få forbindelse. Prøv igen senere.
     when 'linfo'
-      p Det valgte bibliotek findes ikke, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+      p Det valgte bibliotek findes ikke. Prøv at logge ind via et andet bibliotek.
     when 'bonal'
-      p Det valgte bibliotek tillader ikke login, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+      p Det valgte bibliotek tillader ikke login. Prøv at logge ind via et andet bibliotek.
     when 'bonfd'
-      p Biblioteket kan ikke genkende brugeren med de indtastede oplysninger, så du er ikke logget ind. Tjek at alle felter er udfyldt korrekt og prøv igen.
+      p Biblioteket kan ikke genkende brugeren med de indtastede oplysninger. Tjek at alle felter er udfyldt korrekt og prøv igen.
     when 'bnimu'
       p Det ser ud til, at du ikke bor i kommunen for det valgte bibliotek. Du er derfor ikke logget ind. Prøv at logge ind via biblioteket i den kommune, hvor du bor.
     when 'bcnsl'
-      p Systemet kan ikke tjekke dine oplysninger, så du er ikke logget ind. Prøv at logge ind via et andet bibliotek.
+      p Systemet kan ikke tjekke dine oplysninger. Prøv at logge ind via et andet bibliotek.
     when 'nouse'
       p Husk at udfylde feltet CPR / lånernummer og prøv igen.
     when 'fimis'
@@ -37,14 +37,12 @@ div.col-xs-12.col-sm-8.col-sm-offset-2.error-message
         console.error('Der kan ikke findes en valid identityprovider i konfigurationen i auth.dbc.dk/Smaug. Kontrollér at oplysningerne er rigtige og tag evt. kontakt til DDB/DBC.');
 
 // Actions
-div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
-  div
-    a(href=returnUrl class='buffer-right-20 link-style')
-      strong Fortryd log ind
-    button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
+//-div.col-xs-10.col-xs-offset-1.col-sm-6.col-sm-offset-3.buffer-top-30
+  //-div
+    //-a(href=returnUrl class='buffer-right-20 link-style')
+      //-strong Fortryd log ind
+    //-button(type='submit' class='btn btn-grey' id='try-again-btn') Prøv igen
 
-div.col-xs-12.buffer-top-30
+div#error-actions
   // Helptext
   include Helptext.container.pug
-
-

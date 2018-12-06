@@ -16,7 +16,7 @@
 
   /* animation props */
   transition-duration: 0.2s;
-  right: -100vw;
+  right: -110vw;
 
   &.visible {
     transition-duration: 0.3s;
@@ -85,6 +85,7 @@
         line-height: 19px;
         font-weight: 500;
         padding: 0 0 10px 0;
+        font-family: var(--secondary);
       }
 
       p {
@@ -122,7 +123,7 @@
     width: 70vw;
     height: 60vh;
     right: 15vw;
-    top: 0vh;
+    top: 20vh;
     transform: scale(0.75);
     pointer-events: none;
     opacity: 0;
@@ -148,8 +149,13 @@
       }
 
       button {
-        background-size: 10px;
-        background: svg-inline(--close-small) no-repeat center;
+        background: none;
+        color: var(--black-lighten-1);
+        font-family: var(--tertiary);
+
+        &::before {
+          content: 'Luk';
+        }
       }
     }
     #modal-body {
