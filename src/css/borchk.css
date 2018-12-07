@@ -122,7 +122,7 @@
           pointer-events: none;
           opacity: 0;
 
-          &.open {
+          &.visible {
             top: 51px;
             opacity: 1;
             pointer-events: auto;
@@ -149,13 +149,9 @@
             li {
               list-style: none;
               padding: 5px 22px 5px 22px;
-
-              a {
-                font-size: 16px;
-                display: block;
-                color: var(--black-lighten-1);
-                cursor: pointer;
-              }
+              font-size: 16px;
+              color: var(--black-lighten-1);
+              cursor: pointer;
 
               &:hover {
                 background-color: var(--grey-lighten-4);

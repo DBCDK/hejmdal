@@ -10,9 +10,9 @@ div#borchk
         input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
 
         label(for='libraryname-input') Vælg dit lokale bibliotek
-        div.input-container
-          input(type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
-          button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
+        div#library-wrap.input-container
+          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
+          button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 
           if branches
@@ -22,8 +22,8 @@ div#borchk
                 li(class='hide subject' id='alphabetical') Alfabetisk
                 each branch in branches
                   if branch.name
-                    li(class="agency" data-aid=branch.branchId data-name=branch.name)
-                      a(data-aid=branch.branchId data-name=branch.name onclick='OnClick(this);') #{branch.name}
+                    li(class="agency" data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
+                      // a(data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
 
         span(id='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
 
@@ -32,7 +32,7 @@ div#borchk
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete='password' tabindex='2')
-        button(type='button' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
+        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
       span(id='userid-input-text' data-text='Lånernummer dopalnitelna informacia la la lorem ipsum') Lånernummer dopalnitelna informacia la la lorem ipsum
 
 
@@ -40,7 +40,7 @@ div#borchk
       label(for='pin-input') Indtast din kode
       div.input-container
         input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete='new-pincode' tabindex='3')
-        button(type='button' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
+        button(type='button' id='toggle-pin-input' onclick='toggleFieldVisibility("pin-input");')
       span(id='pin-input-text' data-text='Indtast din 4- eller 5-cifrede bibliotekskode') Indtast din 4- eller 5-cifrede bibliotekskode
 
     if error
