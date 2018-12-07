@@ -11,17 +11,21 @@ var currentSearchValue = '';
 var libraryInput;
 var libraryIdInput;
 
-document.addEventListener('DOMContentLoaded', function () {
+// test
+
+document.addEventListener('DOMContentLoaded', function() {
   autocompleteUsername();
   var body = document.getElementsByTagName('body')[0];
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input-hidden');
   currentSearchValue = libraryInput.value;
 
-  librariesDropdownContainer = document.getElementById('libraries-dropdown-container');
+  librariesDropdownContainer = document.getElementById(
+    'libraries-dropdown-container'
+  );
   allAgencies = document.getElementsByClassName('agency');
 
-  libraryInput.addEventListener('keyup', function () {
+  libraryInput.addEventListener('keyup', function() {
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
       toggleBorchkDropdown();
@@ -33,26 +37,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
   libraryInput.addEventListener('keydown', handleKeyDown);
 
-  body.addEventListener('mousedown', function (e) {
+  body.addEventListener('mousedown', function(e) {
     if (e.target.className.indexOf('glyphicon') !== -1) {
       return;
     }
     toggleDropdown(false);
   });
 
-  librariesDropdownContainer.addEventListener('mousedown', function (e) {
+  librariesDropdownContainer.addEventListener('mousedown', function(e) {
     e.stopPropagation();
   });
 
   libraryInput.addEventListener('focus', toggleFocusOnLibraryNameInput);
   libraryInput.addEventListener('blur', toggleFocusOnLibraryNameInput);
-  document.getElementById('userid-input').addEventListener('focus', toggleFocusOnUserIdInput);
-  document.getElementById('userid-input').addEventListener('blur', toggleFocusOnUserIdInput);
+  document
+    .getElementById('userid-input')
+    .addEventListener('focus', toggleFocusOnUserIdInput);
+  document
+    .getElementById('userid-input')
+    .addEventListener('blur', toggleFocusOnUserIdInput);
 
-  document.getElementById('pin-input').addEventListener('focus', toggleFocusOnUserPinInput);
-  document.getElementById('pin-input').addEventListener('blur', toggleFocusOnUserPinInput);
+  document
+    .getElementById('pin-input')
+    .addEventListener('focus', toggleFocusOnUserPinInput);
+  document
+    .getElementById('pin-input')
+    .addEventListener('blur', toggleFocusOnUserPinInput);
 
-  if (Storage !== undefined) { // eslint-disable-line no-undefined
+  if (Storage !== undefined) {
+    // eslint-disable-line no-undefined
     setRecentlySelectedLibraries();
   }
 });
@@ -64,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
  */
 function autocompleteUsername() {
   var catcher = document.getElementById('autocomplete-username');
-  catcher.addEventListener('change', function (event) {
+  catcher.addEventListener('change', function(event) {
     document.getElementById('userid-input').value = event.currentTarget.value;
   });
 }
@@ -73,8 +86,12 @@ function autocompleteUsername() {
  * Toggles focus class on button's associated with libraryName input field
  */
 function toggleFocusOnLibraryNameInput() {
-  document.getElementById('libraries-dropdown-toggle-btn').classList.toggle('hasfocus');
-  document.getElementById('clear-libraries-input-btn').classList.toggle('hasfocus');
+  document
+    .getElementById('libraries-dropdown-toggle-btn')
+    .classList.toggle('hasfocus');
+  document
+    .getElementById('clear-libraries-input-btn')
+    .classList.toggle('hasfocus');
 }
 
 /**
@@ -148,7 +165,9 @@ function handleKeyDown(e) {
  */
 function toggleInputButtons() {
   var dropDownToggle = document.getElementById('libraries-dropdown-toggle-btn');
-  var clearLibrariesInput = document.getElementById('clear-libraries-input-btn');
+  var clearLibrariesInput = document.getElementById(
+    'clear-libraries-input-btn'
+  );
 
   if (libraryInput.value.length) {
     dropDownToggle.classList.add('hide');
@@ -156,8 +175,7 @@ function toggleInputButtons() {
 
     clearLibrariesInput.classList.remove('hide');
     clearLibrariesInput.setAttribute('aria-hidden', false);
-  }
-  else {
+  } else {
     dropDownToggle.classList.remove('hide');
     dropDownToggle.setAttribute('aria-hidden', false);
 
@@ -169,7 +187,8 @@ function toggleInputButtons() {
 /**
  * Clears the library input field and requests the dropdown to be closed.
  */
-function clearLibraryInput() { // eslint-disable-line no-unused-vars
+function clearLibraryInput() {
+  // eslint-disable-line no-unused-vars
   libraryInput.value = '';
   currentSearchValue = libraryInput.value;
   toggleInputButtons();
@@ -197,8 +216,7 @@ function escapeWasPressed(e) {
 function toggleBorchkDropdown() {
   if (currentSearchValue.length >= 2) {
     toggleDropdown(true);
-  }
-  else {
+  } else {
     toggleDropdown(false);
   }
 }
@@ -208,7 +226,8 @@ function toggleBorchkDropdown() {
  * @param {string} className
  * @param {string} glyphId
  */
-function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-unused-vars
+function toggleUserIdVisibility(className, glyphId) {
+  // eslint-disable-line no-unused-vars
   var userInputField = document.getElementById(className);
   var currentType = userInputField.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
@@ -228,11 +247,9 @@ function toggleDropdown(forceOpen = null) {
   toggleLabelsInDropDown();
   if (forceOpen) {
     librariesDropdownContainer.classList.add('open');
-  }
-  else if (forceOpen === false) {
+  } else if (forceOpen === false) {
     librariesDropdownContainer.classList.remove('open');
-  }
-  else {
+  } else {
     librariesDropdownContainer.classList.toggle('open');
   }
 
@@ -244,8 +261,7 @@ function toggleLabelsInDropDown() {
   if (currentSearchValue.length >= 1) {
     document.getElementById('latest').classList.add('hide');
     document.getElementById('alphabetical').classList.add('hide');
-  }
-  else {
+  } else {
     document.getElementById('latest').classList.remove('hide');
     document.getElementById('alphabetical').classList.remove('hide');
   }
@@ -261,7 +277,11 @@ function toggleVisibleLibraries() {
   for (let i = 0; i < allAgencies.length; i++) {
     const item = allAgencies.item(i);
     item.classList.remove('selected');
-    let shouldHide = allAgencies.item(i).textContent.toLowerCase().indexOf(currentSearchValue.toLowerCase()) === -1;
+    let shouldHide =
+      allAgencies
+        .item(i)
+        .textContent.toLowerCase()
+        .indexOf(currentSearchValue.toLowerCase()) === -1;
     item.classList.toggle('hide', shouldHide);
 
     for (let j = 0; j < currentlyVisibleAgencies.length; j++) {
@@ -291,28 +311,29 @@ function navigateDropDown(key) {
 
   if (key === 'ArrowDown') {
     if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
+        'selected'
+      );
       currentlySelectedIndex++;
 
       if (currentlySelectedIndex >= currentlyVisibleAgencies.length) {
         currentlySelectedIndex = 0;
       }
-    }
-    else {
+    } else {
       currentlySelectedIndex = 0;
     }
     currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
-  }
-  else if (key === 'ArrowUp') {
+  } else if (key === 'ArrowUp') {
     if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
+        'selected'
+      );
       currentlySelectedIndex--;
 
       if (currentlySelectedIndex <= -1) {
         currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
       }
-    }
-    else {
+    } else {
       currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
     }
     currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
@@ -327,11 +348,13 @@ function navigateDropDown(key) {
 function selectHighlighted(e) {
   var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
-  if (currentlySelected && librariesDropdownContainer.classList.contains('open')) {
+  if (
+    currentlySelected &&
+    librariesDropdownContainer.classList.contains('open')
+  ) {
     e.preventDefault();
     OnClick(currentlySelected);
-  }
-  else if (librariesDropdownContainer.classList.contains('open')) {
+  } else if (librariesDropdownContainer.classList.contains('open')) {
     e.preventDefault();
     navigateDropDown('ArrowDown');
   }
@@ -342,7 +365,8 @@ function selectHighlighted(e) {
  *
  * @param {Node} element The element that has been clicked
  */
-function OnClick(element) { // eslint-disable-line no-unused-vars
+function OnClick(element) {
+  // eslint-disable-line no-unused-vars
   var branchName = element.dataset.name;
   var branchId = element.dataset.aid;
 
@@ -355,14 +379,15 @@ function OnClick(element) { // eslint-disable-line no-unused-vars
 }
 
 function addElementToLocalStorage({branchName, branchId}) {
-  if (Storage === undefined) { // eslint-disable-line no-undefined
+  if (Storage === undefined) {
+    // eslint-disable-line no-undefined
     return;
   }
 
   const storedAgencies = localStorage.getItem('agencies');
   const agencies = storedAgencies ? JSON.parse(storedAgencies) : [];
   let indexOfExistingItem = -1;
-  agencies.find(function (element, index) {
+  agencies.find(function(element, index) {
     if (element.branchId === branchId) {
       indexOfExistingItem = index;
     }
@@ -389,7 +414,11 @@ function addElementToLocalStorage({branchName, branchId}) {
 function setRecentlySelectedLibraries() {
   removeExistingRecentlySelectedLibraries();
   const storedAgencies = localStorage.getItem('agencies');
-  if (!storedAgencies || !storedAgencies.length || !librariesDropdownContainer) {
+  if (
+    !storedAgencies ||
+    !storedAgencies.length ||
+    !librariesDropdownContainer
+  ) {
     return;
   }
 
@@ -402,7 +431,7 @@ function setRecentlySelectedLibraries() {
   latestHeader.classList.remove('hide');
   alphabeticalHeader.classList.remove('hide');
 
-  agencies.forEach(function (agency) {
+  agencies.forEach(function(agency) {
     const li = document.createElement('li');
     const a = document.createElement('a');
     a.classList.add('agency');
@@ -425,7 +454,7 @@ function removeExistingRecentlySelectedLibraries() {
     lis.push(li);
   }
 
-  lis.forEach(function (_li) {
+  lis.forEach(function(_li) {
     _li.parentNode.removeChild(_li);
   });
 }
