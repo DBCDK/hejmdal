@@ -1,7 +1,7 @@
 var storageAvailable = true;
 
 // Library input
-var libraryGroup;
+var libraryInputWrap;
 var librariesDropdownContainer;
 var libraryInput;
 var libraryIdInput;
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   storageAvailable = Storage ? true : false;
 
   // Update library var nodes
-  libraryGroup = document.getElementById('library-group');
+  libraryInputWrap = document.getElementById('library-wrap');
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input');
   librariesDropdownContainer = document.getElementById(
@@ -45,8 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set storedAgencies
   if (storageAvailable) {
     // fetch recetnly selected libraries from localStorage
-    storedAgencies = JSON.parse(localStorage.getItem('agencies')) || [];
-
+    storedAgencies = JSON.parse(localStorage.getItem('agencies'));
     // Create recently selected list in dropdown
     initRecentlySelectedLibraries();
   }
@@ -55,46 +54,45 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event Listeners
   //
 
-  // register focus in the library select inputfield
+  // ...
   libraryInput.addEventListener('focus', function() {
     dropdownTrigger('open');
   });
 
-  // listen on keyevents in the library select field
-  libraryInput.addEventListener('keyup', function() {
+  // ...
+  document.addEventListener('mousedown', function(e) {
+    if (librariesDropdownContainer.contains(e.target)) {
+      return;
+    }
+
+    if (!e.target.classList.contains('prevent-body-close-event')) {
+      if (librariesDropdownContainer.classList.contains('visible')) {
+        dropdownTrigger('close');
+      }
+    }
+  });
+
+  // ...
+  libraryInput.addEventListener('keyup', function(e) {
     // Other KeyPress'
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
+      // dropdownTrigger('open');
       initVisibleLibraries();
     }
     initButtonStatus();
-    toggleLabelsInDropDown();
+
+    // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
+    // handleKeyEvents(e);
   });
 
-  // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-  document.addEventListener('keydown', handleKeyEvents);
+  libraryInput.addEventListener('keydown', handleKeyEvents);
 
-  // only for not predefined libraries
-  if (librariesDropdownContainer) {
-    // detect clicks outside of the dropdown - to close the dropdown
-    document.addEventListener('mousedown', function(e) {
-      if (librariesDropdownContainer.contains(e.target)) {
-        return;
-      }
+  // Set current search value
+  currentSearchValue = libraryInput.value;
 
-      if (!e.target.classList.contains('prevent-body-close-event')) {
-        if (librariesDropdownContainer.classList.contains('visible')) {
-          dropdownTrigger('close');
-        }
-      }
-    });
-
-    // Set current search value
-    currentSearchValue = libraryInput.value;
-
-    // init
-    initVisibleLibraries();
-  }
+  // init
+  initVisibleLibraries();
 });
 
 //
@@ -106,16 +104,19 @@ document.addEventListener('DOMContentLoaded', function() {
 function dropdownTrigger(status = 'toggle') {
   if (status === 'open') {
     librariesDropdownContainer.classList.add('visible');
-    libraryGroup.classList.add('dropdown-visible');
+    libraryInputWrap.classList.add('dropdown-visible');
   } else if (status === 'close') {
     librariesDropdownContainer.classList.remove('visible');
-    libraryGroup.classList.remove('dropdown-visible');
+    libraryInputWrap.classList.remove('dropdown-visible');
   } else {
     librariesDropdownContainer.classList.toggle('visible');
-    libraryGroup.classList.toggle('dropdown-visible');
+    libraryInputWrap.classList.toggle('dropdown-visible');
   }
 
   toggleLabelsInDropDown();
+
+  // var ariaHidden = !librariesDropdownContainer.classList.contains('open');
+  // librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
 }
 
 // When a library in the dropdown is clicked/selected
@@ -145,28 +146,27 @@ function initButtonStatus() {
 }
 
 // Clears the library input field on clear button click
-/* eslint-disable no-unused-vars */
 function clearLibraryInput() {
+  // eslint-disable-line no-unused-vars
   libraryInput.value = '';
   libraryIdInput.value = '';
   currentSearchValue = '';
 
   initButtonStatus();
   dropdownTrigger('close');
-  clearVisibleLibraries();
+  initVisibleLibraries();
+  //libraryInput.focus();
 }
-/* eslint-enable no-unused-vars */
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field
-/* eslint-disable no-unused-vars */
 function toggleFieldVisibility(id) {
+  // eslint-disable-line no-unused-vars
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
   field.setAttribute('type', newType);
 }
-/* eslint-enable no-unused-vars */
 
 // Toggle labels in dropdown
 function toggleLabelsInDropDown() {
@@ -209,41 +209,36 @@ function initVisibleLibraries() {
   }
 }
 
-// clear visible labraries
-function clearVisibleLibraries() {
-  currentlyVisibleAgencies = [];
-  currentlySelectedIndex = -1;
-
-  for (let i = 0; i < allAgencies.length; i++) {
-    const item = allAgencies.item(i);
-    item.classList.remove('selected');
-    item.classList.remove('hide');
-    currentlyVisibleAgencies.push(item);
-  }
-}
+// Saves recently selected libraries to localStorage for future use
 
 // Creats a list with recently selected libraries in top of the dropdown
 function initRecentlySelectedLibraries() {
   clearRecentlySelectedLibraries();
-  if (storedAgencies.length === 0 || !librariesDropdownContainer) {
+  if (!storedAgencies.length || !librariesDropdownContainer) {
     return;
   }
 
+  const latestHeader = document.getElementById('latest');
   const alphabeticalHeader = document.getElementById('alphabetical');
   const librariesDropdown = document.getElementById('libraries-dropdown');
 
+  latestHeader.classList.remove('hide');
+  alphabeticalHeader.classList.remove('hide');
+
   storedAgencies.forEach(function(agency) {
     const li = document.createElement('li');
+    li.classList.add('agency');
     li.classList.add('agency');
     li.classList.add('recent');
     li.setAttribute('data-aid', agency.branchId);
     li.setAttribute('data-name', agency.branchName);
     li.setAttribute('onclick', 'librarySelect(this)');
     li.appendChild(document.createTextNode(agency.branchName));
+    // li.appendChild(a);
+    // li.setAttribute('data-aid', agency.branchId);
+    // li.setAttribute('data-name', agency.branchName);
     librariesDropdown.insertBefore(li, alphabeticalHeader);
   });
-
-  toggleLabelsInDropDown();
 }
 
 // Reset the latest selected libraries list in dropdown
@@ -335,16 +330,13 @@ function parseKeyCode(keyCode) {
   return key;
 }
 
-<<<<<<< 847c66d738ed2ec8b34b2bf3bdfd0f52e796b50b
-// Navigate up/down in the dropdown
-=======
->>>>>>> rewritten borchk.js file
 function navigateDropDown(key) {
   if (!librariesDropdownContainer.classList.contains('visible')) {
     return;
   }
 
   if (currentlyVisibleAgencies.length === 0) {
+    console.log('empty');
     return;
   }
 
@@ -379,7 +371,6 @@ function navigateDropDown(key) {
   }
 }
 
-// selected the highlighted library in the dropdown
 function selectHighlighted(e) {
   var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
@@ -395,93 +386,9 @@ function selectHighlighted(e) {
   }
 }
 
-// close dropdown on escape
 function escapeWasPressed(e) {
   if (librariesDropdownContainer.classList.contains('visible')) {
     e.preventDefault();
     librariesDropdownContainer.classList.remove('visible');
   }
-}
-
-// client form validtion
-/* eslint-disable no-unused-vars */
-function loginSubmit() {
-  // if library is not preselected or predefined
-
-  var libraryId = false;
-  var libraryName = false;
-  var libraryText = false;
-
-  if (librariesDropdownContainer) {
-    libraryId = document.getElementById('libraryid-input');
-    libraryName = document.getElementById('libraryname-input');
-    libraryText = document.getElementById('libraryname-input-text');
-    resetFieldErrorMessage(libraryName, libraryText);
-  }
-
-  // Get inputfields
-  var userId = document.getElementById('userid-input');
-  var pin = document.getElementById('pin-input');
-
-  // Get input description text
-  var idText = document.getElementById('userid-input-text');
-  var pinText = document.getElementById('pin-input-text');
-
-  // Reset error messages
-  resetFieldErrorMessage(userId, idText);
-  resetFieldErrorMessage(pin, pinText);
-
-  // Error messages
-  var noLibraryMessage = 'Du skal vælge et bibliotek';
-  var noIdMessage = 'Du skal angive dit Cpr- eller lånernummer';
-  var noPinMessage = 'Du skal angive din 4- eller 5-cifrede bibliotekskode';
-  var invalidPinMessage = 'Bibliotekskoden skal være på 4 eller 5 cifre.';
-
-  var valid = true;
-
-  // if no libarary selected
-  if (librariesDropdownContainer && !libraryId.value) {
-    addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
-    valid = false;
-  }
-
-  // if no userid typed
-  if (!userId.value) {
-    addFieldErrorMessage(userId, idText, noIdMessage);
-    valid = false;
-  }
-
-  // if no pin typed
-  if (!pin.value) {
-    addFieldErrorMessage(pin, pinText, noPinMessage);
-    valid = false;
-  }
-
-  // if pin length is not valid
-  if (pin.value) {
-    if (pin.value.length < 4 || pin.value.length > 5) {
-      addFieldErrorMessage(pin, pinText, invalidPinMessage);
-      valid = false;
-    }
-  }
-
-  // if no error found, form is submit
-  if (valid) {
-    document.getElementById('borchk-login-form').submit();
-  }
-}
-/* eslint-enable no-unused-vars */
-
-// rests the form errors
-function resetFieldErrorMessage(field, text) {
-  field.parentNode.classList.remove('input-inValid');
-  text.classList.remove('text-inValid');
-  text.innerText = text.dataset.text;
-}
-
-// adds error to form inputs
-function addFieldErrorMessage(field, text, message) {
-  field.parentNode.classList.add('input-inValid');
-  text.classList.add('text-inValid');
-  text.innerText = message;
 }
