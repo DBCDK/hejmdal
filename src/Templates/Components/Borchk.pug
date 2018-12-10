@@ -6,11 +6,13 @@ div#borchk
       input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
     else
 
-      div.form-group
+      div#library-group.form-group
         input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
 
+        span(class='clear-libraries-on-mobile' onclick='clearLibraryInput();')
+
         label(for='libraryname-input') Vælg dit lokale bibliotek
-        div#library-wrap.input-container
+        div.input-container
           input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
           button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
@@ -23,7 +25,6 @@ div#borchk
                 each branch in branches
                   if branch.name
                     li(class="agency" data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
-                      // a(data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
 
         span(id='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
 

@@ -36,7 +36,7 @@ body {
 /* validation utils */
 
 .input-inValid {
-  border: 1px solid var(--error) !important;
+  border-color: var(--error) !important;
 }
 
 .text-inValid {

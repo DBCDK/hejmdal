@@ -1,14 +1,4 @@
-@svg-load --biblotekslogin-logo url(svg/icons/caret.svg) {
-  fill: black;
-}
-
-@svg-load --eye-open url(svg/icons/eye_large.svg) {
-  fill: black;
-}
-
-@svg-load --eye-closed url(svg/icons/eye_large_hidden.svg) {
-  fill: black;
-}
+@import 'media.css';
 
 #footer {
   background-color: var(--background-color);
@@ -38,12 +28,24 @@
         .media {
           width: 200px;
           height: 30px;
-          background-color: var(--error);
           opacity: 0;
           margin: 0 auto 20px auto;
 
           &.visible {
             opacity: 1;
+          }
+
+          &.ereolen {
+            background: svg-inline(--ereolen) no-repeat center;
+            background-size: 100px auto;
+          }
+          &.ereolen-global {
+            background: svg-inline(--ereolen-global) no-repeat center;
+            background-size: 200px auto;
+          }
+          &.bibliotek-dk {
+            background: svg-inline(--bibliotek-dk) no-repeat center;
+            background-size: 100px auto;
           }
         }
       }
@@ -55,6 +57,13 @@
           .media {
             width: 100px;
             margin: 0 0 20px 0;
+          }
+        }
+      }
+      @media (min-width: 486px) {
+        .media-group {
+          .media {
+            width: 200px;
           }
         }
       }
