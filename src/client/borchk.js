@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-  document.addEventListener('keydown', handleKeyEvents);
+  libraryInput.addEventListener('keydown', handleKeyEvents);
 
   // only for not predefined libraries
   if (librariesDropdownContainer) {
@@ -152,8 +152,8 @@ function clearLibraryInput() {
   currentSearchValue = '';
 
   initButtonStatus();
-  dropdownTrigger('close');
   clearVisibleLibraries();
+  initRecentlySelectedLibraries();
 }
 /* eslint-enable no-unused-vars */
 
@@ -335,10 +335,7 @@ function parseKeyCode(keyCode) {
   return key;
 }
 
-<<<<<<< 847c66d738ed2ec8b34b2bf3bdfd0f52e796b50b
 // Navigate up/down in the dropdown
-=======
->>>>>>> rewritten borchk.js file
 function navigateDropDown(key) {
   if (!librariesDropdownContainer.classList.contains('visible')) {
     return;
