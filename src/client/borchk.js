@@ -1,7 +1,7 @@
 var storageAvailable = true;
 
 // Library input
-var libraryInputWrap;
+var libraryGroup;
 var librariesDropdownContainer;
 var libraryInput;
 var libraryIdInput;
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
   storageAvailable = Storage ? true : false;
 
   // Update library var nodes
-  libraryInputWrap = document.getElementById('library-wrap');
+  libraryGroup = document.getElementById('library-group');
   libraryInput = document.getElementById('libraryname-input');
   libraryIdInput = document.getElementById('libraryid-input');
   librariesDropdownContainer = document.getElementById(
@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
   // Set storedAgencies
   if (storageAvailable) {
     // fetch recetnly selected libraries from localStorage
-    storedAgencies = JSON.parse(localStorage.getItem('agencies'));
+    storedAgencies = JSON.parse(localStorage.getItem('agencies')) || [];
+
     // Create recently selected list in dropdown
     initRecentlySelectedLibraries();
   }
@@ -77,15 +78,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Other KeyPress'
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
-      // dropdownTrigger('open');
       initVisibleLibraries();
     }
     initButtonStatus();
-
-    // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-    // handleKeyEvents(e);
+    toggleLabelsInDropDown();
   });
 
+  // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
   libraryInput.addEventListener('keydown', handleKeyEvents);
 
   // Set current search value
@@ -104,13 +103,13 @@ document.addEventListener('DOMContentLoaded', function() {
 function dropdownTrigger(status = 'toggle') {
   if (status === 'open') {
     librariesDropdownContainer.classList.add('visible');
-    libraryInputWrap.classList.add('dropdown-visible');
+    libraryGroup.classList.add('dropdown-visible');
   } else if (status === 'close') {
     librariesDropdownContainer.classList.remove('visible');
-    libraryInputWrap.classList.remove('dropdown-visible');
+    libraryGroup.classList.remove('dropdown-visible');
   } else {
     librariesDropdownContainer.classList.toggle('visible');
-    libraryInputWrap.classList.toggle('dropdown-visible');
+    libraryGroup.classList.toggle('dropdown-visible');
   }
 
   toggleLabelsInDropDown();
@@ -154,7 +153,8 @@ function clearLibraryInput() {
 
   initButtonStatus();
   dropdownTrigger('close');
-  initVisibleLibraries();
+  clearVisibleLibraries();
+  //initVisibleLibraries();
   //libraryInput.focus();
 }
 
@@ -209,36 +209,41 @@ function initVisibleLibraries() {
   }
 }
 
-// Saves recently selected libraries to localStorage for future use
+// clear visible labraries
+function clearVisibleLibraries() {
+  currentlyVisibleAgencies = [];
+  currentlySelectedIndex = -1;
+
+  for (let i = 0; i < allAgencies.length; i++) {
+    const item = allAgencies.item(i);
+    item.classList.remove('selected');
+    item.classList.remove('hide');
+    currentlyVisibleAgencies.push(item);
+  }
+}
 
 // Creats a list with recently selected libraries in top of the dropdown
 function initRecentlySelectedLibraries() {
   clearRecentlySelectedLibraries();
-  if (!storedAgencies.length || !librariesDropdownContainer) {
+  if (storedAgencies.length === 0 || !librariesDropdownContainer) {
     return;
   }
 
-  const latestHeader = document.getElementById('latest');
   const alphabeticalHeader = document.getElementById('alphabetical');
   const librariesDropdown = document.getElementById('libraries-dropdown');
 
-  latestHeader.classList.remove('hide');
-  alphabeticalHeader.classList.remove('hide');
-
   storedAgencies.forEach(function(agency) {
     const li = document.createElement('li');
-    li.classList.add('agency');
     li.classList.add('agency');
     li.classList.add('recent');
     li.setAttribute('data-aid', agency.branchId);
     li.setAttribute('data-name', agency.branchName);
     li.setAttribute('onclick', 'librarySelect(this)');
     li.appendChild(document.createTextNode(agency.branchName));
-    // li.appendChild(a);
-    // li.setAttribute('data-aid', agency.branchId);
-    // li.setAttribute('data-name', agency.branchName);
     librariesDropdown.insertBefore(li, alphabeticalHeader);
   });
+
+  toggleLabelsInDropDown();
 }
 
 // Reset the latest selected libraries list in dropdown
@@ -330,6 +335,7 @@ function parseKeyCode(keyCode) {
   return key;
 }
 
+// Navigate up/down in the dropdown
 function navigateDropDown(key) {
   if (!librariesDropdownContainer.classList.contains('visible')) {
     return;
@@ -371,6 +377,7 @@ function navigateDropDown(key) {
   }
 }
 
+// selected the highlighted library in the dropdown
 function selectHighlighted(e) {
   var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
@@ -386,9 +393,82 @@ function selectHighlighted(e) {
   }
 }
 
+// close dropdown on escape
 function escapeWasPressed(e) {
   if (librariesDropdownContainer.classList.contains('visible')) {
     e.preventDefault();
     librariesDropdownContainer.classList.remove('visible');
   }
+}
+
+// client form validtion
+function loginSubmit() {
+  // Get inputfields
+  var libraryName = document.getElementById('libraryname-input');
+  var libraryId = document.getElementById('libraryid-input');
+  var userId = document.getElementById('userid-input');
+  var pin = document.getElementById('pin-input');
+
+  // Get input description text
+  var libraryText = document.getElementById('libraryname-input-text');
+  var idText = document.getElementById('userid-input-text');
+  var pinText = document.getElementById('pin-input-text');
+
+  // Reset error messages
+  resetFieldErrorMessage(libraryName, libraryText);
+  resetFieldErrorMessage(userId, idText);
+  resetFieldErrorMessage(pin, pinText);
+
+  // Error messages
+  var noLibraryMessage = 'Du skal vælge et bibliotek';
+  var noIdMessage = 'Du skal angive dit Cpr- eller lånernummer';
+  var noPinMessage = 'Du skal angive din 4- eller 5-cifrede bibliotekskode';
+  var invalidPinMessage = 'Bibliotekskoden skal være på 4 eller 5 cifre.';
+
+  var valid = true;
+
+  // if no libarary selected
+  if (!libraryId.value) {
+    addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
+    valid = false;
+  }
+
+  // if no userid typed
+  if (!userId.value) {
+    addFieldErrorMessage(userId, idText, noIdMessage);
+    valid = false;
+  }
+
+  // if no pin typed
+  if (!pin.value) {
+    addFieldErrorMessage(pin, pinText, noPinMessage);
+    valid = false;
+  }
+
+  // if pin length is not valid
+  if (pin.value) {
+    if (pin.value.length < 4 || pin.value.length > 5) {
+      addFieldErrorMessage(pin, pinText, invalidPinMessage);
+      valid = false;
+    }
+  }
+
+  // if no error found, form is submit
+  if (valid) {
+    document.getElementById('borchk-login-form').submit();
+  }
+}
+
+// rests the form errors
+function resetFieldErrorMessage(field, text) {
+  field.parentNode.classList.remove('input-inValid');
+  text.classList.remove('text-inValid');
+  text.innerText = text.dataset.text;
+}
+
+// adds error to form inputs
+function addFieldErrorMessage(field, text, message) {
+  field.parentNode.classList.add('input-inValid');
+  text.classList.add('text-inValid');
+  text.innerText = message;
 }

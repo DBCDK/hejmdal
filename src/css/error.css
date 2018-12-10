@@ -7,6 +7,7 @@
   background-color: var(--error);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
   animation: 0.3s ease-out 0s 1 slideInFromRight;
+  border-radius: 2px;
 
   #error-header {
     padding: 10px 0;
