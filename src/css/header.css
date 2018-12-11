@@ -7,7 +7,7 @@
     display: block;
     width: 47px;
     height: 41px;
-    background: svg-inline(--svg-cube-logo-large) no-repeat center center;
+    background: svg-inline(--svg-cube-logo-large) no-repeat left center;
     background-size: contain;
     margin: 60px 0 20px 0;
   }
