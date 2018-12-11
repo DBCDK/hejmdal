@@ -105,9 +105,9 @@ function parseFindLibraryResponse(response) {
         branchEmail: getAgencyField(agency, 'branchEmail')
       };
 
-      const municipalityNo = item.agencyId.substr(1,3);
+      const municipalityNo = item.agencyId.substr(1, 3);
       if ((item.type === 'Folkebibliotek') && municipality[municipalityNo]) {
-       item.agencyName = (municipality[municipalityNo] + 's Folkebibliotek').replace('ss ', 's ');
+        item.agencyName = municipality[municipalityNo] + ' Folkebibliotek';
       }
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
