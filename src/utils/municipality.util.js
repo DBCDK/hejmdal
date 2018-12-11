@@ -4,7 +4,7 @@
  * list on municipalty number and names
  */
 
-export const municipality = {
+export const municipalityName = {
   101: 'København',
   147: 'Frederiksberg',
   151: 'Ballerup',

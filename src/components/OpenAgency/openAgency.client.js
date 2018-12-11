@@ -6,7 +6,7 @@ import {CONFIG} from '../../utils/config.util';
 import {OpenAgencyError} from './openAgency.errors';
 import getMockClient from './mock/openAgency.client.mock';
 import {promiseRequest} from '../../utils/request.util';
-import {municipality} from '../../utils/municipalityName.util';
+import {municipalityName} from '../../utils/municipality.util';
 import {log} from '../../utils/logging.util';
 
 /**
@@ -106,8 +106,8 @@ function parseFindLibraryResponse(response) {
       };
 
       const municipalityNo = item.agencyId.substr(1, 3);
-      if ((item.type === 'Folkebibliotek') && municipality[municipalityNo]) {
-        item.agencyName = municipality[municipalityNo];
+      if ((item.type === 'Folkebibliotek') && municipalityName[municipalityNo]) {
+        item.agencyName = municipalityName[municipalityNo];
       }
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
