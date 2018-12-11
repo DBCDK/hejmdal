@@ -55,12 +55,12 @@ document.addEventListener('DOMContentLoaded', function() {
   // Event Listeners
   //
 
-  // ...
+  // register focus in the library select inputfield
   libraryInput.addEventListener('focus', function() {
     dropdownTrigger('open');
   });
 
-  // ...
+  // detect clicks outside of the dropdown - to close the dropdown
   document.addEventListener('mousedown', function(e) {
     if (librariesDropdownContainer.contains(e.target)) {
       return;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // ...
+  // listen on keyevents in the library select field
   libraryInput.addEventListener('keyup', function(e) {
     // Other KeyPress'
     if (libraryInput.value !== currentSearchValue) {
