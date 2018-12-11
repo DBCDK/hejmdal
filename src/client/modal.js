@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 function onDimmerClick() {
   // close all open modals
   var modals = document.getElementsByClassName('modal');
@@ -8,10 +9,11 @@ function onDimmerClick() {
   var dimmer = document.getElementById('dimmer');
   dimmer.classList.remove('visible');
 }
+/* eslint-enable no-unused-vars */
 
 function toggleModal(modal, status = 'toggle') {
   var dimmer = document.getElementById('dimmer');
-  var modal = document.getElementById(modal);
+  modal = document.getElementById(modal);
 
   // force open modal
   if (status === 'open') {
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   body.addEventListener('keyup', function(e) {
     // if ESC pressed
-    if (e.keyCode == 27) {
+    if (e.keyCode === 27) {
       if (modal.classList.contains('visible')) {
         toggleModal(modal.id, 'close');
       }

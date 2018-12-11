@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // listen on keyevents in the library select field
-  libraryInput.addEventListener('keyup', function(e) {
+  libraryInput.addEventListener('keyup', function() {
     // Other KeyPress'
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
@@ -145,8 +145,8 @@ function initButtonStatus() {
 }
 
 // Clears the library input field on clear button click
+/* eslint-disable no-unused-vars */
 function clearLibraryInput() {
-  // eslint-disable-line no-unused-vars
   libraryInput.value = '';
   libraryIdInput.value = '';
   currentSearchValue = '';
@@ -154,19 +154,19 @@ function clearLibraryInput() {
   initButtonStatus();
   dropdownTrigger('close');
   clearVisibleLibraries();
-  //initVisibleLibraries();
-  //libraryInput.focus();
 }
+/* eslint-enable no-unused-vars */
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field
+/* eslint-disable no-unused-vars */
 function toggleFieldVisibility(id) {
-  // eslint-disable-line no-unused-vars
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
   field.setAttribute('type', newType);
 }
+/* eslint-enable no-unused-vars */
 
 // Toggle labels in dropdown
 function toggleLabelsInDropDown() {
@@ -342,7 +342,6 @@ function navigateDropDown(key) {
   }
 
   if (currentlyVisibleAgencies.length === 0) {
-    console.log('empty');
     return;
   }
 
@@ -402,6 +401,7 @@ function escapeWasPressed(e) {
 }
 
 // client form validtion
+/* eslint-disable no-unused-vars */
 function loginSubmit() {
   // Get inputfields
   var libraryName = document.getElementById('libraryname-input');
@@ -458,6 +458,7 @@ function loginSubmit() {
     document.getElementById('borchk-login-form').submit();
   }
 }
+/* eslint-enable no-unused-vars */
 
 // rests the form errors
 function resetFieldErrorMessage(field, text) {
