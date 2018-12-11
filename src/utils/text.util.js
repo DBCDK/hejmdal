@@ -8,6 +8,8 @@
  *
  * @type {{login: {title: string, content: *[]}}}
  */
+
+/* eslint-disable max-len */
 const helpTexts = {
   consent: {
     title: 'Hjælp til Godkendelse',
@@ -175,6 +177,7 @@ const helpTexts = {
     sections: []
   }
 };
+/* eslint-enable max-len */
 
 /**
  * Creates the help text object from a list of keys (helpNames)
