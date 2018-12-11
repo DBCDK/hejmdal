@@ -60,19 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     dropdownTrigger('open');
   });
 
-  // detect clicks outside of the dropdown - to close the dropdown
-  document.addEventListener('mousedown', function(e) {
-    if (librariesDropdownContainer.contains(e.target)) {
-      return;
-    }
-
-    if (!e.target.classList.contains('prevent-body-close-event')) {
-      if (librariesDropdownContainer.classList.contains('visible')) {
-        dropdownTrigger('close');
-      }
-    }
-  });
-
   // listen on keyevents in the library select field
   libraryInput.addEventListener('keyup', function() {
     // Other KeyPress'
@@ -87,11 +74,27 @@ document.addEventListener('DOMContentLoaded', function() {
   // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
   libraryInput.addEventListener('keydown', handleKeyEvents);
 
-  // Set current search value
-  currentSearchValue = libraryInput.value;
+  // only for not predefined libraries
+  if (librariesDropdownContainer) {
+    // detect clicks outside of the dropdown - to close the dropdown
+    document.addEventListener('mousedown', function(e) {
+      if (librariesDropdownContainer.contains(e.target)) {
+        return;
+      }
 
-  // init
-  initVisibleLibraries();
+      if (!e.target.classList.contains('prevent-body-close-event')) {
+        if (librariesDropdownContainer.classList.contains('visible')) {
+          dropdownTrigger('close');
+        }
+      }
+    });
+
+    // Set current search value
+    currentSearchValue = libraryInput.value;
+
+    // init
+    initVisibleLibraries();
+  }
 });
 
 //
@@ -401,8 +404,10 @@ function escapeWasPressed(e) {
 /* eslint-disable no-unused-vars */
 function loginSubmit() {
   // Get inputfields
-  var libraryName = document.getElementById('libraryname-input');
-  var libraryId = document.getElementById('libraryid-input');
+  if (librariesDropdownContainer) {
+    var libraryName = document.getElementById('libraryname-input');
+    var libraryId = document.getElementById('libraryid-input');
+  }
   var userId = document.getElementById('userid-input');
   var pin = document.getElementById('pin-input');
 
@@ -412,7 +417,9 @@ function loginSubmit() {
   var pinText = document.getElementById('pin-input-text');
 
   // Reset error messages
-  resetFieldErrorMessage(libraryName, libraryText);
+  if (librariesDropdownContainer) {
+    resetFieldErrorMessage(libraryName, libraryText);
+  }
   resetFieldErrorMessage(userId, idText);
   resetFieldErrorMessage(pin, pinText);
 
@@ -425,7 +432,7 @@ function loginSubmit() {
   var valid = true;
 
   // if no libarary selected
-  if (!libraryId.value) {
+  if (librariesDropdownContainer && !libraryId.value) {
     addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
     valid = false;
   }

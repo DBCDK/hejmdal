@@ -1,10 +1,6 @@
-//-div.col-xs-2.col-xs-offset-10
-  //-a(href='/login' id='error-overlay-close-btn')
-    //-span(class='glyphicon glyphicon-remove close-btn')
-
 // Headline
 div#error-header
-  a(href='/login?presel='+preselectedId id='error-close-btn')
+  a(href= preselectedId ? '/login?presel='+preselectedId : '/login' id='error-close-btn')
   h2 Noget gik galt
 
 // Message
