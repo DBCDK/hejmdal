@@ -26,7 +26,6 @@
         height: auto;
 
         .media {
-          width: 200px;
           height: 30px;
           opacity: 0;
           margin: 0 auto 20px auto;
@@ -36,16 +35,16 @@
           }
 
           &.ereolen {
-            background: svg-inline(--ereolen) no-repeat center;
-            background-size: 100px auto;
+            background: svg-inline(--ereolen) no-repeat center left;
+            background-size: 80% auto;
           }
           &.ereolen-global {
-            background: svg-inline(--ereolen-global) no-repeat center;
-            background-size: 200px auto;
+            background: svg-inline(--ereolen-global) no-repeat center center;
+            background-size: 150% auto;
           }
           &.bibliotek-dk {
             background: svg-inline(--bibliotek-dk) no-repeat center;
-            background-size: 100px auto;
+            background-size: 100% auto;
           }
         }
       }
