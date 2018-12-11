@@ -113,9 +113,6 @@ function dropdownTrigger(status = 'toggle') {
   }
 
   toggleLabelsInDropDown();
-
-  // var ariaHidden = !librariesDropdownContainer.classList.contains('open');
-  // librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
 }
 
 // When a library in the dropdown is clicked/selected
