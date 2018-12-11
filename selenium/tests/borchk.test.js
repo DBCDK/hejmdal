@@ -131,9 +131,9 @@ describe('Test Borchk component', () => {
   it('should be possible to search libraries using branchId', () => {
     browser.addValue('#libraryname-input', '733000');
 
-    browser.isVisible('=Slagelse Bibliotekerne');
-    browser.click('=Slagelse Bibliotekerne');
-    assert.equal('Slagelse Bibliotekerne', browser.getValue('#libraryname-input'));
+    browser.isVisible('=Slagelse Folkebibliotek');
+    browser.click('=Slagelse Folkebibliotek');
+    assert.equal('Slagelse Folkebibliotek', browser.getValue('#libraryname-input'));
   });
 
   it('Should display a pre-filled disabled field when &agency= is set', () => {
@@ -142,7 +142,7 @@ describe('Test Borchk component', () => {
     assert.isFalse(browser.isVisible('#libraryname-input'));
     assert.isFalse(browser.isEnabled('#libraryid-input-disabled'));
 
-    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Slagelse Bibliotekerne');
+    assert.equal(browser.getValue('#libraryid-input-disabled'), 'Slagelse Folkebibliotek');
   });
 
   it('Should close dropwdown when a click happens outside the dropdown', () => {
@@ -160,7 +160,7 @@ describe('Test Borchk component', () => {
   it('Should preselect an editable library', () => {
     loginPage.open({token: loginPage.validToken, presel: '733000'});
 
-    assert.equal('Slagelse Bibliotekerne', browser.getValue('#libraryname-input'));
+    assert.equal('Slagelse Folkebibliotek', browser.getValue('#libraryname-input'));
     assert.isFalse(browser.isVisible('#libraries-dropdown-toggle-btn'));
     assert.isTrue(browser.isVisible('#clear-libraries-input-btn'));
   });
