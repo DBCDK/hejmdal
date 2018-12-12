@@ -3,22 +3,23 @@ context('Borchk form', () => {
     const authorize =
       '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
     cy.visit(authorize);
-    cy.get('#libraryname-input').clear();
+    //cy.get('#libraryname-input').clear();
+    //cy.get('#libraryname-input').blur();
   });
 
   it('test dropdown is available on focus', () => {
     cy.get('#libraryname-input').focus();
-    cy.get('#libraries-dropdown-container').should('be.visible');
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
   });
   it('Toggle dropdown', () => {
     // Dropdown is hidden
-    cy.get('#libraries-dropdown-container').should('not.be.visible');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
     // Toggle on
     cy.get('#libraries-dropdown-toggle-btn').click();
-    cy.get('#libraries-dropdown-container').should('be.visible');
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
     // Toggle off
-    cy.get('#libraries-dropdown-toggle-btn').click();
-    cy.get('#libraries-dropdown-container').should('not.be.visible');
+    cy.get('#login').click('topLeft');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
   it('Select library in dropdown', () => {
     cy.get('#libraryname-input').type('sla');
@@ -45,7 +46,7 @@ context('Borchk form', () => {
     // Clear input and close dropdown
     cy.get('#clear-libraries-input-btn').click();
     cy.get('#libraryname-input').should('be.empty');
-    cy.get('#libraries-dropdown').should('not.be.visible');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
