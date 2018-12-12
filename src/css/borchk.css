@@ -195,7 +195,8 @@
 
       &#library-group {
         &.dropdown-visible {
-          margin: 15px 0 0 0;
+          margin: 0;
+          padding: 15px 0 0 0;
           position: fixed;
           width: 100%;
           height: 100vh;
@@ -230,6 +231,7 @@
           @media (min-width: 486px) {
             &.dropdown-visible {
               margin: 40px 0 0 0;
+              padding: 0;
               position: relative;
               width: inherit;
               height: auto;

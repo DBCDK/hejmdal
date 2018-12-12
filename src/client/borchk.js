@@ -403,23 +403,28 @@ function escapeWasPressed(e) {
 // client form validtion
 /* eslint-disable no-unused-vars */
 function loginSubmit() {
-  // Get inputfields
+  // if library is not preselected or predefined
+
+  var libraryId = false;
+  var libraryName = false;
+  var libraryText = false;
+
   if (librariesDropdownContainer) {
-    var libraryName = document.getElementById('libraryname-input');
-    var libraryId = document.getElementById('libraryid-input');
+    libraryId = document.getElementById('libraryid-input');
+    libraryName = document.getElementById('libraryname-input');
+    libraryText = document.getElementById('libraryname-input-text');
+    resetFieldErrorMessage(libraryName, libraryText);
   }
+
+  // Get inputfields
   var userId = document.getElementById('userid-input');
   var pin = document.getElementById('pin-input');
 
   // Get input description text
-  var libraryText = document.getElementById('libraryname-input-text');
   var idText = document.getElementById('userid-input-text');
   var pinText = document.getElementById('pin-input-text');
 
   // Reset error messages
-  if (librariesDropdownContainer) {
-    resetFieldErrorMessage(libraryName, libraryText);
-  }
   resetFieldErrorMessage(userId, idText);
   resetFieldErrorMessage(pin, pinText);
 
