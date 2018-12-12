@@ -48,6 +48,19 @@ context('Borchk form', () => {
     cy.get('#libraryname-input').should('be.empty');
     cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
+  it('clear library dropdown with escape', () => {
+    // Open dropdown with focus in input field
+    cy.get('#libraryname-input').type('sla');
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
+    cy.get('#libraryname-input').type('{esc}');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
+    // Open dropdown with toggle button
+    cy.get('#libraryname-input').clear();
+    cy.get('#libraries-dropdown-toggle-btn').click();
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
+    cy.get('#libraryname-input').type('{esc}');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
+  });
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
     cy.get('#userid-input').should('have.attr', 'type', 'password');

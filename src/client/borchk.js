@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-  libraryInput.addEventListener('keydown', handleKeyEvents);
+  document.addEventListener('keydown', handleKeyEvents);
 
   // only for not predefined libraries
   if (librariesDropdownContainer) {
