@@ -106,6 +106,7 @@ export async function authenticate(req, res, next) {
       lockedAgency: state.serviceAgency || null,
       lockedAgencyName: lockedAgencyName,
       help: helpText,
+      cookie: getText(['cookies']),
       loginToProfile: !!req.session.loginToProfil
     });
 
