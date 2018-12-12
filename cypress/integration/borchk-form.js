@@ -31,7 +31,7 @@ context('Borchk form', () => {
     cy.get('.agency:visible')
       .first()
       .click();
-    cy.get('#libraryname-input').should('have.value', 'Slagelse Bibliotekerne');
+    cy.get('#libraryname-input').should('have.value', 'Slagelse');
     cy.get('#clear-libraries-input-btn').should('be.visible');
     // Clear selection
     cy.get('#clear-libraries-input-btn').click();
@@ -40,7 +40,7 @@ context('Borchk form', () => {
     cy.get('#libraryname-input').type('sla');
     cy.get('#libraryname-input').type('{downarrow}');
     cy.get('#libraryname-input').type('{enter}');
-    cy.get('#libraryname-input').should('have.value', 'Slagelse Bibliotekerne');
+    cy.get('#libraryname-input').should('have.value', 'Slagelse');
   });
 
   it('Toggle clear button', () => {

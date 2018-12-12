@@ -41,7 +41,7 @@ describe('Testing errors shown in the UI', () => {
 
   it('Should set the presel url parameter', () => {
     browser.addValue('#libraryname-input', 'slagelse');
-    browser.click('=Slagelse Bibliotekerne');
+    browser.click('=Slagelse');
 
     browser.addValue('#userid-input', '1234');
     browser.addValue('#pin-input', '1234');
@@ -52,7 +52,7 @@ describe('Testing errors shown in the UI', () => {
 
   it('should open a generic error page', () => {
     browser.addValue('#libraryname-input', 'slagelse');
-    browser.click('=Slagelse Bibliotekerne');
+    browser.click('=Slagelse');
 
     browser.addValue('#userid-input', '1234');
     browser.addValue('#pin-input', '1234');

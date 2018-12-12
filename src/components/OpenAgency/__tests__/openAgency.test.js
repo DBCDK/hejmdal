@@ -20,7 +20,7 @@ describe('Test openAgency component', () => {
       {
         agencyId: '761500',
         branchId: '761500',
-        agencyName: 'Horsens Bibliotek',
+        agencyName: 'Horsens',
         branchName: 'Horsens Bibliotek',
         branchShortName: 'Horsens Bibliotek',
         city: 'Horsens',
@@ -80,7 +80,7 @@ describe('Test openAgency component', () => {
       {
         agencyId: '715100',
         branchId: '715100',
-        agencyName: '',
+        agencyName: 'Ballerup',
         branchName: 'Ballerup Bibliotek',
         branchShortName: '',
         city: '',
@@ -94,7 +94,7 @@ describe('Test openAgency component', () => {
       {
         agencyId: '724000',
         branchId: '724000',
-        agencyName: '',
+        agencyName: 'Egedal',
         branchName: 'Smørum Bibliotek',
         branchShortName: '',
         city: '',
