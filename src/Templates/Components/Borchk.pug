@@ -9,11 +9,12 @@ div#borchk
       div#library-group.form-group
         input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
 
-        span(class='clear-libraries-on-mobile' onclick='clearLibraryInput();')
+        span(class='prevent-body-close-event clear-libraries-on-mobile' onclick='clearLibraryInput();') Ryd
+        span(class='close-libraries-on-mobile' onclick='dropdownTrigger("close");')
 
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
+          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' required='true' tabindex='1' value=preselectedName)
           button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 

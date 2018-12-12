@@ -57,7 +57,7 @@
 
         @media (min-width: 335px) {
           #external-providers-btn-container {
-            justify-content: space-between;
+            justify-content: space-around;
             flex-direction: row;
             a {
               align-self: center;
