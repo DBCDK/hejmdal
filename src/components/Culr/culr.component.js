@@ -13,7 +13,7 @@ import {log} from '../../utils/logging.util';
  * @param {string} agencyId
  * @return {{}}
  */
-export async function getUserAttributesFromCulr(userId , agencyId = null) {
+export async function getUserAttributesFromCulr(userId, agencyId = null) {
   let attributes = {};
   let response = null;
 
@@ -35,7 +35,7 @@ export async function getUserAttributesFromCulr(userId , agencyId = null) {
           if (account.userIdType === 'CPR') {
             cpr = account.userIdValue;
           }
-        })
+        });
       }
       if (cpr) { // found the users globalId. Now fetch all accounts
         response = await culr.getAccountsByGlobalId({userIdValue: cpr});
