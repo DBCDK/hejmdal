@@ -46,7 +46,10 @@ export async function giveConsentUI(req, res) {
 }
 /**
  * Helper function for extracting consent Attributes.
- * @param {object} state
+ *
+ * @param consentAttributes
+ * @param missingConsents
+ * @returns {Array}
  */
 function extractConsentAttributesInfo({consentAttributes, missingConsents}) {
   return Object.keys(consentAttributes)
@@ -107,6 +110,7 @@ export async function consentSubmit(req, res) {
  * If no consent is found the user is redirected to the page where the consent can be made.
  *
  * @param {object} req
+ * @param {object} res
  * @param {function} next
  */
 export async function retrieveMissingUserConsent(req, res, next) {
@@ -116,7 +120,7 @@ export async function retrieveMissingUserConsent(req, res, next) {
       return next();
     }
     const user = req.getUser();
-    const culrAttributes = await getUserAttributesFromCulr(user.userId);
+    const culrAttributes = await getUserAttributesFromCulr(user.userId, user.agency);
     const ticketAttributes = mapCulrResponse(
       culrAttributes,
       serviceClient.attributes,
@@ -247,6 +251,7 @@ export async function findConsents(userId) {
  *
  * @param req
  * @param res
+ * @param next
  * @returns {boolean}
  */
 export async function deleteConsents(req, res, next) {
