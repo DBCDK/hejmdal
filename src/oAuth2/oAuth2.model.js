@@ -23,7 +23,7 @@ const mockTokens = new Map();
 /*
  * Save authorization code
  */
-module.exports.saveAuthorizationCode = function(code, client, user) {
+module.exports.saveAuthorizationCode = async (code, client, user) => {
   const codeToSave = {
     authorizationCode: code.authorizationCode,
     expiresAt: code.expiresAt,
@@ -37,7 +37,7 @@ module.exports.saveAuthorizationCode = function(code, client, user) {
     user: user.userId
   });
 
-  authStorage.insert(code.authorizationCode, codeToSave);
+  await authStorage.insert(code.authorizationCode, codeToSave);
 
   return code;
 };
