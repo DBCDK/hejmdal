@@ -1,54 +1,55 @@
 div#borchk
-  form(action=identityProviders.borchk.action autocomplete='off' method='post')
-    div.form-group
-      if lockedAgency
-        label(for='libraryid-input') Bibliotek
-        input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
-        input(type="text" disabled value=lockedAgencyName class="form-control" id="libraryid-input-disabled" name="libraryName" aria-hidden='false' aria-disabled='true')
-      else
-        label(for='libraryid-input') Bibliotek
-        div.input-group
-          input(type='text' class='form-control' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' value=preselctedName)
-          input(type="hidden" name="agency" id="libraryid-input-hidden" aria-hidden='true' value=preselectedId )
-          div.input-group-btn.black
-            button.btn.inline-btn-default.dropdown-toggle(type='button' class=preselctedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='toggleDropdown()' aria-hidden='false')
-              span(class='glyphicon glyphicon-triangle-bottom')
-            button.btn.inline-btn-default(type='button' class=preselctedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
-              span(class='glyphicon glyphicon-remove')
-        if branches
-          div(class='dropdown' id='libraries-dropdown-container' aria-hidden='true')
-            ul(class='dropdown-menu libraries-dropdown' id='libraries-dropdown')
-              li(class='dropdown-header hide' id='latest') Forslag
-              li(class='dropdown-header hide' id='alphabetical') Alfabetisk
-              each branch in branches
-                li
-                  a(class='agency' data-aid=branch.branchId data-name=branch.name onclick='OnClick(this);') #{branch.name}
-                    span.hide #{branch.branchId}
+  form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form')
+
+    if lockedAgency
+      input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
+      input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
+    else
+
+      div#library-group.form-group
+        input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
+
+        span(class='clear-libraries-on-mobile' onclick='clearLibraryInput();')
+
+        label(for='libraryname-input') Vælg dit lokale bibliotek
+        div.input-container
+          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' required='true' tabindex='1' value=preselectedName)
+          button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
+          button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
+
+          if branches
+            div(id='libraries-dropdown-container' aria-hidden='true')
+              ul(id='libraries-dropdown')
+                li(class='hide subject' id='latest') Forslag
+                li(class='hide subject' id='alphabetical') Alfabetisk
+                each branch in branches
+                  if branch.name
+                    li(class="agency" data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
+
+        span(id='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
 
     div.form-group
-      label(for='userid-input') CPR eller lånerkortnummer
-      div.input-group
+      label(for='userid-input') Cpr- eller lånernummer
+      div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-        input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete="password")
-        div.input-group-btn
-          button(type='button' class='btn inline-btn-default' id='toggle-userid-input' onclick='toggleUserIdVisibility("userid-input", "userid-input-glyph");')
-            span(class='icon-btn icon-eye-closed' id='userid-input-glyph')
+        input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete='password' tabindex='2')
+        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
+      span(id='userid-input-text' data-text='Lånernummer dopalnitelna informacia la la lorem ipsum') Lånernummer dopalnitelna informacia la la lorem ipsum
+
 
     div.form-group
-      label(for='pin-input') Pinkode
-      div.input-group
-        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete="new-pincode")
-        div.input-group-btn
-          button(type='button' class='btn inline-btn-default' id='toggle-pin-input' onclick='toggleUserIdVisibility("pin-input", "pin-input-glyph");')
-            span(class='icon-btn icon-eye-closed' id='pin-input-glyph')
+      label(for='pin-input') Indtast din kode
+      div.input-container
+        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete='new-pincode' tabindex='3')
+        button(type='button' id='toggle-pin-input' onclick='toggleFieldVisibility("pin-input");')
+      span(id='pin-input-text' data-text='Indtast din 4- eller 5-cifrede bibliotekskode') Indtast din 4- eller 5-cifrede bibliotekskode
 
-    div.login-actions.col-xs-12.col-md-12
-      div.remember-me-container.col-xs-6.col-md-6
-        label.remember(for='rememberMe')
-          input(type='checkbox' name='rememberMe' id='rememberMe')
-          span Husk mig
-      div.login-buttons-container.col-xs-6.col-md-6
-        div
-          button(type='submit' class='btn btn-success' id='borchk-submit') Log ind
-        div.buffer-top-10
-          a(href=identityProviders.borchk.abortAction class='link-style' id="cancel-login") Fortryd log ind
+    if error
+      div#error-container
+        include Error
+
+    div.action-container
+        button(type='button' id='borchk-submit' onclick='loginSubmit()' tabindex='4') Log ind
+        div.other-actions
+          a(href='') Ny Bruger?
+          a(href='') Læs om vores behandling af dine personoplysninger

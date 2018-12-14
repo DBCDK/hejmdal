@@ -1,18 +1,98 @@
+@import 'media.css';
+
 #footer {
-  border-top: 1px solid var(--dark-grey);
-  font-size: 13px;
-  color: var(--dark-grey);
-}
+  background-color: var(--background-color);
+  height: auto;
 
-.footer-container {
-  margin-top: 10px;
-}
+  .content-container {
+    min-height: 148px;
+    padding: 40px 15px 0 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
-.footer-link {
-  color: var(--dark-grey);
-  text-decoration: underline;
-}
+    .medias,
+    .links {
+      height: 50%;
+    }
 
-#footer .login-profile-link {
-  margin-top: 0.25em;
+    .medias {
+      padding: 0 0 20px 0;
+
+      .media-group {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        height: auto;
+
+        .media {
+          height: 30px;
+          opacity: 0;
+          margin: 0 auto 20px auto;
+
+          &.visible {
+            opacity: 1;
+          }
+
+          &.ereolen {
+            background: svg-inline(--ereolen) no-repeat center left;
+            background-size: 80% auto;
+          }
+          &.ereolen-global {
+            background: svg-inline(--ereolen-global) no-repeat center center;
+            background-size: 150% auto;
+          }
+          &.bibliotek-dk {
+            background: svg-inline(--bibliotek-dk) no-repeat center;
+            background-size: 100% auto;
+          }
+        }
+      }
+
+      @media (min-width: 335px) {
+        .media-group {
+          flex-direction: row;
+
+          .media {
+            width: 100px;
+            margin: 0 0 20px 0;
+          }
+        }
+      }
+      @media (min-width: 486px) {
+        .media-group {
+          .media {
+            width: 200px;
+          }
+        }
+      }
+    }
+
+    .links {
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      align-items: center;
+
+      span,
+      a {
+        color: var(--grey-lighten-1);
+      }
+
+      span {
+        text-align: center;
+        padding: 5px 0;
+      }
+
+      a {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+  @media (min-width: 500px) {
+    .content-container {
+      padding: 40px 0px;
+    }
+  }
 }

@@ -1,0 +1,14 @@
+@svg-load --svg-cube-logo-large url(svg/logo/logo_orange.svg) {
+  fill: black;
+}
+
+#header {
+  #logo {
+    display: block;
+    width: 47px;
+    height: 41px;
+    background: svg-inline(--svg-cube-logo-large) no-repeat left center;
+    background-size: contain;
+    margin: 60px 0 20px 0;
+  }
+}

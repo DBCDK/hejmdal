@@ -1,16 +1,19 @@
-@import "bootstrap.min.css";
-@import "colors.css";
-@import "globals.css";
-@import "utils.css";
-@import "bootstrap-overrides.css";
-@import "borchk.css";
-@import "topbar.css";
-@import "consent.css";
-@import "footer.css";
-@import "login.css";
-@import "error.css";
-@import "logout.css";
-@import "nemlogin.css";
-@import "unilogin.css";
-@import "wayf.css";
-@import "profile.css";
+/* TODO remove unused files*/
+
+@import 'resources.css';
+@import 'variables.css';
+@import 'globals.css';
+@import 'utils.css';
+@import 'borchk.css';
+@import 'topbar.css';
+@import 'consent.css';
+@import 'header.css';
+@import 'footer.css';
+@import 'login.css';
+@import 'error.css';
+@import 'logout.css';
+@import 'nemlogin.css';
+@import 'unilogin.css';
+@import 'wayf.css';
+@import 'profile.css';
+@import 'modal.css';

@@ -1,0 +1,192 @@
+#dimmer {
+  /* not in use on mobile */
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  z-index: 99;
+  background-color: var(--white);
+  transition-timing-function: ease-out;
+  box-shadow: -2px 0 3px rgba(0, 0, 0, 0.07);
+  opacity: 1;
+
+  /* animation props */
+  transition-duration: 0.2s;
+  right: -110vw;
+
+  &.visible {
+    transition-duration: 0.3s;
+    right: 0;
+  }
+
+  .modal-header {
+    position: relative;
+    padding: 80px 16px 40px 16px;
+    height: 25%;
+    transition-duration: 0.3s;
+
+    h4 {
+      font-size: 24px;
+      line-height: 34px;
+    }
+
+    button {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      background: svg-inline(--close-large) no-repeat center;
+      background-size: 15px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      border: 0;
+    }
+
+    &.onScroll {
+      box-shadow: var(--shadow);
+      height: 60px;
+      padding: 16px;
+    }
+
+    &.onScroll ~ #modal-body {
+      padding: 50px 16px 0 16px;
+      height: calc(100% - 60px);
+    }
+  }
+
+  .modal-body {
+    padding: 0px 16px;
+    height: 75%;
+    overflow-y: auto;
+    transition-duration: 0.3s;
+
+    &::-webkit-scrollbar-track {
+      background-color: var(--grey-lighten-4);
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px;
+      background-color: #f5f5f5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: var(--grey);
+    }
+
+    .modal-body-section {
+      margin-bottom: 30px;
+
+      h5 {
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: 500;
+        padding: 0 0 10px 0;
+        font-family: var(--secondary);
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+  }
+}
+
+@media (min-width: 486px) {
+  #dimmer {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 98;
+    cursor: pointer;
+    display: block;
+    box-shadow: var(--shadow);
+
+    /* animation props */
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 0.3s;
+
+    &.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  .modal {
+    width: 60vw;
+    height: 60vh;
+    right: 20vw;
+    top: 20vh;
+    transform: scale(0.75);
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: var(--shadow);
+
+    &.visible {
+      right: 20vw;
+      top: 10vh;
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+
+    .modal-header {
+      padding: 80px 50px 40px 50px;
+
+      &.onScroll {
+        padding: 16px 50px;
+      }
+
+      &.onScroll ~ #modal-body {
+        padding: 60px 50px 0 50px;
+      }
+
+      button {
+        background: none;
+        color: var(--black-lighten-1);
+        font-family: var(--tertiary);
+
+        &::before {
+          content: 'Luk';
+        }
+      }
+    }
+    .modal-body {
+      padding: 0px 50px;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal {
+    width: 50vw;
+    right: 25vw;
+
+    &.visible {
+      right: 25vw;
+    }
+
+    .modal-header {
+      padding: 80px 100px 40px 100px;
+
+      &.onScroll {
+        padding: 16px 100px;
+      }
+
+      &.onScroll ~ #modal-body {
+        padding: 60px 100px 0 100px;
+      }
+    }
+
+    .modal-body {
+      padding: 0px 100px;
+    }
+  }
+}

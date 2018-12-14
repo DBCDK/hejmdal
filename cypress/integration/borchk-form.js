@@ -3,27 +3,23 @@ context('Borchk form', () => {
     const authorize =
       '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
     cy.visit(authorize);
-    cy.get('#libraryname-input').clear();
+    //cy.get('#libraryname-input').clear();
+    //cy.get('#libraryname-input').blur();
   });
 
-  it('test dropdown is visible after 2 keys', () => {
-    cy.get('#libraryname-input').type('s');
-    cy.get('#libraries-dropdown').should('not.visible');
-    cy.get('#libraryname-input').type('l');
-    cy.get('#libraries-dropdown').should('visible');
-    // Should only show elements containing "sl"
-    cy.get('#libraries-dropdown .agency:visible').should('have.length', 3);
-    cy.get('#libraries-dropdown .agency:hidden').should('have.length', 2);
+  it('test dropdown is available on focus', () => {
+    cy.get('#libraryname-input').focus();
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
   });
   it('Toggle dropdown', () => {
     // Dropdown is hidden
-    cy.get('#libraries-dropdown').should('not.be.visible');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
     // Toggle on
     cy.get('#libraries-dropdown-toggle-btn').click();
-    cy.get('#libraries-dropdown').should('be.visible');
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
     // Toggle off
-    cy.get('#libraries-dropdown-toggle-btn').click();
-    cy.get('#libraries-dropdown').should('not.be.visible');
+    cy.get('#login').click('topLeft');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
   it('Select library in dropdown', () => {
     cy.get('#libraryname-input').type('sla');
@@ -50,7 +46,20 @@ context('Borchk form', () => {
     // Clear input and close dropdown
     cy.get('#clear-libraries-input-btn').click();
     cy.get('#libraryname-input').should('be.empty');
-    cy.get('#libraries-dropdown').should('not.be.visible');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
+  });
+  it('clear library dropdown with escape', () => {
+    // Open dropdown with focus in input field
+    cy.get('#libraryname-input').type('sla');
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
+    cy.get('#libraryname-input').type('{esc}');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
+    // Open dropdown with toggle button
+    cy.get('#libraryname-input').clear();
+    cy.get('#libraries-dropdown-toggle-btn').click();
+    cy.get('#libraries-dropdown-container').should('have.class', 'visible');
+    cy.get('#libraryname-input').type('{esc}');
+    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');

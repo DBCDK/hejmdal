@@ -1,100 +1,314 @@
-/**
- * @file
- * This file provides the necessary functionality to provide a smooth user experience using the Borchk serviceprovider.
- */
+var storageAvailable = true;
 
+// Library input
+var libraryGroup;
 var librariesDropdownContainer;
-var allAgencies;
-let currentlyVisibleAgencies = [];
-var currentlySelectedIndex = -1;
-var currentSearchValue = '';
 var libraryInput;
 var libraryIdInput;
 
-document.addEventListener('DOMContentLoaded', function () {
-  autocompleteUsername();
-  var body = document.getElementsByTagName('body')[0];
-  libraryInput = document.getElementById('libraryname-input');
-  libraryIdInput = document.getElementById('libraryid-input-hidden');
-  currentSearchValue = libraryInput.value;
+// Library input buttons (caret/clear)
+var dropDownCaret;
+var dropDownClear;
 
-  librariesDropdownContainer = document.getElementById('libraries-dropdown-container');
+// dropdown vars
+var allAgencies;
+var storedAgencies = [];
+var currentlyVisibleAgencies = [];
+var currentlySelectedIndex = -1;
+var currentSearchValue = '';
+
+// Other form inputs
+var userIdInput;
+
+document.addEventListener('DOMContentLoaded', function() {
+  // init sorage availability
+  storageAvailable = Storage ? true : false;
+
+  // Update library var nodes
+  libraryGroup = document.getElementById('library-group');
+  libraryInput = document.getElementById('libraryname-input');
+  libraryIdInput = document.getElementById('libraryid-input');
+  librariesDropdownContainer = document.getElementById(
+    'libraries-dropdown-container'
+  );
+
+  // Set userId var nodes
+  userIdInput = document.getElementById('userid-input');
+
+  // Set clear/close var nodes
+  dropDownCaret = document.getElementById('libraries-dropdown-toggle-btn');
+  dropDownClear = document.getElementById('clear-libraries-input-btn');
+
+  // Set agencies
   allAgencies = document.getElementsByClassName('agency');
 
-  libraryInput.addEventListener('keyup', function () {
+  // Set storedAgencies
+  if (storageAvailable) {
+    // fetch recetnly selected libraries from localStorage
+    storedAgencies = JSON.parse(localStorage.getItem('agencies')) || [];
+
+    // Create recently selected list in dropdown
+    initRecentlySelectedLibraries();
+  }
+
+  //
+  // Event Listeners
+  //
+
+  // register focus in the library select inputfield
+  libraryInput.addEventListener('focus', function() {
+    dropdownTrigger('open');
+  });
+
+  // listen on keyevents in the library select field
+  libraryInput.addEventListener('keyup', function() {
+    // Other KeyPress'
     if (libraryInput.value !== currentSearchValue) {
       currentSearchValue = libraryInput.value;
-      toggleBorchkDropdown();
-      toggleVisibleLibraries();
+      initVisibleLibraries();
     }
-
-    toggleInputButtons();
+    initButtonStatus();
+    toggleLabelsInDropDown();
   });
 
-  libraryInput.addEventListener('keydown', handleKeyDown);
+  // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
+  document.addEventListener('keydown', handleKeyEvents);
 
-  body.addEventListener('mousedown', function (e) {
-    if (e.target.className.indexOf('glyphicon') !== -1) {
-      return;
-    }
-    toggleDropdown(false);
-  });
+  // only for not predefined libraries
+  if (librariesDropdownContainer) {
+    // detect clicks outside of the dropdown - to close the dropdown
+    document.addEventListener('mousedown', function(e) {
+      if (librariesDropdownContainer.contains(e.target)) {
+        return;
+      }
 
-  librariesDropdownContainer.addEventListener('mousedown', function (e) {
-    e.stopPropagation();
-  });
+      if (!e.target.classList.contains('prevent-body-close-event')) {
+        if (librariesDropdownContainer.classList.contains('visible')) {
+          dropdownTrigger('close');
+        }
+      }
+    });
 
-  libraryInput.addEventListener('focus', toggleFocusOnLibraryNameInput);
-  libraryInput.addEventListener('blur', toggleFocusOnLibraryNameInput);
-  document.getElementById('userid-input').addEventListener('focus', toggleFocusOnUserIdInput);
-  document.getElementById('userid-input').addEventListener('blur', toggleFocusOnUserIdInput);
+    // Set current search value
+    currentSearchValue = libraryInput.value;
 
-  document.getElementById('pin-input').addEventListener('focus', toggleFocusOnUserPinInput);
-  document.getElementById('pin-input').addEventListener('blur', toggleFocusOnUserPinInput);
-
-  if (Storage !== undefined) { // eslint-disable-line no-undefined
-    setRecentlySelectedLibraries();
+    // init
+    initVisibleLibraries();
   }
 });
 
-/**
- * Hack that catches autocompleted username and adds it to userid-input input field.
- *
- * This is needed because userid-input as default is a password field.
- */
-function autocompleteUsername() {
-  var catcher = document.getElementById('autocomplete-username');
-  catcher.addEventListener('change', function (event) {
-    document.getElementById('userid-input').value = event.currentTarget.value;
+//
+// Functions
+//
+
+// triggers/toggles the dropdown
+// status = 'open' || 'close' || 'toggle' (default)
+function dropdownTrigger(status = 'toggle') {
+  if (status === 'open') {
+    librariesDropdownContainer.classList.add('visible');
+    libraryGroup.classList.add('dropdown-visible');
+  } else if (status === 'close') {
+    librariesDropdownContainer.classList.remove('visible');
+    libraryGroup.classList.remove('dropdown-visible');
+  } else {
+    librariesDropdownContainer.classList.toggle('visible');
+    libraryGroup.classList.toggle('dropdown-visible');
+  }
+
+  toggleLabelsInDropDown();
+}
+
+// When a library in the dropdown is clicked/selected
+// element = element node
+function librarySelect(element) {
+  // eslint-disable-line no-unused-vars
+  var branchName = element.dataset.name;
+  var branchId = element.dataset.aid;
+
+  libraryIdInput.value = branchId;
+  libraryInput.value = branchName;
+  dropdownTrigger('close');
+  userIdInput.focus();
+  addLibraryToLocalStorage({branchName, branchId});
+  initButtonStatus();
+}
+
+// Evaluates if the caret or the clear button (in the libraryfield) should be hidden
+function initButtonStatus() {
+  if (libraryInput.value.length) {
+    dropDownCaret.classList.add('hide');
+    dropDownClear.classList.remove('hide');
+  } else {
+    dropDownCaret.classList.remove('hide');
+    dropDownClear.classList.add('hide');
+  }
+}
+
+// Clears the library input field on clear button click
+/* eslint-disable no-unused-vars */
+function clearLibraryInput() {
+  libraryInput.value = '';
+  libraryIdInput.value = '';
+  currentSearchValue = '';
+
+  initButtonStatus();
+  dropdownTrigger('close');
+  clearVisibleLibraries();
+}
+/* eslint-enable no-unused-vars */
+
+// Toggle Field text visibility (type: password || type: tel)
+// id = id of the field
+/* eslint-disable no-unused-vars */
+function toggleFieldVisibility(id) {
+  var field = document.getElementById(id);
+  var currentType = field.getAttribute('type');
+  var newType = currentType === 'password' ? 'tel' : 'password';
+  field.setAttribute('type', newType);
+}
+/* eslint-enable no-unused-vars */
+
+// Toggle labels in dropdown
+function toggleLabelsInDropDown() {
+  if (currentSearchValue.length > 0) {
+    document.getElementById('latest').classList.add('hide');
+    document.getElementById('alphabetical').classList.add('hide');
+  } else {
+    if (storedAgencies.length > 0) {
+      document.getElementById('latest').classList.remove('hide');
+    }
+    document.getElementById('alphabetical').classList.remove('hide');
+  }
+}
+
+// Evaluate which libraries to be visible in the dropdown
+function initVisibleLibraries() {
+  currentlyVisibleAgencies = [];
+
+  for (let i = 0; i < allAgencies.length; i++) {
+    const item = allAgencies.item(i);
+    item.classList.remove('selected');
+    let shouldHide =
+      allAgencies
+        .item(i)
+        .textContent.toLowerCase()
+        .indexOf(currentSearchValue.toLowerCase()) === -1;
+    item.classList.toggle('hide', shouldHide);
+
+    for (let j = 0; j < currentlyVisibleAgencies.length; j++) {
+      if (currentlyVisibleAgencies[j].innerText === item.innerText) {
+        shouldHide = true;
+        item.classList.add('hide');
+      }
+    }
+
+    if (!shouldHide) {
+      currentlyVisibleAgencies.push(item);
+      currentlySelectedIndex = -1;
+    }
+  }
+}
+
+// clear visible labraries
+function clearVisibleLibraries() {
+  currentlyVisibleAgencies = [];
+  currentlySelectedIndex = -1;
+
+  for (let i = 0; i < allAgencies.length; i++) {
+    const item = allAgencies.item(i);
+    item.classList.remove('selected');
+    item.classList.remove('hide');
+    currentlyVisibleAgencies.push(item);
+  }
+}
+
+// Creats a list with recently selected libraries in top of the dropdown
+function initRecentlySelectedLibraries() {
+  clearRecentlySelectedLibraries();
+  if (storedAgencies.length === 0 || !librariesDropdownContainer) {
+    return;
+  }
+
+  const alphabeticalHeader = document.getElementById('alphabetical');
+  const librariesDropdown = document.getElementById('libraries-dropdown');
+
+  storedAgencies.forEach(function(agency) {
+    const li = document.createElement('li');
+    li.classList.add('agency');
+    li.classList.add('recent');
+    li.setAttribute('data-aid', agency.branchId);
+    li.setAttribute('data-name', agency.branchName);
+    li.setAttribute('onclick', 'librarySelect(this)');
+    li.appendChild(document.createTextNode(agency.branchName));
+    librariesDropdown.insertBefore(li, alphabeticalHeader);
+  });
+
+  toggleLabelsInDropDown();
+}
+
+// Reset the latest selected libraries list in dropdown
+function clearRecentlySelectedLibraries() {
+  var elements = document.getElementsByClassName('recent');
+  var lis = [];
+
+  for (var i = 0; i < elements.length; i++) {
+    var li = elements.item(i);
+    lis.push(li);
+  }
+
+  lis.forEach(function(_li) {
+    _li.parentNode.removeChild(_li);
   });
 }
 
-/**
- * Toggles focus class on button's associated with libraryName input field
- */
-function toggleFocusOnLibraryNameInput() {
-  document.getElementById('libraries-dropdown-toggle-btn').classList.toggle('hasfocus');
-  document.getElementById('clear-libraries-input-btn').classList.toggle('hasfocus');
+// Add library to localStorage (Recently selected list)
+function addLibraryToLocalStorage({branchName, branchId}) {
+  if (!storageAvailable) {
+    // eslint-disable-line no-undefined
+    return;
+  }
+
+  let indexOfExistingItem = -1;
+  storedAgencies.find(function(element, index) {
+    if (element.branchId === branchId) {
+      indexOfExistingItem = index;
+    }
+  });
+
+  if (indexOfExistingItem >= 0) {
+    storedAgencies.splice(indexOfExistingItem, 1);
+  }
+
+  storedAgencies.splice(0, 0, {branchName, branchId});
+
+  if (storedAgencies.length >= 7) {
+    storedAgencies.pop();
+  }
+
+  localStorage.setItem('agencies', JSON.stringify(storedAgencies));
+  initRecentlySelectedLibraries();
 }
 
-/**
- * Toggles focus class on button's associated with userid-input field
- */
-function toggleFocusOnUserIdInput() {
-  document.getElementById('toggle-userid-input').classList.toggle('hasfocus');
+// Keybord events
+function handleKeyEvents(e) {
+  if (!e.key && e.keyCode) {
+    e.key = parseKeyCode(e.keyCode);
+  }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    navigateDropDown(e.key);
+  }
+
+  if (e.key === 'Tab' || e.key === 'Enter') {
+    selectHighlighted(e);
+  }
+
+  if (e.key === 'Escape') {
+    escapeWasPressed(e);
+  }
 }
 
-/**
- * Toggles focus class on button's associated with pin-input field
- */
-function toggleFocusOnUserPinInput() {
-  document.getElementById('toggle-pin-input').classList.toggle('hasfocus');
-}
-
-/**
- *
- * @param {Number} keyCode
- */
+// find keyName based on keyCode
 function parseKeyCode(keyCode) {
   let key = '';
 
@@ -121,311 +335,150 @@ function parseKeyCode(keyCode) {
   return key;
 }
 
-/**
- *
- * @param {KeyboardEvent} e
- */
-function handleKeyDown(e) {
-  if (!e.key && e.keyCode) {
-    e.key = parseKeyCode(e.keyCode);
-  }
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    e.preventDefault();
-    navigateDropDown(e.key);
-  }
-
-  if (e.key === 'Tab' || e.key === 'Enter') {
-    selectHighlighted(e);
-  }
-
-  if (e.key === 'Escape') {
-    escapeWasPressed(e);
-  }
-}
-
-/**
- * Toggles the visibility of the buttons next to the input field
- */
-function toggleInputButtons() {
-  var dropDownToggle = document.getElementById('libraries-dropdown-toggle-btn');
-  var clearLibrariesInput = document.getElementById('clear-libraries-input-btn');
-
-  if (libraryInput.value.length) {
-    dropDownToggle.classList.add('hide');
-    dropDownToggle.setAttribute('aria-hidden', true);
-
-    clearLibrariesInput.classList.remove('hide');
-    clearLibrariesInput.setAttribute('aria-hidden', false);
-  }
-  else {
-    dropDownToggle.classList.remove('hide');
-    dropDownToggle.setAttribute('aria-hidden', false);
-
-    clearLibrariesInput.classList.add('hide');
-    clearLibrariesInput.setAttribute('aria-hidden', true);
-  }
-}
-
-/**
- * Clears the library input field and requests the dropdown to be closed.
- */
-function clearLibraryInput() { // eslint-disable-line no-unused-vars
-  libraryInput.value = '';
-  currentSearchValue = libraryInput.value;
-  toggleInputButtons();
-  toggleDropdown(false);
-  toggleVisibleLibraries();
-  libraryInput.focus();
-}
-
-/**
- * Hides the dropdown if it's open
- *
- * @param {KeyboardEvent} e
- */
-function escapeWasPressed(e) {
-  if (librariesDropdownContainer.classList.contains('open')) {
-    e.preventDefault();
-    librariesDropdownContainer.classList.remove('open');
-  }
-}
-
-/**
- * Toggles the dropdown. If the content of the library input field contains two or more characters the droipdown will
- * be shown, otherwise it will be closed.
- */
-function toggleBorchkDropdown() {
-  if (currentSearchValue.length >= 2) {
-    toggleDropdown(true);
-  }
-  else {
-    toggleDropdown(false);
-  }
-}
-
-/**
- *
- * @param {string} className
- * @param {string} glyphId
- */
-function toggleUserIdVisibility(className, glyphId) { // eslint-disable-line no-unused-vars
-  var userInputField = document.getElementById(className);
-  var currentType = userInputField.getAttribute('type');
-  var newType = currentType === 'password' ? 'tel' : 'password';
-
-  userInputField.setAttribute('type', newType);
-  var glyph = document.getElementById(glyphId);
-  glyph.classList.toggle('icon-eye-closed');
-  glyph.classList.toggle('icon-eye-open');
-
-  userInputField.focus();
-}
-
-/**
- * Toggles the libraries dropdown open/cloesd
- */
-function toggleDropdown(forceOpen = null) {
-  toggleLabelsInDropDown();
-  if (forceOpen) {
-    librariesDropdownContainer.classList.add('open');
-  }
-  else if (forceOpen === false) {
-    librariesDropdownContainer.classList.remove('open');
-  }
-  else {
-    librariesDropdownContainer.classList.toggle('open');
-  }
-
-  var ariaHidden = !librariesDropdownContainer.classList.contains('open');
-  librariesDropdownContainer.setAttribute('aria-hidden', ariaHidden.toString());
-}
-
-function toggleLabelsInDropDown() {
-  if (currentSearchValue.length >= 1) {
-    document.getElementById('latest').classList.add('hide');
-    document.getElementById('alphabetical').classList.add('hide');
-  }
-  else {
-    document.getElementById('latest').classList.remove('hide');
-    document.getElementById('alphabetical').classList.remove('hide');
-  }
-}
-
-/**
- * Based on the value of the library input field the items in the list of agencies will be toggled hidden/shown.
- * If the given library name contains the current value of the library input field it will  be shown otherwise hidden.
- */
-function toggleVisibleLibraries() {
-  currentlyVisibleAgencies = [];
-
-  for (let i = 0; i < allAgencies.length; i++) {
-    const item = allAgencies.item(i);
-    item.classList.remove('selected');
-    let shouldHide = allAgencies.item(i).textContent.toLowerCase().indexOf(currentSearchValue.toLowerCase()) === -1;
-    item.classList.toggle('hide', shouldHide);
-
-    for (let j = 0; j < currentlyVisibleAgencies.length; j++) {
-      if (currentlyVisibleAgencies[j].innerText === item.innerText) {
-        shouldHide = true;
-        item.classList.add('hide');
-      }
-    }
-
-    if (!shouldHide) {
-      currentlyVisibleAgencies.push(item);
-      currentlySelectedIndex = -1;
-    }
-  }
-}
-
-/**
- * Based on the given string the currently highligted library in the dropdown will be set simply by adding the
- * 'selected' class.
- *
- * @param {String} key
- */
+// Navigate up/down in the dropdown
 function navigateDropDown(key) {
-  if (!librariesDropdownContainer.classList.contains('open')) {
+  if (!librariesDropdownContainer.classList.contains('visible')) {
+    return;
+  }
+
+  if (currentlyVisibleAgencies.length === 0) {
     return;
   }
 
   if (key === 'ArrowDown') {
     if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
+        'selected'
+      );
       currentlySelectedIndex++;
 
       if (currentlySelectedIndex >= currentlyVisibleAgencies.length) {
         currentlySelectedIndex = 0;
       }
-    }
-    else {
+    } else {
       currentlySelectedIndex = 0;
     }
     currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
-  }
-  else if (key === 'ArrowUp') {
+  } else if (key === 'ArrowUp') {
     if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove('selected');
+      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
+        'selected'
+      );
       currentlySelectedIndex--;
 
       if (currentlySelectedIndex <= -1) {
         currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
       }
-    }
-    else {
+    } else {
       currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
     }
     currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
   }
 }
 
-/**
- * Selects the currently hightligted item in the dropdown list.
- *
- * @param {KeyboardEvent} e
- */
+// selected the highlighted library in the dropdown
 function selectHighlighted(e) {
   var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
 
-  if (currentlySelected && librariesDropdownContainer.classList.contains('open')) {
+  if (
+    currentlySelected &&
+    librariesDropdownContainer.classList.contains('visible')
+  ) {
     e.preventDefault();
-    OnClick(currentlySelected);
-  }
-  else if (librariesDropdownContainer.classList.contains('open')) {
+    librarySelect(currentlySelected);
+  } else if (librariesDropdownContainer.classList.contains('visible')) {
     e.preventDefault();
     navigateDropDown('ArrowDown');
   }
 }
 
-/**
- * Callback function for dropdown items
- *
- * @param {Node} element The element that has been clicked
- */
-function OnClick(element) { // eslint-disable-line no-unused-vars
-  var branchName = element.dataset.name;
-  var branchId = element.dataset.aid;
-
-  libraryIdInput.value = branchId;
-  libraryInput.value = branchName;
-  toggleDropdown(false);
-  document.getElementById('userid-input').focus();
-  addElementToLocalStorage({branchName, branchId});
-  toggleInputButtons();
+// close dropdown on escape
+function escapeWasPressed(e) {
+  if (librariesDropdownContainer.classList.contains('visible')) {
+    e.preventDefault();
+    librariesDropdownContainer.classList.remove('visible');
+  }
 }
 
-function addElementToLocalStorage({branchName, branchId}) {
-  if (Storage === undefined) { // eslint-disable-line no-undefined
-    return;
+// client form validtion
+/* eslint-disable no-unused-vars */
+function loginSubmit() {
+  // if library is not preselected or predefined
+
+  var libraryId = false;
+  var libraryName = false;
+  var libraryText = false;
+
+  if (librariesDropdownContainer) {
+    libraryId = document.getElementById('libraryid-input');
+    libraryName = document.getElementById('libraryname-input');
+    libraryText = document.getElementById('libraryname-input-text');
+    resetFieldErrorMessage(libraryName, libraryText);
   }
 
-  const storedAgencies = localStorage.getItem('agencies');
-  const agencies = storedAgencies ? JSON.parse(storedAgencies) : [];
-  let indexOfExistingItem = -1;
-  agencies.find(function (element, index) {
-    if (element.branchId === branchId) {
-      indexOfExistingItem = index;
+  // Get inputfields
+  var userId = document.getElementById('userid-input');
+  var pin = document.getElementById('pin-input');
+
+  // Get input description text
+  var idText = document.getElementById('userid-input-text');
+  var pinText = document.getElementById('pin-input-text');
+
+  // Reset error messages
+  resetFieldErrorMessage(userId, idText);
+  resetFieldErrorMessage(pin, pinText);
+
+  // Error messages
+  var noLibraryMessage = 'Du skal vælge et bibliotek';
+  var noIdMessage = 'Du skal angive dit Cpr- eller lånernummer';
+  var noPinMessage = 'Du skal angive din 4- eller 5-cifrede bibliotekskode';
+  var invalidPinMessage = 'Bibliotekskoden skal være på 4 eller 5 cifre.';
+
+  var valid = true;
+
+  // if no libarary selected
+  if (librariesDropdownContainer && !libraryId.value) {
+    addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
+    valid = false;
+  }
+
+  // if no userid typed
+  if (!userId.value) {
+    addFieldErrorMessage(userId, idText, noIdMessage);
+    valid = false;
+  }
+
+  // if no pin typed
+  if (!pin.value) {
+    addFieldErrorMessage(pin, pinText, noPinMessage);
+    valid = false;
+  }
+
+  // if pin length is not valid
+  if (pin.value) {
+    if (pin.value.length < 4 || pin.value.length > 5) {
+      addFieldErrorMessage(pin, pinText, invalidPinMessage);
+      valid = false;
     }
-  });
-
-  if (indexOfExistingItem >= 0) {
-    agencies.splice(indexOfExistingItem, 1);
   }
 
-  agencies.splice(0, 0, {branchName, branchId});
-
-  if (agencies.length >= 7) {
-    agencies.pop();
+  // if no error found, form is submit
+  if (valid) {
+    document.getElementById('borchk-login-form').submit();
   }
+}
+/* eslint-enable no-unused-vars */
 
-  localStorage.setItem('agencies', JSON.stringify(agencies));
-  setRecentlySelectedLibraries();
+// rests the form errors
+function resetFieldErrorMessage(field, text) {
+  field.parentNode.classList.remove('input-inValid');
+  text.classList.remove('text-inValid');
+  text.innerText = text.dataset.text;
 }
 
-/**
- * Manipulates the content of the dropdown. If any agencies are found in localStorage they will be rendered at the top
- * of the dropdown.
- */
-function setRecentlySelectedLibraries() {
-  removeExistingRecentlySelectedLibraries();
-  const storedAgencies = localStorage.getItem('agencies');
-  if (!storedAgencies || !storedAgencies.length || !librariesDropdownContainer) {
-    return;
-  }
-
-  const agencies = JSON.parse(storedAgencies);
-
-  const latestHeader = document.getElementById('latest');
-  const alphabeticalHeader = document.getElementById('alphabetical');
-  const librariesDropdown = document.getElementById('libraries-dropdown');
-
-  latestHeader.classList.remove('hide');
-  alphabeticalHeader.classList.remove('hide');
-
-  agencies.forEach(function (agency) {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.classList.add('agency');
-    a.classList.add('recent');
-    a.setAttribute('data-aid', agency.branchId);
-    a.setAttribute('data-name', agency.branchName);
-    a.setAttribute('onclick', 'OnClick(this)');
-    a.appendChild(document.createTextNode(agency.branchName));
-    li.appendChild(a);
-    librariesDropdown.insertBefore(li, alphabeticalHeader);
-  });
-}
-
-function removeExistingRecentlySelectedLibraries() {
-  var elements = document.getElementsByClassName('recent');
-  var lis = [];
-
-  for (var i = 0; i < elements.length; i++) {
-    var li = elements.item(i);
-    lis.push(li);
-  }
-
-  lis.forEach(function (_li) {
-    _li.parentNode.removeChild(_li);
-  });
+// adds error to form inputs
+function addFieldErrorMessage(field, text, message) {
+  field.parentNode.classList.add('input-inValid');
+  text.classList.add('text-inValid');
+  text.innerText = message;
 }
