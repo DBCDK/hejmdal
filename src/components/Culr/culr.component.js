@@ -29,18 +29,6 @@ export async function getUserAttributesFromCulr(userId, agencyId = null) {
     try {
       response = await culr.getAccountsByLocalId({userIdValue: userId, agencyId: agencyId});
       responseCode = response.result.responseStatus.responseCode;
-      let cpr = null;
-      if ((responseCode === 'OK200') && response.result.Account) {
-        response.result.Account.forEach(account => {
-          if (account.userIdType === 'CPR') {
-            cpr = account.userIdValue;
-          }
-        });
-      }
-      if (cpr) { // found the users globalId. Now fetch all accounts
-        response = await culr.getAccountsByGlobalId({userIdValue: cpr});
-        responseCode = response.result.responseStatus.responseCode;
-      }
     } catch (e) {
       log.error('Request to CULR failed', {error: e.message, stack: e.stack});
       return attributes;
