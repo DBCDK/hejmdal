@@ -23,12 +23,13 @@ const storage = CONFIG.mock_storage
  *
  * @param req
  * @param res
+ * @param next
  */
 export async function getUser(req, res, next) {
   const {user, client: clientId} = res.locals.oauth.token;
   try {
     const [culrAttributes, client] = await Promise.all([
-      getUserAttributesFromCulr(user.userId),
+      getUserAttributesFromCulr(user.userId, user.agency),
       getClientById(clientId)
     ]);
     const ticketAttributes = mapCulrResponse(
@@ -57,6 +58,7 @@ export async function readUser(token) {
 /**
  * Save user to storage.
  *
+ * @param token
  * @param {Object} user
  */
 export async function saveUser(token, user) {

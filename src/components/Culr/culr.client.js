@@ -48,6 +48,39 @@ export async function getAccountsByGlobalId({userIdValue}) {
 }
 
 /**
+ * Invokes the getAccountsByLocalId CULR method
+ *
+ * @param userIdValue
+ * @param agencyId
+ * @returns {Promise}
+ */
+export async function getAccountsByLocalId({userIdValue, agencyId}) {
+  if (!CulrClient) {
+    await init();
+  }
+  const params = {
+    userCredentials: {
+      agencyId: agencyId,
+      userIdValue: userIdValue
+    },
+    authCredentials: CULR_AUTH_CREDENTIALS
+  };
+
+  return new Promise((resolve, reject) => {
+    if (!CulrClient) {
+      throw new Error('CULR client is not initialised');
+    }
+    CulrClient.getAccountsByLocalId(params, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(result);
+      }
+    });
+  });
+}
+/**
  * Initializes the CULR webservice. If MOCK_CULR (CONFIG.mock_externals.culr) is true a mock of the webservice will be
  * created.
  */
