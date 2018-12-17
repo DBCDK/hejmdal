@@ -61,15 +61,4 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
-
-  body.addEventListener('keyup', function(e) {
-    // if ESC pressed
-    if (e.keyCode === 27) {
-      for (var i = 0; i < modals.length; i++) {
-        if (modals[i].classList.contains('visible')) {
-          toggleModal(modals[i].id, 'close');
-        }
-      }
-    }
-  });
 });
