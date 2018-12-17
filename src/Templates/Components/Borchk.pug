@@ -27,7 +27,7 @@ div#borchk
                   if branch.name
                     li(class="agency" data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
 
-        span(id='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
+        span(id='libraryname-input-text' data-text='')
 
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
@@ -35,7 +35,7 @@ div#borchk
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete='password' tabindex='2')
         button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
-      span(id='userid-input-text' data-text='Lånernummer dopalnitelna informacia la la lorem ipsum') Lånernummer dopalnitelna informacia la la lorem ipsum
+      span(id='userid-input-text' data-text='Indtast dit Cpr- eller lånernummer') Indtast dit Cpr- eller lånernummer
 
 
     div.form-group

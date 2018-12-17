@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   calcContentHeight();
 });
 
-function calcContentHeight(height) {
+function calcContentHeight() {
   // Elements wich affect content height
   var headerHeight = document.getElementById('header-container').clientHeight;
   var footerHeight = document.getElementById('footer-container').clientHeight;

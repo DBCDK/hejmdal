@@ -22,6 +22,7 @@ describe('Test Smaug component', () => {
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,
+      logoColor: '#F06322',
       redirectUris: [
         'http://localhost:3011/callback',
         'http://localhost:3011/example/provider/callback',
