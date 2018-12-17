@@ -63,7 +63,7 @@ export async function readUser(token) {
  */
 export async function saveUser(token, user) {
   const hashedToken = createHash(token);
-  storage.update(hashedToken, user);
+  return await storage.update(hashedToken, user);
 }
 
 /**
@@ -73,5 +73,5 @@ export async function saveUser(token, user) {
  */
 export async function deleteuser(token) {
   const hashedToken = createHash(token);
-  storage.delete(hashedToken);
+  return await storage.delete(hashedToken);
 }
