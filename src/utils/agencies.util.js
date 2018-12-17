@@ -9,7 +9,7 @@ import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
  * @type {Array}
  */
 let agencyList = [];
-let uiBranchList = [];
+let uiBranchList = {};
 
 /**
  *
@@ -26,17 +26,10 @@ export async function cacheAgencies(name = '') {
 export async function getListOfAgenciesForFrontend(filterParam = null) {
   await setUiList();
 
-  let branchList = uiBranchList;
-
   if (filterParam === 'forsk' || filterParam === 'folk') {
-    branchList = uiBranchList.filter(agency => {
-      return agency.type === filterParam;
-    });
+    return uiBranchList[filterParam];
   }
-
-  branchList.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
-
-  return branchList;
+  return uiBranchList;
 }
 
 /**
@@ -90,16 +83,25 @@ async function setAgencyList() {
 async function setUiList() {
   await setAgencyList();
 
-  if (!uiBranchList || !uiBranchList.length) {
-    uiBranchList = agencyList.map(branch => {
+  if (!uiBranchList.folk || !uiBranchList.folk.length) {
+    uiBranchList = {
+      folk: [],
+      forsk: []
+    };
+    agencyList.forEach(branch => {
+      if (!branch.agencyName) {
+        return;
+      }
       const type = branch.type === 'Forskningsbibliotek' ? 'forsk' : 'folk';
-      return {
+      uiBranchList[type].push({
         branchId: branch.branchId,
-        name: branch.agencyName,
-        hidden: branch.branchId,
-        type: type
-      };
+        name: branch.agencyName
+      });
     });
+    uiBranchList.folk.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
+    uiBranchList.forsk.sort((b1, b2) =>
+      b1.name.localeCompare(b2.name, 'da-DK')
+    );
   }
 }
 

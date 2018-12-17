@@ -1,26 +1,32 @@
 var agencyDropdown;
 
 class LibrarySelector {
-  constructor(libraries, onSelectCallback) {
+  /**
+   * 
+   * @param {*} selectorId 
+   * @param {*} libraries 
+   * @param {*} onSelectCallback 
+   */
+  constructor(selectorId, libraries, onSelectCallback) {
+    this.wrapper = document.getElementById(selectorId);
+    this.inputContainer = this.wrapper.querySelector('.input-container');
+    this.libraryInput = this.wrapper.querySelector('[data-input-name]');
+    this.libraryIdInput = this.wrapper.querySelector('[data-input-id]');
+    this.toggleButton = this.wrapper.querySelector('[data-toggle]');
+    this.clearButton = this.wrapper.querySelector('[data-clear]');
+    this.mobileClearButton = this.wrapper.querySelector('[data-mobile-clear]');
+    this.librariesDropdownContainer = this.wrapper.querySelector(
+      '[data-dropdown-container]'
+    );
+    this.types=this.wrapper.dataset.libraryTypes && this.wrapper.dataset.libraryTypes.split(',') || ['folk'];
     this.libraries = libraries;
     this.onSelectCallback = onSelectCallback;
-    this.libraryInput = document.getElementById('libraryname-input');
-    this.libraryIdInput = document.getElementById('libraryid-input');
-    this.libraryGroup = document.getElementById('library-group');
-    // Set clear/close var nodes
-    this.toggleButton = document.getElementById(
-      'libraries-dropdown-toggle-btn'
-    );
-    this.clearButton = document.getElementById('clear-libraries-input-btn');
-    this.librariesDropdownContainer = document.getElementById(
-      'libraries-dropdown-container'
-    );
-
     this.initNavigation();
-    this.currentlyVisibleAgencies = libraries;
+    this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     this.currentlySelectedItem = null;
     this.isOpen = false;
+    this.filter();
   }
   setButtonStatus() {
     if (this.currentSearchValue) {
@@ -34,14 +40,14 @@ class LibrarySelector {
   open() {
     if (!this.isOpen) {
       this.librariesDropdownContainer.classList.add('visible');
-      this.libraryGroup.classList.add('dropdown-visible');
+      this.wrapper.classList.add('dropdown-visible');
       this.isOpen = true;
     }
   }
   close() {
     if (this.isOpen) {
       this.librariesDropdownContainer.classList.remove('visible');
-      this.libraryGroup.classList.remove('dropdown-visible');
+      this.wrapper.classList.remove('dropdown-visible');
       this.isOpen = false;
     }
   }
@@ -58,27 +64,65 @@ class LibrarySelector {
     this.libraryIdInput.value = '';
     this.filter('');
     this.libraryInput.focus();
-  }
-  filter(filterValue) {
-    this.currentSearchValue = filterValue;
     this.setButtonStatus();
-    this.currentlySelectedIndex = -1;
+
+  }
+  clearOnMobile() {
+    this.currentSearchValue = '';
+    this.libraryInput.value = '';
+    this.libraryIdInput.value = '';
+    this.filter('');
+    this.close();
+  }
+
+  filter(query) {
     this.currentlyVisibleAgencies = [];
-    var query = filterValue.toLowerCase();
-    for (let i = 0; i < this.libraries.length; i++) {
-      const library = this.libraries[i];
-      library.classList.remove('selected');
-      let shouldHide =
-        query &&
-        library.dataset.name.toLowerCase().indexOf(query) === -1 &&
-        library.dataset.aid.indexOf(query) !== 0;
-      if (shouldHide) {
-        library.classList.add('hide');
-      } else {
-        this.currentlyVisibleAgencies.push(library);
-        library.classList.remove('hide');
-      }
+    this.currentlySelectedIndex = -1;
+    var ul = document.createElement('ul');
+    var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
+    if (folkebiblioteker.length) {
+      this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
     }
+    var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
+    if (forskningsbiblioteker.length) {
+      this.appendLibraries('Forskningsbiblioteker', forskningsbiblioteker, ul);
+    }    
+    this.librariesDropdownContainer.innerHTML = '';
+    this.librariesDropdownContainer.appendChild(ul);
+    this.setButtonStatus();
+  }
+  filterQuery(query, libraries) {
+    if (!query) {
+      return libraries;
+    }
+    const lowerCaseQuery = query.toLowerCase();
+    return libraries.filter(library => library.name.toLowerCase().indexOf(lowerCaseQuery) >= 0 ||
+    library.branchId.indexOf(query) === 0);
+  }
+  appendLibraries(label, libraries, ul) {
+    if (label && this.types.length > 1) {
+      ul.appendChild(this.createLabel(label));
+    }
+    for (let i = 0; i < libraries.length; i++) {
+      var library = libraries[i];
+        var li = this.createEntry(library);
+        this.currentlyVisibleAgencies.push(li);
+        ul.appendChild(li);
+        ul.classList.add('libraries-dropdown');
+    }
+  }
+  createLabel(label) {
+    var li = document.createElement('li');
+    li.innerHTML = label;
+    li.classList.add('subject');
+    return li;
+  }
+  createEntry(entry) {
+    var li = document.createElement('li');
+    li.innerHTML = entry.name;
+    li.entry = entry;
+    li.classList.add('agency');
+    return li;
   }
 
   // clear visible labraries
@@ -95,6 +139,12 @@ class LibrarySelector {
   }
 
   initNavigation() {
+    this.mobileClearButton.addEventListener('click', () => {
+      this.close();
+    });
+    this.clearButton.addEventListener('click', () => {
+      this.clearLibraryInput();
+    });
     this.libraryInput.addEventListener('focus', () => {
       this.open();
     });
@@ -104,25 +154,25 @@ class LibrarySelector {
     });
     this.handleKeyEvents = this.handleKeyEvents.bind(this);
     document.addEventListener('keydown', this.handleKeyEvents);
-    document.addEventListener('mousedown', e => {
-      if (!this.libraryGroup.contains(e.target)) {
+    document.addEventListener('click', e => {
+      if (!this.inputContainer.contains(e.target)) {
         this.close();
       } else {
         this.open();
-        if (e.target.getAttribute('data-aid')) {
-          this.select(e.target);
+        if (e.target.entry) {
+          this.select(e.target.entry);
         }
       }
     });
   }
   select(element) {
-    var branchName =
-      (element && element.dataset.name) || this.currentSearchValue;
-    var branchId = (element && element.dataset.aid) || this.currentSearchValue;
+    var branchName = (element && element.name) || this.currentSearchValue;
+    var branchId = (element && element.branchId) || this.currentSearchValue;
 
     this.libraryIdInput.value = branchId;
     this.libraryInput.value = branchName;
     this.close();
+    this.setButtonStatus();
     this.onSelectCallback();
   }
   handleKeyEvents(e) {
@@ -149,7 +199,7 @@ class LibrarySelector {
 
     if (key === 'TAB' || key === 'ENTER') {
       e.preventDefault();
-      this.select(this.currentlySelectedItem);
+      this.select(this.currentlySelectedItem && this.currentlySelectedItem.entry);
     }
 
     if (key === 'ESC') {
@@ -184,8 +234,7 @@ class LibrarySelector {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Set agencies
-  var allAgencies = document.getElementsByClassName('agency');
-  agencyDropdown = new LibrarySelector(allAgencies, () => {
+  agencyDropdown = new LibrarySelector('borchk-dropdown', window.data, () => {
     document.getElementById('userid-input').focus();
   });
 });
