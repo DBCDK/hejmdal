@@ -46,7 +46,6 @@ context('Borchk form', () => {
     // Clear input and close dropdown
     cy.get('#clear-libraries-input-btn').click();
     cy.get('#libraryname-input').should('be.empty');
-    cy.get('#libraries-dropdown-container').should('not.have.class', 'visible');
   });
   it('clear library dropdown with escape', () => {
     // Open dropdown with focus in input field
@@ -76,25 +75,34 @@ context('Borchk form', () => {
     cy.get('#pin-input').should('have.value', '1234');
   });
   it('Should validate forms', () => {
-    // Library input
+    // Assert validation errors
     cy.get('#borchk-submit').click();
-    cy.get('#libraryname-input').should(field => {
-      expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.be.a('string');
-    });
-    // user ID
-    cy.get('#libraryname-input').type('733000');
+    cy.get('#libraryname-input-text').should(
+      'contain',
+      'Du skal vælge et bibliotek'
+    );
+    cy.get('#userid-input-text').should('contain', 'Du skal angive');
+    cy.get('#pin-input-text').should('contain', 'Du skal angive');
+
+    // remove validation error from library name
+    cy.get('#libraryname-input').type('733000{enter}');
     cy.get('#borchk-submit').click();
-    cy.get('#userid-input').should(field => {
-      expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.be.a('string');
-    });
-    // pincode
-    cy.get('#userid-input').type('12345678');
-    cy.get('#borchk-submit').click();
-    cy.get('#pin-input').should(field => {
-      expect(field.get(0).checkValidity()).to.equal(false);
-      expect(field.get(0).validationMessage).to.be.a('string');
-    });
+    cy.get('#libraryname-input-text').should(
+      'not.contain',
+      'Du skal vælge et bibliotek'
+    );
+    // remove validation error from username
+    cy.get('#userid-input').type('12345678{enter}');
+    cy.get('#userid-input-text').should(
+      'not.contain',
+      'Du skal vælge et bibliotek'
+    );
+    // remove validation error from user pin
+    cy.get('#userid-input').clear();
+    cy.get('#pin-input').type('12345{enter}');
+    cy.get('#pin-input-text').should(
+      'not.contain',
+      'Du skal vælge et bibliotek'
+    );
   });
 });
