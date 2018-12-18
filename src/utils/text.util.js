@@ -11,58 +11,6 @@
 
 /* eslint-disable max-len */
 const helpTexts = {
-  consent: {
-    title: 'Hjælp til Godkendelse',
-    sections: [
-      {
-        header: 'Godkendelse',
-        texts: [
-          'For at logge ind, skal du godkende, at dine oplysninger bliver videregivet til __SERVICE_CLIENT_NAME__. Du skal kun godkende én gang.',
-          'Oplysningerne overføres krypteret, så de ikke kan opfanges af andre.',
-          'Hvis du afviser, vil oplysningerne ikke blive overført til __SERVICE_CLIENT_NAME__, og du vil ikke blive logget ind. ' +
-            'Dine oplysninger vil heller ikke blive gemt andre steder. ' +
-            'Næste gang du vil logge ind til __SERVICE_CLIENT_NAME__, vil du derfor igen blive bedt om at godkende.'
-        ]
-      }
-    ]
-  },
-  deleteConsents: {
-    title: 'Om godkendelser',
-    sections: [
-      {
-        header: 'Hvad er en godkendelse?',
-        texts: [
-          'Når du bruger Bibliotekslogin til at logge ind på en bibliotekstjeneste, overfører Bibliotekslogin oplysninger om dig til den tjeneste,' +
-            ' du vil logge ind på, så tjenesten kan identificere dig. ',
-          'Første gang du logger ind til en tjeneste, bliver du bedt om at godkende, at Bibliotekslogin overfører dine oplysninger til tjenesten. ',
-          'Det er det, vi kalder for en godkendelse.'
-        ]
-      },
-      {
-        header: 'Hvordan sletter jeg en godkendelse?',
-        texts: [
-          'Ved at klikke på “Se dine godkendelser” på forsiden eller i sidefoden kan du se en liste  ' +
-            'over de tjenester, du har givet godkendelse til. Her kan du også slette dine godkendelser, ' +
-            'hvis du ikke længere ønsker, at Bibliotekslogin kan overføre dine oplysninger. ',
-          'Hvis du sletter dine godkendelser, skal du lave en ny godkendelse, næste gang du vil logge på med Bibliotekslogin.'
-        ]
-      }
-    ]
-  },
-  consentReject: {
-    title: 'Godkendelse afvist',
-    sections: [
-      {
-        texts: [
-          'Når du afviser, at dine oplysninger overføres til __SERVICE_CLIENT_NAME__, vil oplysningerne ikke blive overført eller gemt andre steder. Du er derfor ikke logget ind',
-          'Du kan ikke logge ind uden at godkende, at dine oplysninger bliver overført. ' +
-            '__SERVICE_CLIENT_NAME__ bruger oplysningerne til at sikre, at det en den rigtige bruger, der logger ind.',
-          'Næste gang du vil logge ind til __SERVICE_CLIENT_NAME__, vil du igen blive bedt om at godkende.',
-          'Du vil igen blive bedt om at godkende, næste gang du vil logge ind til __SERVICE_CLIENT_NAME__.'
-        ]
-      }
-    ]
-  },
   cookies: {
     title: 'Cookies, formål og relevans',
     sections: [
@@ -106,6 +54,17 @@ const helpTexts = {
         header: 'Kontakt',
         texts: [
           'Har du spørgsmål vedrørende vores anvendelse af cookies og den måde som hjemmesiden forvaltes på, er du velkommen til at kontakte os.'
+        ]
+      }
+    ]
+  },
+  newUser: {
+    title: 'Ny bruger',
+    sections: [
+      {
+        header: '',
+        texts: [
+          'Log in lorem ipsum ala nqkakv tekst otnosno a la poke neshto za bibliotekerne tehniq lorem iåsum.'
         ]
       }
     ]

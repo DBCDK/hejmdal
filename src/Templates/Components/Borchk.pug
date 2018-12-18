@@ -16,6 +16,7 @@ div#borchk
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
           div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
+
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
       div.input-container
@@ -39,6 +40,5 @@ div#borchk
     div.action-container
         button(type='submit' id='borchk-submit' tabindex='4') Log ind
         div.other-actions
-          a(href='') Ny Bruger?
-          a(href='') Læs om vores behandling af dine personoplysninger
-  script var libraries = !{JSON.stringify(branches)}
+          a(onclick='toggleModal("userModal")') Ny Bruger?
+          a(href='#') Læs om vores behandling af dine personoplysninger

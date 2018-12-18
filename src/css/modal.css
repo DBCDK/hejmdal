@@ -30,8 +30,9 @@
     transition-duration: 0.3s;
 
     h4 {
-      font-size: 24px;
+      font-size: 30px;
       line-height: 34px;
+      font-weight: normal;
     }
 
     button {
@@ -92,6 +93,10 @@
         font-size: 14px;
         line-height: 22px;
       }
+    }
+
+    form {
+      max-width: 486px;
     }
   }
 }

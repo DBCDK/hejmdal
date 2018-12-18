@@ -10,19 +10,6 @@
   fill: black;
 }
 
-/* old svg  */
-@svg-load --svg-eye-open url(svg/eye-open.svg) {
-  fill: black;
-}
-
-@svg-load --svg-eye-closed url(svg/eye-closed.svg) {
-  fill: black;
-}
-
-@svg-load checkmark url(svg/checkmark.svg) {
-  fill: black;
-}
-
 #borchk {
   form {
     .form-group {
@@ -96,7 +83,7 @@
             background: svg-inline(--eyeopen) no-repeat center;
           }
         }
-        
+
         .libraries-dropdown-container {
           width: calc(100% + 2px);
           background-color: var(--white);
