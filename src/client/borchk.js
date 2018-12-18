@@ -154,6 +154,7 @@ function clearLibraryInput() {
   initButtonStatus();
   clearVisibleLibraries();
   initRecentlySelectedLibraries();
+  dropdownTrigger('close');
 }
 /* eslint-enable no-unused-vars */
 
