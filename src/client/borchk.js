@@ -1,5 +1,9 @@
 var agencyDropdown;
-
+/**
+ * Instantiate a dropdown library selector.
+ *
+ * @class LibrarySelector
+ */
 class LibrarySelector {
   constructor(selectorId, libraries, onSelectCallback) {
     this.wrapper = document.getElementById(selectorId);
@@ -242,9 +246,13 @@ class LibrarySelector {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Set agencies
-  agencyDropdown = new LibrarySelector('borchk-dropdown', window.data, () => {
-    document.getElementById('userid-input').focus();
-  });
+  agencyDropdown = new LibrarySelector(
+    'borchk-dropdown',
+    window.libraries || {},
+    () => {
+      document.getElementById('userid-input').focus();
+    }
+  );
 });
 
 /* eslint-disable no-unused-vars */
