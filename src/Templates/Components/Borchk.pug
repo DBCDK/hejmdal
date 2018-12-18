@@ -1,5 +1,5 @@
 div#borchk
-  form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form')
+  form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form' onsubmit='loginSubmit(event)')
 
     if lockedAgency
       input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
@@ -14,7 +14,7 @@ div#borchk
 
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' required='true' tabindex='1' value=preselectedName)
+          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' tabindex='1' value=preselectedName)
           button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
           button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
 
@@ -25,7 +25,7 @@ div#borchk
                 li(class='hide subject' id='alphabetical') Alfabetisk
                 each branch in branches
                   if branch.name
-                    li(class="agency" data-aid=branch.branchId data-name=branch.name onclick='librarySelect(this);') #{branch.name}
+                    li(class="agency" data-aid=branch.branchId data-name=branch.name) #{branch.name}
 
         span(id='libraryname-input-text' data-text='')
 
@@ -33,7 +33,7 @@ div#borchk
       label(for='userid-input') Cpr- eller lånernummer
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-        input(type='password' class='form-control' id='userid-input' name='userId' required='true' autocomplete='password' tabindex='2')
+        input(type='password' class='form-control' id='userid-input' name='userId' autocomplete='password' tabindex='2')
         button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
       span(id='userid-input-text' data-text='Indtast dit Cpr- eller lånernummer') Indtast dit Cpr- eller lånernummer
 
@@ -41,7 +41,7 @@ div#borchk
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
-        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' required='true' autocomplete='new-pincode' tabindex='3')
+        input(type='password' class='form-control' id='pin-input' name='pincode' pattern='[0-9]*' autocomplete='new-pincode' tabindex='3')
         button(type='button' id='toggle-pin-input' onclick='toggleFieldVisibility("pin-input");')
       span(id='pin-input-text' data-text='Indtast din 4- eller 5-cifrede bibliotekskode') Indtast din 4- eller 5-cifrede bibliotekskode
 
@@ -50,7 +50,7 @@ div#borchk
         include Error
 
     div.action-container
-        button(type='button' id='borchk-submit' onclick='loginSubmit()' tabindex='4') Log ind
+        button(type='submit' id='borchk-submit' tabindex='4') Log ind
         div.other-actions
           a(href='') Ny Bruger?
           a(href='') Læs om vores behandling af dine personoplysninger

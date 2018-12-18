@@ -1,421 +1,227 @@
-var storageAvailable = true;
+var agencyDropdown;
 
-// Library input
-var libraryGroup;
-var librariesDropdownContainer;
-var libraryInput;
-var libraryIdInput;
+class LibrarySelector {
+  constructor(libraries, onSelectCallback) {
+    this.libraries = libraries;
+    this.onSelectCallback = onSelectCallback;
+    this.libraryInput = document.getElementById('libraryname-input');
+    this.libraryIdInput = document.getElementById('libraryid-input');
+    this.libraryGroup = document.getElementById('library-group');
+    // Set clear/close var nodes
+    this.toggleButton = document.getElementById(
+      'libraries-dropdown-toggle-btn'
+    );
+    this.clearButton = document.getElementById('clear-libraries-input-btn');
+    this.librariesDropdownContainer = document.getElementById(
+      'libraries-dropdown-container'
+    );
 
-// Library input buttons (caret/clear)
-var dropDownCaret;
-var dropDownClear;
-
-// dropdown vars
-var allAgencies;
-var storedAgencies = [];
-var currentlyVisibleAgencies = [];
-var currentlySelectedIndex = -1;
-var currentSearchValue = '';
-
-// Other form inputs
-var userIdInput;
-
-document.addEventListener('DOMContentLoaded', function() {
-  // init sorage availability
-  storageAvailable = Storage ? true : false;
-
-  // Update library var nodes
-  libraryGroup = document.getElementById('library-group');
-  libraryInput = document.getElementById('libraryname-input');
-  libraryIdInput = document.getElementById('libraryid-input');
-  librariesDropdownContainer = document.getElementById(
-    'libraries-dropdown-container'
-  );
-
-  // Set userId var nodes
-  userIdInput = document.getElementById('userid-input');
-
-  // Set clear/close var nodes
-  dropDownCaret = document.getElementById('libraries-dropdown-toggle-btn');
-  dropDownClear = document.getElementById('clear-libraries-input-btn');
-
-  // Set agencies
-  allAgencies = document.getElementsByClassName('agency');
-
-  // Set storedAgencies
-  if (storageAvailable) {
-    // fetch recetnly selected libraries from localStorage
-    storedAgencies = JSON.parse(localStorage.getItem('agencies')) || [];
-
-    // Create recently selected list in dropdown
-    initRecentlySelectedLibraries();
+    this.initNavigation();
+    this.currentlyVisibleAgencies = libraries;
+    this.currentlySelectedIndex = -1;
+    this.currentlySelectedItem = null;
+    this.isOpen = false;
+  }
+  setButtonStatus() {
+    if (this.currentSearchValue) {
+      this.toggleButton.classList.add('hide');
+      this.clearButton.classList.remove('hide');
+    } else {
+      this.toggleButton.classList.remove('hide');
+      this.clearButton.classList.add('hide');
+    }
+  }
+  open() {
+    if (!this.isOpen) {
+      this.librariesDropdownContainer.classList.add('visible');
+      this.libraryGroup.classList.add('dropdown-visible');
+      this.isOpen = true;
+    }
+  }
+  close() {
+    if (this.isOpen) {
+      this.librariesDropdownContainer.classList.remove('visible');
+      this.libraryGroup.classList.remove('dropdown-visible');
+      this.isOpen = false;
+    }
+  }
+  toggle() {
+    if (this.isOpen) {
+      this.close();
+    } else {
+      this.open();
+    }
+  }
+  clearLibraryInput() {
+    this.currentSearchValue = '';
+    this.libraryInput.value = '';
+    this.libraryIdInput.value = '';
+    this.filter('');
+    this.libraryInput.focus();
+  }
+  filter(filterValue) {
+    this.currentSearchValue = filterValue;
+    this.setButtonStatus();
+    this.currentlySelectedIndex = -1;
+    this.currentlyVisibleAgencies = [];
+    var query = filterValue.toLowerCase();
+    for (let i = 0; i < this.libraries.length; i++) {
+      const library = this.libraries[i];
+      library.classList.remove('selected');
+      let shouldHide =
+        query &&
+        library.dataset.name.toLowerCase().indexOf(query) === -1 &&
+        library.dataset.aid.indexOf(query) !== 0;
+      if (shouldHide) {
+        library.classList.add('hide');
+      } else {
+        this.currentlyVisibleAgencies.push(library);
+        library.classList.remove('hide');
+      }
+    }
   }
 
-  //
-  // Event Listeners
-  //
+  // clear visible labraries
+  clearVisibleLibraries() {
+    this.filter();
+    this.currentlyVisibleAgencies = this.libraries;
+    this.currentlySelectedIndex = -1;
 
-  // register focus in the library select inputfield
-  libraryInput.addEventListener('focus', function() {
-    dropdownTrigger('open');
-  });
-
-  // listen on keyevents in the library select field
-  libraryInput.addEventListener('keyup', function() {
-    // Other KeyPress'
-    if (libraryInput.value !== currentSearchValue) {
-      currentSearchValue = libraryInput.value;
-      initVisibleLibraries();
+    for (let i = 0; i < this.libraries.length; i++) {
+      const library = this.libraries[i];
+      library.classList.remove('selected');
+      library.classList.remove('hide');
     }
-    initButtonStatus();
-    toggleLabelsInDropDown();
-  });
+  }
 
-  // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-  libraryInput.addEventListener('keydown', handleKeyEvents);
-
-  // only for not predefined libraries
-  if (librariesDropdownContainer) {
-    // detect clicks outside of the dropdown - to close the dropdown
-    document.addEventListener('mousedown', function(e) {
-      if (librariesDropdownContainer.contains(e.target)) {
-        return;
-      }
-
-      if (!e.target.classList.contains('prevent-body-close-event')) {
-        if (librariesDropdownContainer.classList.contains('visible')) {
-          dropdownTrigger('close');
+  initNavigation() {
+    this.libraryInput.addEventListener('focus', () => {
+      this.open();
+    });
+    this.libraryInput.addEventListener('input', e => {
+      this.currentSearchValue = e.currentTarget.value;
+      this.filter(this.currentSearchValue);
+    });
+    this.handleKeyEvents = this.handleKeyEvents.bind(this);
+    document.addEventListener('keydown', this.handleKeyEvents);
+    document.addEventListener('mousedown', e => {
+      if (!this.libraryGroup.contains(e.target)) {
+        this.close();
+      } else {
+        this.open();
+        if (e.target.getAttribute('data-aid')) {
+          this.select(e.target);
         }
       }
     });
-
-    // Set current search value
-    currentSearchValue = libraryInput.value;
-
-    // init
-    initVisibleLibraries();
   }
+  select(element) {
+    var branchName =
+      (element && element.dataset.name) || this.currentSearchValue;
+    var branchId = (element && element.dataset.aid) || this.currentSearchValue;
+
+    this.libraryIdInput.value = branchId;
+    this.libraryInput.value = branchName;
+    this.close();
+    this.onSelectCallback();
+  }
+  handleKeyEvents(e) {
+    if (!this.isOpen) {
+      return;
+    }
+    var keyNames = {
+      40: 'DOWN',
+      38: 'UP',
+      9: 'TAB',
+      13: 'ENTER',
+      27: 'ESC'
+    };
+    var key = keyNames[e.keyCode];
+
+    if (key === 'UP') {
+      e.preventDefault();
+      this.navigateDropDown(-1);
+    }
+    if (key === 'DOWN') {
+      e.preventDefault();
+      this.navigateDropDown(1);
+    }
+
+    if (key === 'TAB' || key === 'ENTER') {
+      e.preventDefault();
+      this.select(this.currentlySelectedItem);
+    }
+
+    if (key === 'ESC') {
+      this.close(e);
+    }
+  }
+
+  /**
+   * Navigate results in dropdown.
+   *
+   * @param {Number} navigationValue (+1 || -1)
+   */
+  navigateDropDown(navigationValue) {
+    if (this.currentlySelectedItem) {
+      this.currentlySelectedItem.classList.remove('selected');
+    }
+    this.currentlySelectedIndex += navigationValue;
+    if (this.currentlySelectedIndex >= this.currentlyVisibleAgencies.length) {
+      this.currentlySelectedIndex = 0;
+    } else if (this.currentlySelectedIndex < 0) {
+      this.currentlySelectedIndex = this.currentlyVisibleAgencies.length - 1;
+    }
+    this.highlightSelected(this.currentlySelectedIndex);
+  }
+  highlightSelected(index) {
+    if (this.currentlyVisibleAgencies[index]) {
+      this.currentlySelectedItem = this.currentlyVisibleAgencies[index];
+      this.currentlySelectedItem.classList.add('selected');
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Set agencies
+  var allAgencies = document.getElementsByClassName('agency');
+  agencyDropdown = new LibrarySelector(allAgencies, () => {
+    document.getElementById('userid-input').focus();
+  });
 });
 
-//
-// Functions
-//
-
-// triggers/toggles the dropdown
-// status = 'open' || 'close' || 'toggle' (default)
-function dropdownTrigger(status = 'toggle') {
-  if (status === 'open') {
-    librariesDropdownContainer.classList.add('visible');
-    libraryGroup.classList.add('dropdown-visible');
-  } else if (status === 'close') {
-    librariesDropdownContainer.classList.remove('visible');
-    libraryGroup.classList.remove('dropdown-visible');
-  } else {
-    librariesDropdownContainer.classList.toggle('visible');
-    libraryGroup.classList.toggle('dropdown-visible');
-  }
-
-  toggleLabelsInDropDown();
-}
-
-// When a library in the dropdown is clicked/selected
-// element = element node
-function librarySelect(element) {
-  // eslint-disable-line no-unused-vars
-  var branchName = element.dataset.name;
-  var branchId = element.dataset.aid;
-
-  libraryIdInput.value = branchId;
-  libraryInput.value = branchName;
-  dropdownTrigger('close');
-  userIdInput.focus();
-  addLibraryToLocalStorage({branchName, branchId});
-  initButtonStatus();
-}
-
-// Evaluates if the caret or the clear button (in the libraryfield) should be hidden
-function initButtonStatus() {
-  if (libraryInput.value.length) {
-    dropDownCaret.classList.add('hide');
-    dropDownClear.classList.remove('hide');
-  } else {
-    dropDownCaret.classList.remove('hide');
-    dropDownClear.classList.add('hide');
-  }
-}
-
-// Clears the library input field on clear button click
 /* eslint-disable no-unused-vars */
-function clearLibraryInput() {
-  libraryInput.value = '';
-  libraryIdInput.value = '';
-  currentSearchValue = '';
 
-  initButtonStatus();
-  clearVisibleLibraries();
-  initRecentlySelectedLibraries();
-  dropdownTrigger('close');
+function dropdownTrigger() {
+  agencyDropdown.open();
 }
-/* eslint-enable no-unused-vars */
+function clearLibraryInput() {
+  agencyDropdown.clearLibraryInput();
+}
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field
-/* eslint-disable no-unused-vars */
 function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
   field.setAttribute('type', newType);
 }
+
 /* eslint-enable no-unused-vars */
-
-// Toggle labels in dropdown
-function toggleLabelsInDropDown() {
-  if (currentSearchValue.length > 0) {
-    document.getElementById('latest').classList.add('hide');
-    document.getElementById('alphabetical').classList.add('hide');
-  } else {
-    if (storedAgencies.length > 0) {
-      document.getElementById('latest').classList.remove('hide');
-    }
-    document.getElementById('alphabetical').classList.remove('hide');
-  }
-}
-
-// Evaluate which libraries to be visible in the dropdown
-function initVisibleLibraries() {
-  currentlyVisibleAgencies = [];
-
-  for (let i = 0; i < allAgencies.length; i++) {
-    const item = allAgencies.item(i);
-    item.classList.remove('selected');
-    let shouldHide =
-      allAgencies
-        .item(i)
-        .textContent.toLowerCase()
-        .indexOf(currentSearchValue.toLowerCase()) === -1;
-    item.classList.toggle('hide', shouldHide);
-
-    for (let j = 0; j < currentlyVisibleAgencies.length; j++) {
-      if (currentlyVisibleAgencies[j].innerText === item.innerText) {
-        shouldHide = true;
-        item.classList.add('hide');
-      }
-    }
-
-    if (!shouldHide) {
-      currentlyVisibleAgencies.push(item);
-      currentlySelectedIndex = -1;
-    }
-  }
-}
-
-// clear visible labraries
-function clearVisibleLibraries() {
-  currentlyVisibleAgencies = [];
-  currentlySelectedIndex = -1;
-
-  for (let i = 0; i < allAgencies.length; i++) {
-    const item = allAgencies.item(i);
-    item.classList.remove('selected');
-    item.classList.remove('hide');
-    currentlyVisibleAgencies.push(item);
-  }
-}
-
-// Creats a list with recently selected libraries in top of the dropdown
-function initRecentlySelectedLibraries() {
-  clearRecentlySelectedLibraries();
-  if (storedAgencies.length === 0 || !librariesDropdownContainer) {
-    return;
-  }
-
-  const alphabeticalHeader = document.getElementById('alphabetical');
-  const librariesDropdown = document.getElementById('libraries-dropdown');
-
-  storedAgencies.forEach(function(agency) {
-    const li = document.createElement('li');
-    li.classList.add('agency');
-    li.classList.add('recent');
-    li.setAttribute('data-aid', agency.branchId);
-    li.setAttribute('data-name', agency.branchName);
-    li.setAttribute('onclick', 'librarySelect(this)');
-    li.appendChild(document.createTextNode(agency.branchName));
-    librariesDropdown.insertBefore(li, alphabeticalHeader);
-  });
-
-  toggleLabelsInDropDown();
-}
-
-// Reset the latest selected libraries list in dropdown
-function clearRecentlySelectedLibraries() {
-  var elements = document.getElementsByClassName('recent');
-  var lis = [];
-
-  for (var i = 0; i < elements.length; i++) {
-    var li = elements.item(i);
-    lis.push(li);
-  }
-
-  lis.forEach(function(_li) {
-    _li.parentNode.removeChild(_li);
-  });
-}
-
-// Add library to localStorage (Recently selected list)
-function addLibraryToLocalStorage({branchName, branchId}) {
-  if (!storageAvailable) {
-    // eslint-disable-line no-undefined
-    return;
-  }
-
-  let indexOfExistingItem = -1;
-  storedAgencies.find(function(element, index) {
-    if (element.branchId === branchId) {
-      indexOfExistingItem = index;
-    }
-  });
-
-  if (indexOfExistingItem >= 0) {
-    storedAgencies.splice(indexOfExistingItem, 1);
-  }
-
-  storedAgencies.splice(0, 0, {branchName, branchId});
-
-  if (storedAgencies.length >= 7) {
-    storedAgencies.pop();
-  }
-
-  localStorage.setItem('agencies', JSON.stringify(storedAgencies));
-  initRecentlySelectedLibraries();
-}
-
-// Keybord events
-function handleKeyEvents(e) {
-  if (!e.key && e.keyCode) {
-    e.key = parseKeyCode(e.keyCode);
-  }
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    e.preventDefault();
-    navigateDropDown(e.key);
-  }
-
-  if (e.key === 'Tab' || e.key === 'Enter') {
-    selectHighlighted(e);
-  }
-
-  if (e.key === 'Escape') {
-    escapeWasPressed(e);
-  }
-}
-
-// find keyName based on keyCode
-function parseKeyCode(keyCode) {
-  let key = '';
-
-  switch (keyCode) {
-    case 40:
-      key = 'ArrowDown';
-      break;
-    case 38:
-      key = 'ArrowUp';
-      break;
-    case 9:
-      key = 'Tab';
-      break;
-    case 13:
-      key = 'Enter';
-      break;
-    case 27:
-      key = 'Escape';
-      break;
-    default:
-      break;
-  }
-
-  return key;
-}
-
-// Navigate up/down in the dropdown
-function navigateDropDown(key) {
-  if (!librariesDropdownContainer.classList.contains('visible')) {
-    return;
-  }
-
-  if (currentlyVisibleAgencies.length === 0) {
-    return;
-  }
-
-  if (key === 'ArrowDown') {
-    if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
-        'selected'
-      );
-      currentlySelectedIndex++;
-
-      if (currentlySelectedIndex >= currentlyVisibleAgencies.length) {
-        currentlySelectedIndex = 0;
-      }
-    } else {
-      currentlySelectedIndex = 0;
-    }
-    currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
-  } else if (key === 'ArrowUp') {
-    if (currentlySelectedIndex >= 0) {
-      currentlyVisibleAgencies[currentlySelectedIndex].classList.remove(
-        'selected'
-      );
-      currentlySelectedIndex--;
-
-      if (currentlySelectedIndex <= -1) {
-        currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
-      }
-    } else {
-      currentlySelectedIndex = currentlyVisibleAgencies.length - 1;
-    }
-    currentlyVisibleAgencies[currentlySelectedIndex].classList.add('selected');
-  }
-}
-
-// selected the highlighted library in the dropdown
-function selectHighlighted(e) {
-  var currentlySelected = currentlyVisibleAgencies[currentlySelectedIndex];
-
-  if (
-    currentlySelected &&
-    librariesDropdownContainer.classList.contains('visible')
-  ) {
-    e.preventDefault();
-    librarySelect(currentlySelected);
-  } else if (librariesDropdownContainer.classList.contains('visible')) {
-    e.preventDefault();
-    navigateDropDown('ArrowDown');
-  }
-}
-
-// close dropdown on escape
-function escapeWasPressed(e) {
-  if (librariesDropdownContainer.classList.contains('visible')) {
-    e.preventDefault();
-    librariesDropdownContainer.classList.remove('visible');
-  }
-}
-
 // client form validtion
 /* eslint-disable no-unused-vars */
-function loginSubmit() {
+function loginSubmit(event) {
   // if library is not preselected or predefined
 
   var libraryId = false;
   var libraryName = false;
   var libraryText = false;
 
-  if (librariesDropdownContainer) {
-    libraryId = document.getElementById('libraryid-input');
-    libraryName = document.getElementById('libraryname-input');
-    libraryText = document.getElementById('libraryname-input-text');
-    resetFieldErrorMessage(libraryName, libraryText);
-  }
+  libraryId = document.getElementById('libraryid-input');
+  libraryName = document.getElementById('libraryname-input');
+  libraryText = document.getElementById('libraryname-input-text');
+  resetFieldErrorMessage(libraryName, libraryText);
 
   // Get inputfields
   var userId = document.getElementById('userid-input');
@@ -438,7 +244,7 @@ function loginSubmit() {
   var valid = true;
 
   // if no libarary selected
-  if (librariesDropdownContainer && !libraryId.value) {
+  if (!libraryId.value) {
     addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
     valid = false;
   }
@@ -464,8 +270,8 @@ function loginSubmit() {
   }
 
   // if no error found, form is submit
-  if (valid) {
-    document.getElementById('borchk-login-form').submit();
+  if (!valid) {
+    event.preventDefault();
   }
 }
 /* eslint-enable no-unused-vars */
