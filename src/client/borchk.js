@@ -1,12 +1,6 @@
 var agencyDropdown;
 
 class LibrarySelector {
-  /**
-   * 
-   * @param {*} selectorId 
-   * @param {*} libraries 
-   * @param {*} onSelectCallback 
-   */
   constructor(selectorId, libraries, onSelectCallback) {
     this.wrapper = document.getElementById(selectorId);
     this.inputContainer = this.wrapper.querySelector('.input-container');
@@ -86,7 +80,7 @@ class LibrarySelector {
     var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
     if (forskningsbiblioteker.length) {
       this.appendLibraries('Forskningsbiblioteker', forskningsbiblioteker, ul);
-    }    
+    }
     this.librariesDropdownContainer.innerHTML = '';
     this.librariesDropdownContainer.appendChild(ul);
     this.setButtonStatus();
@@ -105,10 +99,10 @@ class LibrarySelector {
     }
     for (let i = 0; i < libraries.length; i++) {
       var library = libraries[i];
-        var li = this.createEntry(library);
-        this.currentlyVisibleAgencies.push(li);
-        ul.appendChild(li);
-        ul.classList.add('libraries-dropdown');
+      var li = this.createEntry(library);
+      this.currentlyVisibleAgencies.push(li);
+      ul.appendChild(li);
+      ul.classList.add('libraries-dropdown');
     }
   }
   createLabel(label) {
