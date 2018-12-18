@@ -12,7 +12,7 @@ class LibrarySelector {
     this.librariesDropdownContainer = this.wrapper.querySelector(
       '[data-dropdown-container]'
     );
-    this.types=this.wrapper.dataset.libraryTypes && this.wrapper.dataset.libraryTypes.split(',') || ['folk'];
+    this.types = this.wrapper.dataset.libraryTypes && this.wrapper.dataset.libraryTypes.split(',') || ['folk', 'forsk'];
     this.libraries = libraries;
     this.onSelectCallback = onSelectCallback;
     this.initNavigation();
@@ -73,13 +73,18 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     var ul = document.createElement('ul');
-    var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
-    if (folkebiblioteker.length) {
-      this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
+    if (this.types.includes('folk')) {
+
+      var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
+      if (folkebiblioteker.length) {
+        this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
+      }
     }
-    var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
-    if (forskningsbiblioteker.length) {
-      this.appendLibraries('Forskningsbiblioteker', forskningsbiblioteker, ul);
+    if (this.types.includes('forsk')) {
+      var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
+      if (forskningsbiblioteker.length) {
+        this.appendLibraries('Forskningsbiblioteker', forskningsbiblioteker, ul);
+      }
     }
     this.librariesDropdownContainer.innerHTML = '';
     this.librariesDropdownContainer.appendChild(ul);
@@ -91,7 +96,7 @@ class LibrarySelector {
     }
     const lowerCaseQuery = query.toLowerCase();
     return libraries.filter(library => library.name.toLowerCase().indexOf(lowerCaseQuery) >= 0 ||
-    library.branchId.indexOf(query) === 0);
+      library.branchId.indexOf(query) === 0);
   }
   appendLibraries(label, libraries, ul) {
     if (label && this.types.length > 1) {
@@ -226,7 +231,7 @@ class LibrarySelector {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Set agencies
   agencyDropdown = new LibrarySelector('borchk-dropdown', window.data, () => {
     document.getElementById('userid-input').focus();

@@ -1,10 +1,9 @@
 context('Borchk form', () => {
+  const authorize =
+  '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
+
   beforeEach(() => {
-    const authorize =
-      '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
     cy.visit(authorize);
-    //cy.get('[data-cy=libraryname-input]').clear();
-    //cy.get('[data-cy=libraryname-input]').blur();
   });
 
   it('test dropdown is available on focus', () => {
@@ -73,6 +72,25 @@ context('Borchk form', () => {
     cy.get('#toggle-pin-input').click();
     cy.get('#pin-input').should('have.attr', 'type', 'tel');
     cy.get('#pin-input').should('have.value', '1234');
+  });
+  it.only('Should filter by agencyType', () => {
+    // Show all
+    cy.get('[data-cy=caret-libraries-btn]').click();
+    cy.get('.subject').should('have.length', 2);
+    cy.get('.agency').should('have.length', 5);
+
+    // Show folkebiblioteker
+    cy.visit(`${authorize}&agencytype=folk`);
+    cy.get('[data-cy=caret-libraries-btn]').click();
+    cy.get('.subject').should('have.length', 0);
+    cy.get('.agency').should('have.length', 1);
+    cy.get('.agency').first().should('have.text', 'Slagelse');
+    // Show forskningsbiblioteker
+    cy.visit(`${authorize}&agencytype=forsk`);
+    cy.get('[data-cy=caret-libraries-btn]').click();
+    cy.get('.agency').should('have.length', 4);
+    cy.get('.agency').first().should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
+
   });
   it('Should validate forms', () => {
     // Assert validation errors

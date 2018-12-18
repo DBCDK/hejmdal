@@ -6,7 +6,7 @@ div#borchk
       input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
     else
 
-      div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types="folk")
+      div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
         span(class='clear-libraries-on-mobile' data-mobile-clear)
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
