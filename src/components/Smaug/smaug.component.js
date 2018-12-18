@@ -50,7 +50,8 @@ export function extractClientInfo(client) {
     grants: client.grants,
     redirectUris: client.redirectUris,
     clientSecret: client.app.clientSecret,
-    requireConsent: !!client.requireConsent
+    requireConsent: !!client.requireConsent,
+    logoColor: client.logoColor ? client.logoColor : '#252525'
   };
 
   if (CONFIG.app.env === 'test') {
