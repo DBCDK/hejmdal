@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Handle dropdown navigation keys ESC | ENTER | UP | DOWN | TAB
-  document.addEventListener('keydown', handleKeyEvents);
+  libraryInput.addEventListener('keydown', handleKeyEvents);
 
   // only for not predefined libraries
   if (librariesDropdownContainer) {
@@ -152,8 +152,9 @@ function clearLibraryInput() {
   currentSearchValue = '';
 
   initButtonStatus();
-  dropdownTrigger('close');
   clearVisibleLibraries();
+  initRecentlySelectedLibraries();
+  dropdownTrigger('close');
 }
 /* eslint-enable no-unused-vars */
 

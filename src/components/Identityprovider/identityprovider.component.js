@@ -95,11 +95,17 @@ export async function authenticate(req, res, next) {
       'login_'
     );
 
+    const identityProvidersCount = Object.values(identityProviders).filter(
+      ip => ip
+    ).length;
+
     res.render('Login', {
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
       serviceClient: state.serviceClient.name,
+      logoColor: state.serviceClient.logoColor,
       identityProviders,
+      identityProvidersCount,
       branches: branches,
       preselectedName: preselectedName,
       preselectedId: preselectedId,
