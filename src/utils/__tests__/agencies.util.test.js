@@ -11,7 +11,7 @@ import {
 
 const mockAgencyList = [
   {
-    branchId: '891011',
+    branchId: '791011',
     branchShortName: 'branchShortName_0',
     agencyName: 'ægencyName_0',
     branchName: 'branchName_0',
@@ -65,7 +65,7 @@ describe('Unittesting methods in agencies.util.js', async () => {
           name: 'agencyName_2'
         },
         {
-          branchId: '891011',
+          branchId: '791011',
           name: 'ægencyName_0'
         }
       ],
@@ -78,7 +78,8 @@ describe('Unittesting methods in agencies.util.js', async () => {
           branchId: '234567',
           name: 'agencyName_4'
         }
-      ]
+      ],
+      test: []
     };
 
     const result = await getListOfAgenciesForFrontend();
@@ -113,7 +114,7 @@ describe('Unittesting methods in agencies.util.js', async () => {
         branchId: '761500',
         name: 'agencyName_2'
       },
-      {branchId: '891011', name: 'ægencyName_0'}
+      {branchId: '791011', name: 'ægencyName_0'}
     ];
 
     const result = await getListOfAgenciesForFrontend('folk');
