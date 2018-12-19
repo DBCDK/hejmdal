@@ -54,33 +54,32 @@ describe('Unittesting methods in agencies.util.js', async () => {
   mockSetAgencyList(mockAgencyList);
 
   it('should return a sorted list of agencies', async () => {
-    const expected = [
-      {
-        branchId: '710100',
-        name: 'agencyName_1',
-        hidden: '710100',
-        type: 'folk'
-      },
-      {
-        branchId: '761500',
-        name: 'agencyName_2',
-        hidden: '761500',
-        type: 'folk'
-      },
-      {
-        branchId: '123456',
-        name: 'agencyName_3',
-        hidden: '123456',
-        type: 'forsk'
-      },
-      {
-        branchId: '234567',
-        name: 'agencyName_4',
-        hidden: '234567',
-        type: 'forsk'
-      },
-      {branchId: '891011', name: 'ægencyName_0', hidden: '891011', type: 'folk'}
-    ];
+    const expected = {
+      folk: [
+        {
+          branchId: '710100',
+          name: 'agencyName_1'
+        },
+        {
+          branchId: '761500',
+          name: 'agencyName_2'
+        },
+        {
+          branchId: '891011',
+          name: 'ægencyName_0'
+        }
+      ],
+      forsk: [
+        {
+          branchId: '123456',
+          name: 'agencyName_3'
+        },
+        {
+          branchId: '234567',
+          name: 'agencyName_4'
+        }
+      ]
+    };
 
     const result = await getListOfAgenciesForFrontend();
 
@@ -91,15 +90,11 @@ describe('Unittesting methods in agencies.util.js', async () => {
     const expected = [
       {
         branchId: '123456',
-        name: 'agencyName_3',
-        hidden: '123456',
-        type: 'forsk'
+        name: 'agencyName_3'
       },
       {
         branchId: '234567',
-        name: 'agencyName_4',
-        hidden: '234567',
-        type: 'forsk'
+        name: 'agencyName_4'
       }
     ];
 
@@ -112,17 +107,13 @@ describe('Unittesting methods in agencies.util.js', async () => {
     const expected = [
       {
         branchId: '710100',
-        name: 'agencyName_1',
-        hidden: '710100',
-        type: 'folk'
+        name: 'agencyName_1'
       },
       {
         branchId: '761500',
-        name: 'agencyName_2',
-        hidden: '761500',
-        type: 'folk'
+        name: 'agencyName_2'
       },
-      {branchId: '891011', name: 'ægencyName_0', hidden: '891011', type: 'folk'}
+      {branchId: '891011', name: 'ægencyName_0'}
     ];
 
     const result = await getListOfAgenciesForFrontend('folk');

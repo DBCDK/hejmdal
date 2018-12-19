@@ -82,10 +82,10 @@ export async function authenticate(req, res, next) {
       ? await getAgency(state.serviceAgency)
       : null;
     const lockedAgencyName = branch ? branch.agencyName : null;
-    const agencyTypeFilter = req.session.query.agencytype || null;
+    const agencyTypeFilter = req.session.query.agencytype || 'folk,forsk';
     const branches =
       identityProviders.borchk && !lockedAgencyName
-        ? await getListOfAgenciesForFrontend(agencyTypeFilter)
+        ? await getListOfAgenciesForFrontend()
         : null;
     const error = req.query.error ? req.query.error : null;
     const loginHelpReplacers = setLoginReplacersFromAgency(branch);
@@ -104,6 +104,7 @@ export async function authenticate(req, res, next) {
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
       serviceClient: state.serviceClient.name,
       logoColor: state.serviceClient.logoColor,
+      agencyTypeFilter,
       identityProviders,
       identityProvidersCount,
       branches: branches,

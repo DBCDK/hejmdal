@@ -6,29 +6,16 @@ div#borchk
       input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
     else
 
-      div#library-group.form-group
-        input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId)
-
-        span(class='prevent-body-close-event clear-libraries-on-mobile' onclick='clearLibraryInput();') Ryd
-        span(class='close-libraries-on-mobile' onclick='dropdownTrigger("close");')
-
+      div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
+        span(class='clear-libraries-on-mobile' data-mobile-clear)
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(class="prevent-body-close-event" type='text' id='libraryname-input' name='libraryName' placeholder='Vælg bibliotek' tabindex='1' value=preselectedName)
-          button(class='prevent-body-close-event caret' type='button' class=preselectedName ? 'hide' : '' id='libraries-dropdown-toggle-btn' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onclick='dropdownTrigger("open")' aria-hidden='false')
-          button(class='prevent-body-close-event close' type='button' class=preselectedName ? '' : 'hide' id='clear-libraries-input-btn' onclick='clearLibraryInput();' aria-hidden='true')
-
-          if branches
-            div(id='libraries-dropdown-container' aria-hidden='true')
-              ul(id='libraries-dropdown')
-                li(class='hide subject' id='latest') Forslag
-                li(class='hide subject' id='alphabetical') Alfabetisk
-                each branch in branches
-                  if branch.name
-                    li(class="agency" data-aid=branch.branchId data-name=branch.name) #{branch.name}
-
-        span(id='libraryname-input-text' data-text='')
-
+          input(type='text' id='libraryname-input' data-cy='libraryname-input' name='libraryName' data-input-name placeholder='Vælg bibliotek' tabindex='1' value=preselectedName)
+          input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId data-input-id)
+          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
+          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
+          div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+        span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
       div.input-container
@@ -54,3 +41,4 @@ div#borchk
         div.other-actions
           a(href='') Ny Bruger?
           a(href='') Læs om vores behandling af dine personoplysninger
+  script var libraries = !{JSON.stringify(branches)}
