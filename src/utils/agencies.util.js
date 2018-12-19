@@ -86,16 +86,18 @@ async function setUiList() {
   if (!uiBranchList.folk || !uiBranchList.folk.length) {
     uiBranchList = {
       folk: [],
-      forsk: []
+      forsk: [],
+      test: []
     };
     agencyList.forEach(branch => {
-      if (!branch.agencyName) {
+      const type = getType(branch);
+      if (!branch.agencyName || !type) {
         return;
       }
-      const type = branch.type === 'Forskningsbibliotek' ? 'forsk' : 'folk';
       uiBranchList[type].push({
         branchId: branch.branchId,
-        name: branch.agencyName
+        name: branch.agencyName,
+        registrationUrl: branch.registrationFormUrl || branch.branchWebsiteUrl
       });
     });
     uiBranchList.folk.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
@@ -103,6 +105,19 @@ async function setUiList() {
       b1.name.localeCompare(b2.name, 'da-DK')
     );
   }
+}
+
+function getType(branch) {
+  if (branch.type === 'Forskningsbibliotek') {
+    return 'forsk';
+  }
+  if (branch.branchId.indexOf('7') === 0) {
+    return 'folk';
+  }
+  if (branch.branchId.indexOf('1') === 0) {
+    return 'test';
+  }
+  return null;
 }
 
 /**

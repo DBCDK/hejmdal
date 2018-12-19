@@ -26,6 +26,7 @@ describe('Test openAgency component', () => {
         city: 'Horsens',
         address: 'Tobaksgården 12Postbox 521',
         type: 'Folkebibliotek',
+        branchWebsiteUrl: 'https://horsensbibliotek.dk',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: 'bibliotek@horsens.dk',
@@ -40,6 +41,7 @@ describe('Test openAgency component', () => {
         city: '',
         address: '',
         type: 'Forskningsbibliotek',
+        branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: undefined
@@ -53,6 +55,7 @@ describe('Test openAgency component', () => {
         city: '',
         address: '',
         type: 'Forskningsbibliotek',
+        branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: undefined
@@ -66,6 +69,7 @@ describe('Test openAgency component', () => {
         city: ' ',
         address: ' ',
         type: 'Forskningsbibliotek',
+        branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: undefined
@@ -86,6 +90,7 @@ describe('Test openAgency component', () => {
         city: '',
         address: 'Hovedbiblioteket Banegårdspladsen 1',
         type: 'Folkebibliotek',
+        branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: '',
@@ -100,6 +105,7 @@ describe('Test openAgency component', () => {
         city: '',
         address: 'Flodvej 68 Smørumnedre',
         type: 'Folkebibliotek',
+        branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: '',
