@@ -177,12 +177,13 @@ class LibrarySelector {
   select(element) {
     var branchName = (element && element.name) || this.currentSearchValue;
     var branchId = (element && element.branchId) || this.currentSearchValue;
+    var registrationUrl = (element && element.registrationUrl) || false;
 
     this.libraryIdInput.value = branchId;
     this.libraryInput.value = branchName;
     this.close();
     this.setButtonStatus();
-    this.onSelectCallback();
+    this.onSelectCallback(registrationUrl);
   }
   handleKeyEvents(e) {
     if (!this.isOpen) {
@@ -259,8 +260,10 @@ document.addEventListener('DOMContentLoaded', function() {
   var newUserAgencyDropdown = new LibrarySelector(
     'newUser-dropdown',
     window.libraries || {},
-    () => {
-      // document.getElementById('userid-input').focus();
+    registrationUrl => {
+      if (registrationUrl) {
+        window.location.href = registrationUrl;
+      }
     }
   );
 });
