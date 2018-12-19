@@ -58,13 +58,24 @@ const helpTexts = {
       }
     ]
   },
+  privacyPolicy: {
+    title: 'Behandling af personoplysninger',
+    sections: [
+      {
+        header: 'Lorem ipsum',
+        texts: [
+          'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        ]
+      }
+    ]
+  },
   newUser: {
     title: 'Ny bruger',
     sections: [
       {
         header: '',
         texts: [
-          'Log in lorem ipsum ala nqkakv tekst otnosno a la poke neshto za bibliotekerne tehniq lorem iåsum.'
+          'Du kan oprette dig online som bruger på dit lokale bibliotek med NemID. Vælg dit lokale bibliotek for at komme direkte til siden for brugeroprettelse.'
         ]
       }
     ]
