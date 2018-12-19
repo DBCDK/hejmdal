@@ -7,15 +7,16 @@ div#borchk
     else
 
       div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
-        span(class='clear-libraries-on-mobile' data-mobile-clear)
+        span(class='close-libraries-on-mobile' data-mobile-close)
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
-          input(type='text' id='libraryname-input' data-cy='libraryname-input' name='libraryName' data-input-name placeholder='Vælg bibliotek' tabindex='1' value=preselectedName)
+          span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
+          input(type='text' id='libraryname-input' data-cy='libraryname-input' name='libraryName' data-input-name tabindex='1' value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
           div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
-        span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='Lorem ipsum dolor sit amet') Lorem ipsum dolor sit amet
+        span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
 
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
@@ -42,3 +43,5 @@ div#borchk
         div.other-actions
           a(onclick='toggleModal("userModal")') Ny Bruger?
           a(onclick='toggleModal("privacyModal")') Læs om vores behandling af dine personoplysninger
+
+  script var libraries = !{JSON.stringify(branches)}

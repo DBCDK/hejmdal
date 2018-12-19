@@ -1,63 +1,99 @@
 context('Borchk form', () => {
   const authorize =
-  '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
+    '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
 
   beforeEach(() => {
     cy.visit(authorize);
   });
 
   it('test dropdown is available on focus', () => {
-    cy.get('[data-cy=libraryname-input]').focus();
-    cy.get('[data-cy=dropdown-container]').should('have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'have.class',
+      'visible'
+    );
   });
   it('Toggle dropdown', () => {
     // Dropdown is hidden
-    cy.get('[data-cy=dropdown-container]').should('not.have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'not.have.class',
+      'visible'
+    );
     // Toggle on
-    cy.get('[data-cy=caret-libraries-btn]').click();
-    cy.get('[data-cy=dropdown-container]').should('have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'have.class',
+      'visible'
+    );
     // Toggle off
     cy.get('#login').click('topLeft');
-    cy.get('[data-cy=dropdown-container]').should('not.have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'not.have.class',
+      'visible'
+    );
   });
   it('Select library in dropdown', () => {
-    cy.get('[data-cy=libraryname-input]').type('sla');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
     // Select first library in list with click
     cy.get('.agency:visible')
       .first()
       .click();
-    cy.get('[data-cy=libraryname-input]').should('have.value', 'Slagelse');
-    cy.get('[data-cy=clear-libraries-btn]').should('be.visible');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Slagelse'
+    );
+    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').should(
+      'be.visible'
+    );
     // Clear selection
-    cy.get('[data-cy=clear-libraries-btn]').click();
-    cy.get('[data-cy=libraryname-input]').should('be.empty');
+    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should('be.empty');
     // Select using keys
-    cy.get('[data-cy=libraryname-input]').type('sla');
-    cy.get('[data-cy=libraryname-input]').type('{downarrow}');
-    cy.get('[data-cy=libraryname-input]').type('{enter}');
-    cy.get('[data-cy=libraryname-input]').should('have.value', 'Slagelse');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{downarrow}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Slagelse'
+    );
   });
 
   it('Toggle clear button', () => {
-    cy.get('[data-cy=libraryname-input]').type('sla');
-    cy.get('[data-cy=caret-libraries-btn]').should('not.be.visible');
-    cy.get('[data-cy=clear-libraries-btn]').should('be.visible');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').should(
+      'not.be.visible'
+    );
+    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').should(
+      'be.visible'
+    );
     // Clear input and close dropdown
-    cy.get('[data-cy=clear-libraries-btn]').click();
-    cy.get('[data-cy=libraryname-input]').should('be.empty');
+    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should('be.empty');
   });
   it('clear library dropdown with escape', () => {
     // Open dropdown with focus in input field
-    cy.get('[data-cy=libraryname-input]').type('sla');
-    cy.get('[data-cy=dropdown-container]').should('have.class', 'visible');
-    cy.get('[data-cy=libraryname-input]').type('{esc}');
-    cy.get('[data-cy=dropdown-container]').should('not.have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'have.class',
+      'visible'
+    );
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{esc}');
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'not.have.class',
+      'visible'
+    );
     // Open dropdown with toggle button
-    cy.get('[data-cy=libraryname-input]').clear();
-    cy.get('[data-cy=caret-libraries-btn]').click();
-    cy.get('[data-cy=dropdown-container]').should('have.class', 'visible');
-    cy.get('[data-cy=libraryname-input]').type('{esc}');
-    cy.get('[data-cy=dropdown-container]').should('not.have.class', 'visible');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').clear();
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'have.class',
+      'visible'
+    );
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{esc}');
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'not.have.class',
+      'visible'
+    );
   });
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
@@ -75,27 +111,30 @@ context('Borchk form', () => {
   });
   it.only('Should filter by agencyType', () => {
     // Show all
-    cy.get('[data-cy=caret-libraries-btn]').click();
-    cy.get('.subject').should('have.length', 2);
-    cy.get('.agency').should('have.length', 5);
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown .subject').should('have.length', 2);
+    cy.get('#borchk-dropdown .agency').should('have.length', 5);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
-    cy.get('[data-cy=caret-libraries-btn]').click();
-    cy.get('.subject').should('have.length', 0);
-    cy.get('.agency').should('have.length', 1);
-    cy.get('.agency').first().should('have.text', 'Slagelse');
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown .subject').should('have.length', 0);
+    cy.get('#borchk-dropdown .agency').should('have.length', 1);
+    cy.get('#borchk-dropdown .agency')
+      .first()
+      .should('have.text', 'Slagelse');
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
-    cy.get('[data-cy=caret-libraries-btn]').click();
-    cy.get('.agency').should('have.length', 4);
-    cy.get('.agency').first().should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
-
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown .agency').should('have.length', 4);
+    cy.get('#borchk-dropdown .agency')
+      .first()
+      .should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
   });
   it('Should validate forms', () => {
     // Assert validation errors
     cy.get('#borchk-submit').click();
-    cy.get('[data-cy=libraryname-input-text]').should(
+    cy.get('#borchk-dropdown [data-cy=libraryname-input-text]').should(
       'contain',
       'Du skal vælge et bibliotek'
     );
@@ -103,9 +142,11 @@ context('Borchk form', () => {
     cy.get('#pin-input-text').should('contain', 'Du skal angive');
 
     // remove validation error from library name
-    cy.get('[data-cy=libraryname-input]').type('733000{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      '733000{enter}'
+    );
     cy.get('#borchk-submit').click();
-    cy.get('[data-cy=libraryname-input]-text').should(
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]-text').should(
       'not.contain',
       'Du skal vælge et bibliotek'
     );
