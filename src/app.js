@@ -33,11 +33,9 @@ Model.knex(knex);
 import {stateMiddleware} from './middlewares/state.middleware';
 import loginRoutes from './routes/login.routes';
 import logoutRoutes from './routes/logout.routes';
-import consentRoutes from './routes/consent.routes';
 import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
 import userinfoRoutes from './routes/userinfo.routes';
-import profileRoutes from './routes/profile.routes';
 import infoRoutes from './routes/info.routes';
 
 const app = express();
@@ -86,9 +84,7 @@ app.use('/', rootRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/oauth', oAuthRoutes);
-app.use('/consent', consentRoutes);
 app.use('/userinfo', userinfoRoutes);
-app.use('/profile', profileRoutes);
 app.use('/info', infoRoutes);
 
 app.use(errorMiddleware);

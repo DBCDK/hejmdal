@@ -28,13 +28,4 @@
   --primary: 'FaktPro-Blond', Halvetica, Ariel, sans-serif;
   --secondary: 'FaktPro-Medium', Halvetica, Ariel, sans-serif;
   --tertiary: 'FaktPro-Normal', Halvetica, Ariel, sans-serif;
-
-  /* old TODO delete when done */
-  --red: #ff0000;
-  --dropdown-selected-bg: #f5f5f5;
-  --dark-grey: #7e7c77;
-  --btn-green: #007236;
-  --btn-grey: #999999;
-  --btn-red: #dc2829;
-  --error-red: #f2dede;
 }

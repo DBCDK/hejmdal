@@ -113,7 +113,9 @@ export async function authenticate(req, res, next) {
       lockedAgency: state.serviceAgency || null,
       lockedAgencyName: lockedAgencyName,
       help: helpText,
+      newUser: getText(['newUser']),
       cookie: getText(['cookies']),
+      privacyPolicy: getText(['privacyPolicy']),
       loginToProfile: !!req.session.loginToProfil
     });
 

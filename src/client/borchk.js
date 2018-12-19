@@ -1,4 +1,3 @@
-var agencyDropdown;
 /**
  * Instantiate a dropdown library selector.
  *
@@ -28,7 +27,7 @@ class LibrarySelector {
     this.filter();
   }
   setButtonStatus() {
-    if (this.currentSearchValue) {
+    if (this.currentSearchValue || this.libraryIdInput.value) {
       this.toggleButton.classList.add('hide');
       this.clearButton.classList.remove('hide');
     } else {
@@ -70,7 +69,8 @@ class LibrarySelector {
     this.libraryInput.value = '';
     this.libraryIdInput.value = '';
     this.filter('');
-    this.close();
+    this.libraryInput.focus();
+    this.setButtonStatus();
   }
 
   filter(query) {
@@ -149,7 +149,7 @@ class LibrarySelector {
 
   initNavigation() {
     this.mobileClearButton.addEventListener('click', () => {
-      this.close();
+      this.clearOnMobile();
     });
     this.clearButton.addEventListener('click', () => {
       this.clearLibraryInput();
@@ -177,12 +177,13 @@ class LibrarySelector {
   select(element) {
     var branchName = (element && element.name) || this.currentSearchValue;
     var branchId = (element && element.branchId) || this.currentSearchValue;
+    var registrationUrl = (element && element.registrationUrl) || false;
 
     this.libraryIdInput.value = branchId;
     this.libraryInput.value = branchName;
     this.close();
     this.setButtonStatus();
-    this.onSelectCallback();
+    this.onSelectCallback(registrationUrl);
   }
   handleKeyEvents(e) {
     if (!this.isOpen) {
@@ -244,25 +245,28 @@ class LibrarySelector {
   }
 }
 
+/* eslint-disable no-unused-vars */
+
 document.addEventListener('DOMContentLoaded', function() {
   // Set agencies
-  agencyDropdown = new LibrarySelector(
+  var agencyDropdown = new LibrarySelector(
     'borchk-dropdown',
     window.libraries || {},
     () => {
       document.getElementById('userid-input').focus();
     }
   );
+
+  var newUserAgencyDropdown = new LibrarySelector(
+    'newUser-dropdown',
+    window.libraries || {},
+    registrationUrl => {
+      if (registrationUrl) {
+        window.location.href = registrationUrl;
+      }
+    }
+  );
 });
-
-/* eslint-disable no-unused-vars */
-
-function dropdownTrigger() {
-  agencyDropdown.open();
-}
-function clearLibraryInput() {
-  agencyDropdown.clearLibraryInput();
-}
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field

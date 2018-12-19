@@ -3,10 +3,7 @@
 @import 'resources.css';
 @import 'variables.css';
 @import 'globals.css';
-@import 'utils.css';
 @import 'borchk.css';
-@import 'topbar.css';
-@import 'consent.css';
 @import 'header.css';
 @import 'footer.css';
 @import 'login.css';
@@ -15,6 +12,5 @@
 @import 'nemlogin.css';
 @import 'unilogin.css';
 @import 'wayf.css';
-@import 'profile.css';
 @import 'modal.css';
 @import 'frontpage.css';

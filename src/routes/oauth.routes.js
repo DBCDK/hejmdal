@@ -5,7 +5,6 @@ import {
   authorizationMiddleware
 } from '../utils/oauth2.utils';
 import {Router} from 'express';
-import {retrieveMissingUserConsent} from '../components/Consent/consent.component';
 import {setDefaultState} from '../middlewares/state.middleware';
 
 const router = Router();
@@ -29,7 +28,6 @@ router.get(
   validateAuthRequest,
   isUserLoggedIn,
   setDefaultState,
-  retrieveMissingUserConsent,
   authorizationMiddleware
 );
 

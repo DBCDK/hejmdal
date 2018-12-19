@@ -1,0 +1,23 @@
+div#userModal.modal
+  div.modal-header
+    button(type="button" onclick='toggleModal("userModal")')
+    h4.modal-title #{newUser.title}
+  div.modal-body
+    each section in newUser.sections
+      div.modal-body-section
+        if(section.header)
+          h5 #{section.header}
+        each text in section.texts
+          p !{text}
+
+    div(id="newUser-dropdown" class="library-group form-group input-container" data-library-types="folk")
+      span(class='close-libraries-on-mobile' data-mobile-close)
+      label(for='libraryname-input') Vælg dit lokale bibliotek
+      div.input-container
+        span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
+        input(type='text' data-cy='libraryname-input' name='libraryName' data-input-name tabindex='1' value=preselectedName)
+        input(type="hidden" name="agency" aria-hidden='true' value=preselectedId data-input-id)
+        button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
+        button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
+        div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+      span(data-cy='libraryname-input-text' data-text='')
