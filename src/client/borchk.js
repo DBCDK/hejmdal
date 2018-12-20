@@ -77,13 +77,13 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     var ul = document.createElement('ul');
-    if (this.types.includes('folk')) {
+    if (this.types.indexOf('folk') >= 0) {
       var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
       if (folkebiblioteker.length) {
         this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
       }
     }
-    if (this.types.includes('forsk')) {
+    if (this.types.indexOf('forsk') >= 0) {
       var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
       if (forskningsbiblioteker.length) {
         this.appendLibraries(
