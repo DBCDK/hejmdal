@@ -40,7 +40,7 @@ describe('test authenticate method', () => {
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
     expect(ctx.redirect).toBeCalledWith(
-      '/login/identityProviderCallback/nemlogin/mock_state_value'
+      `/login/identityProviderCallback/nemlogin/${ctx.session.state.stateHash}`
     );
   });
   it('Should not redirect to nemlogin', async () => {

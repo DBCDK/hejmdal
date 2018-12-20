@@ -73,7 +73,7 @@ export function validateClientIsSet(req, res, next) {
  * @param {Object} query
  */
 function generateStateHash(query) {
-  return query.state || createHash(`${query.clientId}:${Date.now()}`);
+  return createHash(`${query.clientId}:${Date.now()}`);
 }
 
 /**
