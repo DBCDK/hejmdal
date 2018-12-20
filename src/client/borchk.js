@@ -270,17 +270,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field
-function toggleFieldVisibility(id) {
+window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
   field.setAttribute('type', newType);
-}
+};
 
 /* eslint-enable no-unused-vars */
 // client form validtion
 /* eslint-disable no-unused-vars */
-function loginSubmit(event) {
+window.loginSubmit = function loginSubmit(event) {
   // if library is not preselected or predefined
 
   var libraryId = false;
@@ -342,7 +342,7 @@ function loginSubmit(event) {
   if (!valid) {
     event.preventDefault();
   }
-}
+};
 /* eslint-enable no-unused-vars */
 
 // rests the form errors

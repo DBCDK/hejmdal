@@ -30,22 +30,22 @@ window.hejmdal = Object.assign(
 /**
  * OnChange callback for inputfields
  */
-function onChange({key, val}) {
+window.onChange = function onChange({key, val}) {
   window.hejmdal[key] = val;
   setState();
-}
+};
 
 /**
  * OnClick callback for Login-button
  */
-function login() {
+window.login = function login() {
   window.location = hejmdal.loginUrl;
-}
+};
 
 /**
  * OnClick callback for GetTicket-button
  */
-function getToken() {
+window.getToken = function getToken() {
   const xhr = new XMLHttpRequest();
   const url = `${hejmdal.tokenURL}`;
   xhr.open('POST', url, true);
@@ -66,12 +66,12 @@ function getToken() {
       hejmdal.clientId
     }&client_secret=secret&redirect_uri=${hejmdal.redirectUri}`
   );
-}
+};
 
 /**
  * OnClick callback for getUserinfo-button
  */
-function getUserinfo() {
+window.getUserinfo = function getUserinfo() {
   const xhr = new XMLHttpRequest();
   const url = `${hejmdal.userinfoURL}`;
   xhr.open('GET', url, true);
@@ -84,18 +84,13 @@ function getUserinfo() {
   };
 
   xhr.send();
-}
+};
 
-function openTicket() {
-  const url = document.getElementById('ticketurl').innerHTML;
-  window.open(url, '_blank');
-}
-
-function logout() {
+window.logout = function logout() {
   hejmdal = defaultState;
   setState();
   window.location = '/logout';
-}
+};
 
 /**
  * Parses the URL for queries
