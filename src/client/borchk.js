@@ -77,13 +77,13 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     var ul = document.createElement('ul');
-    if (this.types.includes('folk')) {
+    if (this.types.indexOf('folk') >= 0) {
       var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
       if (folkebiblioteker.length) {
         this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
       }
     }
-    if (this.types.includes('forsk')) {
+    if (this.types.indexOf('forsk') >= 0) {
       var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
       if (forskningsbiblioteker.length) {
         this.appendLibraries(
@@ -270,17 +270,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Toggle Field text visibility (type: password || type: tel)
 // id = id of the field
-function toggleFieldVisibility(id) {
+window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
   var newType = currentType === 'password' ? 'tel' : 'password';
   field.setAttribute('type', newType);
-}
+};
 
 /* eslint-enable no-unused-vars */
 // client form validtion
 /* eslint-disable no-unused-vars */
-function loginSubmit(event) {
+window.loginSubmit = function loginSubmit(event) {
   // if library is not preselected or predefined
 
   var libraryId = false;
@@ -342,7 +342,7 @@ function loginSubmit(event) {
   if (!valid) {
     event.preventDefault();
   }
-}
+};
 /* eslint-enable no-unused-vars */
 
 // rests the form errors

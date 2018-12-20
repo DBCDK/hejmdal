@@ -1,7 +1,7 @@
 {
+  "presets": ["@babel/preset-env"],
   "plugins": [
-    "transform-es2015-modules-commonjs",
-    "transform-async-to-generator",
-    "transform-class-properties"
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-runtime"
   ]
 }

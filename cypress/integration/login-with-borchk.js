@@ -56,10 +56,10 @@ context('Login flow', () => {
   });
 
   it('carries through state parameter', () => {
-    cy.visit(`${authorize}&state=test-state-string`);
+    cy.visit(`${authorize}&state=test-state-string%2F%2F`);
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
-    cy.location('search').should('contain', 'state=test-state-string');
+    cy.location('search').should('contain', 'state=test-state-string%2F%2F');
   });
 });
