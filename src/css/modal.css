@@ -51,6 +51,14 @@
       box-shadow: var(--shadow);
       height: 60px;
       padding: 16px;
+
+      h4 {
+        display: block;
+        width: calc(100% - 30px);
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
     }
 
     &.onScroll ~ .modal-body {

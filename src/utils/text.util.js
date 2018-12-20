@@ -59,12 +59,66 @@ const helpTexts = {
     ]
   },
   privacyPolicy: {
-    title: 'Behandling af personoplysninger',
+    title: 'Om vores brug af personoplysninger',
     sections: [
       {
-        header: 'Lorem ipsum',
         texts: [
-          'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+          'Når du anvender dette login, bliver dine personoplysninger behandlet af det offentligt ejede aktieselskab, Dansk BiblioteksCenter (DBC). De bekræfter din identitet med et unikt brugernummer, som er tilfældigt og knyttet til dine login-oplysninger.',
+          'Læs mere om behandlingen af dine personoplysninger og dine rettigheder nedenfor.'
+        ]
+      },
+      {
+        header: 'Formål med behandlingen',
+        texts: [
+          'Formålet med behandlingen er, at du skal have sikker adgang til de digitale folkebiblioteksløsninger og de muligheder, de tilbyder (reservation, lån mm.).'
+        ]
+      },
+      {
+        header: 'Hvilke oplysninger behandler vi',
+        texts: [
+          'Når du logger ind, behandler vi oplysningerne fra dit login, dit CPR-nummer, information om bopælskommune samt information om, hvilke biblioteker du er oprettet som låner på.',
+          'Dit CPR henter vi fra dit login. Din hjemkommune henter vi via dit lokale bibliotek.'
+        ]
+      },
+      {
+        header: 'Hvem behandler dine personoplysninger?',
+        texts: [
+          'Dine oplysninger behandles af Dansk BiblioteksCenter, DBC, som er leverandør af løsningen til Danskernes Digitale Bibliotek (DDB) på vegne af de danske folkebiblioteker. Det er de danske folkebiblioteker, som er dataansvarlige, og DBC som er databehandlere.',
+          'Danskernes Digitale bibliotek (DDB) kan kontaktes på vegne af de danske folkebiblioteker i forbindelse med spørgsmål til behandlingen (se nedenfor).'
+        ]
+      },
+      {
+        header: 'Retsgrundlag for behandling af dine personoplysninger',
+        texts: [
+          'Retsgrundlaget for behandlingen af personoplysningerne i login-funktionen er databeskyttelsesforordningens artikel 6, stk. 1, litra e om behandlinger, der er nødvendig af hensyn til udførelse af en opgave i samfundets interesse.'
+        ]
+      },
+      {
+        header: 'Dine rettigheder',
+        texts: [
+          'Det er Folkebibliotekerne i de enkelte kommuner, der er dataansvarlig for behandlingen af dine oplysninger. Du har altid mulighed for at kontakte Danskernes Digitale Bibliotek på vegne af de danske folkebiblioteker, om indsigt i behandlingen af dine personoplysninger. Du kan anmode om berigtigelse eller sletning af dine personoplysninger samt om begrænsning af behandlingen af personoplysningerne. Du kan til enhver tid gøre indsigelse mod folkebiblioteket i din kommunes behandling af dine personoplysninger i forbindelse login-funktionen af grunde, der vedrører din særlige situation.'
+        ]
+      },
+      {
+        header: 'Kontakt om behandling af personoplysninger',
+        texts: [
+          'Har du spørgsmål til behandling af dine personoplysninger, kan du henvende dig til Danskernes Digitale Bibliotek (DDB) på ddb@slks.dk eller på tlf. 33 95 42 00.'
+        ]
+      },
+      {
+        header: 'Klagemulighed',
+        texts: [
+          'Hvis du ønsker at klage over Digitaliseringsstyrelsens behandling af dine personoplysninger, skal dette ske til Datatilsynet.'
+        ]
+      },
+      {
+        texts: [
+          'Datatilsynets kontaktoplysninger er:',
+          '<br>',
+          'Datatilsynet',
+          'Borgergade 28, 5',
+          '1300 København K',
+          'Telefon: 33 19 32 00'
         ]
       }
     ]
