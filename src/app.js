@@ -62,7 +62,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(setHeaders);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(
   session({
     secret: CONFIG.session.secret,
