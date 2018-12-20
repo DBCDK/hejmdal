@@ -109,7 +109,7 @@ context('Borchk form', () => {
     cy.get('#pin-input').should('have.attr', 'type', 'tel');
     cy.get('#pin-input').should('have.value', '1234');
   });
-  it.only('Should filter by agencyType', () => {
+  it('Should filter by agencyType', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
