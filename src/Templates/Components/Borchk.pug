@@ -41,7 +41,7 @@ div#borchk
     div.action-container
         button(type='submit' id='borchk-submit' tabindex='4') Log ind
         div.other-actions
-          a(onclick='toggleModal("userModal")') Ny Bruger?
-          a(onclick='toggleModal("privacyModal")') Læs om vores behandling af dine personoplysninger
+          a(onclick='toggleModal("userModal")' data-cy='new-user-button') Ny Bruger?
+          a(onclick='toggleModal("privacyModal")' data-cy='privacy-button') Læs om vores behandling af dine personoplysninger
 
   script var libraries = !{JSON.stringify(branches)}

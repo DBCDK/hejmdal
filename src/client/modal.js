@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-function onDimmerClick() {
+window.onDimmerClick = function onDimmerClick() {
   // close all open modals
   var modals = document.getElementsByClassName('modal');
   for (var i = 0; i < modals.length; i++) {
@@ -8,10 +8,10 @@ function onDimmerClick() {
   // close dimmer
   var dimmer = document.getElementById('dimmer');
   dimmer.classList.remove('visible');
-}
+};
 /* eslint-enable no-unused-vars */
 
-function toggleModal(modal, status = 'toggle') {
+window.toggleModal = function toggleModal(modal, status = 'toggle') {
   var dimmer = document.getElementById('dimmer');
   modal = document.getElementById(modal);
 
@@ -32,7 +32,7 @@ function toggleModal(modal, status = 'toggle') {
   // toggle modal
   dimmer.classList.toggle('visible');
   modal.classList.toggle('visible');
-}
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   var body = document.getElementsByTagName('body')[0];
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (e.keyCode === 27) {
       for (var m = 0; m < modals.length; m++) {
         if (modals[m].classList.contains('visible')) {
-          toggleModal(modals[m].id, 'close');
+          window.toggleModal(modals[m].id, 'close');
         }
       }
     }
