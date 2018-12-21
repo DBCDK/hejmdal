@@ -15,6 +15,10 @@ body {
   font-family: var(--primary);
 }
 
+svg {
+  pointer-events: none;
+}
+
 .container,
 .content-container {
   width: 100%;
