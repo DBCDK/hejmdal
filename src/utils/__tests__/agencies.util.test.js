@@ -15,14 +15,16 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_0',
     agencyName: 'ægencyName_0',
     branchName: 'branchName_0',
-    misc: 'extra info'
+    misc: 'extra info',
+    municipalityNo: '910'
   },
   {
     branchId: '710100',
     branchShortName: 'branchShortName_1',
     agencyName: 'agencyName_1',
     branchName: 'branchName_1',
-    misc: 'extra info'
+    misc: 'extra info',
+    municipalityNo: '101'
   },
   {
     branchId: '761500',
@@ -30,7 +32,8 @@ const mockAgencyList = [
     agencyName: 'agencyName_2',
     branchName: 'branchName_2',
     type: 'Folkebibliotek',
-    misc: 'extra info'
+    misc: 'extra info',
+    municipalityNo: '615'
   },
   {
     branchId: '123456',

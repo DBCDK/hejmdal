@@ -30,7 +30,8 @@ describe('Test openAgency component', () => {
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: 'bibliotek@horsens.dk',
-        distance: ''
+        distance: '',
+        municipalityNo: '615'
       },
       {
         agencyId: '860970',
@@ -94,7 +95,8 @@ describe('Test openAgency component', () => {
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: '',
-        distance: '1237'
+        distance: '1237',
+        municipalityNo: '151'
       },
       {
         agencyId: '724000',
@@ -109,7 +111,8 @@ describe('Test openAgency component', () => {
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: '',
-        distance: '2905'
+        distance: '2905',
+        municipalityNo: '240'
       }
     ];
 

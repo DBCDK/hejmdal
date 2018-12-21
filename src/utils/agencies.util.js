@@ -111,7 +111,7 @@ function getType(branch) {
   if (branch.type === 'Forskningsbibliotek') {
     return 'forsk';
   }
-  if (branch.branchId.indexOf('7') === 0) {
+  if (branch.municipalityNo) {
     return 'folk';
   }
   if (branch.branchId.indexOf('1') === 0) {

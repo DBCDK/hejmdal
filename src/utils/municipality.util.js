@@ -5,6 +5,7 @@
  */
 
 export const municipalityName = {
+  '004': 'Sydslesvig',
   101: 'København',
   147: 'Frederiksberg',
   151: 'Ballerup',
