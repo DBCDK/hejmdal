@@ -218,7 +218,7 @@
         transform: scale(1);
       }
 
-      @media (min-width: 486px) {
+      @media (min-width: 800px) {
         &.dropdown-visible {
           margin: 40px 0 0 0;
           padding: 0;
@@ -293,6 +293,18 @@
 }
 
 @media (min-width: 486px) {
+  #newUser-dropdown .input-container,
+  #borchk-dropdown .input-container {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 800px) {
+  #newUser-dropdown .input-container,
+  #borchk-dropdown .input-container {
+    max-width: 486px;
+  }
+
   .action-container {
     flex-direction: row;
 

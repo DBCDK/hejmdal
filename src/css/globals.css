@@ -22,7 +22,7 @@ body {
 }
 
 .content-container {
-  padding: 15px;
+  padding: 0 15px;
 }
 
 @media (min-width: 500px) {
