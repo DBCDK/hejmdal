@@ -118,6 +118,14 @@
     .modal-header {
       min-height: 15%;
       padding: 80px 100px 40px 100px;
+
+      &.onScroll {
+        padding: 16px 100px;
+      }
+
+      &.onScroll ~ .modal-body {
+        padding: 60px 100px;
+      }
     }
     .modal-body {
       padding: 0px 100px;
