@@ -70,6 +70,19 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should('be.empty');
   });
+  it('toggle dropdown', () => {
+    // Toggle dropdown with toggle button
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'have.class',
+      'visible'
+    );
+    cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
+    cy.get('#borchk-dropdown [data-cy=dropdown-container]').should(
+      'not.have.class',
+      'visible'
+    );
+  });
   it('clear library dropdown with escape', () => {
     // Open dropdown with focus in input field
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
@@ -95,6 +108,7 @@ context('Borchk form', () => {
       'visible'
     );
   });
+
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
     cy.get('#userid-input').should('have.attr', 'type', 'password');

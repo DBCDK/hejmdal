@@ -154,6 +154,9 @@ class LibrarySelector {
     this.clearButton.addEventListener('click', () => {
       this.clearLibraryInput();
     });
+    this.toggleButton.addEventListener('click', () => {
+      this.toggle();
+    });
     this.libraryInput.addEventListener('focus', () => {
       this.open();
     });
@@ -166,11 +169,8 @@ class LibrarySelector {
     document.addEventListener('click', e => {
       if (!this.inputContainer.contains(e.target)) {
         this.close();
-      } else {
-        this.open();
-        if (e.target.entry) {
-          this.select(e.target.entry);
-        }
+      } else if (e.target.entry) {
+        this.select(e.target.entry);
       }
     });
   }
