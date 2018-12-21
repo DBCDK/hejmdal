@@ -39,7 +39,7 @@
   }
 }
 
-@media (min-width: 486px) {
+@media (min-width: 800px) {
   #error-container {
     width: 486px;
     padding: 5px 15px 15px 15px;
@@ -71,46 +71,6 @@
     }
   }
 }
-
-/* TODO Delete if other solution is apporved */
-/* @media (min-width: 486px) {
-  #error-container {
-    position: relative;
-    background-color: transparent;
-    padding: 25px 0 0 0;
-    box-shadow: none;
-    animation: none;
-
-    #error-header {
-      padding: 10px 0;
-
-      h2 {
-        color: var(--error);
-      }
-
-      #error-close-btn {
-        background: svg-inline(--close-small) no-repeat center;
-        background-size: 10px;
-        display: none;
-      }
-    }
-    #error-body {
-      p {
-        color: var(--error);
-      }
-    }
-    #error-actions {
-      display: block;
-
-      #helptext-link {
-        font-size: 12px;
-        color: var(--grey-lighten-1);
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    }
-  }
-} */
 
 @keyframes slideInFromTop {
   0% {
