@@ -208,10 +208,13 @@ class LibrarySelector {
     }
 
     if (key === 'TAB' || key === 'ENTER') {
-      e.preventDefault();
-      this.select(
-        this.currentlySelectedItem && this.currentlySelectedItem.entry
-      );
+      if (this.currentlySelectedItem) {
+        e.preventDefault();
+        this.select(this.currentlySelectedItem.entry);
+        return;
+      }
+
+      this.close();
     }
 
     if (key === 'ESC') {
