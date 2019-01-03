@@ -75,7 +75,7 @@ class LibrarySelector {
 
   filter(query) {
     this.currentlyVisibleAgencies = [];
-    this.currentlySelectedIndex = -1;
+    this.currentlySelectedIndex = query && query.length > 2 ? 0 : -1;
     var ul = document.createElement('ul');
     if (this.types.indexOf('folk') >= 0) {
       var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
@@ -96,6 +96,7 @@ class LibrarySelector {
     this.librariesDropdownContainer.innerHTML = '';
     this.librariesDropdownContainer.appendChild(ul);
     this.setButtonStatus();
+    this.highlightSelected(this.currentlySelectedIndex);
   }
   filterQuery(query, libraries) {
     if (!query) {
@@ -208,12 +209,12 @@ class LibrarySelector {
     }
 
     if (key === 'TAB' || key === 'ENTER') {
-      if (this.currentlySelectedItem) {
+      if (this.isOpen) {
         e.preventDefault();
-        this.select(this.currentlySelectedItem.entry);
-        return;
+        this.select(
+          this.currentlyVisibleAgencies[this.currentlySelectedIndex].entry
+        );
       }
-
       this.close();
     }
 
@@ -291,7 +292,7 @@ window.loginSubmit = function loginSubmit(event) {
   var libraryText = false;
 
   libraryId = document.getElementById('libraryid-input');
-  libraryName = document.getElementById('libraryname-input');
+  libraryName = document.querySelector('[data-js-id=libraryname-input]');
   libraryText = document.getElementById('libraryname-input-text');
   resetFieldErrorMessage(libraryName, libraryText);
 
