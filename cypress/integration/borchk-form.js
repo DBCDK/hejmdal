@@ -49,7 +49,7 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should('be.empty');
     // Select using keys
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl');
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{downarrow}');
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{enter}');
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
