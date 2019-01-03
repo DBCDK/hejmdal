@@ -53,7 +53,7 @@ const helpTexts = {
       {
         header: 'Kontakt',
         texts: [
-          'Har du spørgsmål vedrørende vores anvendelse af cookies og den måde som hjemmesiden forvaltes på, er du velkommen til at kontakte os.'
+          'Har du spørgsmål vedrørende vores anvendelse af cookies og den måde, som hjemmesiden forvaltes på, er du velkommen til at kontakte Danskernes Digitale Bibliotek (DDB), der er bestiller af login-funktionen på vegne af de danske folkebiblioteker. DDB kan kontaktes på ddb@slks.dk eller på tlf. 33 95 42 00.'
         ]
       }
     ]
@@ -140,19 +140,19 @@ const helpTexts = {
       {
         header: 'Bibliotek',
         texts: [
-          'Feltet Bibliotek er ofte valgt på forhånd, så du ikke kan ændre det. Hvis ikke, skal du finde dit bibliotek ved at søge på bibliotekets navn eller den kommune, biblioteket ligger i. Eller ved at vælge et bibliotek fra listen. Vælg et bibliotek, hvor du er registreret som låner.'
+          'Feltet Bibliotek er ofte valgt på forhånd, så du ikke kan ændre det. Hvis ikke, skal du finde dit bibliotek ved at søge på kommune, biblioteket ligger i eller ved at vælge et bibliotek fra listen. Vælg et bibliotek, hvor du er registreret som låner.'
         ]
       },
       {
         header: 'Cpr- og lånernummer',
         texts: [
-          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit cpr-nummer eller dit lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside.'
+          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit cpr-nummer eller dit lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
         ]
       },
       {
         header: 'Pinkode',
         texts: [
-          'Pinkoden er den 4- eller 5-cifrede kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på biblioteket. '
+          'Pinkoden er den 4- eller 5-cifrede kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner.'
         ]
       }
     ]
@@ -163,7 +163,7 @@ const helpTexts = {
       {
         header: 'NemID',
         texts: [
-          'Vælg NemID, hvis du vil logge ind ved hjælp af NemID med brug af dit nøglekort. Du vil blive viderestillet til NemID. Når du er logget ind der, bliver du stillet tilbage til Bibliotekslogin.'
+          'Vælg NemID, hvis du vil logge ind ved hjælp af NemID med brug af dit nøglekort. Du vil blive viderestillet til NemID. Når du er logget ind der, bliver du stillet tilbage til den side, du var ved at logge ind på.'
         ]
       }
     ]

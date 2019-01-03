@@ -5,6 +5,7 @@ div#privacyModal.modal
   div.modal-body
     each section in privacyPolicy.sections
       div.modal-body-section
-        h5 #{section.header}
+        if(section.header)
+          h5 #{section.header}
         each text in section.texts
           p !{text}
