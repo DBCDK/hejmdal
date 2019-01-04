@@ -12,6 +12,7 @@ class LibrarySelector {
     this.toggleButton = this.wrapper.querySelector('[data-toggle]');
     this.clearButton = this.wrapper.querySelector('[data-clear]');
     this.mobileClearButton = this.wrapper.querySelector('[data-mobile-clear]');
+    this.mobileCloseButton = this.wrapper.querySelector('[data-mobile-close]');
     this.librariesDropdownContainer = this.wrapper.querySelector(
       '[data-dropdown-container]'
     );
@@ -151,6 +152,9 @@ class LibrarySelector {
   initNavigation() {
     this.mobileClearButton.addEventListener('click', () => {
       this.clearOnMobile();
+    });
+    this.mobileCloseButton.addEventListener('click', () => {
+      this.close();
     });
     this.clearButton.addEventListener('click', () => {
       this.clearLibraryInput();
