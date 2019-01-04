@@ -108,7 +108,7 @@ const helpTexts = {
       {
         header: 'Klagemulighed',
         texts: [
-          'Hvis du ønsker at klage over Digitaliseringsstyrelsens behandling af dine personoplysninger, skal dette ske til Datatilsynet.'
+          'Hvis du ønsker at klage over behandlingen af dine personoplysninger, skal dette ske til Datatilsynet.'
         ]
       },
       {

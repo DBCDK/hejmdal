@@ -7,9 +7,9 @@ div#borchk
     else
 
       div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
-        span(class='close-libraries-on-mobile' data-mobile-close)
         label(for='libraryname-input') Vælg dit lokale bibliotek
         div.input-container
+          span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
           - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
           input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name tabindex='1' value=preselectedName)
