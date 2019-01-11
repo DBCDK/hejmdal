@@ -82,7 +82,7 @@ describe('Unittesting methods in agencies.util.js', async () => {
           name: 'agencyName_4'
         }
       ],
-      test: []
+      other: []
     };
 
     const result = await getListOfAgenciesForFrontend();

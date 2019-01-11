@@ -145,6 +145,16 @@ context('Borchk form', () => {
       .first()
       .should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
   });
+  
+  it('Should show test agency by agencyID', () => {
+    ///
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('900');
+    cy.get('#borchk-dropdown .agency').should('have.length', 1);
+    cy.get('#borchk-dropdown .agency')
+    .first()
+    .should('have.text', 'DBC Test library');
+  });
+
   it('Should validate forms', () => {
     // Assert validation errors
     cy.get('#borchk-submit').click();
