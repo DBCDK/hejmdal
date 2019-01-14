@@ -87,7 +87,7 @@ async function setUiList() {
     uiBranchList = {
       folk: [],
       forsk: [],
-      test: []
+      other: []
     };
     agencyList.forEach(branch => {
       const type = getType(branch);
@@ -114,10 +114,7 @@ function getType(branch) {
   if (branch.municipalityNo) {
     return 'folk';
   }
-  if (branch.branchId.indexOf('1') === 0) {
-    return 'test';
-  }
-  return null;
+  return 'other';
 }
 
 /**

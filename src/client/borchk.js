@@ -94,6 +94,17 @@ class LibrarySelector {
         );
       }
     }
+    if (query && this.libraries.other.length > 0) {
+      var otherLibraries = this.libraries.other.filter(library => library.branchId.indexOf(query) === 0);
+      if (otherLibraries.length) {
+        this.appendLibraries(
+          'Andet',
+          otherLibraries,
+          ul
+        );
+      }
+    }
+
     this.librariesDropdownContainer.innerHTML = '';
     this.librariesDropdownContainer.appendChild(ul);
     this.setButtonStatus();
