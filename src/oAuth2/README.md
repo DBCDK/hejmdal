@@ -58,8 +58,8 @@ The client makes a request to the token endpoint by sending the, following param
 - grant_type: Value MUST be set to "authorization_code".
 - code: authorization code that was returned from previous call to `oauth/authorize`.
 - redirect_uri: Must be the same redirect_uri, which is used to retrieve authorization code.
-- client_id: client ID (In the mock implementation, it is hardcoded to hejmdal).
-- client_secret: client secret (In the mock implementation, it is hardcoded to "hejmdal_secret").
+- client_id: client ID.
+- client_secret: client secret.
 
 `curl -X POST https://oauth.login.bib.dk/oauth/token -d 'grant_type=authorization_code&code={AUTH_CODE}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}&redirect_uri=REDIRECT_URI}'`
 
@@ -91,10 +91,12 @@ The client makes a request to the token endpoint by sending the, following param
 - username: borchk user userId
 - password: borchk user password.
 - agency: Agency ID is the library the user needs to authenticate against.
+- client_id: client ID.
+- client_secret: client secret.
 
 The client application needs to authenticate using client ID and client Secrect.
 
-`curl --user "{CLIENT_ID}":"{CLIENT_SECRET}" -X POST https://oauth.login.bib.dk/oauth/token -d 'grant_type=password&password={PASSWORD}&username={username}&agency=${AGENCY_ID}'`
+`curl -X POST https://oauth.login.bib.dk/oauth/token -d 'grant_type=password&password={PASSWORD}&username={username}&agency=${AGENCY_ID}&client_id={CLIENT_ID}&client_secret={CLIENT_SECRET}'`
 
 **response**
 
