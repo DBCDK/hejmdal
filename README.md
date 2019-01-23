@@ -155,6 +155,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `OPENAGENCY_URI` : `openAgency.uri`  
   The address to the openAgency service
 
+- `OPENAGENCY_LIFE_TIME` : `openAgency.life_time`  
+  Milliseconds before invalidating openagency cache. Default to 3600000 (1 hour)
+
 - `PORT` : `app.port`  
   Specifies the port to expose the application. Default: `3010`
 
