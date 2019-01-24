@@ -4,12 +4,14 @@
  */
 import 'locale-compare-polyfill';
 import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
+import {CONFIG} from './config.util';
 
 /**
  * @type {Array}
  */
 let agencyList = [];
 let uiBranchList = {};
+let agencyRenewTime = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -17,6 +19,9 @@ let uiBranchList = {};
  */
 export async function cacheAgencies(name = '') {
   agencyList = await libraryListFromName(name);
+  if (agencyList.length) {
+    agencyRenewTime = new Date().getTime() + CONFIG.openAgency.life_time;
+  }
 }
 
 /**
@@ -72,7 +77,7 @@ export async function getAgency(agencyId) {
  * agencyList setter
  */
 async function setAgencyList() {
-  if (!agencyList || !agencyList.length) {
+  if (!agencyList || !agencyList.length || (new Date().getTime() > agencyRenewTime)) {
     await cacheAgencies();
   }
 }

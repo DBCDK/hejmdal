@@ -49,7 +49,8 @@ export const CONFIG = {
   },
   mock_storage: process.env.MOCK_STORAGE === '1',
   openAgency: {
-    uri: process.env.OPENAGENCY_URI
+    uri: process.env.OPENAGENCY_URI,
+    life_time: Number(process.env.AGENCY_LIFE_TIME) || 3600 // 60*60
   },
   postgres: {
     client: 'postgresql',
