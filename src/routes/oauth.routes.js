@@ -58,4 +58,29 @@ router.post('/token', (req, res, next) => {
   req.app.oauth.token()(req, res, next);
 });
 
+/**
+ * revoke token.
+ * DELETE request:
+ * - access_token=ACCESS_TOKEN
+ * Response:
+ * {count:1} || {count:0}
+ * or
+ * { "error":"invalid_request"}
+ *
+ */
+router.delete('/revoke', async (req, res) => {
+  const token = req.query.access_token;
+
+  if (token) {
+    const response = await req.app.model.revokeToken(token);
+    res.json(response);
+  }
+
+  res.status = 400;
+
+  res.json({
+    error: 'no valid access_token'
+  });
+});
+
 export default router;

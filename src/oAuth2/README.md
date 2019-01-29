@@ -169,6 +169,6 @@ To log out of the access platform, redirect to: `https://oauth.login.bib.dk/logo
 
 This will also remove the single-signon cookie.
 
-If authorization was done using a password grant, it is possible to revoke the access_token by making a POST request to the `/revoke` endpoint:
+If authorization was done using a password grant, it is possible to revoke the access_token by making a DELETE request to the `/revoke` endpoint:
 
-`curl -X POST https://oauth.login.bib.dk/revoke/?access_token={ACCESS_TOKEN}`
+`curl -X DELETE https://oauth.login.bib.dk/revoke/?access_token={ACCESS_TOKEN}`

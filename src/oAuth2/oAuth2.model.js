@@ -3,7 +3,8 @@
 import {
   getClientInfoByClientId,
   getTokenForUser,
-  extractClientInfo
+  extractClientInfo,
+  revokeClientToken
 } from '../components/Smaug/smaug.component';
 import {saveUser, readUser} from '../components/User/user.component';
 import PersistentAuthCodeStorage from '../models/AuthCode/authcode.persistent.storage.model';
@@ -138,8 +139,15 @@ module.exports.saveToken = async function(token, client, user) {
   }
 };
 
-module.exports.revokeToken = token => {
-  // TODO: revoke token from smaug.
+/**
+ * Revoke client token
+ */
+module.exports.revokeToken = async function(token) {
+  try {
+    return await revokeClientToken(token);
+  } catch (error) {
+    log.error('Could not revoke token', {error});
+  }
 };
 
 /*

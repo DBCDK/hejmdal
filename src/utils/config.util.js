@@ -4,7 +4,6 @@
  * A validateConfig method that validates the values found in the CONFIG object and throws an Error upon invalid values.
  */
 
-
 export const CONFIG = {
   app: {
     env: process.env.NODE_ENV,
@@ -23,11 +22,11 @@ export const CONFIG = {
   garbageCollect: {
     ticket: {
       divisor: Number(process.env.GC_TICKET_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_TICKET_SECONDS) || 3600   // 60 * 60
+      seconds: Number(process.env.GC_TICKET_SECONDS) || 3600 // 60 * 60
     },
     session: {
       divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400  // 31 * 24 * 60 * 60
+      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400 // 31 * 24 * 60 * 60
     }
   },
   hash: {
@@ -75,6 +74,7 @@ export const CONFIG = {
   },
   smaug: {
     uri: process.env.SMAUG_URI,
+    configUri: process.env.SMAUG_CONFIG_URI,
     adminUri: process.env.SMAUG_ADMIN_URI,
     adminUsername: process.env.SMAUG_ADMIN_USERNAME,
     adminPassword: process.env.SMAUG_ADMIN_PASSWORD,
@@ -110,13 +110,23 @@ export function validateConfig(config = CONFIG, k = '') {
   for (let key in config) {
     if (typeof config[key] === 'object') {
       validateConfig(config[key], `${k}${key}.`);
-    }
-    else {
-      if (config[key] === undefined) { // eslint-disable-line no-undefined
-        throw Error(`${k}${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler for a list of environment variables and take a look at https://github.com/DBCDK/hejmdal/blob/master/src/utils/config.util.js to see how they're mapped`); // eslint-disable-line max-len
+    } else {
+      /* eslint-disable no-undefined */
+      if (config[key] === undefined) {
+        /* eslint-enableno-undefined */
+
+        /* eslint-disable max-len */
+        throw Error(
+          `${k}${key} was not specified in config. See https://github.com/DBCDK/hejmdal#environment-variabler for a list of environment variables and take a look at https://github.com/DBCDK/hejmdal/blob/master/src/utils/config.util.js to see how they're mapped`
+        );
+        /* eslint-enable max-len */
       }
       if (typeof config[key] === 'number' && Number.isNaN(config[key])) {
-        throw Error(`${k}${key}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler for a list of environment variables and take a look at https://github.com/DBCDK/hejmdal/blob/master/src/utils/config.util.js to see how they're mapped`); // eslint-disable-line max-len
+        /* eslint-disable max-len */
+        throw Error(
+          `${k}${key}: expected NaN to be a number. See https://github.com/DBCDK/hejmdal#environment-variabler for a list of environment variables and take a look at https://github.com/DBCDK/hejmdal/blob/master/src/utils/config.util.js to see how they're mapped`
+        );
+        /* eslint-enable max-len */
       }
     }
   }

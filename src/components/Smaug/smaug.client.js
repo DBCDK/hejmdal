@@ -1,7 +1,8 @@
 import {CONFIG} from '../../utils/config.util';
 import {TokenError} from './smaug.errors';
 import mockClient, {
-  getMockValidateUserTokenClient
+  getMockValidateUserTokenClient,
+  mockRevokeToken
 } from './mock/smaug.client.mock';
 import {promiseRequest} from '../../utils/request.util';
 /**
@@ -19,7 +20,7 @@ export async function getClientByToken(token) {
     return mockClient(token);
   }
   response = await promiseRequest('get', {
-    uri: CONFIG.smaug.uri + '/configuration',
+    uri: CONFIG.smaug.configUri + '/configuration',
     qs: {token: token}
   });
 
@@ -87,12 +88,38 @@ export async function getToken(clientId, agency, username, password) {
 }
 
 /**
+ * Revoke client token
+ *
+ * @param {String} token
+ * @return {Object}
+ * @throws {Error|TokenError}
+ */
+export async function revokeToken(token) {
+  let response = {};
+
+  // for test and development
+  if (CONFIG.mock_externals.smaug) {
+    return mockRevokeToken(token);
+  }
+
+  response = await promiseRequest('delete', {
+    uri: CONFIG.smaug.uri + '/oauth/token/' + token
+  });
+
+  if (response.statusCode === 200) {
+    return JSON.parse(response.body);
+  }
+
+  throw new TokenError(response.statusMessage);
+}
+
+/**
  * Check if Smaug webservice is up.
  *
  * @returns {Promise}
  */
 export async function health() {
   return await promiseRequest('get', {
-    uri: CONFIG.smaug.uri + '/health'
+    uri: CONFIG.smaug.configUri + '/health'
   });
 }

@@ -21,6 +21,7 @@ context('Password grant', () => {
         'token_type'
       ]);
   });
+
   it('should return invalid client error', () => {
     cy.request({
       form: true,
@@ -59,6 +60,7 @@ context('Password grant', () => {
       .its('error_description')
       .should('include', 'user credentials are invalid');
   });
+
   it('should return user information', () => {
     cy.request({
       form: true,
@@ -87,5 +89,39 @@ context('Password grant', () => {
         .its('uniqueId')
         .should('eq', 'some-random-curl-id');
     });
+  });
+
+  it('should revoke access_token', () => {
+    const access_token = '1-123456789';
+
+    cy.request({
+      form: false,
+      url: `oauth/revoke/?access_token=${access_token}`,
+      method: 'delete'
+    })
+      .its('body.count')
+      .should('eq', 1);
+  });
+
+  it('should NOT be able to revoke access_token', () => {
+    const access_token = '0-123456789';
+
+    cy.request({
+      form: false,
+      url: `oauth/revoke/?access_token=${access_token}`,
+      method: 'delete'
+    })
+      .its('body.count')
+      .should('not.eq', 1);
+  });
+
+  it('should fail on missing token', () => {
+    cy.request({
+      form: false,
+      url: `oauth/revoke/`,
+      method: 'delete'
+    })
+      .its('body.error')
+      .should('include', 'no valid access_token');
   });
 });
