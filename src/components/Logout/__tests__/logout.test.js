@@ -1,5 +1,5 @@
 import {CONFIG} from '../../../utils/config.util';
-import {logout} from '../logout.component';
+import {logout, validateToken} from '../logout.component';
 import {mockContext} from '../../../utils/test.util';
 import {mockData} from '../../Smaug/mock/smaug.client.mock';
 
@@ -7,9 +7,11 @@ describe('Test Logout component', () => {
   // Contains the context object
   let ctx;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     CONFIG.mock_externals.smaug = true;
     ctx = mockContext(CONFIG.test.token);
+    ctx.query.access_token = CONFIG.test.token;
+    await validateToken(ctx, ctx, jest.fn());
     ctx.redirect = jest.fn();
   });
 
@@ -23,19 +25,19 @@ describe('Test Logout component', () => {
 
   it('should render generic logout screen', async () => {
     ctx = mockContext();
+    ctx.query = {};
+    await validateToken(ctx, ctx, jest.fn());
     await logout(ctx, ctx, jest.fn());
 
     expect(ctx.render).toBeCalledWith('Logout', {
-      idpLogoutInfo: false,
-      returnurl: '',
-      serviceName: null
+      returnurl: null,
+      serviceName: ''
     });
   });
 
   it('should render returnurl and name for serviceclient', async () => {
     await logout(ctx, ctx, () => {});
     expect(ctx.render).toBeCalledWith('Logout', {
-      idpLogoutInfo: null,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
     });
@@ -45,7 +47,6 @@ describe('Test Logout component', () => {
     ctx.session.user.identityProviders = ['unilogin'];
     await logout(ctx, ctx, () => {});
     expect(ctx.render).toBeCalledWith('Logout', {
-      idpLogoutInfo: true,
       returnurl: 'http://localhost:3011/example/',
       serviceName: 'Test Service'
     });
@@ -53,6 +54,7 @@ describe('Test Logout component', () => {
 
   it('should redirect to returnurl', async () => {
     mockData.logoutScreen = 'skip';
+    ctx.session.state.redirect_uri = 'http://localhost:3011/example/';
     await logout(ctx, ctx, () => {});
     expect(ctx.redirect).toBeCalledWith(
       'http://localhost:3011/example/?message=logout'
@@ -60,6 +62,7 @@ describe('Test Logout component', () => {
   });
   it('should redirect to returnurl with close browser message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
+    ctx.session.state.redirect_uri = 'http://localhost:3011/example/';
     mockData.logoutScreen = 'skip';
     await logout(ctx, ctx, () => {});
     expect(ctx.redirect).toBeCalledWith(

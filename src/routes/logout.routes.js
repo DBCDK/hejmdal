@@ -3,9 +3,13 @@
  * Handles logout
  */
 import {Router} from 'express';
-import {logout} from '../components/Logout/logout.component';
+import {
+  logout,
+  validateToken,
+  gateWayfLogout
+} from '../components/Logout/logout.component';
 const router = Router();
 
-router.get('/', logout);
+router.get('/', validateToken, gateWayfLogout, logout);
 
 export default router;
