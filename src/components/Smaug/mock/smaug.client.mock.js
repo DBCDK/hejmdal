@@ -6,6 +6,7 @@ export const mockData = {
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
   redirectUris: [
     `${process.env.HOST}/callback`,
+    `${process.env.HOST}/example`,
     `${process.env.HOST}/example/provider/callback`
   ],
   displayName: 'Test Service',

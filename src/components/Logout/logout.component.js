@@ -1,11 +1,73 @@
 /**
  * @file
  */
-
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
 import {getClientInfoByToken} from '../Smaug/smaug.component';
 import {deleteuser} from '../User/user.component';
+import {log} from '../../utils/logging.util';
+
+/**
+ * Validate if token and redirect_uri are valid.
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+
+export async function validateToken(req, res, next) {
+  const {access_token, redirect_uri} = req.query;
+  let serviceClient;
+  if (access_token) {
+    deleteuser(access_token);
+    serviceClient = await getClientInfoByToken(access_token);
+    if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
+      req.setState({redirect_uri});
+    }
+  }
+  req.setState({serviceClient});
+  next();
+}
+
+/**
+ * If a user is logged in throught gatewayf, then query params are saved in session and user is redirected to gatewayf logout url.
+ *
+ * @param req
+ * @param res
+ * @param next
+ */
+export function gateWayfLogout(req, res, next) {
+  const {identityProviders} = req.getUser() || {};
+  const {logoutGatewayf} = req.getState();
+  if (identityProviders) {
+    if (
+      identityProviders &&
+      !logoutGatewayf &&
+      (identityProviders.includes('nemlogin') ||
+        identityProviders.includes('wayf'))
+    ) {
+      req.setState({logoutGatewayf: true});
+      return res.redirect(getGateWayfLogoutUrl());
+    }
+  }
+  next();
+}
+
+/**
+ * Returns info message code.
+ *
+ * @param {Array} identityProviders
+ */
+function getLogoutInfoCode(identityProviders) {
+  if (
+    identityProviders &&
+    (identityProviders.includes('unilogin') ||
+      identityProviders.includes('wayf'))
+  ) {
+    return 'logout_close_browser';
+  }
+  return 'logout';
+}
 
 /**
  *
@@ -17,54 +79,29 @@ import {deleteuser} from '../User/user.component';
  * @param res
  * @param next
  */
-export async function logout(req, res, next) {
-  let returnUrl = '';
-  let idpLogoutInfo = false;
-  let idpLogoutUrl = '';
-  let logoutInfoCode = '';
-  const token = req.query.token;
-  let serviceClient;
-  if (token) {
-    deleteuser(token);
-    serviceClient = await getClientInfoByToken(token);
-    req.setState({serviceClient});
-  }
-  const user = req.getUser();
-  const state = req.getState();
-  if (serviceClient && state) {
-    if (user.identityProviders && !req.getState().logoutGatewayf && (user.identityProviders.includes('nemlogin') || user.identityProviders.includes('wayf'))) {
-      req.setState({logoutGatewayf: true, returnUrl: req.query.returnurl || req.getState().returnUrl});
-      idpLogoutUrl = getGateWayfLogoutUrl();
-    }
-    else {
-      returnUrl = buildReturnUrl(req.getState());
-      idpLogoutInfo = user.identityProviders && (user.identityProviders.includes('unilogin') || user.identityProviders.includes('wayf')) || null;
-      if (serviceClient.logoutScreen === 'skip') {
-        logoutInfoCode = 'logout';
-        if (idpLogoutInfo) {
-          logoutInfoCode = 'logout_close_browser';
-        }
-      }
-    }
-  }
+export function logout(req, res, next) {
+  try {
+    const state = req.getState();
+    const {serviceClient, redirect_uri} = state;
+    const {identityProviders} = req.getUser() || {};
 
-  if (idpLogoutUrl) {
-    res.redirect(idpLogoutUrl);
-  }
-  else {
     req.session.destroy();
-    if (logoutInfoCode) {
-      res.redirect(returnUrl + (returnUrl.indexOf('?') ? '?' : '&') + 'message=' + logoutInfoCode);
-    }
-    else {
+
+    if (redirect_uri) {
+      res.redirect(
+        redirect_uri +
+          (redirect_uri.indexOf('?') ? '?' : '&') +
+          'message=' +
+          getLogoutInfoCode(identityProviders)
+      );
+    } else {
       res.render('Logout', {
-        idpLogoutInfo: idpLogoutInfo,
-        returnurl: returnUrl,
-        serviceName: serviceClient && serviceClient.name
+        returnurl: (serviceClient && buildReturnUrl(state)) || null,
+        serviceName: (serviceClient && serviceClient.name) || ''
       });
     }
-
+  } catch (error) {
+    log.error('Error logging out', {error});
   }
-
   next();
 }
