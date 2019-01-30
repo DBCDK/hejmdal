@@ -1,7 +1,8 @@
 // Update with your config settings.
 
-module.exports = {
+require('@babel/register');
 
+module.exports = {
   development: {
     client: 'postgresql',
     connection: {

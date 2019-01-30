@@ -107,3 +107,13 @@ export function getMockValidateUserTokenClient(
     statusCode: 403
   };
 }
+
+export function mockRevokeToken(token) {
+  if (token === '1-123456789') {
+    return {count: 1};
+  }
+  if (token === '0-123456789') {
+    return {count: 0};
+  }
+  return {count: 0};
+}

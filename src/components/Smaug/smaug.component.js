@@ -1,4 +1,9 @@
-import {getClientById, getClientByToken, getToken} from './smaug.client';
+import {
+  getClientById,
+  getClientByToken,
+  getToken,
+  revokeToken
+} from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
@@ -68,4 +73,8 @@ export function getTokenForUser({
   password = '@'
 }) {
   return getToken(clientId, agency, username, password);
+}
+
+export function revokeClientToken(token) {
+  return revokeToken(token);
 }

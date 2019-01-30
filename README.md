@@ -173,6 +173,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `SMAUG_URI` : `smaug.uri`  
   The address of the Smaug service
 
+- `SMAUG_CONFIG_URI` : `smaug.configUri`  
+  The address of the Smaug config service
+
 - `SMAUG_ADMIN_URI` : `smaug.adminUri`  
   The address of the Smaug admin service
 

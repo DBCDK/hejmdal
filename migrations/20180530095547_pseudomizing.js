@@ -1,7 +1,8 @@
-import {createHash, encrypt} from '../src/utils/hash.utils';
+const {createHash, encrypt} = require('../src/utils/hash.utils');
 
-const convertConsents = (knex) => {
-  return knex.select(['consentid', 'consent'])
+const convertConsents = knex => {
+  return knex
+    .select(['consentid', 'consent'])
     .from('consent')
     .then(res => {
       const promises = res.map(row => {
@@ -28,8 +29,9 @@ const convertConsents = (knex) => {
     });
 };
 
-const convertSessions = (knex) => {
-  return knex.select(['id', 'session'])
+const convertSessions = knex => {
+  return knex
+    .select(['id', 'session'])
     .from('session')
     .then(res => {
       const promises = res.map(row => {
@@ -50,12 +52,10 @@ const convertSessions = (knex) => {
     });
 };
 
-
 exports.up = function(knex, Promise) {
-  return Promise.all(convertConsents(knex), convertSessions(knex))
-    .catch(e => {
-      throw new Error(e);
-    });
+  return Promise.all(convertConsents(knex), convertSessions(knex)).catch(e => {
+    throw new Error(e);
+  });
 };
 
 exports.down = function() {};
