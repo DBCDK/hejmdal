@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "page request",
+      Object {
+        "request": Object {
+          "header": "header",
+          "method": "method",
+          "url": "url",
+        },
+        "response": Object {
+          "message": "message",
+          "status": "status",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;

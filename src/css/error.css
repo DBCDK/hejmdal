@@ -1,21 +1,91 @@
-.error-overlay {
-  z-index: 10;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
+#error-container {
   width: 100%;
-  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 15px;
+  background-color: var(--error);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+  animation: 0.3s ease-out 0s 1 slideInFromRight;
+  border-radius: 2px;
+
+  #error-header {
+    padding: 10px 0;
+    position: relative;
+
+    h2 {
+      font-size: 16px;
+      color: var(--white);
+    }
+    #error-close-btn {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      background: svg-inline(--close-large-white) no-repeat center;
+      background-size: 15px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
+  }
+  #error-body {
+    /* */
+    p {
+      color: var(--white);
+    }
+  }
+  #error-actions {
+    display: none;
+  }
 }
 
-.close-btn {
-  margin-top: 10px;
-  margin-left: 15px;
-  font-size: 25px;
+@media (min-width: 800px) {
+  #error-container {
+    width: 486px;
+    padding: 5px 15px 15px 15px;
+    right: auto;
+    top: 0;
+    animation: 0.3s ease-out 0s 1 slideInFromTop;
+
+    #error-header {
+      padding: 10px 0;
+
+      #error-close-btn {
+        background-size: 10px;
+      }
+    }
+    #error-body {
+      p {
+        display: inline;
+      }
+    }
+    #error-actions {
+      display: inline;
+      margin-left: 5px;
+      #helptext-link {
+        font-size: 12px;
+        color: var(--white);
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
 }
 
-.error-message {
-  p {
-    font-size: 18px;
+@keyframes slideInFromTop {
+  0% {
+    transform: translateY(-200px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(0);
   }
 }

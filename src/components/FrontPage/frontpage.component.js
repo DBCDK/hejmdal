@@ -5,9 +5,10 @@
 
 import {getText} from '../../utils/text.util';
 
-export async function renderFrontPage(ctx, next) {
-  await ctx.render('Frontpage', {
-    help: getText(['deleteConsents'])
+export async function renderFrontPage(req, res, next) {
+  await res.render('Frontpage', {
+    help: getText(['deleteConsents']),
+    cookie: getText(['cookies'])
   });
   await next();
 }

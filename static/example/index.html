@@ -1,154 +1,203 @@
-<!doctype html>
 <html>
-  <head>
-    <title>Eksempelapplikation -- Adgangsplatformen -- login.bib.dk</title>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,600' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/js/example.js"></script>
-    <style>
-      body {
-        text-align: center;
-      }
 
-      label, input {
-        width: 100%;
-      }
+<head>
+  <title>Eksempelapplikation -- Adgangsplatformen -- login.bib.dk</title>
+  <style>
+    body {
+    text-align: center;
+  }
 
-      .bold {
-        font-weight: 600;
-      }
+  label,
+  input {
+    width: 100%;
+  }
 
-      #example {
-        display: inline-block;
-        font-family: "Open Sans", sans-serif;
-        text-align: left;
-        max-width: 900px;
-      }
+  .bold {
+    font-weight: 600;
+  }
 
-      .input-pair {
-        margin-bottom: 10px;
-      }
+  #example {
+    display: inline-block;
+    font-family: "Open Sans", sans-serif;
+    text-align: left;
+    max-width: 900px;
+    margin-bottom: 50px;
+  }
 
-      .info {
-        padding: 10px;
-        font-size: 14px;
-        margin-top: 5px;
-        color: #000000;
-        background-color: #f9f9f9;
-      }
+  .input-pair {
+    margin-bottom: 20px;
+  }
 
-      .code {
-        font-family: monospace;
-        white-space: pre;
-      }
+  .info {
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #000000;
+    background-color: #f9f9f9;
+  }
 
-      .hide {
-        display: none;
-      }
+  label {
+    font-weight: bold;
+    font-size: 0.8em;
+    text-transform: uppercase;
+  }
 
-    </style>
-  </head>
-  <body>
-    <div id="example">
-      <h3>Eksempelside -- login.bib.dk</h3>
-      <p>Denne side er et eksempel på hvordan kald til login.bib.dk konstrueres. Siden skal ses som en hjælp til udviklere til at komme igang med at udvikle op mod login.bib.dk</p>
-      <p>For at kunne bruge login.bib.dk er det forudsætning at din applikation er oprettet i <a href="https://openplatform.dbc.dk">Den åbne platform</a>. Applikationen skal udover at være oprettet i Den Åbne Platform også være konfiguret med en række parametre for at fungere sammen med Adgansplatformen.</p>
-      <p>Når applikationen er oprettet og konfigureret i Den Åbne Platform, skal der genereres et gyldigt token som skal medsendes i requests til login.bib.dk.</p>
-      <hr/>
-      <p>
-        Udfyld felterne herunder og klik på login for at teste oplysningerne.<br/>
-        Under felterne konstrueres URL'en der skal bruges i en applikation for at lave tilsvarende kald til login.bib.dk
+  .description {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 0.8em;
+    margin-top: 5px;
+    margin-bottom: 0;
+  }
+
+  code,
+  .code {
+    font-family: monospace;
+    white-space: pre;
+  }
+
+  .hide {
+    display: none;
+  }
+  [data-step] .dim {
+    opacity: 0.2;
+  }
+  [data-step].active .dim {
+    opacity: 1;
+  }
+  [data-requirement] {
+    display: none;
+  }
+  [data-requirement].req-ok {
+    display: block;
+  }
+
+</style>
+</head>
+
+<body>
+  <div id="example">
+    <h3>Example client for login.bib.dk</h3>
+    <p>The purpose of this example client is to help developers how to use login.bib.dk for authorization.</p>
+    <h4>Prerequisite</h4>
+    <p>In order to login through login.bib.dk you need a client ID and secret for the open platform.</p>
+
+    <h4>introduction</h4>
+    <p>Login is setup as a standard oAuth2 authorization code grant flow</p>
+
+
+    <div id="authorization" data-step="authorization">
+      <h2 class="dim">1. Authenticate user</h2>
+      <p class="introduction">
+        Initiate the authorization flow by redirecting the browser to the /oauth/authorize endpoint, so the user can
+        authenticate.
+
       </p>
+      <p>Login.bib.dk redirects the user to the web app (specifically to the redirect_uri, as specified in the
+        /oauth/authorize request) with an Authorization Code in the querystring</p>
       <p>
-        Efter succesfuld autentifikation på login.bib.dk vil brugeren blive redirected til den URL der er konfigureret i Den åbne platform for den pågældende applikation.<br/>
-        Hvis eksemplet herunder ikke ændres vil man blive redirected til denne side med information vedrørende den udstedte ticket i bunden af siden.
+        Use the form below the build
+        the complete url.
       </p>
-      <p>
-        En ticket er den måde hvorpå login.bib.dk og en given appliaktion udveklser oplysninger.<br />
-        I Den åbne platform konfigureres det for hver enkelt apllikation, hvilke attributter den pågældende applikation ønsker retur fra login.bib.dk.
-        En liste over mulige attributter <a href="https://github.com/DBCDK/hejmdal/blob/master/src/utils/attributes.util.js">kan ses på GitHub</a> men vær opmærksom på, at der ikke er nogen garanti for at alle attributter er tilgængelige. Hvilke attributter der er tilgængelige afhænger af hvilken login-metode brugeren vælger at bruge.
-      </p>
-      <p>
-        Et eksempel på hvordan konfigurationen i Den åbne platform kan se ud for en applikation der skal bruge login.bib.dk <a href="https://github.com/DBCDK/hejmdal/blob/master/src/components/Smaug/mock/smaug.client.mock.js">kan ses på GitHub</a>. Selve arbejdet med at konfigurere foretages i samarbejde med DBC.
-      </p>
-
+      <h3>Required</h3>
       <div class="input-pair">
-        <label for="input-login-host">Host URL</label>
-        <input id="input-login-host" type="text" value="" size="50" disabled oninput="onChange({key: 'host', val: this.value})"/>
+        <label for="input-login-response-type">Response type</label>
+        <input id="input-login-response-type" type="text" value="code" disabled size="50" />
+        <p class="description">Only <i>code</i> is supported</p>
       </div>
       <div class="input-pair">
-        <label for="input-login-path">Login path</label>
-        <input id="input-login-path" type="text" value="" size="50" disabled oninput="onChange({key: 'path', val: this.value})"/>
+        <label for="input-login-redirect-uri">Return URL</label>
+        <input id="input-login-redirect-uri" type="text" value="" data-bind="redirectUri" size="50" oninput="onChange({key: 'redirectUri', val: this.value})" />
       </div>
+      <div class="input-pair">
+        <label for="input-login-client">Client ID</label><br />
+        <input id="input-login-client" type="text" value="" size="50" data-bind="clientId" oninput="onChange({key: 'clientId', val: this.value})"
+          required />
+      </div>
+      <h3>Optional customizations</h3>
 
       <div class="input-pair">
-        <label for="input-login-token">Token fra Den åbne platform</label><br/>
-        <input id="input-login-token" type="text" value="asdfg" size="50" oninput="onChange({key: 'token', val: this.value})"/>
+        <label for="input-preselected-library">Enforce identityprovider</label><br />
+        <input id="input-preselected-idp" placeholder="E.g. nemlogin" type="text" value="" size="50" data-bind="idp"
+          oninput="onChange({key: 'idp', val: this.value})" />
+        <p class="description">Can be either nemlogin or borchk</p>
       </div>
-
       <div class="input-pair">
-        <label for="input-preselected-library">Forudvalgt bibliotek der kan ændres af brugeren (valgfri) f.eks. 785100</label><br/>
-        <input id="input-preselected-library" type="text" value="" size="50" oninput="onChange({key: 'presel', val: this.value})"/>
-      </div>
-
-      <div class="input-pair">
-        <label for="input-locked-library">Forudvalgt bibliotek der ikke kan ændres af brugeren (valgfri) f.eks. 785100</label><br/>
-        <input id="input-locked-library" type="text" value="" size="50" oninput="onChange({key: 'agency', val: this.value})"/>
+        <label for="input-state">State</label><br />
+        <input id="input-state" placeholder="Should be some kind of hash" type="text" value="" size="50" data-bind="state"
+          oninput="onChange({key: 'state', val: this.value})" />
+        <p class="description">A hash value that is defined by the consumer application </p>
       </div>
 
       <div class="input-pair">
-        <label for="input-agency-type">Filtrering af søgbare bibliotekstyper på loginsiden: Alle, Folkebiblioteker eller Forskningsbiblioteker (valgfri). Alle vises som default</label><br/>
-        <select id="input-agency-type" name="select" oninput="onChange({key: 'agencytype', val: this.value})">
+        <label for="input-preselected-library">Preselected library</label><br />
+        <input id="input-preselected-library" placeholder="E.g. 785100" type="text" value="" size="50" data-bind="presel"
+          oninput="onChange({key: 'presel', val: this.value})" />
+        <p class="description">Can be changed by the user</p>
+      </div>
+
+      <div class="input-pair">
+        <label for="input-locked-library">Predefined library</label><br />
+        <input id="input-locked-library" placeholder="E.g. 785100" type="text" value="" size="50" data-bind="agency"
+          oninput="onChange({key: 'agency', val: this.value})" />
+        <p class="description">Can not be changed by the user</p>
+      </div>
+
+      <div class="input-pair">
+        <label for="input-agency-type">Library types</label><br />
+        <select id="input-agency-type" name="select" oninput="onChange({key: 'agencyType', val: this.value})">
           <option value="" selected>Alle</option>
           <option value="folk">Folkebiblioteker</option>
           <option value="forsk">Forskningsbiblioteker</option>
         </select>
+        <p class="description">Defines types of libraries that can be selected by the user, if library is not
+          predefined</p>
       </div>
-
       <div class="input-pair">
-        <button id="login-button" onclick="onClick()">Login</button>
-        <button id="reset-to-default" onclick="resetToDefault()">Reset (og log ud)</button>
+        <label>Generated Authorization redirect url</label>
+        <div class="info" data-bind="loginUrl"></div>
       </div>
 
-      <div class="info">
-        <span id="currenturl">&nbsp;</span>
+      <div class="input-pair dim">
+        <button id="login-button" onclick="login()">Login</button>
       </div>
-      <p>
-        Ved successfuldt login vil brugeren, med et redirect, blive sendt tilbage til applikationen med to GET parametre sat i URLen:
-        <span class="code">token</span> og <span class="code">id</span>
-        (<span class="code">?token=TOKEN&id=ID</span>).
-        Dette redirect konfigureres for den givne applikation i Den åbne platform som beskrevet ovenfor.
-      </p>
-      <p>
-        Ved at indløse <span class="code">token</span> og <span class="code">id</span> på
-        <span class="code">/getTicket/TOKEN/ID</span>
-        kan applikationen hente de attributter der er aftalt og som brugeren har givet tilladelse til at udveklse.
-        Hvilke attributter en applikation kan få udleveret, konfigureres i Den åbne platform.
-      </p>
 
-      <div id="post-success" class="hide">
-        <div class="info">
-          <span class="bold">Token:</span>
-          <span id="tickettoken">&nbsp;</span>
-        </div>
-        <div class="info">
-          <span class="bold">ID:</span>
-          <span id="ticketid">&nbsp;</span>
-        </div>
-
-        <p>
-          Med token og id konstrueres en ny URL (<span class="code">/getTicket/TOKEN/ID</span>) som den
-          herunder hvorfra den endelige ticket kan hentes.
-          Tickets slettes når de er hentet og kan kun hentes en gang. Hvis en ticket ikke hentes efter den er dannet, slettes den automatisk efter kort tid.
-        </p>
-        <div class="info" id="ticketurl">&nbsp;</div>
-        <button id="get-ticket-button" onclick="getTicket()">Hent ticket</button>
-        <button id="open-ticket-button" onclick="openTicket()">Åben i nyt vindue</button>
-        <div id="ticketcontainer" class="info hide">
-          <p class="bold">Ticket:</p>
-          <p class="code" id="ticket"></p>
-        </div>
-      </div>
     </div>
-    <script>init()</script>
-  </body>
+    <!--end authenticate-->
+
+    <div id="code" data-step="code" data-requirement="code">
+      <h2 class="dim">2. Exchange code for token</h2>
+      <p>Login was successful, and following data was returned:</p>
+      <p class="code"><label>code: </label><span data-bind="code"></span></p>
+      <p class="code"><label>state: </label><span data-bind="state"></span></p>
+
+      <p>
+        The Authorization Code needs to be exchanged for an Access Token. This is done using the /oauth/token endpoint.
+      </p>
+      <p>When making this request, the web app authenticates using the Client Id and Client Secret. The Redirect Uri
+        used for authentication is also required as an argument</p>
+      <p class="url info code" data-bind="tokenCUrl"></p>
+      <button id="get-ticket-button" onclick="getToken()">Get token</button>
+      <p class="code" data-bind="token" data-requirement="token"></p>
+    </div>
+
+
+    <div id="userinfo" data-step="userinfo" data-requirement="access_token">
+      <h2>3. Get userinfo</h2>
+      <p>Information about the user can be requested at /userinfo using a valid Access Token</p>
+      <p class="url info code" data-bind="userinfoCUrl"></p>
+      <div class="dim">
+        <button class="dim" id="get-userinfo-button" onclick="getUserinfo()">Get userinfo</button>
+      </div>
+      <p class="info" data-requirement="userinfo"><code data-bind="userinfo"></code></p>
+
+    </div>
+    <div id="logout" data-requirement="code">
+      <h2>Logout/reset</h2>
+      <p>To try again or start over please log out</p>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <script type="text/javascript" src="/js/example.js"></script>
+</body>
+
 </html>

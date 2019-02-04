@@ -1,7 +1,7 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
-import {authenticate, identityProviderCallback} from '../identityprovider.component';
-import {createHash} from '../../../utils/hash.utils';
+import {
+  authenticate,
+  identityProviderCallback
+} from '../identityprovider.component';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
@@ -10,18 +10,12 @@ import {CONFIG} from '../../../utils/config.util';
 describe('test authenticate method', () => {
   const next = () => {};
   let ctx;
-  let sandbox;
 
   beforeEach(() => {
     ctx = mockContext();
-    sandbox = sinon.sandbox.create();
   });
 
-  afterEach(() => {
-    sandbox.restore();
-  });
-
-  it('Should return content page', async() => {
+  it('Should return content page', async () => {
     ctx.setState({
       serviceClient: {
         identityProviders: ['borchk', 'unilogin'],
@@ -30,22 +24,30 @@ describe('test authenticate method', () => {
         }
       }
     });
-    ctx.render = sandbox.mock();
-    await authenticate(ctx, next);
-    assert.equal(ctx.status, 200);
-    sandbox.restore();
+    await authenticate(ctx, ctx, next);
+    expect(ctx.status).toEqual(200);
   });
 
-  it('Should render error page', async() => {
-    const spy = sandbox.spy(ctx, 'render');
+  it('Should render error page', async () => {
     ctx.setState({serviceClient: {identityProviders: ['invalid provider']}});
-    assert.isFalse(spy.called);
 
-    await authenticate(ctx, next);
+    await authenticate(ctx, ctx, next);
 
-    assert.isTrue(spy.called);
-    assert.isString(spy.args[0][1].error);
-    assert.isObject(spy.args[0][1].link);
+    expect(ctx.render).toMatchSnapshot();
+  });
+
+  it('Should redirect to nemlogin', async () => {
+    ctx.session.query.idp = 'nemlogin';
+    await authenticate(ctx, ctx, next);
+    expect(ctx.redirect).toBeCalledWith(
+      `/login/identityProviderCallback/nemlogin/${ctx.session.state.stateHash}`
+    );
+  });
+  it('Should not redirect to nemlogin', async () => {
+    ctx.session.client.identityProviders = ['borchk'];
+    ctx.session.query.idp = 'nemlogin';
+    await authenticate(ctx, ctx, next);
+    expect(ctx.redirect).not.toBeCalled();
   });
 });
 
@@ -59,16 +61,17 @@ describe('test identityProviderCallback method', () => {
         id: 'testId'
       }
     });
-    ctx.params.token = createHash(ctx.getState().smaugToken);
+    ctx.params.state = ctx.getState().stateHash;
   });
 
-  const next = () => {
-  };
+  const next = () => {};
 
-  it('Should add unilogin user to context', async() => {
+  it('Should add unilogin user to context', async () => {
     ctx.params.type = 'unilogin';
     const user = 'test1234';
-    const timestamp = moment().utc().format('YYYYMMDDHHmmss');
+    const timestamp = moment()
+      .utc()
+      .format('YYYYMMDDHHmmss');
     const auth = md5(timestamp + CONFIG.unilogin.secret + user);
     ctx.query = {
       auth: auth,
@@ -82,12 +85,12 @@ describe('test identityProviderCallback method', () => {
       identityProviders: ['unilogin']
     };
 
-    await identityProviderCallback(ctx, next);
+    await identityProviderCallback(ctx, ctx, next);
 
-    assert.deepEqual(ctx.getUser(), expected);
+    expect(ctx.getUser()).toEqual(expected);
   });
 
-  it('Should add nemlogin user and cpr to context', async() => {
+  it('Should add nemlogin user and cpr to context', async () => {
     ctx.params.type = 'nemlogin';
     const expected = {
       userId: '0102030405',
@@ -95,23 +98,27 @@ describe('test identityProviderCallback method', () => {
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };
-    await identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.getUser(), expected);
+    await identityProviderCallback(ctx, ctx, next);
+    expect(ctx.getUser()).toEqual(expected);
   });
 
-  it('Should add borchk user to context', async() => {
+  it('Should add borchk user to context', async () => {
     ctx.params.type = 'borchk';
-    ctx.fakeBorchkPost = {userId: 'testId', pincode: 'testPincode', libraryId: '710100'};
+    ctx.fakeBorchkPost = {
+      userId: 'testId',
+      pincode: 'testPincode',
+      agency: '710100'
+    };
     const expected = {
       userId: 'testId',
       cpr: null,
       userType: 'borchk',
-      libraryId: '710100',
+      agency: '710100',
       pincode: 'testPincode',
       identityProviders: ['borchk'],
       userValidated: true
     };
-    await identityProviderCallback(ctx, next);
-    assert.deepEqual(ctx.getUser(), expected);
+    await identityProviderCallback(ctx, ctx, next);
+    expect(ctx.getUser()).toEqual(expected);
   });
 });

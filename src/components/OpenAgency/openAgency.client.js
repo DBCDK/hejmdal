@@ -6,6 +6,7 @@ import {CONFIG} from '../../utils/config.util';
 import {OpenAgencyError} from './openAgency.errors';
 import getMockClient from './mock/openAgency.client.mock';
 import {promiseRequest} from '../../utils/request.util';
+import {municipalityName} from '../../utils/municipality.util';
 import {log} from '../../utils/logging.util';
 
 /**
@@ -21,8 +22,7 @@ export async function libraryListFromName(text) {
   // for test and development
   if (CONFIG.mock_externals.openAgency) {
     response = getMockClient(text);
-  }
-  else {
+  } else {
     response = await promiseRequest('get', {
       uri: CONFIG.openAgency.uri,
       qs: {
@@ -47,13 +47,16 @@ export async function libraryListFromName(text) {
   throw new OpenAgencyError(response.statusMessage);
 }
 
-export async function libraryListFromPosition(latitude, longitude, distance = '') {
+export async function libraryListFromPosition(
+  latitude,
+  longitude,
+  distance = ''
+) {
   let response;
   // for test and development
   if (CONFIG.mock_externals.openAgency) {
     response = getMockClient(latitude + '-' + longitude);
-  }
-  else {
+  } else {
     response = await promiseRequest('get', {
       uri: CONFIG.openAgency.uri,
       qs: {
@@ -80,9 +83,12 @@ export async function libraryListFromPosition(latitude, longitude, distance = ''
  */
 function parseFindLibraryResponse(response) {
   const libraryList = [];
-  if (response.findLibraryResponse && Array.isArray(response.findLibraryResponse.pickupAgency)) {
+  if (
+    response.findLibraryResponse &&
+    Array.isArray(response.findLibraryResponse.pickupAgency)
+  ) {
     const agencies = [];
-    response.findLibraryResponse.pickupAgency.forEach((agency) => {
+    response.findLibraryResponse.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
       const branchType = getAgencyField(agency, 'branchType');
 
@@ -100,10 +106,23 @@ function parseFindLibraryResponse(response) {
         address: getAgencyField(agency, 'postalAddress'),
         type: getAgencyField(agency, 'agencyType'),
         registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
-        registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
+        branchWebsiteUrl: getAgencyField(agency, 'branchWebsiteUrl'),
+        registrationFormUrlText: getAgencyField(
+          agency,
+          'registrationFormUrlText'
+        ),
         branchEmail: getAgencyField(agency, 'branchEmail')
       };
 
+      const municipalityNo = item.agencyId.substr(1, 3);
+      if (
+        item.agencyId.indexOf('7') === 0 &&
+        item.type === 'Folkebibliotek' &&
+        municipalityName[municipalityNo]
+      ) {
+        item.agencyName = municipalityName[municipalityNo];
+        item.municipalityNo = municipalityNo;
+      }
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
       }

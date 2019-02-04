@@ -1,113 +1,94 @@
 /**
  * @file
- * Configure and start our server
+ * Configure and start oAuth2 hejmdal server
  */
 
-// Libraries
-import Koa from 'koa';
-import serve from 'koa-static';
-import router from './routes/index.routes';
-import cors from 'koa-cors'; // @see https://github.com/evert0n/koa-cors
-import convert from 'koa-convert';
-import Pug from 'koa-pug';
-import responseTime from 'koa-response-time';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import express from 'express';
+import path from 'path';
+import session from 'express-session';
+const KnexSessionStore = require('connect-session-knex')(session);
+
+import model from './oAuth2/oAuth2.model';
+import OAuthServer from 'express-oauth-server';
+import initPassport from './oAuth2/passport';
 import Knex from 'knex';
 import {Model} from 'objection';
-import sanityCheck from './utils/sanityCheck.util';
-
-// Middleware
-import {LoggerMiddleware} from './middlewares/logger.middleware';
-import {SetHeaders} from './middlewares/headers.middleware';
-import session from './middlewares/session.middleware';
-import {stateMiddleware} from './middlewares/state.middleware';
+import {setHeaders} from './middlewares/headers.middleware';
+import {loggerMiddleware} from './middlewares/logger.middleware';
 import errorMiddleware from './middlewares/error.middleware';
-import ctxdump from './middlewares/ctxdump.middleware';
-
-// Utils
-import {CONFIG, validateConfig} from './utils/config.util';
-import {VERSION} from './utils/version.util';
-import {log} from './utils/logging.util';
 import {cacheAgencies} from './utils/agencies.util';
 
-// Components
-import SessionStore from './components/SessionStore/SessionStore.component';
+// Utils
+import {CONFIG} from './utils/config.util';
 
-export function startServer() {
-  validateConfig();
-  const app = new Koa();
-  app.name = 'Adgangsplatformen';
-  const PORT = CONFIG.app.port;
+// Initialize knex.
+const knex = Knex(CONFIG.postgres);
+// Bind all Models to a knex instance. If you only have one database in
+// your server this is all you have to do. For multi database systems, see
+// the Model.bindKnex method.
+Model.knex(knex);
 
-  // Initialize knex.
-  const knex = Knex(CONFIG.postgres);
+import {stateMiddleware} from './middlewares/state.middleware';
+import loginRoutes from './routes/login.routes';
+import logoutRoutes from './routes/logout.routes';
+import rootRoutes from './routes/root.routes';
+import oAuthRoutes from './routes/oauth.routes';
+import userinfoRoutes from './routes/userinfo.routes';
+import infoRoutes from './routes/info.routes';
 
-  // Add pug
-  const pug = new Pug({
-    viewPath: 'src/Templates',
-    debug: true,
-    compileDebug: true,
-    noCache: CONFIG.app.env !== 'production',
-    pretty: CONFIG.app.env !== 'production',
-    locals: {
-      version: VERSION
-    }
-  });
+const app = express();
+initPassport(app);
+app.oauth = new OAuthServer({
+  model, // See https://github.com/oauthjs/node-oauth2-server for specification
+  allowBearerTokensInQueryString: true,
+  grants: ['password', 'authorization_code'],
+  debug: true,
+  allowEmptyState: true,
+  continueMiddleware: false
+});
 
-  pug.use(app);
+app.model = model;
 
-  // Bind all Models to a knex instance. If you only have one database in
-  // your server this is all you have to do. For multi database systems, see
-  // the Model.bindKnex method.
-  Model.knex(knex);
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, '/Templates'));
 
-  // Check if connection to external resources is possible
-  sanityCheck();
-
-  app.use(session({
-    store: new SessionStore(CONFIG.mock_storage),
-    key: 'sid',
-    maxAge: null,
+const corsOptions = {
+  origin: '*',
+  methods: 'GET POST OPTIONS',
+  headers: 'Authorization, Origin, X-Requested-With, Content-Type, Accept'
+};
+app.use(cors(corsOptions));
+app.use(setHeaders);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(
+  session({
+    secret: CONFIG.session.secret,
+    maxAge: CONFIG.session.life_time,
+    saveUninitialized: true,
     secure: CONFIG.app.env === 'production',
-    path: '/',
-    httpOnly: true
-  }));
+    resave: true,
+    store: !CONFIG.mock_storage && new KnexSessionStore({knex})
+  })
+);
 
-  app.use(convert(serve('./static', {
-    maxage: CONFIG.app.env !== 'production' ? 0 : 2628000000 // one month
-  })));
+app.use(stateMiddleware);
 
-  app.use(stateMiddleware);
-  app.use(responseTime()); // This middleware should be placed as the very first to ensure that responsetime is correctly calculated
-  app.use(LoggerMiddleware);
-  app.use(SetHeaders);
+app.use(express.static('static'));
 
-  // Use CORS
-  const corsOptions = {
-    origin: '*',
-    methods: 'GET POST OPTIONS',
-    headers: 'Authorization, Origin, X-Requested-With, Content-Type, Accept'
-  };
-  app.use(convert(cors(corsOptions)));
+app.use(loggerMiddleware);
 
-  // trust ip-addresses from X-Forwarded-By header, and log requests
-  app.proxy = true;
+app.use('/', rootRoutes);
+app.use('/login', loginRoutes);
+app.use('/logout', logoutRoutes);
+app.use('/oauth', oAuthRoutes);
+app.use('/userinfo', userinfoRoutes);
+app.use('/info', infoRoutes);
 
-  cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');
+app.use(errorMiddleware);
 
-  app.use(errorMiddleware);
+app.listen(process.env.PORT || 3000);
 
-  app.use(router);
-
-
-  if (CONFIG.app.env !== 'production') {
-    app.use(ctxdump);
-  }
-
-  app.on('error', (err) => {
-    log.error('Server error', {error: err.message, stack: err.stack});
-  });
-
-  app.listen(PORT, () => {
-    log.debug(`Server is up and running on port ${PORT}!`, {sessionLifetime: CONFIG.session.life_time});
-  });
-}
+cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');

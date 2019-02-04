@@ -1,3 +1,4 @@
+import {createHash} from '../utils/hash.utils';
 /**
  * @file
  * Add methods for handling the state object
@@ -6,40 +7,80 @@
 /**
  * Adds the get- and setState methods to the context object
  *
- * @param {object} ctx
+ * @param {object} req
+ * @param {object} res
  * @param {function} next
  */
-export async function stateMiddleware(ctx, next) {
-  Object.assign(ctx, {getState, setState, getUser, setUser, hasUser, resetUser});
-  await next();
+export async function stateMiddleware(req, res, next) {
+  Object.assign(req, {
+    getState,
+    setState,
+    getUser,
+    setUser,
+    hasUser,
+    resetUser
+  });
+
+  next();
 }
 
 /**
  * Sets the default values on the context
  *
- * @param ctx
+ * @param req
+ * @param res
  * @param next
  */
-export async function setDefaultState(ctx, next) {
-  ctx.session.state = {
-    consents: {},   // contains consent attributes for services [serviceName] = Array(attributes)
-    returnUrl: handleNullFromUrl(ctx.query.returnurl),
-    serviceAgency: handleNullFromUrl(ctx.query.agency),
-    serviceClient: {},  // supplied by smaug, contains serviceId, (serviceName), Array(attributes) Array(identityProviders)
-    smaugToken: handleNullFromUrl(ctx.query.token),
-    ticket: ctx.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
+export async function setDefaultState(req, res, next) {
+  req.session.state = {
+    stateHash: req.session.query ? generateStateHash(req.session.query) : '',
+    consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
+    returnUrl: handleNullFromUrl(req.query.return_url),
+    serviceAgency:
+      req.session.query && handleNullFromUrl(req.session.query.agency),
+    serviceClient: req.session.client,
+    ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
-  ctx.session.loginToProfile = !!ctx.query.loginToProfile;
-  ctx.session.user = ctx.session.user || {};  // contains the userId, userIdType, identityProviders
+  req.session.loginToProfile = !!req.query.loginToProfile;
+  req.session.user = req.session.user || {};
+  req.session.save(() => {
+    return next();
+  });
+}
 
-  await next();
+/**
+ * Check that endpoint is not called directly, but only through oauth endpoints
+ *
+ * @param {object} req
+ * @param {object} res
+ * @param {function} next
+ */
+export function validateClientIsSet(req, res, next) {
+  if (!req.session.client || !req.session.query) {
+    res.status(403);
+    res.send(
+      'Login cannot called directly. Please authorize through /oauth/authorize. ' +
+        'For more information on how to implement login through login.bib.dk goto login.bib.dk/example'
+    );
+  } else {
+    next();
+  }
+}
+
+/**
+ * Generate hash values for validating redirects.
+ *
+ * @param {Object} query
+ */
+function generateStateHash(query) {
+  return createHash(`${query.clientId}:${Date.now()}`);
 }
 
 /**
  * return null if value is the string 'null'
  *
  * @param urlValue
- * @returns {*}
+ * @returns {string|null}
  */
 function handleNullFromUrl(urlValue) {
   return urlValue === 'null' ? null : urlValue || null;
@@ -62,7 +103,7 @@ function setState(newValues) {
  * @returns {Object}
  */
 function getState() {
-  return this.session && this.session.state || null;
+  return (this.session && this.session.state) || null;
 }
 
 /**
@@ -72,9 +113,15 @@ function getState() {
  * @returns {Object}
  */
 function setUser(newValues) {
-  const existingIps = this.session.user && this.session.user.identityProviders || [];
-  const identityProviders = !existingIps.includes(newValues.userType) && existingIps.concat([newValues.userType]) || existingIps;
-  this.session.user = Object.assign({}, this.session.user || {}, newValues, {identityProviders});
+  const existingIps =
+    (this.session.user && this.session.user.identityProviders) || [];
+  const identityProviders =
+    (!existingIps.includes(newValues.userType) &&
+      existingIps.concat([newValues.userType])) ||
+    existingIps;
+  this.session.user = Object.assign({}, this.session.user || {}, newValues, {
+    identityProviders
+  });
   return this.session.user;
 }
 
@@ -93,7 +140,10 @@ function getUser() {
  * @returns {boolean}
  */
 function hasUser() {
-  return this.session && this.session.user && this.session.user.userId && true || false;
+  return (
+    (this.session && this.session.user && this.session.user.userId && true) ||
+    false
+  );
 }
 
 /**
@@ -101,6 +151,8 @@ function hasUser() {
  * @param idp
  */
 function resetUser(idp) {
-  const identityProviders = this.getUser().identityProviders.filter(identityProvider => identityProvider !== idp);
+  const identityProviders = this.getUser().identityProviders.filter(
+    identityProvider => identityProvider !== idp
+  );
   this.session.user = {identityProviders: identityProviders};
 }

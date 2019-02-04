@@ -1,15 +1,7 @@
 extends Main
 
 block append content
-  div.buffer-vertical-30.buffer-top-30
-    span.logo-img-dark
-  div.header
-    h4.title.line-height-medium
-      strong Bibliotekslogin er det fælles login for en række bibliotekstjenester i Danmark.
-  p Ved at bruge Bibliotekslogin kan du nøjes med at logge ind én gang, selv om du bruger flere forskellige biblioteker og bibliotekstjenester.
-  p Hvis du har brugt Bibliotekslogin før, kan du her se, hvilke sider du har godkendt i forbindelse med login. Siderne har dermed fået adgang til dine data via Bibliotekslogin.
-
-  div#profile-link.align-left.buffer-top-20
-    a(href='/profile' class='btn btn-success') SE DINE GODKENDELSER
-  div.clear.help-text
-    a.link-style#helptext-link(data-toggle="modal" data-target="#helpModal") Hvad er en godkendelse?
+  div#frontpage
+    div.content-container
+      h1 Log ind
+      p For at logge ind, skal du gå til den biblioteksside, du ønsker at besøge.

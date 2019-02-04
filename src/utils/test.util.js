@@ -1,21 +1,40 @@
-import {setDefaultState, stateMiddleware} from '../middlewares/state.middleware';
+import {
+  setDefaultState,
+  stateMiddleware
+} from '../middlewares/state.middleware';
+import {mockData} from '../components/Smaug/mock/smaug.client.mock';
 import {CONFIG} from './config.util';
 
 const stores = [];
 
 /**
- * create mock context for tests
+ * Create mock context for tests.
+ *
+ * Works as either an express request or response.
  *
  * @returns {{}}
  */
-export function mockContext(token = 'qwerty', returnurl = 'some_url', overrides = {}) {
+export function mockContext(
+  token = 'qwerty',
+  returnurl = 'some_url',
+  overrides = {}
+) {
   const ctx = {
     query: {token, returnurl},
-    session: {},
-    render: () => {}
+    session: {
+      save: cb => cb(),
+      destroy: () => {},
+      client: Object.assign({}, mockData),
+      query: {
+        state: 'mock_state_value'
+      }
+    },
+    render: jest.fn(),
+    send: jest.fn(),
+    redirect: jest.fn()
   };
-  setDefaultState(ctx, () => {});
-  stateMiddleware(ctx, () => {});
+  setDefaultState(ctx, ctx, () => {});
+  stateMiddleware(ctx, ctx, () => {});
   Object.keys(overrides).forEach(key => {
     ctx[key] = Object.assign(ctx[key] || {}, overrides[key]);
   });
@@ -35,7 +54,7 @@ export function registerStore(store) {
  */
 export function wipeStores() {
   if (CONFIG.app.env === 'test') {
-    stores.forEach((store) => {
+    stores.forEach(store => {
       store.wipeout();
     });
   }

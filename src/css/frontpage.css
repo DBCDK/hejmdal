@@ -1,0 +1,14 @@
+#frontpage {
+  .content-container {
+    h1 {
+      color: var(--black-lighten-1);
+      font-size: 30px;
+      line-height: 34px;
+      font-weight: lighter;
+    }
+
+    p {
+      margin: 20px 0 20px 0;
+    }
+  }
+}

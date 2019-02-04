@@ -1,50 +1,36 @@
-import {getClient, getToken} from './smaug.client';
+import {
+  getClientById,
+  getClientByToken,
+  getToken,
+  revokeToken
+} from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 
-/**
- * Validate token.
- *
- * If a token does not validate an http error (403) is returned.
- *
- * @param ctx
- * @param next
- */
-export async function getAttributes(ctx, next) {
-  const serviceClient = await getClientInfo(ctx.getState().smaugToken);
-  if (!serviceClient) {
-    ctx.status = 403;
-  }
-  else {
-    ctx.setState({serviceClient});
-    await next();
-  }
-}
-
-export async function getClientInfo(smaugToken) {
+export async function getClientInfoByClientId(clientId) {
   try {
-    const smaugClient = await getClientFromSmaug(smaugToken);
+    const smaugClient = await getClientById(clientId);
+    if (smaugClient) {
+      smaugClient.redirectUris = [
+        ...(smaugClient.redirectUris || []),
+        `${CONFIG.app.host}/example`
+      ];
+    }
     return await extractClientInfo(smaugClient);
-  }
-  catch (error) {
-    log.info('Invalid Token', {error: error.message, stack: error.stack});
+  } catch (error) {
+    log.info('Invalid client', {error: error.message, stack: error.stack});
     return null;
   }
 }
 
-export async function getClientFromSmaug(smaugToken) {
-  return await getClient(smaugToken);
-}
-
-export async function getAuthenticatedToken(ctx, next) {
-  const {userId, libraryId, pincode} = ctx.getUser();
-  const state = ctx.getState();
-  const {authenticatedToken} = state.serviceClient.attributes;
-  if (authenticatedToken && userId && libraryId && pincode) {
-    const accessToken = await getToken(state.serviceClient.id, libraryId, userId, pincode);
-    ctx.setState({authenticatedToken: accessToken});
+export async function getClientInfoByToken(token) {
+  try {
+    const smaugClient = await getClientByToken(token);
+    return await extractClientInfo(smaugClient);
+  } catch (error) {
+    log.info('Invalid client', {error: error.message, stack: error.stack});
+    return null;
   }
-  await next();
 }
 
 /**
@@ -59,13 +45,18 @@ export function extractClientInfo(client) {
   }
 
   const serviceClient = {
-    id: client.app.clientId,
+    clientId: client.app.clientId,
     name: client.displayName,
     logoutScreen: client.logoutScreen || 'include',
     identityProviders: client.identityProviders || [],
     attributes: client.attributes || [],
     borchkServiceName: client.borchkServiceName || null,
-    urls: client.urls || {}
+    urls: client.urls || {},
+    grants: client.grants,
+    redirectUris: client.redirectUris,
+    clientSecret: client.app.clientSecret,
+    requireConsent: !!client.requireConsent,
+    logoColor: client.logoColor ? client.logoColor : '#252525'
   };
 
   if (CONFIG.app.env === 'test') {
@@ -73,4 +64,17 @@ export function extractClientInfo(client) {
   }
 
   return serviceClient;
+}
+
+export function getTokenForUser({
+  clientId,
+  agency = '',
+  username = '@',
+  password = '@'
+}) {
+  return getToken(clientId, agency, username, password);
+}
+
+export function revokeClientToken(token) {
+  return revokeToken(token);
 }

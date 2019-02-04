@@ -3,7 +3,7 @@
  * Perform sanityCheck of external resources
  */
 
-import Session from '../models/db_models/session.model';
+import User from '../models/db_models/user.model';
 import * as Borchk from '../components/Borchk/borchk.client';
 import * as Culr from '../components/Culr/culr.client';
 import * as Smaug from '../components/Smaug/smaug.client';
@@ -44,7 +44,7 @@ async function wrap(check, name) {
  * Check if database is available
  */
 function checkDatabase() {
-  return Session.query().count('*');
+  return User.query().count('*');
 }
 
 /**

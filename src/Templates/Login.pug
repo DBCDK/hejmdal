@@ -1,31 +1,29 @@
 extends Main
 
 block append content
-  if loginToProfile
-    div.consent-img-container
-        span.banner.user-data-img
-    div#profile-login.header
-      h4.title
-        strong Log ind for at se dine data
-  div
-    div.borchk-component
+  div#login
+    div.content-container
+      div.top
+        h1 Log ind
+        p Hvis du vil låne, reservere eller redigere din brugerprofil, skal du være logget ind.&#160;
+          if (help && help.title && help.sections)
+              include Components/Helptext.container.pug
+
       if identityProviders.borchk
-        include Components/Borchk
+          include Components/Borchk
 
-    if identityProviders.unilogin || identityProviders.nemlogin
-      div#external-providers
+      if identityProvidersCount > 1
+        div.bottom
+          div#external-providers
 
-        div.buffer-hor-10.buffer-vertical-5 Du kan også logge ind med
+            p Andre login-muligheder
 
-        div.external-providers-btn-container
-          if identityProviders.unilogin
-            include Components/Unilogin
+            div(id='external-providers-btn-container' class='external-providers-' + identityProvidersCount)
+              if identityProviders.unilogin
+                include Components/Unilogin
 
-          if identityProviders.nemlogin
-            include Components/Nemlogin
+              if identityProviders.nemlogin
+                include Components/Nemlogin
 
-          if identityProviders.wayf
-            include Components/Wayf
-
-
-  include Components/Helptext.container.pug
+              if identityProviders.wayf
+                include Components/Wayf

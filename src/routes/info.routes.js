@@ -1,9 +1,8 @@
-import Router from 'koa-router';
+import {Router} from 'express';
 import {showInfo} from '../components/Info/info.component';
 
-const router = new Router({prefix: '/info'});
+const router = Router();
 
 router.get('/:infoId', showInfo);
-router.get('/:infoId/:localId', showInfo);
 
 export default router;

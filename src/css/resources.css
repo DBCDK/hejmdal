@@ -1,0 +1,49 @@
+/* SVG */
+@svg-load --close-small url(svg/icons/close_small.svg) {
+  fill: #252525;
+}
+
+@svg-load --close-small-white url(svg/icons/close_small.svg) {
+  fill: white;
+}
+
+@svg-load --close-large url(svg/icons/close_large.svg) {
+  fill: #252525;
+}
+
+@svg-load --close-large-white url(svg/icons/close_large.svg) {
+  fill: white;
+}
+
+/* Fonts */
+@font-face {
+  font-family: 'FaktPro-Normal';
+  src: url('../fonts/FaktPro-Normal.woff2') format('woff2'),
+    url('FaktPro-Normal.woff') format('woff'),
+    url('FaktPro-Normal.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FaktPro-Medium';
+  src: url('../fonts/FaktPro-Medium.woff2') format('woff2'),
+    url('FaktPro-Medium.woff') format('woff'),
+    url('FaktPro-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FaktPro-Blond';
+  src: url('../fonts/FaktPro-Blond.woff2') format('woff2'),
+    url('FaktPro-Blond.woff') format('woff'),
+    url('FaktPro-Blond.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FaktPro-Light';
+  src: url('FaktPro-Light.woff') format('woff'),
+    url('FaktPro-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'FaktPro-Semibold';
+  src: url('FaktPro-Semibold.woff') format('woff');
+}

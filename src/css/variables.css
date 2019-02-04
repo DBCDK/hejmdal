@@ -1,0 +1,31 @@
+:root {
+  /* Background colors */
+  --background-color-body: #ffffff;
+  --background-color: #fafafa;
+
+  /* Border colors */
+  --grey-lighten-4: #dce0e0;
+
+  /* Text colors */
+  --grey-lighten-3: #d8d8d8;
+  --grey-lighten-2: #a1a1a1;
+  --grey-lighten-1: #7c7c7c;
+  --grey: #5a5f63;
+
+  --black-lighten-1: #252525;
+
+  /* Colors */
+  --black: #000000;
+  --white: #ffffff;
+
+  --error: #fe4d3d;
+  --success: #009a61;
+
+  /* shadow */
+  --shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
+
+  /* fonts */
+  --primary: 'FaktPro-Blond', Halvetica, Ariel, sans-serif;
+  --secondary: 'FaktPro-Medium', Halvetica, Ariel, sans-serif;
+  --tertiary: 'FaktPro-Normal', Halvetica, Ariel, sans-serif;
+}

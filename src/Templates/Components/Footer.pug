@@ -1,10 +1,13 @@
 div#footer
-  div.footer-container
-    div.col-xs-6.col-sm-5.col-sm-offset-1
+    div.content-container
+
+      div.medias
+        div.media-group
+          span.media.ereolen
+          span.media.visible.bibliotek-dk
+          span.media.ereolen-global
+
       if (!info)
-        div
-          a.footer-link(href='/info/cookies' target='hjemdal-cookie') Vores brug af cookies
-      if (!loginToProfile && loginToProfileURL)
-        div.login-profile-link
-          a.footer-link(href=loginToProfileURL) Se dine godkendelser
-    div.col-xs-6.col-sm-5.align-right &copy; DDB 2016
+        div.links
+          span Læs mere om &#160;
+            a(onclick='toggleModal("cookieModal")') vores brug af cookies

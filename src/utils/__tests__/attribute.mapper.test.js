@@ -1,14 +1,9 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
-
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
-import {createHash} from '../../utils/hash.utils';
 import {mockContext} from '../../utils/test.util';
 import {log} from '../../utils/logging.util';
 
 describe('Attribute mapper unittest', () => {
-  const next = () => {
-  };
+  const next = () => {};
 
   const serviceId = 'a799f79-9797as979-4jk44-323332ed34';
   const user = {};
@@ -25,13 +20,14 @@ describe('Attribute mapper unittest', () => {
         userIdValue: '222333'
       }
     ],
-    municipalityNumber: '333'
+    municipalityNumber: '333',
+    culrId: 'some-random-curl-id'
   };
 
   it('do nothing', () => {
     const ctx = mockContext();
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.user, user);
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.user).toEqual(user);
   });
 
   it('map all possible values', () => {
@@ -41,14 +37,22 @@ describe('Attribute mapper unittest', () => {
       culr: culr,
       serviceClient: {
         id: serviceId,
-        attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}, libraries: {}, municipality: {}, uniqueId: {}}
+        attributes: {
+          birthDate: {},
+          birthYear: {},
+          gender: {},
+          cpr: {},
+          libraries: {},
+          municipality: {},
+          uniqueId: {}
+        }
       },
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, next);
+    mapAttributesToTicket(ctx, ctx, next);
 
-    assert.deepEqual(ctx.session.state.ticket.attributes, {
+    expect(ctx.session.state.ticket.attributes).toEqual({
       birthDate: '0102',
       birthYear: '2045',
       gender: 'm',
@@ -57,7 +61,7 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
-      uniqueId: createHash('0102456789:' + serviceId),
+      uniqueId: 'some-random-curl-id',
       municipality: '333'
     });
   });
@@ -70,25 +74,32 @@ describe('Attribute mapper unittest', () => {
         attributes: {birthYear: {}}
       }
     });
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1903'});
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1903'});
 
-    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}});
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '2036'});
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2036'});
 
-    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}});
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1937'});
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1937'});
 
-    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}});
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '2057'});
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2057'});
 
-    ctx.setState({culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}});
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {birthYear: '1858'});
-
+    ctx.setState({
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1858'});
   });
 
   it('map gender', () => {
@@ -100,8 +111,8 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
       gender: 'f'
     });
   });
@@ -115,8 +126,8 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
       birthDate: null,
       birthYear: null,
       gender: null,
@@ -134,8 +145,8 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
@@ -156,8 +167,8 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
@@ -167,7 +178,7 @@ describe('Attribute mapper unittest', () => {
   });
 
   it('log an error for unknown attribute', () => {
-    const spy = sinon.spy(log, 'error');
+    log.error = jest.fn();
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
@@ -176,9 +187,8 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, next);
-    assert.deepEqual(ctx.session.state.ticket.attributes, {});
-    assert.isTrue(spy.called, 'log.error was invoked');
-    assert.equal(spy.args[0][0], 'Cannot map attribute: notThere');
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({});
+    expect(log.error).toBeCalledWith('Cannot map attribute: notThere');
   });
 });

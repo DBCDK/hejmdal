@@ -4,12 +4,14 @@
  */
 import 'locale-compare-polyfill';
 import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
+import {CONFIG} from './config.util';
 
 /**
  * @type {Array}
  */
 let agencyList = [];
-let uiBranchList = [];
+let uiBranchList = {};
+let agencyRenewTime = Number.MAX_SAFE_INTEGER;
 
 /**
  *
@@ -17,6 +19,9 @@ let uiBranchList = [];
  */
 export async function cacheAgencies(name = '') {
   agencyList = await libraryListFromName(name);
+  if (agencyList.length) {
+    agencyRenewTime = new Date().getTime() + CONFIG.openAgency.life_time;
+  }
 }
 
 /**
@@ -26,17 +31,10 @@ export async function cacheAgencies(name = '') {
 export async function getListOfAgenciesForFrontend(filterParam = null) {
   await setUiList();
 
-  let branchList = uiBranchList;
-
   if (filterParam === 'forsk' || filterParam === 'folk') {
-    branchList = uiBranchList.filter(agency => {
-      return agency.type === filterParam;
-    });
+    return uiBranchList[filterParam];
   }
-
-  branchList.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
-
-  return branchList;
+  return uiBranchList;
 }
 
 /**
@@ -79,7 +77,7 @@ export async function getAgency(agencyId) {
  * agencyList setter
  */
 async function setAgencyList() {
-  if (!agencyList || !agencyList.length) {
+  if (!agencyList || !agencyList.length || (new Date().getTime() > agencyRenewTime)) {
     await cacheAgencies();
   }
 }
@@ -90,17 +88,38 @@ async function setAgencyList() {
 async function setUiList() {
   await setAgencyList();
 
-  if (!uiBranchList || !uiBranchList.length) {
-    uiBranchList = agencyList.map(branch => {
-      const type = branch.type === 'Forskningsbibliotek' ? 'forsk' : 'folk';
-      return {
+  if (!uiBranchList.folk || !uiBranchList.folk.length) {
+    uiBranchList = {
+      folk: [],
+      forsk: [],
+      other: []
+    };
+    agencyList.forEach(branch => {
+      const type = getType(branch);
+      if (!branch.agencyName || !type) {
+        return;
+      }
+      uiBranchList[type].push({
         branchId: branch.branchId,
         name: branch.agencyName,
-        hidden: branch.branchId,
-        type: type
-      };
+        registrationUrl: branch.registrationFormUrl || branch.branchWebsiteUrl
+      });
     });
+    uiBranchList.folk.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
+    uiBranchList.forsk.sort((b1, b2) =>
+      b1.name.localeCompare(b2.name, 'da-DK')
+    );
   }
+}
+
+function getType(branch) {
+  if (branch.type === 'Forskningsbibliotek') {
+    return 'forsk';
+  }
+  if (branch.municipalityNo) {
+    return 'folk';
+  }
+  return 'other';
 }
 
 /**

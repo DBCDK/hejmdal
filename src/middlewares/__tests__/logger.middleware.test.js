@@ -1,55 +1,49 @@
-import {assert} from 'chai';
-import sinon from 'sinon';
-
-import {LoggerMiddleware} from '../logger.middleware';
+import {loggerMiddleware} from '../logger.middleware';
 import {log} from '../../utils/logging.util';
 
 describe('LoggerMiddleware tests', () => {
-  let sandbox;
-
-  beforeEach(() => {
-    sandbox = sinon.sandbox.create();
-  });
-
-  afterEach(() => {
-    sandbox.restore();
-  });
+  const ctxListeners = {
+    on: (event, cb) => {
+      if (event === 'finish') {
+        cb();
+      }
+    },
+    removeListener: () => {}
+  };
 
   it('Should invoke next and make call to log.info', () => {
-    const spy = sandbox.spy(log, 'info');
-    const next = sandbox.mock();
+    log.info = jest.fn();
+    // const spy = sandbox.spy(log, 'info');
+    const next = jest.fn();
     const ctx = {
-      request: {
-        method: 'method',
-        url: 'url',
-        header: 'header'
-      },
-      response: {
-        status: 'status',
-        message: 'message'
-      }
+      method: 'method',
+      url: 'url',
+      header: 'header',
+      status: 'status',
+      message: 'message',
+      ...ctxListeners
     };
 
-    const res = LoggerMiddleware(ctx, next);
+    const res = loggerMiddleware(ctx, ctx, next);
 
     return res.then(() => {
-      assert.isTrue(next.called, 'next was invoked');
-      assert.isTrue(spy.called, 'log.info was invoked');
-      assert.equal(spy.args[0][0], 'page request');
+      expect(next).toBeCalled();
+      expect(log.info).toMatchSnapshot();
     });
   });
 
   it('Should invoke next and make call to log.error', () => {
-    const spy = sandbox.spy(log, 'error');
-    const next = sandbox.mock();
-    const ctx = {};
-
-    const res = LoggerMiddleware(ctx, next);
+    log.error = jest.fn();
+    const next = jest.fn();
+    const ctx = {...ctxListeners};
+    const res = loggerMiddleware(null, ctx, next);
 
     return res.then(() => {
-      assert.isTrue(next.called, 'next was invoked');
-      assert.isTrue(spy.called, 'log.error was invoked');
-      assert.equal(spy.args[0][0], 'parsing of ctx object failed');
+      expect(next).toBeCalled();
+      expect(log.error).toBeCalledWith('parsing of ctx object failed', {
+        ctx: null,
+        error: expect.any(Error)
+      });
     });
   });
 });

@@ -1,5 +1,3 @@
-import {assert} from 'chai';
-
 import buildReturnUrl from '../buildReturnUrl.util';
 
 describe('buildReturnUrl unit test', () => {
@@ -18,7 +16,7 @@ describe('buildReturnUrl unit test', () => {
     const expected = 'http://hejmdal.test/returnurl';
     const actual = buildReturnUrl(state);
 
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should handle multible /', () => {
@@ -27,7 +25,7 @@ describe('buildReturnUrl unit test', () => {
     state.serviceClient.urls.host = 'http://hejmdal.test/';
     const actual = buildReturnUrl(state);
 
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should use default returnUrl', () => {
@@ -36,18 +34,19 @@ describe('buildReturnUrl unit test', () => {
     state.serviceClient.urls.host = 'http://hejmdal.test/';
     const actual = buildReturnUrl(state);
 
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should generate querystring', () => {
     const expected = 'http://hejmdal.test/returnurl?token=abcd&id=1234';
     const actual = buildReturnUrl(state, {token: 'abcd', id: 1234});
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
   });
 
   it('should urlEncode querystring', () => {
-    const expected = 'http://hejmdal.test/returnurl?error=consent%20was%20rejected';
+    const expected =
+      'http://hejmdal.test/returnurl?error=consent%20was%20rejected';
     const actual = buildReturnUrl(state, {error: 'consent was rejected'});
-    assert.deepEqual(actual, expected);
+    expect(actual).toEqual(expected);
   });
 });

@@ -1,0 +1,11 @@
+div#cookieModal.modal
+  div.modal-header
+    button(type="button" onclick='toggleModal("cookieModal")')
+    h4.modal-title #{cookie.title}
+  div.modal-body
+    each section in cookie.sections
+      div.modal-body-section
+        if(section.header)
+          h5 #{section.header}
+        each text in section.texts
+          p !{text}

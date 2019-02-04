@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test showinfo method Should render cookie info page 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "Info",
+      Object {
+        "info": true,
+        "textObj": Object {
+          "sections": Array [
+            Object {
+              "texts": Array [
+                "Vi benytter cookies til at gemme information om dine logins.",
+              ],
+            },
+            Object {
+              "header": "Valgte biblioteker",
+              "texts": Array [
+                "Vi gemmer information om, hvilke biblioteker, der har været brugt ved login på denne computer, telefon, tablet osv. Det gør vi for at kunne tilbyde dig en liste over tidligere benyttede biblioteker, når du efterfølgende logger ind. Dermed kan vi give dig mulighed for et hurtigere login.",
+              ],
+            },
+            Object {
+              "header": "Login",
+              "texts": Array [
+                "Vi gemmer information om, at du er logget ind og hvilket bibliotek, du er logget ind ved, således at du ikke skal logge ind mere end én gang. Denne information fjernes, når du enten logger ud eller lukker browseren.",
+              ],
+            },
+            Object {
+              "header": "Slå cookies fra i browseren ",
+              "texts": Array [
+                "Bibliotekslogin virker ikke uden cookies. Du kan have ændret indstillingerne i din browser, så du ikke accepterer cookies. I så fald vil du få en fejlside, når du forsøger at benytte Bibliotekslogin.",
+              ],
+            },
+            Object {
+              "texts": Array [
+                "Alle browsere tillader, at du sletter dine cookies. Hvis du gør det, mens du er logget ind, kan du derfor også opleve fejl på siden.",
+              ],
+            },
+            Object {
+              "header": "Cookies hos andre hjemmesider",
+              "texts": Array [
+                "Bibliotekslogin benytter ikke andre tjenester, der anvender cookies hos brugeren.",
+              ],
+            },
+            Object {
+              "header": "Kontakt",
+              "texts": Array [
+                "Har du spørgsmål vedrørende vores anvendelse af cookies og den måde, som hjemmesiden forvaltes på, er du velkommen til at kontakte Danskernes Digitale Bibliotek (DDB), der er bestiller af login-funktionen på vegne af de danske folkebiblioteker. DDB kan kontaktes på ddb@slks.dk eller på tlf. 33 95 42 00.",
+              ],
+            },
+          ],
+          "title": "Cookies, formål og relevans",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "isThrow": false,
+      "value": undefined,
+    },
+  ],
+}
+`;

@@ -3,26 +3,27 @@
  * Specifying the most simple routes
  */
 
-import Router from 'koa-router'; // @see https://github.com/alexmingoia/koa-router
+import {Router} from 'express';
+
+const router = Router();
+
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 import sanityCheck from '../utils/sanityCheck.util';
 
-const router = new Router();
-
 router.get('/', renderFrontPage);
 
-router.get('/health', async (ctx) => {
-
+router.get('/health', async (req, res) => {
   const health = await sanityCheck();
-  ctx.status = 200;
-  ctx.body = health;
+  res.status = 200;
   if (health.filter(e => e.state === 'fail').length) {
-    ctx.status = 503;
+    res.status = 503;
   }
+
+  res.send(health);
 });
 
-router.get('/fejl', (ctx) => {
-  const state = ctx.getState();
+router.get('/fejl', req => {
+  const state = req.getState();
   let link = null;
   if (state && state.smaugToken) {
     link = {
@@ -30,8 +31,9 @@ router.get('/fejl', (ctx) => {
       value: 'Prøv igen'
     };
   }
-  const error = 'Der er sket en fejl. Dette kan skyldes at du har klikket på et ugyldigt link.';
-  ctx.render('Error', {error, link});
+  const error =
+    'Der er sket en fejl. Dette kan skyldes at du har klikket på et ugyldigt link.';
+  req.render('Error', {error, link});
 });
 
 export default router;

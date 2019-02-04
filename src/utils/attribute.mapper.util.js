@@ -7,25 +7,29 @@
 
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
-import {createHash} from './hash.utils';
 
 /**
  * Attribute mapper
  *
- * @param ctx
+ * @param req
+ * @param res
  * @param next
  * @returns {*}
  */
-export default async function mapAttributesToTicket(ctx, next) {
-  const state = ctx.getState();
-  const user = ctx.getUser();
+export default async function mapAttributesToTicket(req, res, next) {
+  const state = req.getState();
+  const user = req.getUser();
 
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
-    const ticketAttributes = mapCulrResponse(culr, state.authenticatedToken, serviceAttributes, user, state.serviceClient.id);
-
-    ctx.setState({ticket: {attributes: ticketAttributes}});
+    const ticketAttributes = mapCulrResponse(
+      culr,
+      serviceAttributes,
+      user,
+      state.serviceClient.id
+    );
+    req.setState({ticket: {attributes: ticketAttributes}});
   }
 
   await next();
@@ -39,17 +43,16 @@ export default async function mapAttributesToTicket(ctx, next) {
  * @param {object} user data returned by the idp
  * @param {string} serviceId string
  * @see ATTRIBUTES
- * @return {{}}
+ * @return {object}
  */
-function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) {
+export function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
-
   let cpr = user.cpr || null;
   let agencies = [];
   let fromCpr = {};
 
   if (culr.accounts && Array.isArray(culr.accounts)) {
-    culr.accounts.forEach((account) => {
+    culr.accounts.forEach(account => {
       if (account.userIdType === 'CPR' && !cpr) {
         cpr = account.userIdValue;
       }
@@ -60,10 +63,9 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
         userIdType: account.userIdType
       });
     });
-  }
-  else if (cpr && user.libraryId) {
+  } else if (cpr && user.agency) {
     agencies.push({
-      agencyId: user.libraryId,
+      agencyId: user.agency,
       userId: cpr,
       userIdType: 'CPR'
     });
@@ -74,7 +76,7 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
   }
 
   const fields = Object.keys(attributes);
-  fields.forEach((field) => {
+  fields.forEach(field => {
     switch (field) {
       case 'birthDate':
       case 'birthYear':
@@ -92,19 +94,17 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
         mapped.municipality = culr.municipalityNumber || null;
         break;
       case 'uniloginId':
-        mapped.uniloginId = user.userType === 'unilogin' && user.userId ? user.userId : null;
+        mapped.uniloginId =
+          user.userType === 'unilogin' && user.userId ? user.userId : null;
         break;
       case 'userId':
         mapped.userId = user.userId;
-        break;
-      case 'authenticatedToken':
-        mapped.authenticatedToken = authenticatedToken;
         break;
       case 'wayfId':
         mapped.wayfId = user.wayfId ? user.wayfId : null;
         break;
       case 'uniqueId':
-        mapped.uniqueId = createUniqueId(user.cpr || user.userId, serviceId);
+        mapped.uniqueId = culr.culrId;
         break;
       default:
         log.error('Cannot map attribute: ' + field);
@@ -113,16 +113,4 @@ function mapCulrResponse(culr, authenticatedToken, attributes, user, serviceId) 
   });
 
   return mapped;
-}
-
-/**
- * Creates a unique user id for the
- * @param {string} userId - user identification
- * @param {string} serviceId - aservice identification
- * @returns {string}
- */
-function createUniqueId(userId, serviceId) {
-  if (userId && serviceId) {
-    return createHash(userId + ':' + serviceId);
-  }
 }
