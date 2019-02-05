@@ -1,10 +1,9 @@
 language: node_js
 sudo: false
 dist: trusty
-services:
-  - postgresql
 install:
   - npm ci
+  - npm i cypress
 cache:
   bundler: true
   directories:
@@ -21,6 +20,3 @@ env:
 
 script:
   - 'npm run $TEST_SUITE'
-
-addons:
-  postgresql: '9.4'

@@ -1,6 +1,6 @@
 context('Login flow', () => {
   const authorize =
-    '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example&presel=733000';
+    `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${Cypress.config().baseUrl}/example&presel=733000`;
 
   it('cy.url() - get the current URL', () => {
     cy.log('Setup client using example endpoint');
@@ -28,13 +28,16 @@ context('Login flow', () => {
     cy.location('pathname').should('eq', '/example/');
     cy.location('search').should('contain', 'code');
 
+    cy.log(window.location, Cypress.config().baseUrl);
+
     cy.log('Get access token');
+    cy.hash('ticket');
     cy.get('#get-ticket-button').click();
     cy.get('[data-bind="token"]').invoke('text', (err, text) => {
       const token = JSON.parse(text);
       expect(token).to.have.property('access_token');
     });
-
+    cy.hash('userinfo');
     cy.log('Get user info');
     cy.get('#get-userinfo-button').click();
     cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {

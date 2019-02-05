@@ -29,6 +29,7 @@ static/*.css
 errorShots
 selenium/*.png
 cypress/screenshots/*
+e2e/cypress/screenshots/*
 
 # ==========
 # ESLINT #

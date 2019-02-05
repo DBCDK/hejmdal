@@ -78,7 +78,7 @@ export async function getAgency(agencyId) {
  */
 async function setAgencyList() {
   if (!agencyList || !agencyList.length || (new Date().getTime() > agencyRenewTime)) {
-    await cacheAgencies();
+    await cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');
   }
 }
 
