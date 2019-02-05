@@ -163,10 +163,6 @@ function setActiveStep({code, access_token}) {
       step.classList.remove('active');
     }
   });
-  const hash = `#${stepValue}`;
-  if (window.location.hash !== hash) {
-    window.location = hash;
-  }
 }
 
 function checkRequirements(state) {
