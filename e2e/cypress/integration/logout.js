@@ -12,7 +12,9 @@ context('Logout', () => {
   });
   it('should redirect to return_url', () => {
     cy.visit(
-      '/logout?access_token=asdfg&redirect_uri=http://localhost:3011/example'
+      `/logout?access_token=asdfg&redirect_uri=${
+        Cypress.config().baseUrl
+      }/example`
     );
     cy.location('pathname').should('eq', '/example/');
     cy.location('search').should('contain', 'message=logout');
