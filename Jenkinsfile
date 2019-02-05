@@ -33,9 +33,9 @@ pipeline {
             }
         }
         stage('Push to Artifactory') {
-            //when {
-                //branch "master"
-            //}
+            when {
+                branch "master"
+            }
             steps { 
                 script {
                 if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
@@ -54,9 +54,9 @@ pipeline {
 					alwaysPull true
 				}
 			}
-			//when {
-				//branch "master"
-			//}
+			when {
+				branch "master"
+			}
 			steps {
 				dir("deploy") {
 					git(url: "gitlab@gitlab.dbc.dk:frontend/hejmdal-configuration.git", credentialsId: "gitlab-svi", branch: "staging")
