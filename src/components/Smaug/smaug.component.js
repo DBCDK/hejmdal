@@ -13,7 +13,8 @@ export async function getClientInfoByClientId(clientId) {
     if (smaugClient) {
       smaugClient.redirectUris = [
         ...(smaugClient.redirectUris || []),
-        `${CONFIG.app.host}/example`
+        `${CONFIG.app.host}/example`,
+        `${CONFIG.app.host}/cas/callback`
       ];
     }
     return await extractClientInfo(smaugClient);
