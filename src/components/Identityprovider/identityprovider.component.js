@@ -83,10 +83,9 @@ export async function authenticate(req, res, next) {
       : null;
     const lockedAgencyName = branch ? branch.agencyName : null;
     const agencyTypeFilter = req.session.query.agencytype || 'folk,forsk';
-    const branches =
-      identityProviders.borchk && !lockedAgencyName
-        ? await getListOfAgenciesForFrontend()
-        : null;
+    const branches = identityProviders.borchk
+      ? await getListOfAgenciesForFrontend()
+      : null;
     const error = req.query.error ? req.query.error : null;
     const loginHelpReplacers = setLoginReplacersFromAgency(branch);
     const helpText = getText(
