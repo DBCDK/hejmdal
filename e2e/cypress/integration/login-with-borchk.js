@@ -1,6 +1,7 @@
 context('Login flow', () => {
-  const authorize =
-    `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${Cypress.config().baseUrl}/example&presel=733000`;
+  const authorize = `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${
+    Cypress.config().baseUrl
+  }/example&presel=733000`;
 
   it('cy.url() - get the current URL', () => {
     cy.log('Setup client using example endpoint');

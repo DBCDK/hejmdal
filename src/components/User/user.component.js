@@ -28,21 +28,25 @@ const storage = CONFIG.mock_storage
 export async function getUser(req, res, next) {
   const {user, client: clientId} = res.locals.oauth.token;
   try {
-    const [culrAttributes, client] = await Promise.all([
-      getUserAttributesFromCulr(user.userId, user.agency),
-      getClientById(clientId)
-    ]);
-    const ticketAttributes = mapCulrResponse(
-      culrAttributes,
-      client.attributes,
-      user,
-      clientId
-    );
+    const ticketAttributes = await getUserAttributesForClient(user, clientId);
     res.json({attributes: ticketAttributes});
   } catch (error) {
     log.error('Could not generate user info', {error});
     next();
   }
+}
+
+export async function getUserAttributesForClient (user, clientId) {
+    const [culrAttributes, client] = await Promise.all([
+      getUserAttributesFromCulr(user.userId, user.agency),
+      getClientById(clientId)
+    ]);
+    return mapCulrResponse(
+      culrAttributes,
+      client.attributes,
+      user,
+      clientId
+    );
 }
 
 /**
