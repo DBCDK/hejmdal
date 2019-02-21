@@ -18,6 +18,10 @@ const casStorage = CONFIG.mock_storage
   ? new KeyValueStorage(new MemoryStorage())
   : new KeyValueStorage(new PersistentCasStorage());
 
+/**
+ * Login endpoint for CAS authorization
+ *
+ */
 router.get('/:clientId/:agencyId/login', async (req, res, next) => {
   const {clientId, agencyId} = req.params;
   const {service} = req.query;
@@ -55,6 +59,10 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
 
 /**
  * Callback route for oAuth.
+ *
+ * This is the callback url for then when user has been authenticated through oauth.
+ * This endpoint cannot be called directly. It requires that casOptions have been set with
+ * a valid service url. This is set through the endpoint /:clientId/:agencyId/login.
  */
 router.get('/callback', (req, res, next) => {
   const {code} = req.query;
@@ -71,7 +79,10 @@ router.get('/callback', (req, res, next) => {
       )
     );
   }
+  // Save service url with oauth code
   casStorage.insert(code, casOptions);
+
+  // Redirect back to service with a oauth code as ticket
   res.redirect(`${casOptions.service}?ticket=${code}`);
 });
 
@@ -81,38 +92,42 @@ router.get(
   convertTicketToUser
 );
 
+/**
+ * Validate request to serviceValidate endpoint.
+ *
+ * Check if ticket and service parameters are valid.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
+ */
 async function validateServiceUrl(req, res, next) {
   const {ticket, service} = req.query;
   const casOptions = await casStorage.read(ticket);
   if (!casOptions) {
     return res.send(invalidResponseXml(ticket, 'INVALID_TICKET'));
   }
+  // remove ticket from db.
+  casStorage.delete(ticket);
+
   if (casOptions.service !== service) {
     res.set('Content-Type', 'text/xml');
     return res.send(invalidResponseXml(ticket, 'INVALID_SERVICE_URL'));
   }
+
   next();
   // service url matches original service url.
 }
 
-function validResponseXml(user) {
-  return `
-  <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
-    <cas:authenticationSuccess>
-      <cas:user>${user}</cas:user>
-    </cas:authenticationSuccess>
-  </cas:serviceResponse>`;
-}
-
-function invalidResponseXml(ticket, errorCode) {
-  return `
-  <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
-    <cas:authenticationFailure code="${errorCode}">
-      Ticket ${ticket} not recognized
-    </cas:authenticationFailure>
-  </cas:serviceResponse>`;
-}
-
+/**
+ * Exchange a valid oauth code for a user ID.
+ *
+ * Response is formatted as a valid CAS XML response.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
+ */
 async function convertTicketToUser(req, res, next) {
   const {ticket} = req.query;
   const {clientId} = req.params;
@@ -131,9 +146,35 @@ async function convertTicketToUser(req, res, next) {
   return res.send(validResponseXml(uniqueId));
 }
 
-router.use((err, req, res, next) => {
-  res.status(400);
-  res.send(err.message);
-});
+/**
+ * Valid reponse XML.
+ *
+ * @param {String} user
+ * @returns {String}
+ */
+function validResponseXml(user) {
+  return `
+  <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
+    <cas:authenticationSuccess>
+      <cas:user>${user}</cas:user>
+    </cas:authenticationSuccess>
+  </cas:serviceResponse>`;
+}
+
+/**
+ * Invalid response XML.
+ *
+ * @param {String} ticket
+ * @param {String} errorCode
+ * @returns {String}
+ */
+function invalidResponseXml(ticket, errorCode) {
+  return `
+  <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
+    <cas:authenticationFailure code="${errorCode}">
+      Ticket ${ticket} not recognized
+    </cas:authenticationFailure>
+  </cas:serviceResponse>`;
+}
 
 export default router;
