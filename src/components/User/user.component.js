@@ -36,17 +36,12 @@ export async function getUser(req, res, next) {
   }
 }
 
-export async function getUserAttributesForClient (user, clientId) {
-    const [culrAttributes, client] = await Promise.all([
-      getUserAttributesFromCulr(user.userId, user.agency),
-      getClientById(clientId)
-    ]);
-    return mapCulrResponse(
-      culrAttributes,
-      client.attributes,
-      user,
-      clientId
-    );
+export async function getUserAttributesForClient(user, clientId) {
+  const [culrAttributes, client] = await Promise.all([
+    getUserAttributesFromCulr(user, user.agency),
+    getClientById(clientId)
+  ]);
+  return mapCulrResponse(culrAttributes, client.attributes, user, clientId);
 }
 
 /**

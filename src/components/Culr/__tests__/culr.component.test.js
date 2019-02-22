@@ -14,7 +14,9 @@ describe('Unittesting methods in culr.component:', () => {
     });
 
     it('should return culr attributes -- OK200', async () => {
-      const attributes = await getUserAttributesFromCulr('5555666677');
+      const attributes = await getUserAttributesFromCulr({
+        userId: '5555666677'
+      });
 
       expect(attributes).toEqual({
         accounts: [
@@ -35,7 +37,9 @@ describe('Unittesting methods in culr.component:', () => {
     });
 
     it('should return empty object -- ACCOUNT_DOES_NOT_EXIST', async () => {
-      const attributes = await getUserAttributesFromCulr('not_existing_user');
+      const attributes = await getUserAttributesFromCulr({
+        userId: 'not_existing_user'
+      });
       expect(attributes).toEqual({});
     });
   });

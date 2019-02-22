@@ -8,7 +8,11 @@ context('Logout', () => {
   });
   it('should logout with unknown token', () => {
     cy.visit('/logout?access_token=hejmdal-access-token-unknown');
-    cy.get('#returnUrl').should('have.text', 'Tilbage');
+    cy.get('.content-container').should(
+      'contain',
+      'Du er nu logget ud af bibliotekslogin'
+    );
+    cy.get('#returnUrl').should('not.exist');
   });
   it('should redirect to return_url', () => {
     cy.visit(
