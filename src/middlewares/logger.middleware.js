@@ -1,23 +1,35 @@
 import {log} from '../utils/logging.util';
 
-export async function loggerMiddleware(ctx, res, next) {
+/**
+ * Log information about all page requests.
+ *
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {NextFunction} next
+ */
+export async function loggerMiddleware(req, res, next) {
   const logOnFinished = () => {
     res.removeListener('finish', logOnFinished);
     res.removeListener('close', logOnFinished);
     try {
       log.info('page request', {
         request: {
-          method: ctx.method,
-          url: ctx.url,
-          header: ctx.header
+          method: req.method,
+          url: req.url,
+          header: req.header,
+          params: req.params,
+          query: req.query
         },
         response: {
-          status: res.status,
-          message: res.message
-        }
+          status: res.statusCode,
+          message: res.statusMessage
+        },
+        clientId:
+          req.session && req.session.client ? req.session.client.clientId : null
       });
     } catch (e) {
-      log.error('parsing of ctx object failed', {error: e, ctx: ctx});
+      log.error('parsing of request failed', {error: e, req: req});
     }
   };
   res.on('finish', logOnFinished);
