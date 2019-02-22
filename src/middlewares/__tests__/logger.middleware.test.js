@@ -40,10 +40,8 @@ describe('LoggerMiddleware tests', () => {
 
     return res.then(() => {
       expect(next).toBeCalled();
-      expect(log.error).toBeCalledWith('parsing of ctx object failed', {
-        ctx: null,
-        error: expect.any(Error)
-      });
+      expect(log.error).toBeCalled();
+      expect(log.error.mock.calls[0]).toMatchSnapshot();
     });
   });
 });
