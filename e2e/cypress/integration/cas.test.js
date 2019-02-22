@@ -30,7 +30,6 @@ context('CAS authorization flow', () => {
     cy.location('pathname').should('eq', '/example/');
     cy.location('search').then(data => {
       const ticket = data.split('=')[1];
-      expect(ticket).to.not.eq('123123123123123');
       const validateUrl = `/cas/hejmdal/733000/serviceValidate?service=${
         Cypress.config().baseUrl
       }/example&ticket=${ticket}`;
