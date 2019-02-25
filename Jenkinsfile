@@ -28,7 +28,7 @@ pipeline {
                 script {
                     ansiColor("xterm") {
                         sh "docker-compose build" 
-                        sh "IMAGE=${imageName} TAG=${imageLabel} docker-compose run e2e" 
+                        sh "IMAGE=${imageName} TAG=${imageLabel} docker-compose run --rm e2e" 
                     }
                 }
             }
