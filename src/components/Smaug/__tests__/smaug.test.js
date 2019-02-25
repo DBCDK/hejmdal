@@ -18,7 +18,7 @@ describe('Test Smaug component', () => {
     expect(clientinfo).toEqual({
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
-      grants: ['authorization_code', 'password'],
+      grants: ['authorization_code', 'password', 'cas'],
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,
@@ -27,7 +27,8 @@ describe('Test Smaug component', () => {
         'http://localhost:3011/callback',
         'http://localhost:3011/example',
         'http://localhost:3011/example/provider/callback',
-        'http://localhost:3011/example'
+        'http://localhost:3011/example',
+        'http://localhost:3011/cas/callback'
       ],
       logoutScreen: 'include',
       borchkServiceName: 'bibliotek.dk',

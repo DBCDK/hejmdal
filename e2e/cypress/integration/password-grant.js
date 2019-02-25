@@ -17,7 +17,6 @@ context('Password grant', () => {
       .should('have.all.keys', [
         'access_token',
         'expires_in',
-        'refresh_token',
         'token_type'
       ]);
   });

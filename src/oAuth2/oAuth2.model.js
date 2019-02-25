@@ -109,12 +109,6 @@ module.exports.getClient = async clientId => {
  * Save token.
  */
 module.exports.saveToken = async function(token, client, user) {
-  if (client.clientId === 'hejmdal') {
-    token.client = client.clientId;
-    token.user = user;
-    mockTokens.set(token.accessToken, token);
-    return token;
-  }
 
   try {
     const params = {clientId: client.clientId};

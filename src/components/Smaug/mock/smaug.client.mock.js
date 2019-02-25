@@ -2,7 +2,7 @@ import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
 
 export const mockData = {
-  grants: ['authorization_code', 'password'],
+  grants: ['authorization_code', 'password', 'cas'],
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
   redirectUris: [
     `${process.env.HOST}/callback`,
@@ -88,13 +88,16 @@ export function getMockValidateUserTokenClient(
   if (agency === '724000' && username === '87654321' && password === '1234') {
     return {
       statusCode: 200,
-      body: JSON.stringify({access_token: 'qwerty123456asdfgh'})
+      body: JSON.stringify({
+        access_token: 'qwerty123456asdfgh',
+        expires_in: 3600
+      })
     };
   }
   if (clientId === mockData.app.clientId) {
     return {
       statusCode: 200,
-      body: JSON.stringify({access_token: CONFIG.test.token})
+      body: JSON.stringify({access_token: CONFIG.test.token, expires_in: 3600})
     };
   }
   if (agency === null && username === '@' && password === '@') {

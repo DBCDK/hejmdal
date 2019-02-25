@@ -2,8 +2,9 @@ div#borchk
   form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form' onsubmit='loginSubmit(event)')
 
     if lockedAgency
-      input(type="hidden" value=lockedAgency name="libraryId" id="libraryid-input" aria-hidden='true' )
-      input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName)
+      div.input-container
+        input(type="hidden" value=lockedAgency name="agency" id="libraryid-input" aria-hidden='true' )
+        input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName data-js-id="libraryname-input")
     else
 
       div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)

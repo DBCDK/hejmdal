@@ -13,12 +13,17 @@ export async function getClientInfoByClientId(clientId) {
     if (smaugClient) {
       smaugClient.redirectUris = [
         ...(smaugClient.redirectUris || []),
-        `${CONFIG.app.host}/example`
+        `${CONFIG.app.host}/example`,
+        `${CONFIG.app.host}/cas/callback`
       ];
     }
     return await extractClientInfo(smaugClient);
   } catch (error) {
-    log.info('Invalid client', {error: error.message, stack: error.stack});
+    log.info('Invalid client', {
+      error: error.message,
+      stack: error.stack,
+      clientId
+    });
     return null;
   }
 }

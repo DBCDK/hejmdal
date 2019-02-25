@@ -95,13 +95,11 @@ class LibrarySelector {
       }
     }
     if (query && this.libraries.other.length > 0) {
-      var otherLibraries = this.libraries.other.filter(library => library.branchId.indexOf(query) === 0);
+      var otherLibraries = this.libraries.other.filter(
+        library => library.branchId.indexOf(query) === 0
+      );
       if (otherLibraries.length) {
-        this.appendLibraries(
-          'Andet',
-          otherLibraries,
-          ul
-        );
+        this.appendLibraries('Andet', otherLibraries, ul);
       }
     }
 
@@ -268,23 +266,26 @@ class LibrarySelector {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Set agencies
-  var agencyDropdown = new LibrarySelector(
-    'borchk-dropdown',
-    window.libraries || {},
-    () => {
-      document.getElementById('userid-input').focus();
-    }
-  );
-
-  var newUserAgencyDropdown = new LibrarySelector(
-    'newUser-dropdown',
-    window.libraries || {},
-    registrationUrl => {
-      if (registrationUrl) {
-        window.location.href = registrationUrl;
+  if (document.getElementById('borchk-dropdown')) {
+    var agencyDropdown = new LibrarySelector(
+      'borchk-dropdown',
+      window.libraries || {},
+      () => {
+        document.getElementById('userid-input').focus();
       }
-    }
-  );
+    );
+  }
+  if (document.getElementById('newUser-dropdown')) {
+    var newUserAgencyDropdown = new LibrarySelector(
+      'newUser-dropdown',
+      window.libraries || {},
+      registrationUrl => {
+        if (registrationUrl) {
+          window.location.href = registrationUrl;
+        }
+      }
+    );
+  }
 });
 
 // Toggle Field text visibility (type: password || type: tel)
@@ -331,7 +332,7 @@ window.loginSubmit = function loginSubmit(event) {
 
   var valid = true;
 
-  // if no libarary selected
+  // if no library selected
   if (!libraryId.value) {
     addFieldErrorMessage(libraryName, libraryText, noLibraryMessage);
     valid = false;
@@ -366,6 +367,9 @@ window.loginSubmit = function loginSubmit(event) {
 
 // rests the form errors
 function resetFieldErrorMessage(field, text) {
+  if (!field || !text) {
+    return;
+  }
   field.parentNode.classList.remove('input-inValid');
   text.classList.remove('text-inValid');
   text.innerText = text.dataset.text;

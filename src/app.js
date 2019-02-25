@@ -35,6 +35,7 @@ import loginRoutes from './routes/login.routes';
 import logoutRoutes from './routes/logout.routes';
 import rootRoutes from './routes/root.routes';
 import oAuthRoutes from './routes/oauth.routes';
+import casRoutes from './routes/cas.routes';
 import userinfoRoutes from './routes/userinfo.routes';
 import infoRoutes from './routes/info.routes';
 
@@ -84,6 +85,7 @@ app.use('/', rootRoutes);
 app.use('/login', loginRoutes);
 app.use('/logout', logoutRoutes);
 app.use('/oauth', oAuthRoutes);
+app.use('/cas', casRoutes);
 app.use('/userinfo', userinfoRoutes);
 app.use('/info', infoRoutes);
 

@@ -13,7 +13,8 @@ import {log} from '../../utils/logging.util';
  * @param {string} agencyId
  * @return {{}}
  */
-export async function getUserAttributesFromCulr(userId, agencyId = null) {
+export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
+  const {userId} = user;
   let attributes = {};
   let response = null;
 
@@ -25,9 +26,13 @@ export async function getUserAttributesFromCulr(userId, agencyId = null) {
   }
 
   let responseCode = response.result.responseStatus.responseCode;
-  if ((responseCode === 'ACCOUNT_DOES_NOT_EXIST') && agencyId) { // Not found as global id, lets try as local id
+  if (responseCode === 'ACCOUNT_DOES_NOT_EXIST' && agencyId) {
+    // Not found as global id, lets try as local id
     try {
-      response = await culr.getAccountsByLocalId({userIdValue: userId, agencyId: agencyId});
+      response = await culr.getAccountsByLocalId({
+        userIdValue: userId,
+        agencyId: agencyId
+      });
       responseCode = response.result.responseStatus.responseCode;
     } catch (e) {
       log.error('Request to CULR failed', {error: e.message, stack: e.stack});
@@ -40,6 +45,11 @@ export async function getUserAttributesFromCulr(userId, agencyId = null) {
     attributes.municipalityNumber = response.result.MunicipalityNo || null;
     attributes.culrId = response.result.Guid || null;
   } else if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
+    if (user.type === 'borchk') {
+      // It should not be possible for a user authenticated through borchk,
+      // not to exist in CULR. Therefore an error is logged.
+      log.error('Borck user not in culr', {userId, agencyId});
+    }
     log.info('Brugeren blev ikke fundet');
   } else {
     log.error('Der skete en fejl i kommuikationen med CULR', {

@@ -1,19 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`LoggerMiddleware tests Should invoke next and make call to log.error 1`] = `
+Array [
+  "parsing of request failed",
+  Object {
+    "error": [TypeError: Cannot read property 'method' of null],
+    "req": null,
+  },
+]
+`;
+
 exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`] = `
 [MockFunction] {
   "calls": Array [
     Array [
       "page request",
       Object {
+        "clientId": null,
         "request": Object {
           "header": "header",
           "method": "method",
+          "params": undefined,
+          "query": undefined,
           "url": "url",
         },
         "response": Object {
-          "message": "message",
-          "status": "status",
+          "message": undefined,
+          "status": undefined,
         },
       },
     ],

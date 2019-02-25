@@ -9,7 +9,8 @@ pipeline {
         label 'devel9-head'
     }
     environment {
-		DOCKER_TAG = "${imageName}-${imageLabel}"
+		IMAGE_NAME = "${imageName}:${imageLabel}"
+		DOCKER_TAG = "${imageLabel}"
 		GITLAB_PRIVATE_TOKEN = credentials("metascrum-gitlab-api-token")
 	}
     stages {
@@ -27,7 +28,7 @@ pipeline {
                 script {
                     ansiColor("xterm") {
                         sh "docker-compose build" 
-                        sh "IMAGE=${imageName} TAG=${imageLabel} docker-compose run e2e" 
+                        sh "IMAGE=${imageName} TAG=${imageLabel} docker-compose run --rm e2e" 
                     }
                 }
             }
@@ -92,7 +93,7 @@ pipeline {
                 if ("${env.BRANCH_NAME}" == 'master') {
                     slackSend(channel: 'fe-drift',
                         color: 'good',
-                        message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed, and pushed ${DOCKER_TAG} to artifactory.",
+                        message: "${env.JOB_NAME} #${env.BUILD_NUMBER} completed, and pushed ${IMAGE_NAME} to artifactory.",
                         tokenCredentialId: 'slack-global-integration-token')
 
                 }
