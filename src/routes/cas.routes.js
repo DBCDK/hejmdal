@@ -12,6 +12,7 @@ import PersistentCasStorage from '../models/CasStorage/cas.persistent.storage.mo
 import {getAuthorizationCode} from '../oAuth2/oAuth2.model';
 import {getUserAttributesForClient} from '../components/User/user.component';
 import {getClientById} from '../components/Smaug/smaug.client';
+import {log} from '../utils/logging.util';
 const router = Router();
 
 const casStorage = CONFIG.mock_storage
@@ -176,5 +177,14 @@ function invalidResponseXml(ticket, errorCode) {
     </cas:authenticationFailure>
   </cas:serviceResponse>`;
 }
+
+/**
+ * Handle errors on CAS routes.
+ */
+router.use((err, req, res, next) => {
+  res.status(400);
+  log.error('CAS authentication error', {error: err.message, stack: err.stack});
+  res.send(err.message);
+});
 
 export default router;
