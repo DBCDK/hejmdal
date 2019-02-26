@@ -145,14 +145,13 @@ context('Borchk form', () => {
       .first()
       .should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
   });
-  
+
   it('Should show test agency by agencyID', () => {
-    ///
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('900');
     cy.get('#borchk-dropdown .agency').should('have.length', 1);
     cy.get('#borchk-dropdown .agency')
-    .first()
-    .should('have.text', 'DBC Test library');
+      .first()
+      .should('have.text', 'DBC Test library');
   });
 
   it('Should validate forms', () => {
@@ -180,12 +179,28 @@ context('Borchk form', () => {
       'not.contain',
       'Du skal vælge et bibliotek'
     );
-    // remove validation error from user pin
+
+    // show error when pin is less than 4 figures
     cy.get('#userid-input').clear();
-    cy.get('#pin-input').type('12345{enter}');
+    cy.get('#pin-input').type('123{enter}');
+    cy.get('#pin-input-text').should(
+      'contain',
+      'Bibliotekskoden skal være på 4 til 6 cifre.'
+    );
+
+    // show error when pin is more than 6 figures
+    cy.get('#userid-input').clear();
+    cy.get('#pin-input').type('1234567{enter}');
+    cy.get('#pin-input-text').should(
+      'contain',
+      'Bibliotekskoden skal være på 4 til 6 cifre.'
+    );
+    // remove validation error from user pin
+    cy.get('#pin-input').clear();
+    cy.get('#pin-input').type('123456{enter}');
     cy.get('#pin-input-text').should(
       'not.contain',
-      'Du skal vælge et bibliotek'
+      'Bibliotekskoden skal være på 4 til 6 cifre.'
     );
   });
 });

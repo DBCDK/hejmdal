@@ -327,8 +327,8 @@ window.loginSubmit = function loginSubmit(event) {
   // Error messages
   var noLibraryMessage = 'Du skal vælge et bibliotek';
   var noIdMessage = 'Du skal angive dit Cpr- eller lånernummer';
-  var noPinMessage = 'Du skal angive din 4- eller 5-cifrede bibliotekskode';
-  var invalidPinMessage = 'Bibliotekskoden skal være på 4 eller 5 cifre.';
+  var noPinMessage = 'Du skal angive din 4- eller 6-cifrede bibliotekskode';
+  var invalidPinMessage = 'Bibliotekskoden skal være på 4 til 6 cifre.';
 
   var valid = true;
 
@@ -352,7 +352,7 @@ window.loginSubmit = function loginSubmit(event) {
 
   // if pin length is not valid
   if (pin.value) {
-    if (pin.value.length < 4 || pin.value.length > 5) {
+    if (pin.value.length < 4 || pin.value.length > 6) {
       addFieldErrorMessage(pin, pinText, invalidPinMessage);
       valid = false;
     }
