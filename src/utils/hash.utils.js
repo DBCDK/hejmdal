@@ -5,6 +5,7 @@
  */
 import crypto from 'crypto';
 import {CONFIG} from './config.util';
+import {log} from './logging.util';
 
 const IV_LENGTH = 16; // For AES, this is always 16
 
@@ -15,7 +16,7 @@ const IV_LENGTH = 16; // For AES, this is always 16
  * @returns {boolean}
  */
 function is_scalar(mixed) {
-  return (/string|number/).test(typeof mixed);
+  return /string|number/.test(typeof mixed);
 }
 
 /**
@@ -26,7 +27,9 @@ function is_scalar(mixed) {
  * @returns {*}
  */
 export function createHash(toHash, hashSecret = 'shared') {
-  const secret = CONFIG.hash[hashSecret] ? CONFIG.hash[hashSecret] : CONFIG.hash.shared;
+  const secret = CONFIG.hash[hashSecret]
+    ? CONFIG.hash[hashSecret]
+    : CONFIG.hash.shared;
   if (is_scalar(toHash)) {
     return crypto
       .createHmac('sha256', secret)
@@ -56,8 +59,12 @@ export function md5(str) {
  * @param hashSecret
  * @returns {boolean}
  */
-export function validateHash(hashedString, validateString, hashSecret = 'shared') {
-  return (hashedString === createHash(validateString, hashSecret));
+export function validateHash(
+  hashedString,
+  validateString,
+  hashSecret = 'shared'
+) {
+  return hashedString === createHash(validateString, hashSecret);
 }
 
 /**
@@ -71,7 +78,11 @@ export function encrypt(data) {
   const iv = crypto.randomBytes(IV_LENGTH);
 
   const textBuffer = new Buffer(text, 'utf8');
-  const cipher = crypto.createCipheriv('aes-256-cbc', new Buffer(CONFIG.hash.aes256Secret), new Buffer(iv));
+  const cipher = crypto.createCipheriv(
+    'aes-256-cbc',
+    new Buffer(CONFIG.hash.aes256Secret),
+    new Buffer(iv)
+  );
   cipher.write(textBuffer);
   cipher.end();
 
@@ -88,11 +99,23 @@ export function encrypt(data) {
  * @returns {Object}
  */
 export function decrypt(obj) {
-  const hexBuffer = new Buffer(obj.hex, 'hex');
-  const iv = obj.iv;
-  const decipher = crypto.createDecipheriv('aes-256-cbc', new Buffer(CONFIG.hash.aes256Secret), new Buffer(iv));
-  decipher.write(hexBuffer);
-  decipher.end();
-  const data = decipher.read().toString('utf8');
-  return JSON.parse(data);
+  try {
+    const hexBuffer = new Buffer(obj.hex, 'hex');
+    const iv = obj.iv;
+    const decipher = crypto.createDecipheriv(
+      'aes-256-cbc',
+      new Buffer(CONFIG.hash.aes256Secret),
+      new Buffer(iv)
+    );
+    decipher.write(hexBuffer);
+    decipher.end();
+    const data = decipher.read().toString('utf8');
+    return JSON.parse(data);
+  } catch (e) {
+    log.error('Failed to decrypt', {
+      decrypt: obj,
+      error: e.message,
+      stack: e.stack
+    });
+  }
 }
