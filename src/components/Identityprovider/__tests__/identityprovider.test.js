@@ -40,7 +40,9 @@ describe('test authenticate method', () => {
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
     expect(ctx.redirect).toBeCalledWith(
-      `/login/identityProviderCallback/nemlogin/${ctx.session.state.stateHash}`
+      `/login/identityProviderCallback/nemlogin/${
+        ctx.session.state.stateHash[0]
+      }`
     );
   });
   it('Should not redirect to nemlogin', async () => {
@@ -61,7 +63,7 @@ describe('test identityProviderCallback method', () => {
         id: 'testId'
       }
     });
-    ctx.params.state = ctx.getState().stateHash;
+    ctx.params.state = ctx.getState().stateHash[0];
   });
 
   const next = () => {};

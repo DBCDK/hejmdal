@@ -33,7 +33,7 @@ export async function stateMiddleware(req, res, next) {
  */
 export async function setDefaultState(req, res, next) {
   req.session.state = {
-    stateHash: req.session.query ? generateStateHash(req.session.query) : '',
+    stateHash: setStateHash(req),
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
     serviceAgency:
@@ -46,6 +46,26 @@ export async function setDefaultState(req, res, next) {
   req.session.save(() => {
     return next();
   });
+}
+
+/**
+ * Adds a state hash value to session.
+ *
+ * The state hash is used to validate that responses from identity providers are
+ * initiated in the current session. If not the user must af initiated login from an
+ * invalid flow.
+ *
+ * @param {Request} req
+ * @returns {Array} A list of valid hash values.
+ */
+function setStateHash(req) {
+  const currentHash =
+    (req.session && req.session.state && req.session.state.stateHash) || [];
+  const stateHash = req.session.query
+    ? generateStateHash(req.session.query)
+    : '';
+  currentHash.push(stateHash);
+  return currentHash;
 }
 
 /**
