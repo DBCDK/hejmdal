@@ -185,22 +185,15 @@ context('Borchk form', () => {
     cy.get('#pin-input').type('123{enter}');
     cy.get('#pin-input-text').should(
       'contain',
-      'Bibliotekskoden skal være på 4 til 6 cifre.'
+      'Bibliotekskoden skal være på mindst 4 tegn.'
     );
 
-    // show error when pin is more than 6 figures
-    cy.get('#userid-input').clear();
-    cy.get('#pin-input').type('1234567{enter}');
-    cy.get('#pin-input-text').should(
-      'contain',
-      'Bibliotekskoden skal være på 4 til 6 cifre.'
-    );
     // remove validation error from user pin
     cy.get('#pin-input').clear();
-    cy.get('#pin-input').type('123456{enter}');
+    cy.get('#pin-input').type('123456abc{enter}');
     cy.get('#pin-input-text').should(
       'not.contain',
-      'Bibliotekskoden skal være på 4 til 6 cifre.'
+      'Bibliotekskoden skal være på mindst 4 tegn.'
     );
   });
 });
