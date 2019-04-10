@@ -82,6 +82,7 @@ export async function authenticate(req, res, next) {
       ? await getAgency(state.serviceAgency)
       : null;
     const lockedAgencyName = branch ? branch.agencyName : null;
+    const lockedBranchRegistrationUrl = branch && branch.registrationFormUrl;
     const agencyTypeFilter = req.session.query.agencytype || 'folk,forsk';
     const branches = identityProviders.borchk
       ? await getListOfAgenciesForFrontend()
@@ -111,6 +112,7 @@ export async function authenticate(req, res, next) {
       preselectedId: preselectedId,
       lockedAgency: state.serviceAgency || null,
       lockedAgencyName: lockedAgencyName,
+      lockedBranchRegistrationUrl,
       help: helpText,
       newUser: getText(['newUser']),
       cookie: getText(['cookies']),
