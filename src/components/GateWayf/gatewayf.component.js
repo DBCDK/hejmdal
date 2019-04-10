@@ -106,7 +106,7 @@ async function getUserDataFromDb(wayfTicket) {
   if (Array.isArray(wayfTicket.secret)) {
     secret = wayfTicket.secret[0];
   }
-  const gateWayfTicket = await storage.read(id, secret);
+  const gateWayfTicket = await storage.readUnencryptedData(id, secret);
   if (gateWayfTicket === null) {
     log.error('Could not read gateWayf ticket id: ' + id);
     return {userId: null, wayfId: null};

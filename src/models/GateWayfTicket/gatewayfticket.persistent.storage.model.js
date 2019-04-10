@@ -7,7 +7,7 @@ import GateWayfTicket from '../db_models/gatewayfticket.model';
 import {log} from '../../utils/logging.util';
 
 export default class PersistentGateWayfTicketStorage {
-  read(tid, secret) {
+  readUnencryptedData(tid, secret) {
     return GateWayfTicket.query()
       .select('ticket')
       .where({id: tid, ticketsecret: secret})
@@ -53,6 +53,13 @@ export default class PersistentGateWayfTicketStorage {
         log.error('Failed to garbage collect tickets', {error: error.message});
         return false;
       });
+  }
+
+  read(tid, ticket) {
+    // eslint-disable-line no-unused-vars
+    throw new Error(
+      'Cannot use read in gatewayfticket. Use readUnencryptedData instead '
+    );
   }
 
   static insert(tid, ticket) {

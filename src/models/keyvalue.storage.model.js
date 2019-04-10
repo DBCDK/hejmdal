@@ -93,6 +93,23 @@ export default class KeyValueStorage {
   }
 
   /**
+   * Read an unencrypted object from store
+   *
+   * @param {string} objectKey
+   * @param {string} extra
+   * @returns {any}
+   */
+  async readUnencryptedData(objectKey, extra) {
+    let object = false;
+    try {
+      return await this.store.readUnencryptedData(objectKey, extra);
+    } catch (e) {
+      log.error('Read object', {error: e.message, stack: e.stack});
+    }
+    return object;
+  }
+
+  /**
    * Find objects from store where key begins with given prefix
    *
    * @param {string} objectKeyPrefix
