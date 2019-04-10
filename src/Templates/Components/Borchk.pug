@@ -42,7 +42,10 @@ div#borchk
     div.action-container
         button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='4') Log ind
         div.other-actions
-          a(onclick='toggleModal("userModal")' data-cy='new-user-button') Ny Bruger?
+          if (lockedAgency && lockedBranchRegistrationUrl)
+            a(href=lockedBranchRegistrationUrl data-cy='new-user-button') Ny Bruger?
+          else
+            a(onclick='toggleModal("userModal")' data-cy='new-user-button') Ny Bruger?
           a(onclick='toggleModal("privacyModal")' data-cy='privacy-button') Læs om vores behandling af dine personoplysninger
 
   script var libraries = !{JSON.stringify(branches)}
