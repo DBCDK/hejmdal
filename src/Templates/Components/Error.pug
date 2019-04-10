@@ -35,3 +35,7 @@ div#error-body
   div#error-actions
     // Helptext
     include Helptext.container.pug
+
+  if retries
+    div
+      p Du har #{retries} forsøg tilbage

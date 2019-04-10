@@ -61,7 +61,7 @@ export default class KeyValueStorage {
   async update(key, object) {
     const objectInDb = await this.store.read(key);
     if (!objectInDb) {
-      return this.insert(key, object);
+      return await this.insert(key, object);
     }
     try {
       return await this.store.update(key, encrypt(object));
@@ -152,8 +152,9 @@ export default class KeyValueStorage {
    */
   async garbageCollect(probability, expires) {
     if (!Math.floor(Math.random() * probability)) {
+      const gcTime = new Date(new Date().getTime() - expires * 1000);
       try {
-        return await this.store.garbageCollect(expires);
+        return await this.store.garbageCollect(gcTime);
       } catch (e) {
         log.error('Garbage Collect', {error: e.message, stack: e.stack});
       }

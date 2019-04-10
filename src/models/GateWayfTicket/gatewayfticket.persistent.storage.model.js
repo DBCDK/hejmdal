@@ -35,10 +35,9 @@ export default class PersistentGateWayfTicketStorage {
   }
 
   garbageCollect(expires) {
-    const gcTime = new Date(new Date().getTime() - expires * 1000);
     return GateWayfTicket.query()
       .select('*')
-      .where('created', '<', gcTime)
+      .where('created', '<', expires)
       .then(result => {
         result.forEach(ticket => {
           this.delete(ticket.id);
@@ -55,35 +54,29 @@ export default class PersistentGateWayfTicketStorage {
       });
   }
 
-  read(tid, ticket) {
-    // eslint-disable-line no-unused-vars
+  read(tid, ticket) { // eslint-disable-line no-unused-vars
     throw new Error(
       'Cannot use read in gatewayfticket. Use readUnencryptedData instead '
     );
   }
 
-  static insert(tid, ticket) {
-    // eslint-disable-line no-unused-vars
+  static insert(tid, ticket) { // eslint-disable-line no-unused-vars
     throw new Error('Cannot use insert in gatewayfticket');
   }
 
-  static insertNext(ticket) {
-    // eslint-disable-line no-unused-vars
+  static insertNext(ticket) { // eslint-disable-line no-unused-vars
     throw new Error('Cannot use insertNext in gatewayfticket');
   }
 
-  static update(tid, ticket) {
-    // eslint-disable-line no-unused-vars
+  static update(tid, ticket) { // eslint-disable-line no-unused-vars
     throw new Error('Cannot use update in gatewayfticket');
   }
 
-  static upsert(tid, ticket) {
-    // eslint-disable-line no-unused-vars
+  static upsert(tid, ticket) { // eslint-disable-line no-unused-vars
     throw new Error('Cannot use upsert in gatewayfticket');
   }
 
-  static find(tid) {
-    // eslint-disable-line no-unused-vars
+  static find(tid) { // eslint-disable-line no-unused-vars
     throw new Error('Cannot use find in gatewayfticket');
   }
 }
