@@ -3,8 +3,6 @@ services:
   web:
     image: '${IMAGE:-hejmdal}:${TAG:-latest}'
     env_file: ./docker/env.docker
-    ports:
-      - '3000:3000'
   e2e:
     image: docker.dbc.dk/cypress:latest
     volumes:
