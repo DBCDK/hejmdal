@@ -391,11 +391,14 @@ export default function userIsLoggedIn(req) {
  * @param blockToTime
  */
 function blockClientUntilTime(res, blockToTime) {
-  const blocked = blockToTime ? new Date(blockToTime) : new Date();
-  if (blocked > new Date()) {
-    const error = 'Login blokeret til ' + moment(blocked).locale('da').format('D MMMM Y H:mm:ss');
+  const now = new Date();
+  const blocked = blockToTime ? new Date(blockToTime) : now;
+  if (blocked > now) {
+    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / (60000));
+    const minutesTxt = 'Login blokeret i ' + blockMinutes + ' minut' + (blockMinutes != 1 ? 'ter.' : '.');
+    const toTxt = ' Indtil ' + moment(blocked).locale('da').format('D MMMM Y H:mm:ss');
     res.status(429);
-    res.render('Blocked', {error});
+    res.render('Blocked', {error: minutesTxt + toTxt});
   }
 }
 
