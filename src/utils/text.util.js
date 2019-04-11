@@ -144,15 +144,15 @@ const helpTexts = {
         ]
       },
       {
-        header: 'Cpr- og lånernummer',
+        header: 'CPR- og lånernummer',
         texts: [
-          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit cpr-nummer eller dit lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
+          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit CPR- eller lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
         ]
       },
       {
         header: 'Pinkode',
         texts: [
-          'Pinkoden er den 4- eller 5-cifrede kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner.'
+          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner.'
         ]
       }
     ]
