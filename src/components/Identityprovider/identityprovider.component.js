@@ -395,7 +395,7 @@ function blockClientUntilTime(res, blockToTime) {
   const blocked = blockToTime ? new Date(blockToTime) : now;
   if (blocked > now) {
     const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / (60000));
-    const minutesTxt = 'Login blokeret i ' + blockMinutes + ' minut' + (blockMinutes != 1 ? 'ter.' : '.');
+    const minutesTxt = 'Login blokeret i ' + blockMinutes + ' minut' + (blockMinutes !== 1 ? 'ter.' : '.');
     const toTxt = ' Indtil ' + moment(blocked).locale('da').format('D MMMM Y H:mm:ss');
     res.status(429);
     res.render('Blocked', {error: minutesTxt + toTxt});
