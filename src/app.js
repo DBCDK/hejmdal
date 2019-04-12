@@ -71,6 +71,7 @@ app.use(
     saveUninitialized: true,
     secure: CONFIG.app.env === 'production',
     resave: true,
+    unset: 'destroy',
     store: !CONFIG.mock_storage && new KnexSessionStore({knex})
   })
 );
