@@ -23,7 +23,7 @@ export function mockContext(
     query: {token, returnurl},
     session: {
       save: cb => cb(),
-      destroy: () => {},
+      destroy: cb => cb && cb(),
       client: Object.assign({}, mockData),
       query: {
         state: 'mock_state_value'
