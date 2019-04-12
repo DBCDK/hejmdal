@@ -42,10 +42,9 @@ export default class PersistentCasStorage {
   }
 
   garbageCollect(expires) {
-    const gcTime = new Date(new Date().getTime() - expires * 1000);
     return AuthCode.query()
       .select('*')
-      .where('created', '<', gcTime)
+      .where('created', '<', expires)
       .then(result => {
         result.forEach(entry => {
           this.delete(entry.code);

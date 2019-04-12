@@ -35,8 +35,7 @@ export default class PersistentAuthCodeStorage {
   }
 
   garbageCollect(expires) {
-    const gcTime = new Date(new Date().getTime() - (expires * 1000));
-    return AuthCode.query().select('*').where('created', '<', gcTime)
+    return AuthCode.query().select('*').where('created', '<', expires)
       .then((result) => {
         result.forEach((code) => {
           this.delete(code.cid);

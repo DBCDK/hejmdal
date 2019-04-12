@@ -37,6 +37,9 @@
   #error-actions {
     display: none;
   }
+  .center {
+    text-align: center;
+  }
 }
 
 @media (min-width: 800px) {

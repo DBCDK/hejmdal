@@ -19,7 +19,9 @@ import {
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
+import moment from 'moment';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
+import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {ERRORS} from '../../utils/errors.util';
 
 /**
@@ -33,6 +35,7 @@ import {ERRORS} from '../../utils/errors.util';
 export async function authenticate(req, res, next) {
   const state = req.getState();
 
+  blockClientUntilTime(res, await blockLogin.toManyLoginsFromIp(req.ip));
   try {
     const identityProviders = getIdentityProviders(state);
 
@@ -102,6 +105,7 @@ export async function authenticate(req, res, next) {
     ).length;
 
     res.render('Login', {
+      retries: req.query.retries,
       error: error,
       returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
       serviceClient: state.serviceClient.name,
@@ -145,23 +149,28 @@ export async function authenticate(req, res, next) {
  * Parses the callback parameters for borchk. Parameters from form comes as post
  *
  * @param req
+ * @param res
  * @returns {*}
  */
 export async function borchkCallback(req, res) {
   const requestUri = req.getState().serviceClient.borchkServiceName;
   const formData = req.fakeBorchkPost || req.body;
-  let validated = {error: true, message: 'unknown_eror'};
+  const userId = formData && formData.userId ? formData.userId : null;
+  let validated = {error: true, message: 'unknown_error'};
 
-  if (formData && formData.userId && formData.agency && formData.pincode) {
-    validated = await validateUserInLibrary(requestUri, formData);
-  } else {
-    validated.message = ERRORS.missing_fields;
+  if (userId) {
+    if (formData.agency && formData.pincode) {
+      validated = await validateUserInLibrary(requestUri, formData);
+    } else {
+      validated.message = ERRORS.missing_fields;
+    }
   }
 
   if (!validated.error) {
+    await blockLogin.clearFailedUser(userId);
     const user = {
-      userId: formData.userId,
-      cpr: isValidCpr(formData.userId) ? formData.userId : null,
+      userId: userId,
+      cpr: isValidCpr(userId) ? userId : null,
       userType: 'borchk',
       agency: formData.agency,
       pincode: formData.pincode,
@@ -171,7 +180,14 @@ export async function borchkCallback(req, res) {
     req.setUser(user);
     return true;
   }
-  idenityProviderValidationFailed(req, res, validated, formData.agency);
+  const blockToTime = await blockLogin.toManyLoginsFromUser(userId);
+  if (blockToTime) {
+    validated.message = 'tmul';
+    blockClientUntilTime(res, blockToTime);
+  }
+  else {
+    identityProviderValidationFailed(req, res, validated, formData.agency, await blockLogin.getLoginsLeftUserId(userId));
+  }
   return false;
 }
 
@@ -185,7 +201,7 @@ export async function uniloginCallback(req) {
   if (validateUniloginTicket(req.query)) {
     userId = req.query.user;
   } else {
-    idenityProviderValidationFailed(req);
+    identityProviderValidationFailed(req);
   }
 
   req.setUser({
@@ -265,11 +281,12 @@ export async function identityProviderCallback(req, res) {
       state: req.getState()
     });
 
-    idenityProviderValidationFailed(req, res, ERRORS.error_in_request);
+    identityProviderValidationFailed(req, res, ERRORS.error_in_request);
   }
   if (res.headersSent) {
     return; // Something went wrong, and redirect is initiated.
   }
+  await blockLogin.clearFailedIp(req.ip);
   req.session.save(() => {
     if (req.session.hasOwnProperty('query')) {
       return res.redirect(
@@ -286,18 +303,21 @@ export async function identityProviderCallback(req, res) {
 /**
  *
  * @param {object} req
+ * @param {object} res
  * @param {object} error
  * @param {string} agency
+ * @param loginsLeft number
  */
-function idenityProviderValidationFailed(req, res, error, agency) {
+function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
   const agencyParameter = req.getState().serviceAgency
     ? '&agency=' + req.getState().serviceAgency
     : '';
   const errorParameter = error.error ? `&error=${error.message}` : '';
-  const preselctedLibrary = agency ? `&presel=${agency}` : '';
+  const preselectedLibrary = agency ? `&presel=${agency}` : '';
+  const retries = loginsLeft ? `&retries=${loginsLeft}` : '';
   const startOver = `/login?token=${req.getState().smaugToken}&returnurl=${
     req.getState().returnUrl
-  }${agencyParameter}${errorParameter}${preselctedLibrary}`;
+  }${agencyParameter}${errorParameter}${preselectedLibrary}${retries}`;
   res.redirect(302, startOver);
 }
 
@@ -362,6 +382,24 @@ export default function userIsLoggedIn(req) {
     return true;
   }
   return false;
+}
+
+/**
+ * Show blocked page
+ *
+ * @param res
+ * @param blockToTime
+ */
+function blockClientUntilTime(res, blockToTime) {
+  const now = new Date();
+  const blocked = blockToTime ? new Date(blockToTime) : now;
+  if (blocked > now) {
+    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / (60000));
+    const minutesTxt = 'Login blokeret i ' + blockMinutes + ' minut' + (blockMinutes !== 1 ? 'ter.' : '.');
+    const toTxt = ' Indtil ' + moment(blocked).locale('da').format('D MMMM Y H:mm:ss');
+    res.status(429);
+    res.render('Blocked', {error: minutesTxt + toTxt});
+  }
 }
 
 /**
