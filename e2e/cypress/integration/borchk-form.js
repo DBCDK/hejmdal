@@ -1,6 +1,7 @@
 context('Borchk form', () => {
+  const serviceUrl = `${Cypress.config().baseUrl}/example`;
   const authorize =
-    '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
+    `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${serviceUrl}`;
 
   beforeEach(() => {
     cy.visit(authorize);
