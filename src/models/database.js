@@ -23,7 +23,7 @@ export default function initialize() {
   knex.migrate
     .latest()
     .then(() => {
-      log.debug('Database is now at latest version.');
+      log.info('Database is now at latest version.');
     })
     .catch(e => {
       log.error('Could not update database to latest version', {
