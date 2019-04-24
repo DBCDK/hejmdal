@@ -17,6 +17,7 @@ COPY . .
 RUN npm run build:prod && \
   cp -R static prod_build/static && \
   cp -R src prod_build/src && \
+  cp -R migrations prod_build/migrations && \
   cp -R .babelrc prod_build/.babelrc && \
   cp -R package.json prod_build/package.json
 
