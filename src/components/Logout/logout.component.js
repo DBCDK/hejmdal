@@ -85,23 +85,23 @@ export function logout(req, res, next) {
     const {serviceClient, redirect_uri} = state;
     const {identityProviders} = req.getUser() || {};
 
-    req.session.destroy();
-
-    if (redirect_uri) {
-      res.redirect(
-        redirect_uri +
-          (redirect_uri.indexOf('?') ? '?' : '&') +
-          'message=' +
-          getLogoutInfoCode(identityProviders)
-      );
-    } else {
-      res.render('Logout', {
-        returnurl: (serviceClient && buildReturnUrl(state)) || null,
-        serviceName: (serviceClient && serviceClient.name) || ''
-      });
-    }
+    req.session.destroy(() => {
+      if (redirect_uri) {
+        res.redirect(
+          redirect_uri +
+            (redirect_uri.indexOf('?') ? '?' : '&') +
+            'message=' +
+            getLogoutInfoCode(identityProviders)
+        );
+      } else {
+        res.render('Logout', {
+          returnurl: (serviceClient && buildReturnUrl(state)) || null,
+          serviceName: (serviceClient && serviceClient.name) || ''
+        });
+      }
+    });
   } catch (error) {
     log.error('Error logging out', {error});
+    next();
   }
-  next();
 }
