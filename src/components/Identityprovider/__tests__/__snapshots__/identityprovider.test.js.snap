@@ -16,7 +16,7 @@ exports[`test authenticate method Should render error page 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],

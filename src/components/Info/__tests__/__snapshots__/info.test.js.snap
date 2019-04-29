@@ -57,7 +57,7 @@ exports[`test showinfo method Should render cookie info page 1`] = `
   ],
   "results": Array [
     Object {
-      "isThrow": false,
+      "type": "return",
       "value": undefined,
     },
   ],
