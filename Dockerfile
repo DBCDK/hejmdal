@@ -23,7 +23,7 @@ RUN npm run build:prod && \
 
 # Run unit and lint test
 RUN npm run lint:checkstyle && \
-  npm run lint:test
+  npm run test
 
 #
 # ---- Release ----
