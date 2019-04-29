@@ -5,6 +5,7 @@
 
 import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
+import startTiming from '../../utils/timing.util';
 
 /**
  * Retrieval of user identity/identities from CULR webservice
@@ -17,7 +18,7 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   const {userId} = user;
   let attributes = {};
   let response = null;
-
+  const stopTiming = startTiming();
   try {
     response = await culr.getAccountsByGlobalId({userIdValue: userId});
   } catch (e) {
@@ -39,6 +40,8 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
       return attributes;
     }
   }
+  const elapsedTimeInMs = stopTiming();
+  log.debug('timing', {service: 'Culr', ms: elapsedTimeInMs});
 
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
