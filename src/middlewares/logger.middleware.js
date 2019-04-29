@@ -1,4 +1,5 @@
 import {log} from '../utils/logging.util';
+import startTiming from '../utils/timing.util';
 
 /**
  * Log information about all page requests.
@@ -9,14 +10,16 @@ import {log} from '../utils/logging.util';
  * @param {NextFunction} next
  */
 export async function loggerMiddleware(req, res, next) {
+  const stopTiming = startTiming();
   const logOnFinished = () => {
     res.removeListener('finish', logOnFinished);
     res.removeListener('close', logOnFinished);
     try {
+      const elapsedTimeInMs = stopTiming();
       log.info('page request', {
+        baseUrl: req.baseUrl,
         request: {
           method: req.method,
-          url: req.url,
           header: req.header,
           params: req.params,
           query: req.query
@@ -25,6 +28,7 @@ export async function loggerMiddleware(req, res, next) {
           status: res.statusCode,
           message: res.statusMessage
         },
+        timings: {ms: elapsedTimeInMs},
         clientId:
           req.session && req.session.client ? req.session.client.clientId : null
       });
