@@ -1,5 +1,10 @@
 import {loggerMiddleware} from '../logger.middleware';
 import {log} from '../../utils/logging.util';
+import startTiming from '../../utils/timing.util';
+
+// mock timing function
+jest.mock('../../utils/timing.util');
+startTiming.mockImplementation(() => () => 42);
 
 describe('LoggerMiddleware tests', () => {
   const ctxListeners = {
@@ -17,7 +22,7 @@ describe('LoggerMiddleware tests', () => {
     const next = jest.fn();
     const ctx = {
       method: 'method',
-      url: 'url',
+      baseUrl: 'url',
       header: 'header',
       status: 'status',
       message: 'message',

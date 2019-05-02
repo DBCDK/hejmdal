@@ -16,11 +16,15 @@ pipeline {
     stages {
        
         stage('Build image') {
-            steps { script {
-                // Work around bug https://issues.jenkins-ci.org/browse/JENKINS-44609 , https://issues.jenkins-ci.org/browse/JENKINS-44789
-                sh "docker build -t $imageName:${imageLabel} --pull --no-cache ."
-                app = docker.image("$imageName:${imageLabel}")
-            } }
+            steps { 
+                script {
+                    ansiColor("xterm") {
+                        // Work around bug https://issues.jenkins-ci.org/browse/JENKINS-44609 , https://issues.jenkins-ci.org/browse/JENKINS-44789
+                        sh "docker build -t $imageName:${imageLabel} --pull --no-cache ."
+                        app = docker.image("$imageName:${imageLabel}")
+                    }
+                } 
+            }
         }
         
         stage('Integration test') {

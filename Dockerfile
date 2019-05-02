@@ -21,6 +21,10 @@ RUN npm run build:prod && \
   cp -R .babelrc prod_build/.babelrc && \
   cp -R package.json prod_build/package.json
 
+# Run unit and lint test
+RUN npm run lint:checkstyle && \
+  npm run test
+
 #
 # ---- Release ----
 FROM $NODE_BASEIMAGE AS release

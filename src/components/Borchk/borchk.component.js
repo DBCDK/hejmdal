@@ -6,6 +6,7 @@
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
+import startTiming from '../../utils/timing.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -16,13 +17,15 @@ import {ERRORS} from '../../utils/errors.util';
  */
 export async function validateUserInLibrary(serviceRequester, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
-
+  const stopTiming = startTiming();
+  const elapsedTimeInMs = stopTiming();
   const response = await getClient(
     userInput.agency,
     userInput.userId,
     userInput.pincode,
     serviceRequester
   );
+  log.debug('timing', {service: 'BorChk', ms: elapsedTimeInMs});
   userValidate = extractInfo(response);
 
   return userValidate;
