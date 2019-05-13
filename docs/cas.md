@@ -15,7 +15,7 @@ URL Params
 
 Query Params
 
-- `service`: URI to be returned to when user authorization has been completed. Must be configured on the client.
+- `service`: URI to be returned to when user authorization has been completed. Basepath must be configured on the client. If the full url contains a querystring it should be urlencoded.
 
 On successfull authentication, the user i redirected back to the specified service url with a ticket.
 
