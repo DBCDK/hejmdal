@@ -1,5 +1,7 @@
 context('CAS authorization flow', () => {
-  const serviceUrl = `${Cypress.config().baseUrl}/example`;
+  const serviceUrl = `${
+    Cypress.config().baseUrl
+  }/some-arbitrary-value?query=test`;
   const authorize = `/cas/hejmdal/733000/login?service=${serviceUrl}`;
 
   it('should redirect to login page', () => {
@@ -15,9 +17,8 @@ context('CAS authorization flow', () => {
 
     cy.get('#borchk-submit').click();
 
-    cy.location('pathname').should('eq', '/example/');
+    cy.location('pathname').should('eq', '/some-arbitrary-value');
     cy.location('search').should('contain', 'ticket');
-    return;
   });
   it('should validate service with valid ticket', () => {
     cy.visit(authorize);
@@ -27,12 +28,13 @@ context('CAS authorization flow', () => {
 
     cy.get('#borchk-submit').click();
 
-    cy.location('pathname').should('eq', '/example/');
+    cy.location('pathname').should('eq', '/some-arbitrary-value');
     cy.location('search').then(data => {
-      const ticket = data.split('=')[1];
-      const validateUrl = `/cas/hejmdal/733000/serviceValidate?service=${
-        Cypress.config().baseUrl
-      }/example&ticket=${ticket}`;
+      const ticket = data.split('&')[1].split('=')[1];
+      const serviceUrl = encodeURIComponent(
+        `${Cypress.config().baseUrl}/some-arbitrary-value?query=test`
+      );
+      const validateUrl = `/cas/hejmdal/733000/serviceValidate?service=${serviceUrl}&ticket=${ticket}`;
       cy.request({
         form: false,
         url: validateUrl
@@ -48,9 +50,9 @@ context('CAS authorization flow', () => {
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
 
-    cy.location('pathname').should('eq', '/example/');
+    cy.location('pathname').should('eq', '/some-arbitrary-value');
     cy.location('search').then(data => {
-      const ticket = data.split('=')[1];
+      const ticket = data.split('&')[1].split('=')[1];
       const validateUrl = `/cas/hejmdal/733000/serviceValidate?service=invalid_url&ticket=${ticket}`;
       cy.request({
         form: false,

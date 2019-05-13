@@ -3,7 +3,6 @@
  * Contains routes for making authentication using the CAS prototol.
  * Theese routes functions as a gateway towards the oAuth implementation.
  */
-
 import {Router} from 'express';
 import {CONFIG} from '../utils/config.util';
 import KeyValueStorage from '../models/keyvalue.storage.model';
@@ -13,6 +12,7 @@ import {getAuthorizationCode} from '../oAuth2/oAuth2.model';
 import {getUserAttributesForClient} from '../components/User/user.component';
 import {getClientById} from '../components/Smaug/smaug.client';
 import {log} from '../utils/logging.util';
+import {getHost} from '../utils/url.util';
 const router = Router();
 
 const casStorage = CONFIG.mock_storage
@@ -47,7 +47,7 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
   }
 
   // Validate service url
-  if (!client.redirectUris.includes(service)) {
+  if (!client.redirectUris.includes(getHost(service))) {
     return next(new Error('Invalid service url'));
   }
   // Redirect to authenticate endpoint
@@ -84,7 +84,11 @@ router.get('/callback', (req, res, next) => {
   casStorage.insert(code, casOptions);
 
   // Redirect back to service with a oauth code as ticket
-  res.redirect(`${casOptions.service}?ticket=${code}`);
+  res.redirect(
+    `${casOptions.service}${
+      casOptions.service.indexOf('?') ? '&' : '?'
+    }ticket=${code}`
+  );
 });
 
 router.get(
