@@ -17,7 +17,12 @@ export const CONFIG = {
     uri: process.env.CULR_WSDL_URI,
     userIdAut: process.env.CULR_USER_ID_AUT,
     groupIdAut: process.env.CULR_GROUP_ID_AUT,
-    passwordAut: process.env.CULR_PASSWORD_AUT
+    passwordAut: process.env.CULR_PASSWORD_AUT,
+    createAuth: {
+      userIdAut: process.env.CULR_CREATE_USER_ID_AUT,
+      groupIdAut: process.env.CULR_CREATE_GROUP_ID_AUT,
+      passwordAut: process.env.CULR_CREATE_PASSWORD_AUT
+    }
   },
   garbageCollect: {
     ticket: {
