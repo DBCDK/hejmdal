@@ -55,8 +55,6 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
-  if (!CulrClient) {
-  }
   return (await CulrClient.getAccountsByLocalIdAsync(params))[0];
 }
 

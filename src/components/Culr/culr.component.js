@@ -69,11 +69,6 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
     attributes.municipalityNumber = response.result.MunicipalityNo || null;
     attributes.culrId = response.result.Guid || null;
   }
-  /*else {
-    log.error('Der skete en fejl i kommuikationen med CULR', {
-      response: response
-    });
-  }*/
 
   return attributes;
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 window._tiConfig = window._tiConfig || {
   tiDomain: 'responder.wt-safetag.com', // Domain for tracking
   tiId: '476651662471322', // Tracking ID
