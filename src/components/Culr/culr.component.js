@@ -41,28 +41,28 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {service: 'Culr', ms: elapsedTimeInMs});
 
-  if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
-    if (user.identityProviders.pop() === 'borchk') {
-      // It should not be possible for a user authenticated through borchk,
-      // not to exist in CULR. Therefore a warning is logged.
-      log.warn('Borck user not in culr', {userId, agencyId});
+  if (
+    responseCode === 'ACCOUNT_DOES_NOT_EXIST' &&
+    user.identityProviders &&
+    user.identityProviders.slice(-1, 1) === 'borchk'
+  ) {
+    // It should not be possible for a user authenticated through borchk,
+    // not to exist in CULR. Therefore a warning is logged.
+    log.warn('Borck user not in culr', {userId, agencyId});
 
-      // If possible user should be created. This requires following:
-      // 1. CPR
-      // 2. AgencyID
-      // 3. MuncipalityID (only optional)
-      try {
-        const createUserResponse = await createUser(user, agencyId);
-        if (createUserResponse) {
-          response = await culr.getAccountsByGlobalId({userIdValue: userId});
-          responseCode =
-            response && response.result.responseStatus.responseCode;
-        }
-      } catch (e) {
-        log.error('Could not create User in CULR', {userId, agencyId, e});
+    // If possible user should be created. This requires following:
+    // 1. CPR
+    // 2. AgencyID
+    // 3. MuncipalityID (only optional)
+    try {
+      const createUserResponse = await createUser(user, agencyId);
+      if (createUserResponse) {
+        response = await culr.getAccountsByGlobalId({userIdValue: userId});
+        responseCode = response && response.result.responseStatus.responseCode;
       }
+    } catch (e) {
+      log.error('Could not create User in CULR', {userId, agencyId, e});
     }
-    log.info('Brugeren blev ikke fundet');
   }
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
