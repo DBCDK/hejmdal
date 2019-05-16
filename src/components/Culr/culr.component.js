@@ -44,7 +44,7 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   if (
     responseCode === 'ACCOUNT_DOES_NOT_EXIST' &&
     user.identityProviders &&
-    user.identityProviders.slice(-1, 1) === 'borchk'
+    user.identityProviders.slice(-1)[0] === 'borchk'
   ) {
     // It should not be possible for a user authenticated through borchk,
     // not to exist in CULR. Therefore a warning is logged.
