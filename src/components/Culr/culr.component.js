@@ -6,6 +6,8 @@
 import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 import startTiming from '../../utils/timing.util';
+import {validateUserInLibrary} from '../Borchk/borchk.component';
+import {CONFIG} from '../../utils/config.util';
 
 /**
  * Retrieval of user identity/identities from CULR webservice
@@ -76,6 +78,33 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   return attributes;
 }
 
+/**
+ * Get municipality for user.
+ *
+ * We can only get municipality if user has logged in through library in municipality.
+ *
+ * @param {*} user
+ * @returns {string|null}
+ */
+async function getMunicipalityId(user) {
+  const result = await validateUserInLibrary(
+    CONFIG.borchk.serviceRequesterInMunicipality,
+    user
+  );
+  if (!result.error) {
+    return user.agency.slice(1, 4);
+  }
+
+  return null;
+}
+
+/**
+ * Create user on CULR.
+ *
+ * @param {*} user
+ * @param {*} agencyId
+ * @returns Boolean
+ */
 async function createUser(user, agencyId) {
   // Check if required data exists
   if (!user.cpr || !agencyId) {
@@ -86,7 +115,7 @@ async function createUser(user, agencyId) {
   const response = await culr.createAccount({
     userIdValue: user.cpr,
     agencyId: agencyId,
-    municipalityNo: null
+    municipalityNo: await getMunicipalityId(user)
   });
   const responseCode = response && response.return.responseStatus.responseCode;
 

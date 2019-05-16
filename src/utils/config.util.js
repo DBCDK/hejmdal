@@ -11,6 +11,8 @@ export const CONFIG = {
     host: process.env.HOST
   },
   borchk: {
+    serviceRequesterInMunicipality:
+      process.env.BORCHK_SERVICEREQUESTER_MUNICIPALITY,
     uri: process.env.BORCHK_URI
   },
   culr: {
