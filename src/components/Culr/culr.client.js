@@ -3,10 +3,9 @@
  * Client for communicating with the CULR webservice
  */
 
-import soap from 'soap';
+import * as soap from 'soap';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
-
 let CulrClient = null;
 const CULR_AUTH_CREDENTIALS = {
   userIdAut: CONFIG.culr.userIdAut,
@@ -14,6 +13,7 @@ const CULR_AUTH_CREDENTIALS = {
   passwordAut: CONFIG.culr.passwordAut
 };
 
+const CULR_CREATE_AUTH_CREDENTIALS = CONFIG.culr.createAuth;
 /**
  * Invokes the getAccountsByGlobalId CULR method
  *
@@ -32,19 +32,7 @@ export async function getAccountsByGlobalId({userIdValue}) {
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
-  return new Promise((resolve, reject) => {
-    if (!CulrClient) {
-      throw new Error('CULR client is not initialised');
-    }
-    CulrClient.getAccountsByGlobalId(params, (err, result) => {
-      if (err) {
-        reject(err);
-      }
-      else {
-        resolve(result);
-      }
-    });
-  });
+  return (await CulrClient.getAccountsByGlobalIdAsync(params))[0];
 }
 
 /**
@@ -66,58 +54,67 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
-  return new Promise((resolve, reject) => {
-    if (!CulrClient) {
-      throw new Error('CULR client is not initialised');
-    }
-    CulrClient.getAccountsByLocalId(params, (err, result) => {
-      if (err) {
-        reject(err);
-      }
-      else {
-        resolve(result);
-      }
-    });
-  });
+  return (await CulrClient.getAccountsByLocalIdAsync(params))[0];
+}
+
+/**
+ * Add a Patron to CULR.
+ *
+ * @export
+ */
+export async function createAccount({
+  userIdValue,
+  agencyId,
+  municipalityNo = null
+}) {
+  const params = {
+    agencyId,
+    userCredentials: {
+      userIdType: 'CPR',
+      userIdValue: userIdValue
+    },
+    authCredentials: CULR_CREATE_AUTH_CREDENTIALS
+  };
+  if (municipalityNo) {
+    params.municipalityNo = municipalityNo;
+  }
+  if (!CulrClient) {
+    await init();
+  }
+  return (await CulrClient.createAccountAsync(params))[0];
 }
 /**
  * Initializes the CULR webservice. If MOCK_CULR (CONFIG.mock_externals.culr) is true a mock of the webservice will be
  * created.
  */
-export function init() {
-  return new Promise((resolve, reject) => {
-    const options = {
-      ignoredNamespaces: {
-        namespaces: [],
-        override: true
-      }
-    };
-
-    if (CONFIG.mock_externals.culr) {
-      setMockClient();
-      resolve(CulrClient);
+export async function init(mock = CONFIG.mock_externals.culr) {
+  const options = {
+    ignoredNamespaces: {
+      namespaces: [],
+      override: true
     }
-    else {
-      soap.createClient(CONFIG.culr.uri, options, (err, client) => {
-        if (err) {
-          log.error('Error when creating CULR client', {error: err});
-          reject(err);
-          return false;
-        }
-
-        client.on('request', (request) => {
-          log.debug('A request was made to CULR', {request: request});
-        });
-
-        client.on('response', (response) => {
-          log.debug('A response was received from CULR', {response: response});
-        });
-
-        CulrClient = client;
-        resolve(CulrClient);
+  };
+  if (mock) {
+    setMockClient();
+    return Promise.resolve(CulrClient);
+  }
+  if (!CulrClient) {
+    try {
+      console.log(soap);
+      const client = await soap.createClientAsync(CONFIG.culr.uri, options);
+      client.on('request', request => {
+        log.debug('A request was made to CULR', {request: request});
       });
+      client.on('response', response => {
+        log.debug('A response was received from CULR', {response: response});
+      });
+      CulrClient = client;
+    } catch (error) {
+      log.error('Error when creating CULR client', {error});
+      throw new Error('CULR client is not initialised');
     }
-  });
+  }
+  return CulrClient;
 }
 
 function setMockClient() {

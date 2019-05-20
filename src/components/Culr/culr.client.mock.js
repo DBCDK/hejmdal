@@ -11,13 +11,20 @@ export const CulrMockClient = {
    * @param {object} params
    * @param {function} cb
    */
-  getAccountsByGlobalId: (params, cb) => {
-    const response =
-      params.userCredentials.userIdValue === '5555666677' ||
-      params.userCredentials.userIdValue === '87654321'
-        ? OK200()
-        : ACCOUNT_DOES_NOT_EXIST();
-    cb(null, response);
+  getAccountsByGlobalIdAsync: params => {
+    if (params.userCredentials.userIdValue === '0101011234') {
+      return Promise.resolve([USER_0101011234()]);
+    }
+    if (
+      ['87654321', '5555666677'].includes(params.userCredentials.userIdValue)
+    ) {
+      return Promise.resolve([OK200()]);
+    }
+    return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
+  },
+  getAccountsByLocalIdAsync: () => Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]),
+  createAccountAsync: () => {
+    return Promise.resolve([CREATE_ACCOUNT()]);
   }
 };
 
@@ -51,6 +58,47 @@ function ACCOUNT_DOES_NOT_EXIST() {
       responseStatus: {
         responseCode: 'ACCOUNT_DOES_NOT_EXIST',
         responseMessage: 'Account does not exist'
+      }
+    }
+  };
+}
+
+/**
+ * Following is used to test the create user flow.
+ *
+ * @see
+ * e2e/cypress/integration/create_culr_user.js
+ */
+
+let created = false;
+function USER_0101011234() {
+  if (!created) {
+    return ACCOUNT_DOES_NOT_EXIST();
+  }
+  return {
+    result: {
+      Account: [
+        {
+          provider: '790900',
+          userIdType: 'CPR',
+          userIdValue: '0101011234'
+        }
+      ],
+      Guid: 'guid-0101011234',
+      responseStatus: {
+        responseCode: 'OK200'
+      }
+    }
+  };
+}
+
+function CREATE_ACCOUNT() {
+  created = true;
+  return {
+    return: {
+      responseStatus: {
+        responseCode: 'OK200',
+        responseMessage: 'Account created'
       }
     }
   };
