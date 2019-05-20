@@ -4,7 +4,8 @@
  */
 
 import {createAccount, init} from '../culr.client';
-import soap from 'soap';
+import * as soap from 'soap';
+
 jest.mock('soap');
 const culrMock = {
   on: jest.fn(),

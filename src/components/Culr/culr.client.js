@@ -3,10 +3,9 @@
  * Client for communicating with the CULR webservice
  */
 
-import soap from 'soap';
+import * as soap from 'soap';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
-
 let CulrClient = null;
 const CULR_AUTH_CREDENTIALS = {
   userIdAut: CONFIG.culr.userIdAut,
@@ -101,6 +100,7 @@ export async function init(mock = CONFIG.mock_externals.culr) {
   }
   if (!CulrClient) {
     try {
+      console.log(soap);
       const client = await soap.createClientAsync(CONFIG.culr.uri, options);
       client.on('request', request => {
         log.debug('A request was made to CULR', {request: request});
