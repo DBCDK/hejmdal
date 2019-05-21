@@ -6,6 +6,7 @@ import {CONFIG} from '../../utils/config.util';
 import {BorchkError} from './borchk.errors';
 import getMockClient from './mock/borchk.client.mock';
 import {promiseRequest} from '../../utils/request.util';
+import {log} from '../../utils/logging.util';
 
 /**
  * Retreives if a user is known on a given library
@@ -27,7 +28,7 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
   if (CONFIG.mock_externals.borchk) {
     response = getMockClient(agency);
   } else {
-    response = await promiseRequest('get', {
+    const requestParams = {
       uri: CONFIG.borchk.uri,
       qs: {
         serviceRequester: serviceRequester,
@@ -35,7 +36,9 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
         userId: userId,
         userPincode: pinCode
       }
-    });
+    };
+    response = await promiseRequest('get', requestParams);
+    log.debug('Borchk request', {requestParams, body: response.body});
   }
 
   if (response.statusCode === 200) {
