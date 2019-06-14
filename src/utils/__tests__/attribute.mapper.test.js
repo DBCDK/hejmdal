@@ -44,7 +44,8 @@ describe('Attribute mapper unittest', () => {
           cpr: {},
           libraries: {},
           municipality: {},
-          uniqueId: {}
+          uniqueId: {},
+          municipalityAgencyId: {}
         }
       },
       ticket: {}
@@ -62,7 +63,41 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
       uniqueId: 'some-random-curl-id',
-      municipality: '333'
+      municipality: '333',
+      municipalityAgencyId: '733300'
+    });
+  });
+  it('should map to correct municipalityAgencyId', () => {
+    const ctx = mockContext();
+    ctx.setUser({cpr: '0102456789', agency: '733300'});
+    ctx.setState({
+      culr: {accounts: [], municipalityNumber: null},
+      serviceClient: {
+        attributes: {municipalityAgencyId: {}}
+      }
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
+      municipalityAgencyId: null
+    });
+
+    // Test MunicipalityNumber is expanded to an agency ID
+    ctx.setState({
+      culr: {accounts: [], municipalityNumber: '333'}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
+      municipalityAgencyId: '733300'
+    });
+
+    // Test agency ID is returned when no municipalityNumber
+    ctx.setUser({cpr: '0102456789', agency: '12345'});
+    ctx.setState({
+      culr: {accounts: [], municipalityNumber: null}
+    });
+    mapAttributesToTicket(ctx, ctx, next);
+    expect(ctx.session.state.ticket.attributes).toEqual({
+      municipalityAgencyId: '12345'
     });
   });
 

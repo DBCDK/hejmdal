@@ -93,6 +93,9 @@ export function mapCulrResponse(culr, attributes, user) {
       case 'municipality':
         mapped.municipality = culr.municipalityNumber || null;
         break;
+      case 'municipalityAgencyId':
+        mapped.municipalityAgencyId = getMunicipalityAgencyId(culr, user);
+        break;
       case 'uniloginId':
         mapped.uniloginId =
           user.userType === 'unilogin' && user.userId ? user.userId : null;
@@ -113,4 +116,25 @@ export function mapCulrResponse(culr, attributes, user) {
   });
 
   return mapped;
+}
+
+/**
+ * Return Municipality Agency ID.
+ *
+ * If the user has not logged in with a Municipality Library
+ * Agency used for log in is returned.
+ *
+ * @param {*} culr
+ * @param {*} user
+ * @returns
+ */
+function getMunicipalityAgencyId(culr, user) {
+  if (culr.municipalityNumber) {
+    return `7${culr.municipalityNumber}00`;
+  }
+  if (!user.agency.startsWith('7')) {
+    return user.agency;
+  }
+
+  return null;
 }
