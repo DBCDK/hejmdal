@@ -1,0 +1,10 @@
+#logo {
+  display: flex;
+  align-items: center;
+}
+
+#logo svg {
+  width: 34px;
+  height: 42px;
+  margin-right: 20px;
+}

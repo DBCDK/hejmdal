@@ -26,14 +26,14 @@ div#borchk
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='2')
         button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
-      span(id='userid-input-text' data-text='Indtast dit Cpr- eller lånernummer') Indtast dit Cpr- eller lånernummer
+      span(id='userid-input-text' data-text='')
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
         input(type='password' class='form-control' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode' tabindex='3')
         button(type='button' id='toggle-pin-input' onclick='toggleFieldVisibility("pin-input");')
-      span(id='pin-input-text' data-text='Indtast din bibliotekskode') Indtast din bibliotekskode
+      span(id='pin-input-text' data-text='')
 
     if error
       div#error-container
@@ -46,6 +46,5 @@ div#borchk
             a(href=lockedBranchRegistrationUrl data-cy='new-user-button') Ny Bruger?
           else
             a(onclick='toggleModal("userModal")' data-cy='new-user-button') Ny Bruger?
-          a(onclick='toggleModal("privacyModal")' data-cy='privacy-button') Læs om vores behandling af dine personoplysninger
 
   script var libraries = !{JSON.stringify(branches)}

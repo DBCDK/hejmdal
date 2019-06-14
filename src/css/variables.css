@@ -25,7 +25,7 @@
   --shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.07);
 
   /* fonts */
-  --primary: 'FaktPro-Blond', Halvetica, Ariel, sans-serif;
-  --secondary: 'FaktPro-Medium', Halvetica, Ariel, sans-serif;
-  --tertiary: 'FaktPro-Normal', Halvetica, Ariel, sans-serif;
+  --primary: 'FaktPro-Blond', Helvetica, Arial, sans-serif;
+  --secondary: 'FaktPro-Medium', Helvetica, Arial, sans-serif;
+  --tertiary: 'FaktPro-Normal', Helvetica, Arial, sans-serif;
 }
