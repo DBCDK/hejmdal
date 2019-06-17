@@ -3,16 +3,17 @@
  * Storage model for persistent storage of tickets. CRUD functions
  */
 
-import AuthCode from '../db_models/authorizationCode.model';
+import cas from '../db_models/cas.model';
 import {log} from '../../utils/logging.util';
 
 export default class PersistentCasStorage {
   read(code) {
-    return AuthCode.query()
+    return cas
+      .query()
       .select('options')
       .where('code', code)
       .then(result => {
-        return result[0] ? result[0].code : null;
+        return result[0] ? result[0].options : null;
       })
       .catch(error => {
         log.error('Failed to get CAS options with authorization_code', {
@@ -27,7 +28,8 @@ export default class PersistentCasStorage {
   }
 
   delete(code) {
-    return AuthCode.query()
+    return cas
+      .query()
       .delete()
       .where('code', code)
       .then(() => {
@@ -42,7 +44,8 @@ export default class PersistentCasStorage {
   }
 
   garbageCollect(expires) {
-    return AuthCode.query()
+    return cas
+      .query()
       .select('*')
       .where('created', '<', expires)
       .then(result => {
@@ -64,7 +67,8 @@ export default class PersistentCasStorage {
   }
 
   insert(code, options) {
-    return AuthCode.query()
+    return cas
+      .query()
       .insert({code, options})
       .then(result => {
         return result.id ? result.id : null;
