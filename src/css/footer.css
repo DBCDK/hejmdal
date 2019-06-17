@@ -38,16 +38,20 @@
           }
 
           &.ereolen {
-            background: svg-inline(--ereolen) no-repeat center left;
-            background-size: 80% auto;
+            background: svg-inline(--ereolen) no-repeat center;
+            background-size: 60% auto;
           }
           &.ereolen-global {
-            background: svg-inline(--ereolen-global) no-repeat center center;
+            background: svg-inline(--ereolen-global) no-repeat center;
             background-size: 150% auto;
+          }
+          &.laesekompas {
+            background: svg-inline(--laesekompas) no-repeat center;
+            background-size: 140% auto;
           }
           &.bibliotek-dk {
             background: svg-inline(--bibliotek-dk) no-repeat center;
-            background-size: 100% auto;
+            background-size: 90% auto;
           }
         }
       }

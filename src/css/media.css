@@ -6,6 +6,10 @@
   fill: var(--black-lighten-1);
 }
 
+@svg-load --laesekompas url(svg/media/laesekompas.svg) {
+  fill: var(--black-lighten-1);
+}
+
 @svg-load --bibliotek-dk url(svg/media/bibliotek_dk.svg) {
   fill: var(--black-lighten-1);
 }
