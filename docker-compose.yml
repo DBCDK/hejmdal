@@ -24,7 +24,7 @@ services:
     # see https://docs.docker.com/compose/networking/
     environment:
       - CYPRESS_baseUrl=http://web:3000
-    command: npm run cy
+    command: bash -c 'sleep 10; npm run cy'
 
 networks:
   default:
