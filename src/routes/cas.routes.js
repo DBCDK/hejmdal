@@ -140,7 +140,7 @@ async function convertTicketToUser(req, res, next) {
   if (!authCodeResponse) {
     return res.send(invalidResponseXml(ticket, 'INVALID_TICKET'));
   }
-  const {uniqueId} = await getUserAttributesForClient(
+  const {uniqueId, municipality} = await getUserAttributesForClient(
     authCodeResponse.user,
     clientId
   );
@@ -148,7 +148,7 @@ async function convertTicketToUser(req, res, next) {
     return res.send(invalidResponseXml(ticket, 'INVALID_USER'));
   }
 
-  return res.send(validResponseXml(uniqueId));
+  return res.send(validResponseXml(uniqueId, municipality));
 }
 
 /**
@@ -157,11 +157,12 @@ async function convertTicketToUser(req, res, next) {
  * @param {String} user
  * @returns {String}
  */
-function validResponseXml(user) {
+function validResponseXml(user, municipality = '') {
   return `
   <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
     <cas:authenticationSuccess>
       <cas:user>${user}</cas:user>
+      <cas:municipality>${municipality}</cas:municipality>
     </cas:authenticationSuccess>
   </cas:serviceResponse>`;
 }
