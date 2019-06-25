@@ -41,28 +41,22 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {service: 'Culr', ms: elapsedTimeInMs});
 
-  if (
-    responseCode === 'ACCOUNT_DOES_NOT_EXIST' &&
-    user.identityProviders &&
-    user.identityProviders.slice(-1)[0] === 'borchk'
-  ) {
-    // It should not be possible for a user authenticated through borchk,
-    // not to exist in CULR. Therefore a warning is logged.
-    log.warn('Borck user not in culr', {userId, agencyId});
+  try {
+    // If possible user should be created. This requires following, CPR, AgencyID
+    // and optionally MuncipalityID:
+    if (shouldCreateAccount(agencyId, user, response)) {
+      // It should not have been possible for a user to have authenticated through borchk,
+      // and not to exist in CULR. Therefore a warning is logged.
+      log.warn('Borck user not in culr', {userId, agencyId});
 
-    // If possible user should be created. This requires following:
-    // 1. CPR
-    // 2. AgencyID
-    // 3. MuncipalityID (only optional)
-    try {
       const createUserResponse = await createUser(user, agencyId);
       if (createUserResponse) {
         response = await culr.getAccountsByGlobalId({userIdValue: userId});
         responseCode = response && response.result.responseStatus.responseCode;
       }
-    } catch (e) {
-      log.error('Could not create User in CULR', {userId, agencyId, e});
     }
+  } catch (e) {
+    log.error('Could not create User in CULR', {userId, agencyId, e});
   }
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
@@ -115,4 +109,37 @@ async function createUser(user, agencyId) {
   const responseCode = response && response.return.responseStatus.responseCode;
 
   return responseCode === 'OK200';
+}
+
+/**
+ * Util function for checking if library is registrered on Culr profile
+ *
+ * @param {*} library
+ * @param {*} accounts
+ * @returns
+ */
+function shouldCreateAccount(library, user, response) {
+  if (!library || !library.indexOf('7') === 0) {
+    return false;
+  }
+
+  const currentProvider =
+    user.identityProviders && user.identityProviders.slice(-1)[0];
+  if (!currentProvider === 'borchk') {
+    return false;
+  }
+
+  const responseCode = response && response.result.responseStatus.responseCode;
+
+  if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
+    return true;
+  }
+
+  if (response && response.result && response.result.Account) {
+    return (
+      response.result.Account.filter(a => a.provider === library).length === 0
+    );
+  }
+
+  return false;
 }
