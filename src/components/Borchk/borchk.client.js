@@ -26,7 +26,7 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
 
   // for test and development
   if (CONFIG.mock_externals.borchk) {
-    response = getMockClient(agency);
+    response = getMockClient(agency, userId, pinCode);
   } else {
     const requestParams = {
       uri: CONFIG.borchk.uri,

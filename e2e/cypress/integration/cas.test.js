@@ -13,7 +13,7 @@ context('CAS authorization flow', () => {
     cy.visit(authorize);
     cy.log('Login user via borchk');
     cy.get('#userid-input').type('87654321');
-    cy.get('#pin-input').type('1234');
+    cy.get('#pin-input').type('1111');
 
     cy.get('#borchk-submit').click();
 
@@ -24,7 +24,7 @@ context('CAS authorization flow', () => {
     cy.visit(authorize);
     cy.log('Login user via borchk');
     cy.get('#userid-input').type('87654321');
-    cy.get('#pin-input').type('1234');
+    cy.get('#pin-input').type('1111');
 
     cy.get('#borchk-submit').click();
 
@@ -41,13 +41,13 @@ context('CAS authorization flow', () => {
       })
         .its('body')
         .should('include', 'authenticationSuccess')
-        .should('include', '<cas:user>some-random-curl-id</cas:user>');
+        .should('include', '<cas:user>guid-87654321</cas:user>');
     });
   });
   it('should fail validate service with invalid service param', () => {
     cy.visit(authorize);
     cy.get('#userid-input').type('87654321');
-    cy.get('#pin-input').type('1234');
+    cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
 
     cy.location('pathname').should('eq', '/some-arbitrary-value');

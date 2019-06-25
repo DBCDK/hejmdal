@@ -3,6 +3,39 @@
  * Creates a static mock CULR client
  */
 
+const defaultLibraies = [
+  {
+    provider: '790900',
+    userIdType: 'CPR',
+    userIdValue: '5555666677'
+  },
+  {
+    provider: '100800',
+    userIdType: 'LOCAL-1',
+    userIdValue: '456456'
+  }
+];
+
+let accounts;
+function initMock() {
+  accounts = new Map();
+  accounts.set('87654321', {Account: defaultLibraies, MunicipalityNo: '909'});
+  accounts.set('5555666677', {
+    Account: defaultLibraies,
+    MunicipalityNo: '909'
+  });
+  accounts.set('0101011234', {
+    Account: [
+      {
+        provider: '790900',
+        userIdType: 'CPR',
+        userIdValue: '0101011234'
+      }
+    ]
+  });
+}
+initMock();
+
 export const CulrMockClient = {
   /**
    * getAccountsByGlobalId mock. If the value of params.userCredentials.userIdValue matches '1234567890' a OK200 response will be
@@ -12,39 +45,35 @@ export const CulrMockClient = {
    * @param {function} cb
    */
   getAccountsByGlobalIdAsync: params => {
-    if (params.userCredentials.userIdValue === '0101011234') {
-      return Promise.resolve([USER_0101011234()]);
-    }
-    if (
-      ['87654321', '5555666677'].includes(params.userCredentials.userIdValue)
-    ) {
-      return Promise.resolve([OK200()]);
+    const userId = params.userCredentials.userIdValue;
+    if (accounts.has(userId)) {
+      return Promise.resolve([OK200(accounts.get(userId), userId)]);
     }
     return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
   },
   getAccountsByLocalIdAsync: () => Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]),
-  createAccountAsync: () => {
+  createAccountAsync: ({userCredentials, agencyId, municipalityNo = null}) => {
+    if (accounts.has(userCredentials.userIdValue)) {
+      const account = accounts.get(userCredentials.userIdValue);
+      account.Account.push({
+        provider: agencyId,
+        userIdType: userCredentials.userIdType,
+        userIdValue: userCredentials.userIdValue
+      });
+      if (municipalityNo) {
+        account.MunicipalityNo = municipalityNo;
+      }
+      accounts.set(userCredentials.userIdValue, account);
+    }
     return Promise.resolve([CREATE_ACCOUNT()]);
   }
 };
 
-function OK200() {
+function OK200(data, userId) {
   return {
     result: {
-      Account: [
-        {
-          provider: '790900',
-          userIdType: 'CPR',
-          userIdValue: '5555666677'
-        },
-        {
-          provider: '100800',
-          userIdType: 'LOCAL-1',
-          userIdValue: '456456'
-        }
-      ],
-      MunicipalityNo: '909',
-      Guid: 'some-random-curl-id',
+      ...data,
+      Guid: `guid-${userId}`,
       responseStatus: {
         responseCode: 'OK200'
       }
@@ -69,28 +98,6 @@ function ACCOUNT_DOES_NOT_EXIST() {
  * @see
  * e2e/cypress/integration/create_culr_user.js
  */
-
-let created = false;
-function USER_0101011234() {
-  if (!created) {
-    return ACCOUNT_DOES_NOT_EXIST();
-  }
-  return {
-    result: {
-      Account: [
-        {
-          provider: '790900',
-          userIdType: 'CPR',
-          userIdValue: '0101011234'
-        }
-      ],
-      Guid: 'guid-0101011234',
-      responseStatus: {
-        responseCode: 'OK200'
-      }
-    }
-  };
-}
 
 function CREATE_ACCOUNT() {
   created = true;
