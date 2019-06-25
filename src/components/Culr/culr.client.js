@@ -100,7 +100,6 @@ export async function init(mock = CONFIG.mock_externals.culr) {
   }
   if (!CulrClient) {
     try {
-      console.log(soap);
       const client = await soap.createClientAsync(CONFIG.culr.uri, options);
       client.on('request', request => {
         log.debug('A request was made to CULR', {request: request});

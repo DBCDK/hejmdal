@@ -37,7 +37,7 @@ describe('test store and get user', () => {
         gender: null,
         municipality: '909',
         uniloginId: null,
-        uniqueId: 'some-random-curl-id',
+        uniqueId: 'guid-5555666677',
         userId: '5555666677',
         wayfId: null
       }
