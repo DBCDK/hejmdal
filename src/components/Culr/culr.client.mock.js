@@ -100,7 +100,6 @@ function ACCOUNT_DOES_NOT_EXIST() {
  */
 
 function CREATE_ACCOUNT() {
-  created = true;
   return {
     return: {
       responseStatus: {
