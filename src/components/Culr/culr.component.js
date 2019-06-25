@@ -114,8 +114,9 @@ async function createUser(user, agencyId) {
 /**
  * Util function for checking if library is registrered on Culr profile
  *
- * @param {*} library
- * @param {*} accounts
+ * @param {String} library
+ * @param {Object} user
+ * @param {Object} response
  * @returns
  */
 function shouldCreateAccount(library, user, response) {
