@@ -14,11 +14,7 @@ context('Password grant', () => {
       }
     })
       .its('body')
-      .should('have.all.keys', [
-        'access_token',
-        'expires_in',
-        'token_type'
-      ]);
+      .should('have.all.keys', ['access_token', 'expires_in', 'token_type']);
   });
 
   it('should return invalid client error', () => {
@@ -86,7 +82,7 @@ context('Password grant', () => {
         .its('body')
         .its('attributes')
         .its('uniqueId')
-        .should('eq', 'some-random-curl-id');
+        .should('eq', 'guid-5555666677');
     });
   });
 

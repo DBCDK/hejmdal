@@ -21,7 +21,7 @@ describe('Attribute mapper unittest', () => {
       }
     ],
     municipalityNumber: '333',
-    culrId: 'some-random-curl-id'
+    culrId: 'guid-0102456789'
   };
 
   it('do nothing', () => {
@@ -62,7 +62,7 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
-      uniqueId: 'some-random-curl-id',
+      uniqueId: 'guid-0102456789',
       municipality: '333',
       municipalityAgencyId: '733300'
     });
