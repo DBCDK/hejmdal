@@ -41,7 +41,8 @@ context('CAS authorization flow', () => {
       })
         .its('body')
         .should('include', 'authenticationSuccess')
-        .should('include', '<cas:user>guid-87654321</cas:user>');
+        .should('include', '<cas:user>guid-87654321</cas:user>')
+        .should('include', '<cas:municipality>909</cas:municipality>');
     });
   });
   it('should fail validate service with invalid service param', () => {
