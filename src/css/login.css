@@ -1,15 +1,15 @@
 #login {
   .content-container {
+    padding-top: 30px;
     .top {
       h1 {
         color: var(--black-lighten-1);
         font-size: 30px;
-        line-height: 34px;
         font-weight: lighter;
       }
 
       p {
-        margin: 20px 0 20px 0;
+        margin: 20px 0 0 0;
 
         a {
           font-size: 12px;
@@ -20,7 +20,7 @@
       }
     }
     .bottom {
-      margin: 80px 0 0 0;
+      margin: 20px 0 0 0;
 
       #external-providers {
         display: flex;
@@ -36,7 +36,7 @@
         #external-providers-btn-container {
           display: flex;
           flex-direction: column;
-          margin: 30px 0 40px 0;
+          margin: 20px 0 40px 0;
 
           a {
             border: 1px solid var(--grey-lighten-4);
@@ -86,10 +86,16 @@
         }
       }
     }
+
     @media (min-width: 486px) {
       .bottom {
-        margin: 119px 0 0 0;
+        margin: 40px 0 0 0;
       }
+    }
+  }
+  @media (min-width: 486px) {
+    .content-container {
+      padding-top: 40px;
     }
   }
 }

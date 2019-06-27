@@ -11,7 +11,7 @@
 }
 
 .form-group {
-  margin: 40px 0 0 0;
+  margin: 20px 0 0 0;
   position: relative;
 
   label,
@@ -266,10 +266,16 @@
   }
 }
 
+@media (min-width: 335px) {
+  .form-group {
+    margin: 40px 0 0 0;
+  }
+}
+
 .action-container {
   display: flex;
-  flex-direction: column;
-  margin: 40px 0 0 0;
+  flex-direction: row;
+  margin: 30px 0 0 0;
 
   button {
     max-width: 50%;
@@ -282,6 +288,7 @@
     border: 0;
     transition-duration: 0.2s;
     transition-timing-function: ease-out;
+    flex-grow: 1;
 
     &:hover,
     &:focus {
@@ -291,15 +298,21 @@
   .other-actions {
     display: flex;
     flex-direction: column;
-    margin: 20px 0 0 0;
+    align-self: center;
 
     a {
       font-family: var(--tertiary);
       color: var(--grey-lighten-1);
-      font-size: 12px;
+      font-size: 14px;
       text-decoration: underline;
       cursor: pointer;
     }
+  }
+}
+
+@media (min-width: 335px) {
+  .action-container {
+    margin: 40px 0 0 0;
   }
 }
 
@@ -314,18 +327,6 @@
   #newUser-dropdown .input-container,
   #borchk-dropdown .input-container {
     max-width: 486px;
-  }
-
-  .action-container {
-    flex-direction: row;
-
-    button {
-      flex-grow: 1;
-    }
-    .other-actions {
-      align-self: center;
-      margin: 0;
-    }
   }
 }
 
