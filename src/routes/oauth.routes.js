@@ -28,7 +28,13 @@ router.get(
   validateAuthRequest,
   isUserLoggedIn,
   setDefaultState,
-  authorizationMiddleware
+  authorizationMiddleware,
+  (req, res, next) => {
+    const {clients = []} = req.session;
+    clients.push(req.session.client);
+    req.session.clients = clients;
+    req.session.save();
+  }
 );
 
 /**

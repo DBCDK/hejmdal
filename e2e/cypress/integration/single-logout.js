@@ -5,5 +5,12 @@ context('Single Logout', () => {
     cy.loginOnTestService('hejmdal-3');
     cy.loginOnTestService('hejmdal-4');
     cy.loginOnTestService('hejmdal-5');
+    cy.visit('/logout?singlelogout=true');
+    cy.get('body')
+      .should('contain', 'hejmdal-1')
+      .should('contain', 'hejmdal-2')
+      .should('contain', 'hejmdal-3')
+      .should('contain', 'hejmdal-4')
+      .should('contain', 'hejmdal-5');
   });
 });

@@ -69,7 +69,12 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
     );
   } else {
     res.status(403);
-    res.send(JSON.stringify({error: 'invalid_client'}));
+    res.send(
+      JSON.stringify({
+        error: 'invalid_client',
+        statusMessage: 'some error happened'
+      })
+    );
   }
 });
 smaugMockRouter.get('/config/configuration', (req, res) => {

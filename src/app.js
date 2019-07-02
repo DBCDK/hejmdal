@@ -41,7 +41,7 @@ app.oauth = new OAuthServer({
   grants: ['password', 'authorization_code'],
   debug: true,
   allowEmptyState: true,
-  continueMiddleware: false
+  continueMiddleware: true
 });
 
 app.model = model;
