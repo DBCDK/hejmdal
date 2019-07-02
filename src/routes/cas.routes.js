@@ -38,7 +38,7 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
       throw new Error('Invalid client');
     }
   } catch (e) {
-    return next(e);
+    return next(new Error('Invalid client'));
   }
 
   // Validate if client is CAS enabled

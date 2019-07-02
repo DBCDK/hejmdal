@@ -29,6 +29,7 @@ import oAuthRoutes from './routes/oauth.routes';
 import casRoutes from './routes/cas.routes';
 import userinfoRoutes from './routes/userinfo.routes';
 import infoRoutes from './routes/info.routes';
+import testRoutes from './routes/test.routes';
 import initDatabase from './models/database';
 
 const {knex} = initDatabase();
@@ -82,6 +83,9 @@ app.use('/oauth', oAuthRoutes);
 app.use('/cas', casRoutes);
 app.use('/userinfo', userinfoRoutes);
 app.use('/info', infoRoutes);
+if (CONFIG.app.env === 'test') {
+  app.use('/test', testRoutes);
+}
 
 app.use(errorMiddleware);
 
