@@ -7,6 +7,7 @@
 export const municipalityName = {
   '004': 'Sydslesvig',
   101: 'København',
+  111: 'Torshavnar',
   147: 'Frederiksberg',
   151: 'Ballerup',
   153: 'Brøndby',
