@@ -90,18 +90,7 @@ function parseFindLibraryResponse(response) {
     const agencies = [];
     response.findLibraryResponse.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
-      let branchType = getAgencyField(agency, 'branchType');
-      let agencyType = getAgencyField(agency, 'agencyType');
-
-      // Quick fix
-      // Some agencies need to be handled as folkebiblioteker
-      // even though they are not.
-      // A better solution has to be found
-      const FORCE_FOLKEBIBLIOTEK = ['911116'];
-      if (FORCE_FOLKEBIBLIOTEK.includes(branchId)) {
-        branchType = 'H';
-        agencyType = 'Folkebibliotek';
-      }
+      const branchType = getAgencyField(agency, 'branchType');
 
       if (agencies.includes(branchId) || branchType !== 'H') {
         return;
@@ -115,7 +104,7 @@ function parseFindLibraryResponse(response) {
         branchShortName: getAgencyField(agency, 'branchShortName'),
         city: getAgencyField(agency, 'city'),
         address: getAgencyField(agency, 'postalAddress'),
-        type: agencyType,
+        type: getAgencyField(agency, 'agencyType'),
         registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
         branchWebsiteUrl: getAgencyField(agency, 'branchWebsiteUrl'),
         registrationFormUrlText: getAgencyField(
@@ -127,8 +116,7 @@ function parseFindLibraryResponse(response) {
 
       const municipalityNo = item.agencyId.substr(1, 3);
       if (
-        (item.agencyId.indexOf('7') === 0 ||
-          FORCE_FOLKEBIBLIOTEK.includes(branchId)) &&
+        item.agencyId.indexOf('7') === 0 &&
         item.type === 'Folkebibliotek' &&
         municipalityName[municipalityNo]
       ) {
