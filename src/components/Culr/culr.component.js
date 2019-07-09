@@ -12,7 +12,7 @@ import {CONFIG} from '../../utils/config.util';
 /**
  * Retrieval of user identity/identities from CULR webservice
  *
- * @param {string} userId
+ * @param {Object} user
  * @param {string} agencyId
  * @return {{}}
  */
@@ -60,7 +60,12 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   }
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
-    attributes.municipalityNumber = response.result.MunicipalityNo || null;
+    const {
+      municipalityNumber,
+      municipalityAgencyId
+    } = await getMunicipalityInformation(response.result, user);
+    attributes.municipalityNumber = municipalityNumber;
+    attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
   }
 
@@ -83,8 +88,39 @@ async function getMunicipalityId(user) {
   if (!result.error) {
     return user.agency.slice(1, 4);
   }
-
   return null;
+}
+
+/**
+ * Find municipality Number and Municipality Agency
+ *
+ * We can only get municipality if user has logged in through library in municipality.
+ *
+ * @param {{}} culrResponse
+ * @param {{}} user
+ * @returns {{}}
+ */
+async function getMunicipalityInformation(culrResponse, user) {
+  console.log({culrResponse});
+  const response = {};
+  if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
+    return {
+      municipalityNumber: culrResponse.MunicipalityNo,
+      municipalityAgencyId: `7${culrResponse.municipalityNumber}00`
+    };
+  }
+  const result = await validateUserInLibrary(
+    CONFIG.borchk.serviceRequesterInMunicipality,
+    user
+  );
+  if (!result.error) {
+    response.municipalityAgencyId = user.agency;
+    if (user.agency.startsWith('7')) {
+      response.municipalityNumber = user.agency.slice(1, 4);
+    }
+  }
+
+  return response;
 }
 
 /**
