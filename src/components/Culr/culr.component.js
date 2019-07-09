@@ -16,8 +16,8 @@ import {CONFIG} from '../../utils/config.util';
  * @param {string} agencyId
  * @return {{}}
  */
-export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
-  const {userId} = user;
+export async function getUserAttributesFromCulr(user = {}) {
+  const {userId, agency: agencyId = null} = user;
   let attributes = {};
   let response = null;
   let responseCode;
@@ -96,27 +96,27 @@ async function getMunicipalityId(user) {
  *
  * We can only get municipality if user has logged in through library in municipality.
  *
- * @param {{}} culrResponse
- * @param {{}} user
- * @returns {{}}
+ * @param {{MunicipalityNo: String|undefined}} culrResponse
+ * @param {{agency: String}} user
+ * @returns {{municipalityAgencyId, String|null, municipalityNumber:String|null}}
  */
-async function getMunicipalityInformation(culrResponse, user) {
-  console.log({culrResponse});
-  const response = {};
+export async function getMunicipalityInformation(culrResponse, user) {
+  let response = {};
   if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
-    return {
+    response = {
       municipalityNumber: culrResponse.MunicipalityNo,
-      municipalityAgencyId: `7${culrResponse.municipalityNumber}00`
+      municipalityAgencyId: `7${culrResponse.MunicipalityNo}00`
     };
-  }
-  const result = await validateUserInLibrary(
-    CONFIG.borchk.serviceRequesterInMunicipality,
-    user
-  );
-  if (!result.error) {
-    response.municipalityAgencyId = user.agency;
-    if (user.agency.startsWith('7')) {
-      response.municipalityNumber = user.agency.slice(1, 4);
+  } else if (user.agency) {
+    const result = await validateUserInLibrary(
+      CONFIG.borchk.serviceRequesterInMunicipality,
+      user
+    );
+    if (!result.error) {
+      response.municipalityAgencyId = user.agency;
+      if (user.agency.startsWith('7')) {
+        response.municipalityNumber = user.agency.slice(1, 4);
+      }
     }
   }
 
