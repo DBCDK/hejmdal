@@ -12,12 +12,12 @@ import {CONFIG} from '../../utils/config.util';
 /**
  * Retrieval of user identity/identities from CULR webservice
  *
- * @param {string} userId
+ * @param {Object} user
  * @param {string} agencyId
  * @return {{}}
  */
-export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
-  const {userId} = user;
+export async function getUserAttributesFromCulr(user = {}) {
+  const {userId, agency: agencyId = null} = user;
   let attributes = {};
   let response = null;
   let responseCode;
@@ -60,7 +60,12 @@ export async function getUserAttributesFromCulr(user = {}, agencyId = null) {
   }
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
-    attributes.municipalityNumber = response.result.MunicipalityNo || null;
+    const {
+      municipalityNumber,
+      municipalityAgencyId
+    } = await getMunicipalityInformation(response.result, user);
+    attributes.municipalityNumber = municipalityNumber;
+    attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
   }
 
@@ -83,8 +88,39 @@ async function getMunicipalityId(user) {
   if (!result.error) {
     return user.agency.slice(1, 4);
   }
-
   return null;
+}
+
+/**
+ * Find municipality Number and Municipality Agency
+ *
+ * We can only get municipality if user has logged in through library in municipality.
+ *
+ * @param {{MunicipalityNo: String|undefined}} culrResponse
+ * @param {{agency: String}} user
+ * @returns {{municipalityAgencyId, String|null, municipalityNumber:String|null}}
+ */
+export async function getMunicipalityInformation(culrResponse, user) {
+  let response = {};
+  if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
+    response = {
+      municipalityNumber: culrResponse.MunicipalityNo,
+      municipalityAgencyId: `7${culrResponse.MunicipalityNo}00`
+    };
+  } else if (user.agency) {
+    const result = await validateUserInLibrary(
+      CONFIG.borchk.serviceRequesterInMunicipality,
+      user
+    );
+    if (!result.error) {
+      response.municipalityAgencyId = user.agency;
+      if (user.agency.startsWith('7')) {
+        response.municipalityNumber = user.agency.slice(1, 4);
+      }
+    }
+  }
+
+  return response;
 }
 
 /**
