@@ -1,9 +1,16 @@
+/**
+ * @file
+ * This file includes mock implementations of auth.dbc.dk and serviceclients that imitate applications
+ * such as DDB cms og bibliotek.dk
+ */
+
 import {Router} from 'express';
 import {ATTRIBUTES} from '../utils/attributes.util';
 const router = Router();
 
-/* SERVICE MOCK */
-
+/**
+ * SERVICE MOCKS
+ */
 const loggedInOnServices = new Map();
 const serviceMockRouter = Router();
 serviceMockRouter.get('/:service/login', (req, res) => {
@@ -36,8 +43,9 @@ serviceMockRouter.get('/:service/logout', (req, res) => {
   }, 2000);
 });
 
-/* SMAUG MOCK */
-
+/**
+ * SMAUG MOCK
+ */
 function createClient(clientId, overrides) {
   const clientDefaults = {
     grants: ['authorization_code', 'password', 'cas'],
