@@ -16,6 +16,12 @@ context('Single Logout', () => {
     cy.loginOnTestService('hejmdal-5');
     cy.visit('/logout?singlelogout=true');
     cy.get('.iframeWrapper iframe').should('have.length', 5);
+    cy.get('iframe#hejmdal-1')
+      .invoke('attr', 'src')
+      .should(
+        'equal',
+        `${Cypress.config().baseUrl}/test/service/hejmdal-1/logout`
+      );
 
     cy.get('.stateWrapper').should(
       'contain',

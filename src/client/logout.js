@@ -46,7 +46,7 @@ class SingleLogout {
     iframeElement.style.visibility = 'hidden';
     iframeElement.style.position = 'absolute';
     wrapper.appendChild(iframeElement);
-    iframeElement.setAttribute('src', client.singleLogoutPath);
+    iframeElement.setAttribute('src', client.singleLogoutUrl);
 
     return new Promise((resolve, reject) => {
       iframeElement.addEventListener('load', e => {

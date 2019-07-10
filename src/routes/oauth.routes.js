@@ -6,6 +6,7 @@ import {
 } from '../utils/oauth2.utils';
 import {Router} from 'express';
 import {setDefaultState} from '../middlewares/state.middleware';
+import {log} from '../utils/logging.util';
 
 const router = Router();
 
@@ -30,10 +31,20 @@ router.get(
   setDefaultState,
   authorizationMiddleware,
   (req, res, next) => {
-    const {clients = []} = req.session;
-    clients.push(req.session.client);
-    req.session.clients = clients;
-    req.session.save();
+    try {
+      const {clients = [], client = {}, query} = req.session;
+      const redirectUrl = new URL(query.redirect_uri);
+      console.log(redirectUrl, 'sdfsdf');
+      const singleLogoutUrl = `${redirectUrl.origin}${client.singleLogoutPath}`;
+      clients.push({singleLogoutUrl, clientId: client.clientId});
+      req.session.clients = clients;
+      req.session.save();
+    } catch (error) {
+      log.error('Error when adding login client', {
+        stack: error.stack,
+        message: error.message
+      });
+    }
   }
 );
 
