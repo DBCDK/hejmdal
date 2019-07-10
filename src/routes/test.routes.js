@@ -20,7 +20,17 @@ serviceMockRouter.get('/:service/callback', (req, res) => {
   loggedInOnServices.set(service, true);
   res.send('ok');
 });
-serviceMockRouter.get('/logout', (req, res) => {});
+serviceMockRouter.get('/:service/verify', (req, res) => {
+  const {service} = req.params;
+  res.send(loggedInOnServices.get(service) || false);
+});
+serviceMockRouter.get('/:service/logout', (req, res) => {
+  const {service} = req.params;
+  setTimeout(() => {
+    loggedInOnServices.set(service, false);
+    res.send('ok');
+  }, 2000);
+});
 
 /* SMAUG MOCK */
 
@@ -35,6 +45,7 @@ function createClient(clientId, overrides) {
       `${process.env.HOST}/example/provider/callback`,
       `${process.env.HOST}/test/service/${clientId}/callback`
     ],
+    singleLogoutPath: `/test/service/${clientId}/logout`,
     displayName: 'Test Service',
     borchkServiceName: 'bibliotek.dk',
     attributes: ATTRIBUTES,

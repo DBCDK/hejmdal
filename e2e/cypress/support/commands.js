@@ -35,3 +35,9 @@ Cypress.Commands.add('loginOnTestService', service => {
   });
   cy.location('pathname').should('eq', `/test/service/${service}/callback`);
 });
+
+Cypress.Commands.add('verifyUserOnTestService', service => {
+  return cy
+    .request(`/test/service/${service}/verify`)
+    .then(({body}) => console.log(body) || body);
+});

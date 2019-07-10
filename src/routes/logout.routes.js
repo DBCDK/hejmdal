@@ -12,10 +12,11 @@ const router = Router();
 
 function singleLogout(req, res, next) {
   const {clients = []} = req.session;
+  const {returnurl} = req.query;
   if (!req.query.singlelogout) {
     return next();
   }
-  res.send(clients.map(client => client.clientId).join(', '));
+  res.render('SingleLogout', {clients, returnurl});
 }
 
 router.get('/', singleLogout, validateToken, gateWayfLogout, logout);
