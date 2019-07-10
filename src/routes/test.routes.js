@@ -28,7 +28,11 @@ serviceMockRouter.get('/:service/logout', (req, res) => {
   const {service} = req.params;
   setTimeout(() => {
     loggedInOnServices.set(service, false);
-    res.send('ok');
+    res.send(
+      JSON.stringify({
+        statusCode: service.includes('fail') ? 500 : 200
+      })
+    );
   }, 2000);
 });
 

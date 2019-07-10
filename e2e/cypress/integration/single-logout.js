@@ -28,4 +28,19 @@ context('Single Logout', () => {
     cy.verifyUserOnTestService('hejmdal-4').should('equal', false);
     cy.verifyUserOnTestService('hejmdal-5').should('equal', false);
   });
+  it('should fail logout if one service fails', () => {
+    cy.loginOnTestService('hejmdal-ok');
+    cy.loginOnTestService('hejmdal-fail');
+    cy.visit('/logout?singlelogout=true');
+    cy.get('.stateWrapper').should(
+      'contain',
+      'Det har ikke været muligt at logge dig ud af alle dine bibliotekstjenester.'
+    );
+
+    cy.verifyUserOnTestService('hejmdal-1').should('equal', false);
+    cy.verifyUserOnTestService('hejmdal-2').should('equal', false);
+    cy.verifyUserOnTestService('hejmdal-3').should('equal', false);
+    cy.verifyUserOnTestService('hejmdal-4').should('equal', false);
+    cy.verifyUserOnTestService('hejmdal-5').should('equal', false);
+  });
 });

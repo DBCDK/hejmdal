@@ -50,9 +50,19 @@ class SingleLogout {
 
     return new Promise((resolve, reject) => {
       iframeElement.addEventListener('load', e => {
-        const response = true;
-        // TODO: get response from body
-        resolve(response);
+        try {
+          const document =
+            iframeElement.contentDocument || iframe.contentWindow.document;
+          const {statusCode = 500} = JSON.parse(document.body.innerHTML);
+          if (Number(statusCode) === 200) {
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        } catch (e) {
+          console.error(e);
+          resolve(false);
+        }
       });
     });
   }
