@@ -26,7 +26,9 @@ export function addClientToListOfClients(req) {
   try {
     const {clients = [], client = {}, query} = req.session;
     const redirectUrl = new URL(query.redirect_uri);
-    const singleLogoutUrl = `${redirectUrl.origin}${client.singleLogoutPath}`;
+    const singleLogoutUrl = client.singleLogoutPath
+      ? `${redirectUrl.origin}${client.singleLogoutPath}`
+      : null;
     clients.push({singleLogoutUrl, clientId: client.clientId});
     req.session.clients = clients;
     req.session.save();

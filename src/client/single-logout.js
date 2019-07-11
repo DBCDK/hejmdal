@@ -13,15 +13,19 @@ class SingleLogout {
   }
 
   async logoutClients() {
-    this.updateState(this.onLoading());
-    const responses = await Promise.all(
-      this.clients.map(client => this.logoutFrame(client, this.iframeWrapper))
-    );
-    const isSuccessfull =
-      responses.filter(response => response !== true).length === 0;
-    if (isSuccessfull) {
-      this.updateState(this.onSuccess());
-    } else {
+    try {
+      this.updateState(this.onLoading());
+      const responses = await Promise.all(
+        this.clients.map(client => this.logoutFrame(client, this.iframeWrapper))
+      );
+      const isSuccessfull =
+        responses.filter(response => response !== true).length === 0;
+      if (isSuccessfull) {
+        this.updateState(this.onSuccess());
+      } else {
+        this.updateState(this.onError());
+      }
+    } catch (error) {
       this.updateState(this.onError());
     }
   }
@@ -58,6 +62,9 @@ class SingleLogout {
   }
 
   logoutFrame(client, wrapper) {
+    if (!client.singleLogoutUrl) {
+      return Promise.reject();
+    }
     const iframeElement = document.createElement('iframe');
     iframeElement.setAttribute('id', client.clientId);
     iframeElement.style.visibility = 'hidden';

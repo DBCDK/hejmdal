@@ -80,4 +80,13 @@ context('Single Logout', () => {
     cy.visit('/logout?singlelogout=true&access_token=hejmdal-ok');
     cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
   });
+  it('should fail single-logout if user logged in to unsupported service', () => {
+    cy.loginOnTestService('hejmdal-ok');
+    cy.loginOnTestService('hejmdal-no-single-logout-support');
+    cy.visit('/logout?singlelogout=true&access_token=hejmdal-ok');
+    cy.get('.stateWrapper').should(
+      'contain',
+      'Det har ikke været muligt at logge dig ud af alle dine bibliotekstjenester.'
+    );
+  });
 });
