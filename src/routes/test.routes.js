@@ -106,6 +106,9 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
   if (token.includes('no-cas')) {
     overrides.grants = ['authorization_code', 'password'];
   }
+  if (token.includes('no-single-logout-support')) {
+    overrides.singleLogoutPath = null;
+  }
   if (token.includes('hejmdal')) {
     res.send(JSON.stringify(createClient(token, overrides)));
   } else {
