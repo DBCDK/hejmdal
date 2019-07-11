@@ -49,4 +49,35 @@ context('Single Logout', () => {
     cy.verifyUserOnTestService('hejmdal-4').should('equal', false);
     cy.verifyUserOnTestService('hejmdal-5').should('equal', false);
   });
+
+  it('should redirect on succesfull logout', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.loginOnTestService('hejmdal-2');
+    cy.visit(
+      `/logout?access_token=hejmdal-1&singlelogout=true&redirect_uri=${
+        Cypress.config().baseUrl
+      }/example`
+    );
+    cy.location('pathname').should('eq', '/example/');
+  });
+
+  it('should NOT redirect to invalid redirect_uri', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.loginOnTestService('hejmdal-2');
+    cy.visit(
+      `/logout?singlelogout=true&access_token=hejmdal-1&redirect_uri=invalid_redirect_uri`
+    );
+    cy.location('pathname').should('eq', '/logout');
+  });
+
+  it('should provide a link to initiator on failed logout', () => {
+    cy.loginOnTestService('hejmdal-fail');
+    cy.visit('/logout?singlelogout=true&access_token=hejmdal-fail');
+    cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
+  });
+  it('should provide a link to initiator when no return_uri', () => {
+    cy.loginOnTestService('hejmdal-ok');
+    cy.visit('/logout?singlelogout=true&access_token=hejmdal-ok');
+    cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
+  });
 });

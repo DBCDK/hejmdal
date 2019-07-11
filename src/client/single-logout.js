@@ -1,7 +1,9 @@
 class SingleLogout {
-  constructor(container, {clients, returnurl}) {
+  constructor(container, {clients, redirect_uri, link, serviceName}) {
+    this.link = link;
+    this.serviceName = serviceName;
     this.clients = clients;
-    this.returnurl = returnurl;
+    this.redirect_uri = redirect_uri;
     this.iframeWrapper = document.createElement('div');
     this.iframeWrapper.classList.add('iframeWrapper');
     this.stateWrapper = document.createElement('div');
@@ -32,14 +34,29 @@ class SingleLogout {
     return '<div class="spinner">Vi er i gang med at logge dig ud</div>';
   }
   onSuccess() {
-    if (this.returnurl) {
-      window.location = this.returnurl;
+    if (this.redirect_uri) {
+      window.location = this.redirect_uri;
     }
-    return '<div class="success">Du er nu blevet logget ud af bibliotekslogin</div>';
+    return `
+    <div class="success">
+      <p>Du er nu blevet logget ud af bibliotekslogin</p>
+      ${this.returnLink()}
+    </div>`;
   }
   onError() {
-    return '<div>Det har ikke været muligt at logge dig ud af alle dine bibliotekstjenester. Du skal istedet lukke din browser for at logge helt ud.</div>';
+    return `
+      <div>
+        <p>Det har ikke været muligt at logge dig ud af alle dine bibliotekstjenester. Du skal istedet lukke din browser for at logge helt ud.</p>
+        ${this.returnLink()}
+      </div>`;
   }
+
+  returnLink() {
+    if (this.link && this.serviceName) {
+      return `<a href=${this.link}>Tilbage til ${this.serviceName}</a>`;
+    }
+  }
+
   logoutFrame(client, wrapper) {
     const iframeElement = document.createElement('iframe');
     iframeElement.setAttribute('id', client.clientId);
@@ -52,15 +69,16 @@ class SingleLogout {
       iframeElement.addEventListener('load', e => {
         try {
           const document =
-            iframeElement.contentDocument || iframe.contentWindow.document;
+            iframeElement.contentDocument ||
+            iframeElement.contentWindow.document;
           const {statusCode = 500} = JSON.parse(document.body.innerHTML);
           if (Number(statusCode) === 200) {
             resolve(true);
           } else {
             resolve(false);
           }
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error); // eslint-disable-line no-console
           resolve(false);
         }
       });

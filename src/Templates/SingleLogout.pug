@@ -1,6 +1,6 @@
 extends Main
 block append scripts
-  script(src="/js/logout.js")
+  script(src="/js/single-logout.js")
 
 block append content
   div#logout
@@ -8,4 +8,4 @@ block append content
       h1 Du er ved at blive logget ud af dine bibliotekstjenester
       div#singlelogout
   div.iframes
-  script var singleLogoutData = !{JSON.stringify({clients, returnurl})}
+  script var singleLogoutData = !{JSON.stringify({clients, redirect_uri, link, serviceName})}

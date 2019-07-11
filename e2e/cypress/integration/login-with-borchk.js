@@ -29,8 +29,6 @@ context('Login flow', () => {
     cy.location('pathname').should('eq', '/example/');
     cy.location('search').should('contain', 'code');
 
-    cy.log(window.location, Cypress.config().baseUrl);
-
     cy.log('Get access token');
     cy.hash('ticket');
     cy.get('#get-ticket-button').click();
