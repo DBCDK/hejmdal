@@ -61,7 +61,8 @@ export function extractClientInfo(client) {
     redirectUris: client.redirectUris,
     clientSecret: client.app.clientSecret,
     requireConsent: !!client.requireConsent,
-    logoColor: client.logoColor ? client.logoColor : '#252525'
+    logoColor: client.logoColor ? client.logoColor : '#252525',
+    singleLogoutPath: client.singleLogoutPath
   };
 
   if (CONFIG.app.env === 'test') {

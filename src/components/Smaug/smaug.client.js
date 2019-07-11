@@ -98,7 +98,7 @@ export async function revokeToken(token) {
   let response = {};
 
   // for test and development
-  if (CONFIG.mock_externals.smaug) {
+  if (CONFIG.app.env === 'test') {
     return mockRevokeToken(token);
   }
 

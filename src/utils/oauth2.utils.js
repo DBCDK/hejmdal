@@ -3,6 +3,8 @@ import {
   getClientInfoByClientId,
   extractClientInfo
 } from '../components/Smaug/smaug.component';
+import {log} from './logging.util';
+
 export function disableRedirectUrlCheck(req, res, next) {
   // This is a hack to allow all redirect_uris. This should only be included in the mock implementation.
   if (req.query.client_id === 'hejmdal') {
@@ -12,6 +14,28 @@ export function disableRedirectUrlCheck(req, res, next) {
     req.session.client = null;
   }
   next();
+}
+
+/**
+ * Add current client to the list of clients a user is logged in to.
+ *
+ * @export
+ * @param {object} req
+ */
+export function addClientToListOfClients(req) {
+  try {
+    const {clients = [], client = {}, query} = req.session;
+    const redirectUrl = new URL(query.redirect_uri);
+    const singleLogoutUrl = `${redirectUrl.origin}${client.singleLogoutPath}`;
+    clients.push({singleLogoutUrl, clientId: client.clientId});
+    req.session.clients = clients;
+    req.session.save();
+  } catch (error) {
+    log.error('Error when adding login client', {
+      stack: error.stack,
+      message: error.message
+    });
+  }
 }
 
 /**

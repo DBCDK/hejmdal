@@ -44,7 +44,7 @@ context('Password grant', () => {
       body: {
         grant_type: 'password',
         username: 'wrong_user',
-        password: 'wrong',
+        password: 'fail',
         agency: '724000',
         client_id: 'hejmdal',
         client_secret: 'test'

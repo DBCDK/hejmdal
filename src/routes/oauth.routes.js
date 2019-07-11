@@ -2,7 +2,8 @@ import {
   validateAuthRequest,
   disableRedirectUrlCheck,
   isUserLoggedIn,
-  authorizationMiddleware
+  authorizationMiddleware,
+  addClientToListOfClients
 } from '../utils/oauth2.utils';
 import {Router} from 'express';
 import {setDefaultState} from '../middlewares/state.middleware';
@@ -28,7 +29,8 @@ router.get(
   validateAuthRequest,
   isUserLoggedIn,
   setDefaultState,
-  authorizationMiddleware
+  authorizationMiddleware,
+  addClientToListOfClients
 );
 
 /**

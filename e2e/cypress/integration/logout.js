@@ -18,15 +18,12 @@ context('Logout', () => {
     cy.visit(`${authorize}`);
     cy.get('h1').should('not.contain', 'Log ind');
     cy.visit('/logout?access_token=hejmdal-access-token');
-    cy.get('#returnUrl').should(
-      'have.text',
-      'Tilbage til Hejmdal Test Service'
-    );
+    cy.get('#returnUrl').should('have.text', 'Tilbage til Test Service');
     cy.visit(`${authorize}`);
     cy.get('h1').should('contain', 'Log ind');
   });
   it('should logout with unknown token', () => {
-    cy.visit('/logout?access_token=hejmdal-access-token-unknown');
+    cy.visit('/logout?access_token=access-token-unknown');
     cy.get('.content-container').should(
       'contain',
       'Du er nu logget ud af bibliotekslogin'
@@ -37,7 +34,7 @@ context('Logout', () => {
   });
   it('should redirect to return_url', () => {
     cy.visit(
-      `/logout?access_token=asdfg&redirect_uri=${
+      `/logout?access_token=hejmdal&redirect_uri=${
         Cypress.config().baseUrl
       }/example`
     );

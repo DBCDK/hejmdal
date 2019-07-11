@@ -90,7 +90,7 @@ context('CAS authorization flow', () => {
     cy.get('body').should('contain', 'Invalid service url');
   });
   it('should fail when client is not CAS enabled', () => {
-    cy.visit(`/cas/hejmdal-access-token/733000/login?service=${serviceUrl}`, {
+    cy.visit(`/cas/hejmdal-no-cas/733000/login?service=${serviceUrl}`, {
       failOnStatusCode: false
     });
     cy.get('body').should(

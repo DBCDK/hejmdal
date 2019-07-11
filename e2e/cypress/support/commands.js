@@ -23,3 +23,21 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('loginOnTestService', service => {
+  cy.visit(`/test/service/${service}/login`);
+  cy.location().then(loc => {
+    if (loc.pathname === '/login') {
+      cy.get('#userid-input').type('87654321');
+      cy.get('#pin-input').type('1234');
+      cy.get('#borchk-submit').click();
+    }
+  });
+  cy.location('pathname').should('eq', `/test/service/${service}/callback`);
+});
+
+Cypress.Commands.add('verifyUserOnTestService', service => {
+  return cy
+    .request(`/test/service/${service}/verify`)
+    .then(({body}) => console.log(body) || body);
+});

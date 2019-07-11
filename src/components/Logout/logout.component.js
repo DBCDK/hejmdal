@@ -70,9 +70,9 @@ function getLogoutInfoCode(identityProviders) {
 }
 
 /**
+ * Logs out the user from Hejmdal.
  *
- * Sets the session to null which will provoke the session to be destroyed.
- * If a returnurl is set, this will be used to create a link
+ * If a redirect_uri is set, this will be used to create a link
  * For all Identity Providers used but borchk, show a message about closing browser to end sessions at the Identity Provider
  *
  * @param req
@@ -100,8 +100,42 @@ export function logout(req, res, next) {
         });
       }
     });
-  } catch (error) {
-    log.error('Error logging out', {error});
-    next();
+  } catch (e) {
+    next(e);
+    log.error('Error logging out', {error: e.message, stack: e.stack});
+  }
+}
+
+/**
+ * Logs the user out of hejmdal, and all registered clients, the user has logged into.
+ *
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
+ */
+
+export function singleLogout(req, res, next) {
+  const {singlelogout} = req.query;
+  if (!singlelogout) {
+    return next();
+  }
+  try {
+    const {clients = [], state = {}} = req.session;
+    let {serviceClient, redirect_uri} = state;
+    const {identityProviders} = req.getUser() || {};
+
+    if (redirect_uri) {
+      redirect_uri = `${redirect_uri}${
+        redirect_uri.indexOf('?') ? '?' : '&'
+      }message=${getLogoutInfoCode(identityProviders)}`;
+    }
+    const link = (serviceClient && buildReturnUrl(state)) || null;
+    const serviceName = (serviceClient && serviceClient.name) || '';
+    req.session.destroy(() => {
+      res.render('SingleLogout', {clients, redirect_uri, link, serviceName});
+    });
+  } catch (e) {
+    next(e);
+    log.error('Error doing Single logout', {error: e.message, stack: e.stack});
   }
 }
