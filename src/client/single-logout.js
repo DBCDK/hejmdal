@@ -59,6 +59,7 @@ class SingleLogout {
     if (this.link && this.serviceName) {
       return `<a href=${this.link}>Tilbage til ${this.serviceName}</a>`;
     }
+    return '';
   }
 
   logoutFrame(client, wrapper) {
