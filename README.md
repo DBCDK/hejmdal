@@ -34,7 +34,7 @@ For development you use `npm run migrate:latest:dev` to source the env.env file 
 
 ## Example application
 
-Can be found at https://oauth.login.bib.dk/example
+Can be found at https://login.bib.dk/example
 
 ## Tests
 
@@ -92,28 +92,28 @@ The variables are specified at the form `name : internal config object`. Referen
 
 - `GC_TICKET_SECONDS` : `garbageCollect.ticket.seconds`  
   Number of seconds a ticket has lived in order to be a garbage collected. Defaults to 3600 (1 hour)
-  
+
 - `GC_FAILEDLOGIN_DIVISOR` : `garbageCollect.failedlogin.divisor`  
   Defines the probability that failedlogins are garbage collected on every request. The probability is calculated as 1/GC_FAILEDLOGIN_DIVISOR.
 
 - `GC_FAILEDLOGIN_SECONDS` : `garbageCollect.failedlogin.seconds`  
   Number of seconds a failedlogins has lived in order to be a garbage collected. Defaults to 36000 (10 hour)
-  
+
 - `FL_IP_MAXFAIL` : `failedLogin.ip.maxFails`  
   Number of continous failed logins from the same ip-adress. Defaults to 100
-  
+
 - `FL_IP_BLOCK_SECONDS` : `failedLogin.ip.blockSeconds`  
   Number of seconds an ip-adresse will be blocked. Defaults to 120
-  
+
 - `FL_IP_RESET_SECONDS` : `failedLogin.ip.resetSeconds`  
   Number of seconds a failed ip login is kept. Defaults to 86400
 
-- `FL_USER_MAXFAIL` : `failedLogin.userId.maxFails`   
+- `FL_USER_MAXFAIL` : `failedLogin.userId.maxFails`  
   Number of continous failed logins using the same userId. Defaults to 5
-  
+
 - `FL_USER_BLOCK_SECONDS` : `failedLogin.userId.blockSeconds`  
   Number of seconds an userId will be blocked. Defaults to 60
-  
+
 - `FL_USER_RESET_SECONDS` : `failedLogin.userId.resetSeconds`  
   Number of seconds a failed userId login is kept. Defaults to 86400
 
@@ -224,5 +224,8 @@ The variables are specified at the form `name : internal config object`. Referen
 
 # Dokumentation
 
-- [Documentation of endpoints](src/oAuth2)
-- [Example klient](https://oauth.login.bib.dk/example)
+- [Documentation of oAuth2 endpoints](docs/oauth2.md)
+- [Documentation of single logout](docs/single-logout.md)
+- [Documentation of CAS integration](docs/cas.md)
+- [Documentation of client configuration options](docs/configuration.md)
+- [Example klient](https://login.bib.dk/example)
