@@ -7,7 +7,10 @@ context('Single Logout', () => {
     cy.visit(`/test/service/hejmdal-1/logout`);
     cy.verifyUserOnTestService('hejmdal-1').should('equal', false);
   });
-
+  it('should not show returnlink or undefined on default page', () => {
+    cy.visit('/logout?singlelogout=true');
+    cy.get('.stateWrapper').should('not.contain', 'undefined');
+  });
   it('should login to 5 test services and add iframe to DOM', () => {
     cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-2');
