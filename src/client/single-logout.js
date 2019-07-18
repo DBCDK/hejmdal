@@ -1,3 +1,5 @@
+import {stacker} from './stacker-animation';
+
 class SingleLogout {
   constructor(container, {clients, redirect_uri, link, serviceName}) {
     this.link = link;
@@ -35,7 +37,8 @@ class SingleLogout {
   }
 
   onLoading() {
-    return '<div class="spinner">Vi er i gang med at logge dig ud</div>';
+    // stacker animation ('splash screen')
+    return stacker;
   }
   onSuccess() {
     if (this.redirect_uri) {
