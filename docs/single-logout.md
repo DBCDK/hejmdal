@@ -20,7 +20,7 @@ Parameters:
 In order for an application to support single logout through login.bib.dk, an endpoint in the individual applications that meets the following criteria is required:
 
 1.  The endpoint should clear the current session for the user. 
-2.  This endpoint must approve iframing in the access platform, by setting the header `X-Frame-Options: allow-from https: // [login.bib.dk](http://login.bib.dk/) /`. See documentation for X-Frame-Options: <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options>
+2.  This endpoint must approve iframing in the access platform, by setting the header `X-Frame-Options: allow-from https://login.bib.dk/`. See documentation for X-Frame-Options: <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options>
 3.  Endpoint must return a response in JSON containing a status code in body:
 
     ```json
