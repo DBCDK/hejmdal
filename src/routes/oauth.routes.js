@@ -50,15 +50,36 @@ router.get(
 router.post('/token', (req, res, next) => {
   const {grant_type, agency, username, password, client_id} = req.body;
   if (grant_type === 'password') {
+    // With password grant we support both client credentials in header or body.
+    const headerCredentials = getClientFromHeader(
+      req.headers.authorization || ''
+    );
     req.body.username = {
       username,
       agency,
-      client_id,
+      client_id: client_id || headerCredentials.client_id,
       password
     };
   }
   req.app.oauth.token()(req, res, next);
 });
+
+/**
+ * Extract client credentials from header.
+ *
+ * @param {*} authorization
+ * @returns
+ */
+function getClientFromHeader(authorization) {
+  if (!authorization) {
+    return {};
+  }
+  const [type, b64auth = ''] = authorization.split(' ');
+  const [client_id, client_secret] = new Buffer(b64auth, 'base64')
+    .toString()
+    .split(':');
+  return {client_id, client_secret};
+}
 
 /**
  * revoke token.

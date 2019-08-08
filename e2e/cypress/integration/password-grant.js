@@ -16,6 +16,25 @@ context('Password grant', () => {
       .its('body')
       .should('have.all.keys', ['access_token', 'expires_in', 'token_type']);
   });
+  it('should return valid token using header authorization', () => {
+    cy.request({
+      form: true,
+      url: 'oauth/token',
+      method: 'post',
+      auth: {
+        user: 'hejmdal',
+        pass: 'test'
+      },
+      body: {
+        grant_type: 'password',
+        username: '5555666677',
+        password: '1234',
+        agency: '724000'
+      }
+    })
+      .its('body')
+      .should('have.all.keys', ['access_token', 'expires_in', 'token_type']);
+  });
 
   it('should return invalid client error', () => {
     cy.request({
