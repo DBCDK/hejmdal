@@ -134,9 +134,10 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
     cy.get('#borchk-dropdown .agency').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency')
-      .should('contain.text', 'Slagelse')
-      .should('contain.text', 'Býarbókasavnið');
+    cy.get('#borchk-dropdown .agency').should(
+      'contain.text',
+      'BýarbókasavniðSlagelse'
+    );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
@@ -227,7 +228,7 @@ context('Borchk form', () => {
       'For mange fejlede forsøg på login'
     );
     cy.get('#error-body').should('contain', 'Login blokeret');
-    cy.wait(4000);
+    cy.wait(5000);
     cy.reload();
     cy.get('#error-header').should(
       'not.contain',
