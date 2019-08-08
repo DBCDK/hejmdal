@@ -1,7 +1,6 @@
 context('Borchk form', () => {
   const serviceUrl = `${Cypress.config().baseUrl}/example`;
-  const authorize =
-    `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${serviceUrl}`;
+  const authorize = `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${serviceUrl}`;
 
   beforeEach(() => {
     cy.visit(authorize);
@@ -128,16 +127,16 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 5);
+    cy.get('#borchk-dropdown .agency').should('have.length', 6);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
-    cy.get('#borchk-dropdown .agency').should('have.length', 1);
+    cy.get('#borchk-dropdown .agency').should('have.length', 2);
     cy.get('#borchk-dropdown .agency')
-      .first()
-      .should('have.text', 'Slagelse');
+      .should('contain.text', 'Slagelse')
+      .should('contain.text', 'Býarbókasavnið');
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
@@ -198,50 +197,80 @@ context('Borchk form', () => {
     );
   });
   it('Should block user', () => {
-    const uid = Math.random().toString(10).slice(-10);
+    const uid = Math.random()
+      .toString(10)
+      .slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl{downarrow}{downarrow}{downarrow}{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'sl{downarrow}{downarrow}{downarrow}{enter}'
+    );
     for (var i = 5; i; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1234{enter}');
-      cy.get('#error-body').should('contain', 'Du har ' + i + ' forsøg tilbage');
+      cy.get('#error-body').should(
+        'contain',
+        'Du har ' + i + ' forsøg tilbage'
+      );
     }
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
-    cy.get('#error-header').should('contain', 'For mange fejlede forsøg på login');
+    cy.get('#error-header').should(
+      'contain',
+      'For mange fejlede forsøg på login'
+    );
     cy.get('#error-body').should('contain', 'Login blokeret');
 
     cy.wait(1000);
     cy.reload();
-    cy.get('#error-header').should('contain', 'For mange fejlede forsøg på login');
+    cy.get('#error-header').should(
+      'contain',
+      'For mange fejlede forsøg på login'
+    );
     cy.get('#error-body').should('contain', 'Login blokeret');
     cy.wait(4000);
     cy.reload();
-    cy.get('#error-header').should('not.contain', 'For mange fejlede forsøg på login');
+    cy.get('#error-header').should(
+      'not.contain',
+      'For mange fejlede forsøg på login'
+    );
 
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
-    cy.get('#error-header').should('contain', 'For mange fejlede forsøg på login');
+    cy.get('#error-header').should(
+      'contain',
+      'For mange fejlede forsøg på login'
+    );
     cy.get('#error-body').should('contain', 'Login blokeret');
   });
   it('Should clear user when succesfull login', () => {
-    const uid = Math.random().toString(10).slice(-10);
+    const uid = Math.random()
+      .toString(10)
+      .slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl{downarrow}{downarrow}{downarrow}{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'sl{downarrow}{downarrow}{downarrow}{enter}'
+    );
     for (var i = 5; i > 1; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1234{enter}');
-      cy.get('#error-body').should('contain', 'Du har ' + i + ' forsøg tilbage');
+      cy.get('#error-body').should(
+        'contain',
+        'Du har ' + i + ' forsøg tilbage'
+      );
     }
     cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl{downarrow}{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'sl{downarrow}{enter}'
+    );
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
     cy.get('#logout button').click();
     cy.visit(authorize);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl{downarrow}{downarrow}{downarrow}{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'sl{downarrow}{downarrow}{downarrow}{enter}'
+    );
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
     cy.get('#error-body').should('contain', 'Du har 5 forsøg tilbage');

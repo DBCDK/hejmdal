@@ -115,12 +115,8 @@ function parseFindLibraryResponse(response) {
       };
 
       const municipalityNo = item.agencyId.substr(1, 3);
-      if (
-        item.agencyId.indexOf('7') === 0 &&
-        item.type === 'Folkebibliotek' &&
-        municipalityName[municipalityNo]
-      ) {
-        item.agencyName = municipalityName[municipalityNo];
+      if (item.type === 'Folkebibliotek' && municipalityName[item.agencyId]) {
+        item.agencyName = municipalityName[item.agencyId];
         item.municipalityNo = municipalityNo;
       }
       if (agency.geolocation) {
