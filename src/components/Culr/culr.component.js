@@ -67,6 +67,14 @@ export async function getUserAttributesFromCulr(user = {}) {
     attributes.municipalityNumber = municipalityNumber;
     attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
+    // Quick fix for Býarbókasavnið. TODO: clean up.
+  } else {
+    const {
+      municipalityNumber,
+      municipalityAgencyId
+    } = await getMunicipalityInformation({}, user);
+    attributes.municipalityNumber = municipalityNumber;
+    attributes.municipalityAgencyId = municipalityAgencyId;
   }
 
   return attributes;
