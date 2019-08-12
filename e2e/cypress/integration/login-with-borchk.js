@@ -56,6 +56,29 @@ context('Login flow', () => {
     cy.visit(authorize);
     cy.location('pathname').should('eq', '/login');
   });
+  it('Should trim user input', () => {
+    cy.visit('/example');
+    cy.get('#input-login-client')
+      .clear()
+      .type('hejmdal');
+
+    cy.get('#input-preselected-library')
+      .clear()
+      .type('733000');
+    cy.get('#input-locked-library').clear();
+    cy.get('#login-button').click();
+    cy.get('#userid-input').type(' 87654321');
+    cy.get('#pin-input').type('1234');
+
+    cy.get('#borchk-submit').click();
+
+    cy.get('#get-ticket-button').click();
+    cy.get('#get-userinfo-button').click();
+    cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
+      const userinfo = JSON.parse(text);
+      expect(userinfo.attributes.userId).to.equal('87654321');
+    });
+  });
 
   it('carries through state parameter', () => {
     cy.visit(`${authorize}&state=test-state-string%2F%2F`);

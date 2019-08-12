@@ -155,7 +155,7 @@ export async function authenticate(req, res, next) {
 export async function borchkCallback(req, res) {
   const requestUri = req.getState().serviceClient.borchkServiceName;
   const formData = req.fakeBorchkPost || req.body;
-  const userId = formData && formData.userId ? formData.userId : null;
+  const userId = formData && formData.userId ? formData.userId.trim(' ') : null;
   let validated = {error: true, message: 'unknown_error'};
 
   if (userId) {
@@ -184,9 +184,14 @@ export async function borchkCallback(req, res) {
   if (blockToTime) {
     validated.message = 'tmul';
     blockClientUntilTime(res, blockToTime);
-  }
-  else {
-    identityProviderValidationFailed(req, res, validated, formData.agency, await blockLogin.getLoginsLeftUserId(userId));
+  } else {
+    identityProviderValidationFailed(
+      req,
+      res,
+      validated,
+      formData.agency,
+      await blockLogin.getLoginsLeftUserId(userId)
+    );
   }
   return false;
 }
@@ -394,9 +399,17 @@ function blockClientUntilTime(res, blockToTime) {
   const now = new Date();
   const blocked = blockToTime ? new Date(blockToTime) : now;
   if (blocked > now) {
-    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / (60000));
-    const minutesTxt = 'Login blokeret i ' + blockMinutes + ' minut' + (blockMinutes !== 1 ? 'ter.' : '.');
-    const toTxt = ' Indtil ' + moment(blocked).local().format('D MMMM Y H:mm:ss');
+    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / 60000);
+    const minutesTxt =
+      'Login blokeret i ' +
+      blockMinutes +
+      ' minut' +
+      (blockMinutes !== 1 ? 'ter.' : '.');
+    const toTxt =
+      ' Indtil ' +
+      moment(blocked)
+        .local()
+        .format('D MMMM Y H:mm:ss');
     res.status(429);
     res.render('Blocked', {error: minutesTxt});
   }
