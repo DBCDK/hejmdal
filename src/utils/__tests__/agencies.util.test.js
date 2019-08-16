@@ -53,7 +53,7 @@ const mockAgencyList = [
   }
 ];
 
-describe('Unittesting methods in agencies.util.js', async () => {
+describe('Unittesting methods in agencies.util.js', () => {
   mockSetAgencyList(mockAgencyList);
 
   it('should return a sorted list of agencies', async () => {

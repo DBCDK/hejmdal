@@ -3,10 +3,14 @@
  * Unittesting methods in unilogin.component
  */
 
-import {validateUniloginTicket} from '../unilogin.component.js';
+import {
+  validateUniloginTicket,
+  getInstitutionsForUser
+} from '../unilogin.component.js';
 import {md5} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
 import moment from 'moment';
+import './nockFixtures'; // Loads nock fixtures that mocks soap requests and responses
 
 describe('Unittesting methods in unilogin.component', () => {
   let ticket = {};
@@ -39,5 +43,16 @@ describe('Unittesting methods in unilogin.component', () => {
     ticket.auth = 'invalid-auth';
     const result = validateUniloginTicket(ticket);
     expect(result).toBe(false);
+  });
+  it('Should get institutions for userId', async () => {
+    const result = await getInstitutionsForUser('valid_user_id');
+    expect(result).toEqual([
+      {id: '101DBC', name: 'DANSK BIBLIOTEKSCENTER A/S'},
+      {id: 'A03132', name: 'Vejle Bibliotekerne c/o www.pallesgavebod.dk'}
+    ]);
+  });
+  it('Should return empty array of  institutions for invalid user id', async () => {
+    const result = await getInstitutionsForUser('not_a_user');
+    expect(result).toEqual([]);
   });
 });
