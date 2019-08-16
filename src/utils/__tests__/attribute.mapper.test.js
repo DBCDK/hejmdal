@@ -1,6 +1,7 @@
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
 import {mockContext} from '../../utils/test.util';
 import {log} from '../../utils/logging.util';
+import '../../components/UniLogin/__tests__/nockFixtures';
 
 describe('Attribute mapper unittest', () => {
   const next = () => {};
@@ -31,9 +32,9 @@ describe('Attribute mapper unittest', () => {
     expect(ctx.session.user).toEqual(user);
   });
 
-  it('map all possible values', () => {
+  it('map all possible values', async () => {
     const ctx = mockContext();
-    ctx.setUser({cpr: '0102456789'});
+    ctx.setUser({cpr: '0102456789', uniloginId: 'valid_user_id'});
     ctx.setState({
       culr: culr,
       serviceClient: {
@@ -46,13 +47,14 @@ describe('Attribute mapper unittest', () => {
           libraries: {},
           municipality: {},
           uniqueId: {},
-          municipalityAgencyId: {}
+          municipalityAgencyId: {},
+          uniLoginInstitutions: {}
         }
       },
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
 
     expect(ctx.session.state.ticket.attributes).toEqual({
       birthDate: '0102',
@@ -65,11 +67,15 @@ describe('Attribute mapper unittest', () => {
       ],
       uniqueId: 'guid-0102456789',
       municipality: '333',
-      municipalityAgencyId: '733300'
+      municipalityAgencyId: '733300',
+      uniLoginInstitutions: [
+        {id: '101DBC', name: 'DANSK BIBLIOTEKSCENTER A/S'},
+        {id: 'A03132', name: 'Vejle Bibliotekerne c/o www.pallesgavebod.dk'}
+      ]
     });
   });
 
-  it('map to correct milenium in birthYear', () => {
+  it('map to correct milenium in birthYear', async () => {
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102030788'}]},
@@ -77,35 +83,35 @@ describe('Attribute mapper unittest', () => {
         attributes: {birthYear: {}}
       }
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1903'});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2036'});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1937'});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2057'});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1858'});
   });
 
-  it('map gender', () => {
+  it('map gender', async () => {
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
@@ -114,13 +120,13 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       gender: 'f'
     });
   });
 
-  it('map invalid cpr', () => {
+  it('map invalid cpr', async () => {
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0123456789'}]},
@@ -129,7 +135,7 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       birthDate: null,
       birthYear: null,
@@ -138,7 +144,7 @@ describe('Attribute mapper unittest', () => {
     });
   });
 
-  it('map libraries only values', () => {
+  it('map libraries only values', async () => {
     const ctx = mockContext();
     ctx.setState({
       culr: culr,
@@ -148,7 +154,7 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
@@ -157,7 +163,7 @@ describe('Attribute mapper unittest', () => {
     });
   });
 
-  it('map response from culr missing municipality', () => {
+  it('map response from culr missing municipality', async () => {
     const ctx = mockContext();
     const _culr = Object.assign({}, culr);
     delete _culr.municipalityNumber;
@@ -170,7 +176,7 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
 
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
@@ -180,7 +186,7 @@ describe('Attribute mapper unittest', () => {
     });
   });
 
-  it('log an error for unknown attribute', () => {
+  it('log an error for unknown attribute', async () => {
     log.error = jest.fn();
     const ctx = mockContext();
     ctx.setState({
@@ -190,7 +196,7 @@ describe('Attribute mapper unittest', () => {
       },
       ticket: {}
     });
-    mapAttributesToTicket(ctx, ctx, next);
+    await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({});
     expect(log.error).toBeCalledWith('Cannot map attribute: notThere');
   });

@@ -31,7 +31,10 @@ export async function getUser(req, res, next) {
     const ticketAttributes = await getUserAttributesForClient(user, clientId);
     res.json({attributes: ticketAttributes});
   } catch (error) {
-    log.error('Could not generate user info', {error});
+    log.error('Could not generate user info', {
+      error: error.message,
+      stack: error.stack
+    });
     next();
   }
 }
@@ -41,7 +44,12 @@ export async function getUserAttributesForClient(user, clientId) {
     getUserAttributesFromCulr(user, user.agency),
     getClientById(clientId)
   ]);
-  return mapCulrResponse(culrAttributes, client.attributes, user, clientId);
+  return await mapCulrResponse(
+    culrAttributes,
+    client.attributes,
+    user,
+    clientId
+  );
 }
 
 /**
