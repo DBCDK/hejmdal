@@ -76,7 +76,7 @@ function validateTicketAge(ticket) {
 }
 
 function getMockedUniloginUrl(token) {
-  const user = 'test1234';
+  const user = 'valid_user_id';
   const timestamp = moment()
     .utc()
     .format('YYYYMMDDHHmmss');

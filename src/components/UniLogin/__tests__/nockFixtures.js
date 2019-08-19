@@ -3,6 +3,7 @@ import {CONFIG} from '../../../utils/config.util';
 
 // Should get institutions for user
 nock('https://wsibruger.uni-login.dk:443', {encodedQueryParams: true})
+  .persist()
   .post(
     '/wsibruger-v4/ws',
     '\n    <S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope" xmlns:C="https://uni-login.dk" xmlns:A="https://wsibruger.uni-login.dk/ws">\n      <S:Header>\n      </S:Header>\n      <S:Body>\n          <A:hentBrugersInstitutionstilknytninger>\n            <C:wsBrugerid>' +
@@ -31,6 +32,7 @@ nock('https://wsibruger.uni-login.dk:443', {encodedQueryParams: true})
 
 // Should not get institutions for user
 nock('https://wsibruger.uni-login.dk:443', {encodedQueryParams: true})
+  .persist()
   .post(
     '/wsibruger-v4/ws',
     '\n    <S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope" xmlns:C="https://uni-login.dk" xmlns:A="https://wsibruger.uni-login.dk/ws">\n      <S:Header>\n      </S:Header>\n      <S:Body>\n          <A:hentBrugersInstitutionstilknytninger>\n            <C:wsBrugerid>' +
@@ -59,6 +61,7 @@ nock('https://wsibruger.uni-login.dk:443', {encodedQueryParams: true})
 
 // Should get information about institution
 nock('https://wsiinst.uni-login.dk:443', {encodedQueryParams: true})
+  .persist()
   .post(
     '/wsiinst-v2/ws',
     `\n    <S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope" xmlns:C="https://uni-login.dk" xmlns:A="https://wsiinst.uni-login.dk/ws">\n      <S:Header>\n      </S:Header>\n      <S:Body>\n        <A:hentInstitutioner>\n          <C:wsBrugerid>${

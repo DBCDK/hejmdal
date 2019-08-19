@@ -40,16 +40,24 @@ export async function getUser(req, res, next) {
 }
 
 export async function getUserAttributesForClient(user, clientId) {
-  const [culrAttributes, client] = await Promise.all([
-    getUserAttributesFromCulr(user, user.agency),
-    getClientById(clientId)
-  ]);
-  return await mapCulrResponse(
-    culrAttributes,
-    client.attributes,
-    user,
-    clientId
-  );
+  try {
+    const [culrAttributes, client] = await Promise.all([
+      getUserAttributesFromCulr(user, user.agency),
+      getClientById(clientId)
+    ]);
+    return await mapCulrResponse(
+      culrAttributes,
+      client.attributes,
+      user,
+      clientId
+    );
+  } catch (error) {
+    log.error('Could not generate attributes for user', {
+      error: error.message,
+      stack: error.stack
+    });
+    return;
+  }
 }
 
 /**

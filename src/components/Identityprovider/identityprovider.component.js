@@ -211,7 +211,8 @@ export async function uniloginCallback(req) {
 
   req.setUser({
     userId: userId,
-    userType: 'unilogin'
+    userType: 'unilogin',
+    uniloginId: userId
   });
 
   return req;

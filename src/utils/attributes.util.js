@@ -31,7 +31,7 @@ export const ATTRIBUTES = {
   },
   municipality: {
     name: 'Kommunenummer',
-    description: '3 cifret kommunenummer'    // http://www.linking.dk/lokalportaler/kommuner.html
+    description: '3 cifret kommunenummer' // http://www.linking.dk/lokalportaler/kommuner.html
   },
   uniloginId: {
     name: 'UNI-login brugernavn',
@@ -51,5 +51,8 @@ export const ATTRIBUTES = {
   },
   authenticatedToken: {
     skipConsent: true
+  },
+  uniLoginInstitutions: {
+    name: 'List of unilogin institutions a user is connected to'
   }
 };

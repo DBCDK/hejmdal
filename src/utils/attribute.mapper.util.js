@@ -79,48 +79,54 @@ export async function mapCulrResponse(culr, attributes, user) {
   const fields = Object.keys(attributes);
   await Promise.all(
     fields.map(async field => {
-      switch (field) {
-        case 'birthDate':
-        case 'birthYear':
-        case 'gender':
-          mapped[field] = fromCpr[field] || null;
-          break;
-        case 'cpr':
-          mapped.cpr = cpr;
-          break;
-        case 'agencies':
-        case 'libraries':
-          mapped.agencies = agencies;
-          break;
-        case 'municipality':
-          mapped.municipality = culr.municipalityNumber || null;
-          break;
-        case 'municipalityAgencyId':
-          mapped.municipalityAgencyId = culr.municipalityAgencyId || null;
-          break;
-        case 'uniloginId':
-          mapped.uniloginId =
-            user.userType === 'unilogin' && user.userId ? user.userId : null;
-          break;
-        case 'userId':
-          mapped.userId = user.userId;
-          break;
-        case 'wayfId':
-          mapped.wayfId = user.wayfId ? user.wayfId : null;
-          break;
-        case 'uniqueId':
-          mapped.uniqueId = culr.culrId;
-          break;
-        case 'uniLoginInstitutions':
-          mapped.uniLoginInstitutions =
-            (user.uniloginId &&
-              (await getInstitutionsForUser(user.uniloginId))) ||
-            [];
-          break;
-
-        default:
-          log.error('Cannot map attribute: ' + field);
-          break;
+      try {
+        switch (field) {
+          case 'birthDate':
+          case 'birthYear':
+          case 'gender':
+            mapped[field] = fromCpr[field] || null;
+            break;
+          case 'cpr':
+            mapped.cpr = cpr;
+            break;
+          case 'agencies':
+          case 'libraries':
+            mapped.agencies = agencies;
+            break;
+          case 'municipality':
+            mapped.municipality = culr.municipalityNumber || null;
+            break;
+          case 'municipalityAgencyId':
+            mapped.municipalityAgencyId = culr.municipalityAgencyId || null;
+            break;
+          case 'uniloginId':
+            mapped.uniloginId = user.uniloginId || null;
+            break;
+          case 'userId':
+            mapped.userId = user.userId;
+            break;
+          case 'wayfId':
+            mapped.wayfId = user.wayfId ? user.wayfId : null;
+            break;
+          case 'uniqueId':
+            mapped.uniqueId = culr.culrId;
+            break;
+          case 'uniLoginInstitutions': {
+            mapped.uniLoginInstitutions =
+              (user.uniloginId &&
+                (await getInstitutionsForUser(user.uniloginId))) ||
+              [];
+            break;
+          }
+          default:
+            log.warn('Cannot map attribute: ' + field);
+            break;
+        }
+      } catch (error) {
+        log.error('Failed to map attribute: ' + field, {
+          error: error.message,
+          stack: error.stack
+        });
       }
     })
   );

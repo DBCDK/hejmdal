@@ -70,7 +70,7 @@ describe('test identityProviderCallback method', () => {
 
   it('Should add unilogin user to context', async () => {
     ctx.params.type = 'unilogin';
-    const user = 'test1234';
+    const user = 'valid_user_id';
     const timestamp = moment()
       .utc()
       .format('YYYYMMDDHHmmss');
@@ -82,7 +82,8 @@ describe('test identityProviderCallback method', () => {
     };
 
     const expected = {
-      userId: 'test1234',
+      userId: 'valid_user_id',
+      uniloginId: 'valid_user_id',
       userType: 'unilogin',
       identityProviders: ['unilogin']
     };

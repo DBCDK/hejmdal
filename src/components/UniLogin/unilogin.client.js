@@ -7,6 +7,10 @@ import {CONFIG} from '../../utils/config.util';
 import {promiseRequest} from '../../utils/request.util';
 import {parseString} from 'xml2js';
 
+if (process.env.NODE_ENV === 'test') {
+  require('./__tests__/nockFixtures');
+}
+
 /**
  * Get list of institutionIds for User.
  *

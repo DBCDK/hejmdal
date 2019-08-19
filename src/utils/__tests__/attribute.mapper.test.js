@@ -1,7 +1,6 @@
 import mapAttributesToTicket from '../../utils/attribute.mapper.util.js';
 import {mockContext} from '../../utils/test.util';
 import {log} from '../../utils/logging.util';
-import '../../components/UniLogin/__tests__/nockFixtures';
 
 describe('Attribute mapper unittest', () => {
   const next = () => {};
@@ -187,7 +186,7 @@ describe('Attribute mapper unittest', () => {
   });
 
   it('log an error for unknown attribute', async () => {
-    log.error = jest.fn();
+    log.warn = jest.fn();
     const ctx = mockContext();
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
@@ -198,6 +197,6 @@ describe('Attribute mapper unittest', () => {
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({});
-    expect(log.error).toBeCalledWith('Cannot map attribute: notThere');
+    expect(log.warn).toBeCalledWith('Cannot map attribute: notThere');
   });
 });
