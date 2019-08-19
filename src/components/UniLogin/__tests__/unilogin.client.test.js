@@ -3,8 +3,6 @@
  * Unittesting methods in unilogin.component
  */
 
-/* eslint-disable max-len */
-
 import {
   getInstitutionIdsForUser,
   getInstitutionInformation

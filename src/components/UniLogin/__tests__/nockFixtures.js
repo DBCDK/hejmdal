@@ -1,6 +1,8 @@
 import nock from 'nock';
 import {CONFIG} from '../../../utils/config.util';
 
+/* eslint-disable max-len */
+
 // Should get institutions for user
 nock('https://wsibruger.uni-login.dk:443', {encodedQueryParams: true})
   .persist()
