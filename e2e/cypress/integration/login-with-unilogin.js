@@ -22,7 +22,7 @@ context('Login flow with UNI-login', () => {
         body: {
           grant_type: 'authorization_code',
           code: code,
-          redirect_uri: 'http://localhost:3011/example'
+          redirect_uri: `${Cypress.config().baseUrl}/example`
         }
       })
         .its('body')
