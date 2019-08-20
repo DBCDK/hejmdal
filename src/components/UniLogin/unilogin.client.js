@@ -6,6 +6,7 @@
 import {CONFIG} from '../../utils/config.util';
 import {promiseRequest} from '../../utils/request.util';
 import {parseString} from 'xml2js';
+import {log} from '../../utils/logging.util';
 
 if (process.env.NODE_ENV === 'test') {
   require('./__tests__/nockFixtures');
@@ -58,6 +59,10 @@ function parseInstitutions(soapResponse) {
       return el['uni:instnr'][0];
     });
   } catch (e) {
+    log.error('Failed to parse hentBrugersInstitutionstilknytningerResponse', {
+      error: e.message,
+      stack: e.stack
+    });
     return [];
   }
 }
@@ -110,6 +115,10 @@ function parseInstitutionInformation(soapResponse) {
       };
     });
   } catch (e) {
+    log.error('Failed to parse hentInstitutionerResponse', {
+      error: e.message,
+      stack: e.stack
+    });
     return [];
   }
 }
