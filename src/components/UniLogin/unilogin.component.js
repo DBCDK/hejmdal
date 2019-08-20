@@ -8,6 +8,10 @@ import moment from 'moment';
 import {md5} from '../../utils/hash.utils';
 import {CONFIG} from '../../utils/config.util';
 import {log} from '../../utils/logging.util';
+import {
+  getInstitutionIdsForUser,
+  getInstitutionInformation
+} from './unilogin.client';
 
 /**
  * Genereates and returns a url to be used for login using UNI-Login
@@ -16,7 +20,9 @@ import {log} from '../../utils/logging.util';
  * @return {string}
  */
 export function getUniloginURL(token) {
-  return CONFIG.mock_externals.unilogin ? getMockedUniloginUrl(token) : getLiveUniloginUrl(token);
+  return CONFIG.mock_externals.unilogin
+    ? getMockedUniloginUrl(token)
+    : getLiveUniloginUrl(token);
 }
 
 /**
@@ -28,7 +34,10 @@ export function getUniloginURL(token) {
  * @return {boolean} boolean that indicates if the ticket was successfully validated
  */
 export function validateUniloginTicket({auth, timestamp, user}) {
-  return validateTicketAge({timestamp}) && validateTicketFingerPrint(auth, timestamp, user);
+  return (
+    validateTicketAge({timestamp}) &&
+    validateTicketFingerPrint(auth, timestamp, user)
+  );
 }
 
 /**
@@ -42,7 +51,9 @@ export function validateUniloginTicket({auth, timestamp, user}) {
 function validateTicketFingerPrint(auth, timestamp, user) {
   const valid = md5(timestamp + CONFIG.unilogin.secret + user) === auth;
   if (!valid) {
-    log.error('Ticket fingerprint could not be verified', {ticket: {auth, timestamp, user}});
+    log.error('Ticket fingerprint could not be verified', {
+      ticket: {auth, timestamp, user}
+    });
   }
 
   return valid;
@@ -57,14 +68,18 @@ function validateTicketFingerPrint(auth, timestamp, user) {
  */
 function validateTicketAge(ticket) {
   const timestamp = moment.utc(ticket.timestamp, 'YYYYMMDDHHmmss').format('X');
-  const now = moment().utc().format('X');
+  const now = moment()
+    .utc()
+    .format('X');
   const age = parseInt(now, 10) - parseInt(timestamp, 10);
   return age <= CONFIG.unilogin.maxTicketAge;
 }
 
 function getMockedUniloginUrl(token) {
-  const user = 'test1234';
-  const timestamp = moment().utc().format('YYYYMMDDHHmmss');
+  const user = 'valid_user_id';
+  const timestamp = moment()
+    .utc()
+    .format('YYYYMMDDHHmmss');
   const auth = md5(timestamp + CONFIG.unilogin.secret + user);
 
   return `/login/identityProviderCallback/unilogin/${token}?auth=${auth}&timestamp=${timestamp}&user=${user}`;
@@ -82,7 +97,9 @@ function getLiveUniloginUrl(token) {
   const path = encodeURIComponent(new Buffer(returUrl).toString('base64'));
   const auth = md5(returUrl + CONFIG.unilogin.secret);
 
-  return `${base}?id=${CONFIG.unilogin.id}&returURL=${returUrl}&path=${path}&auth=${auth}`;
+  return `${base}?id=${
+    CONFIG.unilogin.id
+  }&returURL=${returUrl}&path=${path}&auth=${auth}`;
 }
 
 /**
@@ -93,4 +110,19 @@ function getLiveUniloginUrl(token) {
  */
 function getReturUrl(token) {
   return `${CONFIG.app.host}/login/identityProviderCallback/unilogin/${token}`;
+}
+
+/**
+ * Get list of institutions for User.
+ *
+ * @export
+ * @param {String} userId
+ * @returns {Array} List of institutions.
+ */
+export async function getInstitutionsForUser(userId) {
+  const institutionIds = await getInstitutionIdsForUser(userId);
+  if (institutionIds.length) {
+    return await getInstitutionInformation(institutionIds);
+  }
+  return [];
 }

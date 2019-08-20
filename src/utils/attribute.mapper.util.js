@@ -7,6 +7,7 @@
 
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
+import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
 
 /**
  * Attribute mapper
@@ -23,7 +24,7 @@ export default async function mapAttributesToTicket(req, res, next) {
   if (state && state.serviceClient && state.culr) {
     const serviceAttributes = state.serviceClient.attributes;
     const culr = state.culr;
-    const ticketAttributes = mapCulrResponse(
+    const ticketAttributes = await mapCulrResponse(
       culr,
       serviceAttributes,
       user,
@@ -45,7 +46,7 @@ export default async function mapAttributesToTicket(req, res, next) {
  * @see ATTRIBUTES
  * @return {object}
  */
-export function mapCulrResponse(culr, attributes, user) {
+export async function mapCulrResponse(culr, attributes, user) {
   let mapped = {};
   let cpr = user.cpr || null;
   let agencies = [];
@@ -76,44 +77,59 @@ export function mapCulrResponse(culr, attributes, user) {
   }
 
   const fields = Object.keys(attributes);
-  fields.forEach(field => {
-    switch (field) {
-      case 'birthDate':
-      case 'birthYear':
-      case 'gender':
-        mapped[field] = fromCpr[field] || null;
-        break;
-      case 'cpr':
-        mapped.cpr = cpr;
-        break;
-      case 'agencies':
-      case 'libraries':
-        mapped.agencies = agencies;
-        break;
-      case 'municipality':
-        mapped.municipality = culr.municipalityNumber || null;
-        break;
-      case 'municipalityAgencyId':
-        mapped.municipalityAgencyId = culr.municipalityAgencyId || null;
-        break;
-      case 'uniloginId':
-        mapped.uniloginId =
-          user.userType === 'unilogin' && user.userId ? user.userId : null;
-        break;
-      case 'userId':
-        mapped.userId = user.userId;
-        break;
-      case 'wayfId':
-        mapped.wayfId = user.wayfId ? user.wayfId : null;
-        break;
-      case 'uniqueId':
-        mapped.uniqueId = culr.culrId;
-        break;
-      default:
-        log.error('Cannot map attribute: ' + field);
-        break;
-    }
-  });
+  await Promise.all(
+    fields.map(async field => {
+      try {
+        switch (field) {
+          case 'birthDate':
+          case 'birthYear':
+          case 'gender':
+            mapped[field] = fromCpr[field] || null;
+            break;
+          case 'cpr':
+            mapped.cpr = cpr;
+            break;
+          case 'agencies':
+          case 'libraries':
+            mapped.agencies = agencies;
+            break;
+          case 'municipality':
+            mapped.municipality = culr.municipalityNumber || null;
+            break;
+          case 'municipalityAgencyId':
+            mapped.municipalityAgencyId = culr.municipalityAgencyId || null;
+            break;
+          case 'uniloginId':
+            mapped.uniloginId = user.uniloginId || null;
+            break;
+          case 'userId':
+            mapped.userId = user.userId;
+            break;
+          case 'wayfId':
+            mapped.wayfId = user.wayfId ? user.wayfId : null;
+            break;
+          case 'uniqueId':
+            mapped.uniqueId = culr.culrId;
+            break;
+          case 'uniLoginInstitutions': {
+            mapped.uniLoginInstitutions =
+              (user.uniloginId &&
+                (await getInstitutionsForUser(user.uniloginId))) ||
+              [];
+            break;
+          }
+          default:
+            log.warn('Cannot map attribute: ' + field);
+            break;
+        }
+      } catch (error) {
+        log.error('Failed to map attribute: ' + field, {
+          error: error.message,
+          stack: error.stack
+        });
+      }
+    })
+  );
 
   return mapped;
 }

@@ -38,6 +38,7 @@ describe('test store and get user', () => {
         municipality: '909',
         uniloginId: null,
         uniqueId: 'guid-5555666677',
+        uniLoginInstitutions: [],
         userId: '5555666677',
         wayfId: null
       }

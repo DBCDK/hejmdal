@@ -69,12 +69,14 @@
     "locale-compare-polyfill": "0.0.2",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
+    "nock": "^10.0.6",
     "objection": "^1.6.7",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.5.0",
     "pg": "^7.9.0",
     "pug": "^2.0.3",
-    "soap": "^0.27.1"
+    "soap": "^0.29.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "autoprefixer": "^9.5.1",

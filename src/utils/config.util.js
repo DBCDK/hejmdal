@@ -104,6 +104,8 @@ export const CONFIG = {
     hejmdalClientId: process.env.HEJMDAL_CLIENT_ID
   },
   unilogin: {
+    wsUser: process.env.UNI_LOGIN_WS_USER,
+    wsPassword: process.env.UNI_LOGIN_WS_PASSWORD,
     id: process.env.UNI_LOGIN_ID,
     secret: process.env.UNI_LOGIN_SECRET,
     uniloginBasePath: process.env.UNI_LOGIN_URL,

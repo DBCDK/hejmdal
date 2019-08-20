@@ -73,6 +73,9 @@ describe('Test Smaug component', () => {
         uniqueId: {
           name: 'Bibliotekslogin id',
           description: 'Anonymiseret identifikation hos Bibliotekslogin'
+        },
+        uniLoginInstitutions: {
+          name: 'List of unilogin institutions a user is connected to'
         }
       },
       urls: {
