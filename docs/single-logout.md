@@ -3,9 +3,9 @@
 
 Single logout will log the user out of all applications the user has logged in to throughout a session. For this to happen, logout needs to be called with the parameter singlelogout=true, and all applications needs to have implemented a special single-logout endpoint, used by login.bib.dk to log out the user from each application. 
 
-## 1\. [login.bib.dk/logout?singlelogout=true](http://login.bib.dk/logout?singlelogout=true)
+## 1\. [login.bib.dk/logout/?singlelogout=true](http://login.bib.dk/logout?singlelogout=true)
 
-To initiate single-logout initiate a redirect to login.bib.dk/logout?singlelogout=true&access_token={ACCESS_TOKEN}&redirect_uri={REDIRECT_URI}
+To initiate single-logout initiate a redirect to login.bib.dk/logout/?singlelogout=true&access_token={ACCESS_TOKEN}&redirect_uri={REDIRECT_URI}
 
 Parameters:
 
