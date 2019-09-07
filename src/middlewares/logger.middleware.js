@@ -18,13 +18,13 @@ export async function loggerMiddleware(req, res, next) {
       const elapsedTimeInMs = stopTiming();
       log.info('page request', {
         baseUrl: req.baseUrl,
-        request: {
+        requestObject: {
           method: req.method,
           header: req.header,
           params: req.params,
           query: req.query
         },
-        response: {
+        responseObject: {
           status: res.statusCode,
           message: res.statusMessage
         },
