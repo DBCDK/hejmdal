@@ -28,7 +28,7 @@ export async function loggerMiddleware(req, res, next) {
           status: res.statusCode,
           message: res.statusMessage
         },
-        timings: {ms: elapsedTimeInMs},
+        ms: elapsedTimeInMs,
         clientId:
           req.session && req.session.client ? req.session.client.clientId : null
       });
