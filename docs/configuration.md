@@ -73,17 +73,17 @@ A path used for single-logout. This is required for the client to support single
 
 `"singleLogoutPath": "/single-logout"`
 
-## attribtutes
+## attributes
 
 Defines the list of attributes that _can_ be returned to the client service trought the `/userinfo` endpoint. As default uniqueId and municipality is returned if available.
 
-`cpr`: If the user logs in using a CPR-number, this will be provided,
-`userId`: Whatever ID the user have used for login.
-`uniqueId`: Global user ID, is provided for users recognized by the CULR database.
-`libraries`: List of public libraries the user is registered at.
-`municipality`: 3 diggit Minicipality ID.
-`municipalityAgencyId`: Agency ID matching the users municipality.
-`birthDate`: Extracted from CPR-number if possible
-`birthYear`: Extracted from CPR-number if possible
-`gender`: Extracted from CPR-number if possible
-`authenticatedToken`: oAuth2 authenticated token, can be used for requests to openplatform.dbc.dk as an authenticated user"
+* `cpr`: If the user logs in using a CPR-number, this will be provided,
+* `userId`: Whatever ID the user have used for login.
+* `uniqueId`: Global user ID, is provided for users recognized by the CULR database.
+* `libraries`: List of public libraries the user is registered at.
+* `municipality`: 3 diggit Minicipality ID.
+* `municipalityAgencyId`: Agency ID matching the users municipality.
+* `birthDate`: Extracted from CPR-number if possible
+* `birthYear`: Extracted from CPR-number if possible
+* `gender`: Extracted from CPR-number if possible
+* `authenticatedToken`: oAuth2 authenticated token, can be used for requests to openplatform.dbc.dk as an authenticated user"
