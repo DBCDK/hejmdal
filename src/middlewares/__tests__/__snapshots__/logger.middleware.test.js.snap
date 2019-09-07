@@ -18,18 +18,16 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`]
       Object {
         "baseUrl": "url",
         "clientId": null,
-        "request": Object {
+        "ms": 42,
+        "requestObject": Object {
           "header": "header",
           "method": "method",
           "params": undefined,
           "query": undefined,
         },
-        "response": Object {
+        "responseObject": Object {
           "message": undefined,
           "status": undefined,
-        },
-        "timings": Object {
-          "ms": 42,
         },
       },
     ],
