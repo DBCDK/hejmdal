@@ -1,5 +1,9 @@
 import {ATTRIBUTES} from '../../../utils/attributes.util';
 import {CONFIG} from '../../../utils/config.util';
+import {createHash} from '../../../utils/hash.utils';
+
+const mockTokenBuffer = {};
+mockTokenBuffer[CONFIG.test.token]  = true;
 
 export const mockData = {
   grants: ['authorization_code', 'password', 'cas'],
@@ -51,7 +55,7 @@ export const hejmdalMockData = {
  * @returns {*}
  */
 export default function getMockClient(clientId) {
-  if (clientId === 'hejmdal' || clientId === CONFIG.test.token) {
+  if (clientId === 'hejmdal' || mockTokenBuffer[clientId]) {
     return mockData;
   }
 
@@ -72,7 +76,10 @@ export default function getMockClient(clientId) {
 /**
  * Mock Client for test and development
  *
- * @param token
+ * @param clientId
+ * @param agency
+ * @param username
+ * @param password
  * @returns {*}
  */
 export function getMockValidateUserTokenClient(
@@ -96,9 +103,11 @@ export function getMockValidateUserTokenClient(
     };
   }
   if (clientId === mockData.app.clientId) {
+    const testToken = createHash(clientId + agency + username);
+    mockTokenBuffer[testToken] = true;
     return {
       statusCode: 200,
-      body: JSON.stringify({access_token: CONFIG.test.token, expires_in: 3600})
+      body: JSON.stringify({access_token: testToken, expires_in: 3600})
     };
   }
   if (agency === null && username === '@' && password === '@') {
@@ -112,6 +121,11 @@ export function getMockValidateUserTokenClient(
   };
 }
 
+/**
+ *
+ * @param token
+ * @returns {{count: number}}
+ */
 export function mockRevokeToken(token) {
   if (token === '1-123456789') {
     return {count: 1};
