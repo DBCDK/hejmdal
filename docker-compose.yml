@@ -1,6 +1,8 @@
 version: '3'
 services:
   database:
+    ports:
+      - "5432:5432"
     image: postgres:9.6
     environment:
       POSTGRES_DB: hejmdal

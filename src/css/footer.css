@@ -47,10 +47,14 @@
           }
           &.laesekompas {
             background: svg-inline(--laesekompas) no-repeat center;
-            background-size: 140% auto;
+            background-size: 100% auto;
           }
           &.bibliotek-dk {
             background: svg-inline(--bibliotek-dk) no-repeat center;
+            background-size: 90% auto;
+          }
+          &.filmstriben {
+            background: svg-inline(--filmstriben) no-repeat center;
             background-size: 90% auto;
           }
         }
@@ -84,16 +88,6 @@
       span,
       a {
         color: var(--grey-lighten-1);
-      }
-
-      span {
-        text-align: center;
-        padding: 5px 0;
-      }
-
-      a {
-        text-decoration: underline;
-        cursor: pointer;
       }
 
       span {

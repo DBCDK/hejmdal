@@ -1,15 +1,19 @@
 @svg-load --ereolen url(svg/media/ereolen.svg) {
-  fill: var(--black-lighten-1);
+  fill: #7c7c7c;
 }
 
 @svg-load --ereolen-global url(svg/media/ereolen_global.svg) {
-  fill: var(--black-lighten-1);
+  fill: #7c7c7c;
 }
 
 @svg-load --laesekompas url(svg/media/laesekompas.svg) {
-  fill: var(--black-lighten-1);
+  fill: #7c7c7c;
 }
 
 @svg-load --bibliotek-dk url(svg/media/bibliotek_dk.svg) {
-  fill: var(--black-lighten-1);
+  fill: #7c7c7c;
+}
+
+@svg-load --filmstriben url(svg/media/filmstriben.svg) {
+  fill: #7c7c7c;
 }
