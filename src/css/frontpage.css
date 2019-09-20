@@ -1,5 +1,6 @@
 #frontpage {
   .content-container {
+    padding-top: 30px;
     h1 {
       color: var(--black-lighten-1);
       font-size: 30px;
