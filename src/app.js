@@ -20,6 +20,7 @@ import {cacheAgencies} from './utils/agencies.util';
 
 // Utils
 import {CONFIG} from './utils/config.util';
+import {log} from './utils/logging.util';
 
 import {stateMiddleware} from './middlewares/state.middleware';
 import loginRoutes from './routes/login.routes';
@@ -92,3 +93,11 @@ app.use(errorMiddleware);
 app.listen(process.env.PORT || 3000);
 
 cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');
+
+process.on('unhandledRejection', error => {
+  // Will print "unhandledRejection err is not defined"
+  log.error('unhandledRejection', {
+    errorMessage: error.message,
+    stack: error.stack
+  });
+});

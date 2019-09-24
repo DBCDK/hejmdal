@@ -16,9 +16,8 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`]
     Array [
       "page request",
       Object {
-        "baseUrl": "url",
-        "clientId": null,
-        "ms": 42,
+        "baseUrl": "url/path",
+        "clientId": "",
         "requestObject": Object {
           "header": "header",
           "method": "method",
@@ -28,6 +27,9 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`]
         "responseObject": Object {
           "message": undefined,
           "status": undefined,
+        },
+        "timings": Object {
+          "ms": 42,
         },
       },
     ],

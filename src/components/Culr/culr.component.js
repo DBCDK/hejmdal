@@ -5,7 +5,6 @@
 
 import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
-import startTiming from '../../utils/timing.util';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
 
@@ -21,7 +20,6 @@ export async function getUserAttributesFromCulr(user = {}) {
   let attributes = {};
   let response = null;
   let responseCode;
-  const stopTiming = startTiming();
 
   try {
     response = await culr.getAccountsByGlobalId({userIdValue: userId});
@@ -38,8 +36,6 @@ export async function getUserAttributesFromCulr(user = {}) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
     return attributes;
   }
-  const elapsedTimeInMs = stopTiming();
-  log.debug('timing', {service: 'Culr', ms: elapsedTimeInMs});
 
   try {
     // If possible user should be created. This requires following, CPR, AgencyID

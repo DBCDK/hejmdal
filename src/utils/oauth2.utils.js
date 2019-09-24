@@ -8,7 +8,9 @@ import {log} from './logging.util';
 export function disableRedirectUrlCheck(req, res, next) {
   // This is a hack to allow all redirect_uris. This should only be included in the mock implementation.
   if (req.query.client_id === 'hejmdal') {
-    mockData.redirectUris.push(req.query.redirect_uri);
+    mockData.redirectUris = [
+      ...new Set([...mockData.redirectUris, req.query.redirect_uri])
+    ]; // Make shure list is unique
     req.session.client = extractClientInfo(mockData);
   } else {
     req.session.client = null;

@@ -16,8 +16,13 @@ export async function loggerMiddleware(req, res, next) {
     res.removeListener('close', logOnFinished);
     try {
       const elapsedTimeInMs = stopTiming();
+      log.debug('timing', {
+        service: 'Hejmdal',
+        ms: elapsedTimeInMs,
+        baseUrl: req.baseUrl + req.path
+      });
       log.info('page request', {
-        baseUrl: req.baseUrl,
+        baseUrl: req.baseUrl + req.path,
         requestObject: {
           method: req.method,
           header: req.header,
@@ -28,9 +33,9 @@ export async function loggerMiddleware(req, res, next) {
           status: res.statusCode,
           message: res.statusMessage
         },
-        ms: elapsedTimeInMs,
+        timings: {ms: elapsedTimeInMs}, // @TODO remove when status.dbc.dk is updated
         clientId:
-          req.session && req.session.client ? req.session.client.clientId : null
+          req.session && req.session.client ? req.session.client.clientId : ''
       });
     } catch (e) {
       log.error('parsing of request failed', {error: e, req: req});

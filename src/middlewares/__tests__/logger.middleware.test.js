@@ -23,6 +23,7 @@ describe('LoggerMiddleware tests', () => {
     const ctx = {
       method: 'method',
       baseUrl: 'url',
+      path: '/path',
       header: 'header',
       status: 'status',
       message: 'message',

@@ -18,13 +18,13 @@ import startTiming from '../../utils/timing.util';
 export async function validateUserInLibrary(serviceRequester, userInput) {
   let userValidate = {error: true, message: 'unknown_error'};
   const stopTiming = startTiming();
-  const elapsedTimeInMs = stopTiming();
   const response = await getClient(
     userInput.agency,
     userInput.userId,
     userInput.pincode,
     serviceRequester
   );
+  const elapsedTimeInMs = stopTiming();
   log.debug('timing', {service: 'BorChk', ms: elapsedTimeInMs});
   userValidate = extractInfo(response);
 

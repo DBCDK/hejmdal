@@ -105,6 +105,9 @@ export async function mapCulrResponse(culr, attributes, user) {
           case 'userId':
             mapped.userId = user.userId;
             break;
+          case 'pincode':
+            mapped.pincode = user.pincode;
+            break;
           case 'wayfId':
             mapped.wayfId = user.wayfId ? user.wayfId : null;
             break;

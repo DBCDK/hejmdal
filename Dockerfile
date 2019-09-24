@@ -31,4 +31,4 @@ FROM $NODE_BASEIMAGE AS release
 WORKDIR /home/node/app
 COPY --chown=node:node --from=build /home/node/app/prod_build ./
 USER node
-CMD node src/main.js
+CMD k8s-dns-wait && node src/main.js

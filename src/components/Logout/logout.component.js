@@ -18,13 +18,21 @@ import {log} from '../../utils/logging.util';
 export async function validateToken(req, res, next) {
   const {access_token, redirect_uri} = req.query;
   let serviceClient;
-  if (access_token) {
-    deleteuser(access_token);
-    serviceClient = await getClientInfoByToken(access_token);
-    if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
-      req.setState({redirect_uri});
+  try {
+    if (access_token) {
+      deleteuser(access_token);
+      serviceClient = await getClientInfoByToken(access_token);
+      if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
+        req.setState({redirect_uri});
+      }
     }
+  } catch (e) {
+    log.debug('Validate token failed', {
+      errorMessage: e.message,
+      stack: e.stack
+    });
   }
+
   req.setState({serviceClient});
   next();
 }
