@@ -22,7 +22,8 @@ describe('LoggerMiddleware tests', () => {
     const next = jest.fn();
     const ctx = {
       method: 'method',
-      path: 'url',
+      baseUrl: 'url',
+      path: '/path',
       header: 'header',
       status: 'status',
       message: 'message',
