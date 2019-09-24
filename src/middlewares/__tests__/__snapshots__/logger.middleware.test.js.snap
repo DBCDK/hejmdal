@@ -4,7 +4,7 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.error 1`
 Array [
   "parsing of request failed",
   Object {
-    "error": [TypeError: Cannot read property 'baseUrl' of null],
+    "error": [TypeError: Cannot read property 'path' of null],
     "req": null,
   },
 ]
@@ -17,8 +17,7 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`]
       "page request",
       Object {
         "baseUrl": "url",
-        "clientId": null,
-        "ms": 42,
+        "clientId": "",
         "requestObject": Object {
           "header": "header",
           "method": "method",
