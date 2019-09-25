@@ -19,10 +19,10 @@ export async function loggerMiddleware(req, res, next) {
       log.debug('timing', {
         service: 'Hejmdal',
         ms: elapsedTimeInMs,
-        baseUrl: req.baseUrl + req.path
+        baseUrl: (req.baseUrl || '') + (req.path || '')
       });
       log.info('page request', {
-        baseUrl: req.baseUrl + req.path,
+        baseUrl: (req.baseUrl || '') + (req.path || ''),
         requestObject: {
           method: req.method,
           header: req.header,
