@@ -14,8 +14,9 @@ block append content
       if identityProviders.borchk
           include Components/Borchk
 
-      if identityProvidersCount > 1
-        div.bottom
+      div.bottom
+        if identityProvidersCount > 1
+
           div#external-providers
 
             p Andre login-muligheder

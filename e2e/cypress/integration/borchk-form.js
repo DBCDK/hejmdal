@@ -32,6 +32,7 @@ context('Borchk form', () => {
       'visible'
     );
   });
+
   it('Select library in dropdown', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
     // Select first library in list with click
@@ -55,6 +56,32 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Slagelse'
+    );
+  });
+
+  it('Select "Arhus" by "Århus"', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('Årh');
+    // Select first library in list with click
+    cy.get('.agency:visible')
+      .first()
+      .click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Aarhus'
+    );
+  });
+
+  it('Select "Det Kgl. Bibliotek" by "Det Kongelige Bibliotek"', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'Det Kongelige Bibliotek'
+    );
+    // Select first library in list with click
+    cy.get('.agency:visible')
+      .first()
+      .click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Det Kgl. Bibliotek'
     );
   });
 
@@ -127,24 +154,24 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 6);
+    cy.get('#borchk-dropdown .agency').should('have.length', 8);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
-    cy.get('#borchk-dropdown .agency').should('have.length', 2);
+    cy.get('#borchk-dropdown .agency').should('have.length', 3);
     cy.get('#borchk-dropdown .agency').should(
       'contain.text',
-      'BýarbókasavniðSlagelse'
+      'AarhusBýarbókasavniðSlagelse'
     );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
-    cy.get('#borchk-dropdown .agency').should('have.length', 4);
+    cy.get('#borchk-dropdown .agency').should('have.length', 5);
     cy.get('#borchk-dropdown .agency')
       .first()
-      .should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
+      .should('have.text', 'Det Kgl. Bibliotek');
   });
 
   it('Should show test agency by agencyID', () => {
