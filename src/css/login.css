@@ -20,7 +20,7 @@
       }
     }
     .bottom {
-      margin: 20px 0 0 0;
+      margin: 40px 0 0 0;
 
       #external-providers {
         display: flex;
@@ -84,12 +84,6 @@
             }
           }
         }
-      }
-    }
-
-    @media (min-width: 486px) {
-      .bottom {
-        margin: 40px 0 0 0;
       }
     }
   }

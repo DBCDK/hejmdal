@@ -1,3 +1,5 @@
+import {libMap} from './libraryNameMap';
+
 /**
  * Instantiate a dropdown library selector.
  *
@@ -79,13 +81,21 @@ class LibrarySelector {
     this.currentlySelectedIndex = query && query.length > 2 ? 0 : -1;
     var ul = document.createElement('ul');
     if (this.types.indexOf('folk') >= 0) {
-      var folkebiblioteker = this.filterQuery(query, this.libraries.folk);
+      var folkebiblioteker = this.filterQuery(
+        query,
+        this.libraries.folk,
+        'folk'
+      );
       if (folkebiblioteker.length) {
         this.appendLibraries('Folkebiblioteker', folkebiblioteker, ul);
       }
     }
     if (this.types.indexOf('forsk') >= 0) {
-      var forskningsbiblioteker = this.filterQuery(query, this.libraries.forsk);
+      var forskningsbiblioteker = this.filterQuery(
+        query,
+        this.libraries.forsk,
+        'forsk'
+      );
       if (forskningsbiblioteker.length) {
         this.appendLibraries(
           'Forskningsbiblioteker',
@@ -108,16 +118,22 @@ class LibrarySelector {
     this.setButtonStatus();
     this.highlightSelected(this.currentlySelectedIndex);
   }
-  filterQuery(query, libraries) {
+  filterQuery(query, libraries, libIndex = 'folk') {
     if (!query) {
       return libraries;
     }
     const lowerCaseQuery = query.toLowerCase();
-    return libraries.filter(
-      library =>
-        library.name.toLowerCase().indexOf(lowerCaseQuery) >= 0 ||
+    return libraries.filter(library => {
+      const lowerCaseLibrary = library.name.toLowerCase();
+      const names = libMap[libIndex][library.branchId];
+      const hasSome =
+        names && names.some(v => v.toLowerCase().indexOf(lowerCaseQuery) >= 0);
+      return (
+        hasSome ||
+        lowerCaseLibrary.indexOf(lowerCaseQuery) >= 0 ||
         library.branchId.indexOf(query) === 0
-    );
+      );
+    });
   }
   appendLibraries(label, libraries, ul) {
     if (label && this.types.length > 1) {

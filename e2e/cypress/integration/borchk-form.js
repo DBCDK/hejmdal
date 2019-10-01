@@ -32,6 +32,7 @@ context('Borchk form', () => {
       'visible'
     );
   });
+
   it('Select library in dropdown', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
     // Select first library in list with click
@@ -55,6 +56,32 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Slagelse'
+    );
+  });
+
+  it('Select Arhus by Å...', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('Årh');
+    // Select first library in list with click
+    cy.get('.agency:visible')
+      .first()
+      .click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Aarhus'
+    );
+  });
+
+  it('Select Det Kgl. by Det Kongelige...', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
+      'Det Kongelige Bib'
+    );
+    // Select first library in list with click
+    cy.get('.agency:visible')
+      .first()
+      .click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Det Kgl. Bibliotek'
     );
   });
 

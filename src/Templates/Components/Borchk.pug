@@ -13,26 +13,26 @@ div#borchk
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
           - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name tabindex='1' value=preselectedName)
-          input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' value=preselectedId data-input-id)
-          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
-          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='0' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
+          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
+          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
           div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
 
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
       div.input-container
-        input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-        input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='2')
-        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");')
+        input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
+        input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='0')
+        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1")
       span(id='userid-input-text' data-text='')
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
-        input(type='password' class='form-control' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode' tabindex='3')
-        button(type='button' id='toggle-pin-input' onclick='toggleFieldVisibility("pin-input");')
+        input(type='password' class='form-control' tabindex='0' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
+        button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");')
       span(id='pin-input-text' data-text='')
 
     if error
@@ -40,7 +40,7 @@ div#borchk
         include Error
 
     div.action-container
-        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='4') Log ind
+        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='0') Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
             a(href=lockedBranchRegistrationUrl data-cy='new-user-button') Ny Bruger?
