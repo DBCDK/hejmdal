@@ -59,7 +59,7 @@ context('Borchk form', () => {
     );
   });
 
-  it('Select Arhus by Å...', () => {
+  it('Select "Arhus" by "Århus"', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('Årh');
     // Select first library in list with click
     cy.get('.agency:visible')
@@ -71,9 +71,9 @@ context('Borchk form', () => {
     );
   });
 
-  it('Select Det Kgl. by Det Kongelige...', () => {
+  it('Select "Det Kgl. Bibliotek" by "Det Kongelige Bibliotek"', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'Det Kongelige Bib'
+      'Det Kongelige Bibliotek'
     );
     // Select first library in list with click
     cy.get('.agency:visible')
@@ -154,24 +154,24 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 6);
+    cy.get('#borchk-dropdown .agency').should('have.length', 8);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
-    cy.get('#borchk-dropdown .agency').should('have.length', 2);
+    cy.get('#borchk-dropdown .agency').should('have.length', 3);
     cy.get('#borchk-dropdown .agency').should(
       'contain.text',
-      'BýarbókasavniðSlagelse'
+      'AarhusBýarbókasavniðSlagelse'
     );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
-    cy.get('#borchk-dropdown .agency').should('have.length', 4);
+    cy.get('#borchk-dropdown .agency').should('have.length', 5);
     cy.get('#borchk-dropdown .agency')
       .first()
-      .should('have.text', 'Fagbiblioteket Psykiatrien Region Sjælland');
+      .should('have.text', 'Det Kgl. Bibliotek');
   });
 
   it('Should show test agency by agencyID', () => {
