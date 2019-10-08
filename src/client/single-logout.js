@@ -83,7 +83,7 @@ class SingleLogout {
             iframeElement.contentDocument ||
             iframeElement.contentWindow.document;
           const {statusCode = 500} = JSON.parse(document.body.innerHTML);
-          if (Number(statusCode) === 200) {
+          if (Number(statusCode) === 200 || Number(statusCode) === 403) {
             resolve(true);
           } else {
             resolve(false);

@@ -123,12 +123,12 @@ export function logout(req, res, next) {
  */
 
 export function singleLogout(req, res, next) {
+  const {clients = [], state = {}} = req.session;
   const {singlelogout} = req.query;
-  if (!singlelogout) {
+  if (!singlelogout || clients.length < 2) {
     return next();
   }
   try {
-    const {clients = [], state = {}} = req.session;
     let {serviceClient, redirect_uri} = state;
     const {identityProviders} = req.getUser() || {};
 

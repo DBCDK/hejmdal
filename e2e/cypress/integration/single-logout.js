@@ -74,11 +74,13 @@ context('Single Logout', () => {
   });
 
   it('should provide a link to initiator on failed logout', () => {
+    cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-fail');
     cy.visit('/logout?singlelogout=true&access_token=hejmdal-fail');
     cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
   });
   it('should provide a link to initiator when no return_uri', () => {
+    cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-ok');
     cy.visit('/logout?singlelogout=true&access_token=hejmdal-ok');
     cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
