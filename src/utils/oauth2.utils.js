@@ -31,7 +31,11 @@ export function addClientToListOfClients(req) {
     const singleLogoutUrl = client.singleLogoutPath
       ? `${redirectUrl.origin}${client.singleLogoutPath}`
       : null;
-    clients.push({singleLogoutUrl, clientId: client.clientId});
+    clients.push({
+      singleLogoutUrl,
+      clientId: client.clientId,
+      redirectUris: client.redirectUris
+    });
     req.session.clients = clients;
     req.session.save();
   } catch (error) {

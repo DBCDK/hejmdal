@@ -43,4 +43,12 @@ context('Logout', () => {
     cy.visit(`${authorize}`);
     cy.get('h1').should('contain', 'Log ind');
   });
+  it('should redirect to return_url without access_token, if url can be validated against client stored in session', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.visit(`/logout?redirect_uri=${Cypress.config().baseUrl}/example`);
+    cy.location('pathname').should('eq', '/example/');
+    cy.location('search').should('contain', 'message=logout');
+    cy.visit(`${authorize}`);
+    cy.get('h1').should('contain', 'Log ind');
+  });
 });

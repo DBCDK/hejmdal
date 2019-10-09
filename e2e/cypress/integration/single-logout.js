@@ -53,11 +53,22 @@ context('Single Logout', () => {
     cy.verifyUserOnTestService('hejmdal-5').should('equal', false);
   });
 
-  it('should redirect on succesfull logout', () => {
+  it('should redirect on succesful logout', () => {
     cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-2');
     cy.visit(
       `/logout?access_token=hejmdal-1&singlelogout=true&redirect_uri=${
+        Cypress.config().baseUrl
+      }/example`
+    );
+    cy.location('pathname').should('eq', '/example/');
+  });
+
+  it('should redirect to return_url without access_token, if url can be validated against client stored in session', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.loginOnTestService('hejmdal-2');
+    cy.visit(
+      `/logout?singlelogout=true&redirect_uri=${
         Cypress.config().baseUrl
       }/example`
     );
