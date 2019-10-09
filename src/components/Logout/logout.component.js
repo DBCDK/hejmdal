@@ -17,6 +17,8 @@ import {log} from '../../utils/logging.util';
 
 export async function validateToken(req, res, next) {
   const {access_token, redirect_uri} = req.query;
+  const {clients = [], state = {}} = req.session;
+  console.log(clients);
   let serviceClient;
   try {
     if (access_token) {
@@ -25,6 +27,12 @@ export async function validateToken(req, res, next) {
       if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
         req.setState({redirect_uri});
       }
+    } else if (
+      redirect_uri &&
+      clients.filter(client => client.redirectUris.includes(redirect_uri))
+        .length > 0
+    ) {
+      req.setState({redirect_uri});
     }
   } catch (e) {
     log.debug('Validate token failed', {
