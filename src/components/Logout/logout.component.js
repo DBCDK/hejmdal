@@ -17,8 +17,7 @@ import {log} from '../../utils/logging.util';
 
 export async function validateToken(req, res, next) {
   const {access_token, redirect_uri} = req.query;
-  const {clients = [], state = {}} = req.session;
-  console.log(clients);
+  const {clients = []} = req.session;
   let serviceClient;
   try {
     if (access_token) {
