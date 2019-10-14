@@ -90,11 +90,27 @@ context('Single Logout', () => {
     cy.visit('/logout?singlelogout=true&access_token=hejmdal-fail');
     cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
   });
+  it('should provide a link to initiator on failed logout without access_token, but valid redirect_uri', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.loginOnTestService('hejmdal-fail');
+    cy.visit(
+      `/logout?singlelogout=true&redirect_uri=${
+        Cypress.config().baseUrl
+      }/example`
+    );
+    cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
+  });
   it('should provide a link to initiator when no return_uri', () => {
     cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-ok');
     cy.visit('/logout?singlelogout=true&access_token=hejmdal-ok');
     cy.get('.stateWrapper').should('contain', 'Tilbage til Test Service');
+  });
+  it('should not provide a link without valid return_uri and access_token', () => {
+    cy.loginOnTestService('hejmdal-1');
+    cy.loginOnTestService('hejmdal-ok');
+    cy.visit('/logout?singlelogout=true');
+    cy.get('.stateWrapper').should('not.contain', 'Tilbage til Test Service');
   });
   it('should fail single-logout if user logged in to unsupported service', () => {
     cy.loginOnTestService('hejmdal-ok');
