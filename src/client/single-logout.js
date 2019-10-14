@@ -90,7 +90,7 @@ class SingleLogout {
           }
         } catch (error) {
           console.error(error); // eslint-disable-line no-console
-          resolve(false);
+          resolve(true);
         }
       });
     });
