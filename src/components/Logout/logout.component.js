@@ -26,12 +26,13 @@ export async function validateToken(req, res, next) {
       if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
         req.setState({redirect_uri});
       }
-    } else if (
-      redirect_uri &&
-      clients.filter(client => client.redirectUris.includes(redirect_uri))
-        .length > 0
-    ) {
-      req.setState({redirect_uri});
+    } else if (redirect_uri) {
+      serviceClient = clients.filter(client =>
+        client.redirectUris.includes(redirect_uri)
+      )[0];
+      if (serviceClient) {
+        req.setState({redirect_uri});
+      }
     }
   } catch (e) {
     log.debug('Validate token failed', {
@@ -146,8 +147,17 @@ export function singleLogout(req, res, next) {
     }
     const link = (serviceClient && buildReturnUrl(state)) || null;
     const serviceName = (serviceClient && serviceClient.name) || '';
+    const clientInfo = clients.map(client => ({
+      singleLogoutUrl: client.singleLogoutUrl,
+      clientId: client.clientId
+    }));
     req.session.destroy(() => {
-      res.render('SingleLogout', {clients, redirect_uri, link, serviceName});
+      res.render('SingleLogout', {
+        clients: clientInfo,
+        redirect_uri,
+        link,
+        serviceName
+      });
     });
   } catch (e) {
     next(e);
