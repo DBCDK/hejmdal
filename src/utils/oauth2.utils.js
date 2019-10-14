@@ -33,8 +33,7 @@ export function addClientToListOfClients(req) {
       : null;
     clients.push({
       singleLogoutUrl,
-      clientId: client.clientId,
-      redirectUris: client.redirectUris
+      ...client
     });
     req.session.clients = clients;
     req.session.save();
