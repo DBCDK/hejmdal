@@ -1,6 +1,6 @@
 import {
   validateAuthRequest,
-  disableRedirectUrlCheck,
+  clearClientOnSession,
   isUserLoggedIn,
   authorizationMiddleware,
   addClientToListOfClients
@@ -25,7 +25,7 @@ const router = Router();
  */
 router.get(
   '/authorize',
-  disableRedirectUrlCheck,
+  clearClientOnSession,
   validateAuthRequest,
   isUserLoggedIn,
   setDefaultState,

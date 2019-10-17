@@ -1,21 +1,17 @@
-import {mockData} from '../components/Smaug/mock/smaug.client.mock';
-import {
-  getClientInfoByClientId,
-  extractClientInfo
-} from '../components/Smaug/smaug.component';
+import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
 import {log} from './logging.util';
 
-export function disableRedirectUrlCheck(req, res, next) {
-  // This is a hack to allow all redirect_uris. This should only be included in the mock implementation.
-  if (req.query.client_id === 'hejmdal') {
-    mockData.redirectUris = [
-      ...new Set([...mockData.redirectUris, req.query.redirect_uri])
-    ]; // Make shure list is unique
-    req.session.client = extractClientInfo(mockData);
-  } else {
-    req.session.client = null;
-  }
-  next();
+/**
+ * Clear session when login is initiated
+ *
+ * @export
+ * @param {Request} req
+ * @param {Response} res
+ * @param {function} next
+ */
+export function clearClientOnSession(req, res, next) {
+  req.session.client = null;
+  req.session.save(() => next());
 }
 
 /**
@@ -46,6 +42,26 @@ export function addClientToListOfClients(req) {
 }
 
 /**
+ * Helper function to validate redirectUris with wildcards.
+ *
+ * @export
+ * @param {String} redirect_uri
+ * @param {Array} client
+ * @returns Boolean
+ */
+export function validateRedirectUri(redirect_uri, client) {
+  const res =
+    client.redirectUris.filter(uri => {
+      const req = new RegExp(
+        `^${uri.replace('.', '\\.').replace(['*'], '.*')}$`
+      );
+      return redirect_uri.match(req);
+    }).length > 0;
+
+  return res;
+}
+
+/**
  * Middleware for validating request.
  *
  * Checks if a valid oauth request is made.
@@ -59,12 +75,14 @@ export async function validateAuthRequest(req, res, next) {
   if (req.query.client_id && !req.session.client) {
     req.session.client = await getClientInfoByClientId(req.query.client_id);
   }
-
-  if (!req.session.client) {
-    authorizationMiddleware(req, res, next);
-  } else {
-    next();
+  if (
+    !req.session.client ||
+    !validateRedirectUri(req.query.redirect_uri, req.session.client)
+  ) {
+    return authorizationMiddleware(req, res, next);
   }
+
+  req.session.save(() => next());
 }
 
 /**
