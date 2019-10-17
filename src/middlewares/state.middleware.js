@@ -151,7 +151,7 @@ function setUser(newValues) {
  * @returns {Object}
  */
 function getUser() {
-  return this.session.user;
+  return this.session.user || {};
 }
 
 /**

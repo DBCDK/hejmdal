@@ -3,7 +3,7 @@ context('Login flow', () => {
     Cypress.config().baseUrl
   }/example&presel=733000`;
 
-  it('cy.url() - get the current URL', () => {
+  it('should login throught oauth authorization grant', () => {
     cy.log('Setup client using example endpoint');
     cy.visit('example');
     cy.get('h3')
@@ -86,5 +86,18 @@ context('Login flow', () => {
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
     cy.location('search').should('contain', 'state=test-state-string%2F%2F');
+  });
+
+  it('should not login with wrong redirect_uri', () => {
+    cy.request({
+      url:
+        '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
+      failOnStatusCode: false
+    }).then(res =>
+      cy
+        .wrap(res)
+        .its('body.error')
+        .should('equal', 'invalid_client')
+    );
   });
 });
