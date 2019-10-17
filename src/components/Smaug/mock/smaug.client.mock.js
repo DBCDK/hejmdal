@@ -3,17 +3,12 @@ import {CONFIG} from '../../../utils/config.util';
 import {createHash} from '../../../utils/hash.utils';
 
 const mockTokenBuffer = {};
-mockTokenBuffer[CONFIG.test.token]  = true;
+mockTokenBuffer[CONFIG.test.token] = true;
 
 export const mockData = {
   grants: ['authorization_code', 'password', 'cas'],
   identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
-  redirectUris: [
-    `${process.env.HOST}`,
-    `${process.env.HOST}/callback`,
-    `${process.env.HOST}/example`,
-    `${process.env.HOST}/example/provider/callback`
-  ],
+  redirectUris: [`${process.env.HOST}/*`],
   displayName: 'Test Service',
   borchkServiceName: 'bibliotek.dk',
   attributes: ATTRIBUTES,

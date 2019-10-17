@@ -24,10 +24,7 @@ describe('Test Smaug component', () => {
       requireConsent: false,
       logoColor: '#252525',
       redirectUris: [
-        'http://localhost:3011',
-        'http://localhost:3011/callback',
-        'http://localhost:3011/example',
-        'http://localhost:3011/example/provider/callback',
+        'http://localhost:3011/*',
         'http://localhost:3011/example',
         'http://localhost:3011/cas/callback'
       ],

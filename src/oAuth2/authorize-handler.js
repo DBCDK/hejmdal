@@ -8,7 +8,10 @@
  */
 
 import AuthorizeHandler from 'oauth2-server/lib/handlers/authorize-handler';
-import {validateAuthRequest, validateRedirectUri} from '../utils/oauth2.utils';
+import {validateRedirectUri} from '../utils/oauth2.utils';
+
+// The following is more or less cpoy pasted from oauth2-server/lib/handlers/authorize-handler, and is
+// therefore not written as ES6.
 
 var _ = require('lodash');
 var InvalidClientError = require('oauth2-server/lib/errors/invalid-client-error');
@@ -19,7 +22,6 @@ var UnauthorizedClientError = require('oauth2-server/lib/errors/unauthorized-cli
 var is = require('oauth2-server/lib/validator/is');
 
 AuthorizeHandler.prototype.getClient = function(request) {
-  console.log('getTheClient');
   var clientId = request.body.client_id || request.query.client_id;
 
   if (!clientId) {
@@ -56,7 +58,7 @@ AuthorizeHandler.prototype.getClient = function(request) {
         );
       }
 
-      if (!client.redirectUris || 0 === client.redirectUris.length) {
+      if (!client.redirectUris || client.redirectUris.length === 0) {
         throw new InvalidClientError(
           'Invalid client: missing client `redirectUri`'
         );
