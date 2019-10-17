@@ -1,6 +1,7 @@
 context('Test modals', () => {
-  const authorize =
-    '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=http://localhost:3011/example';
+  const authorize = `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${
+    Cypress.config().baseUrl
+  }/example`;
   it('test that help modal toggles', () => {
     cy.visit(authorize);
     cy.get('[data-cy=helptext-link]').click();
