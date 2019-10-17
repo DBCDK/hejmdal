@@ -11,6 +11,7 @@ import session from 'express-session';
 const KnexSessionStore = require('connect-session-knex')(session);
 
 import model from './oAuth2/oAuth2.model';
+import './oAuth2/authorize-handler';
 import OAuthServer from 'express-oauth-server';
 import initPassport from './oAuth2/passport';
 import {setHeaders} from './middlewares/headers.middleware';
