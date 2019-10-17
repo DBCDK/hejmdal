@@ -32,7 +32,7 @@ pipeline {
                 script {
                     ansiColor("xterm") {
                         sh "docker-compose build" 
-                        sh "IMAGE=${imageName} TAG=${imageLabel} docker-compose run --rm e2e" 
+                        sh "IMAGE=${IMAGE_NAME} docker-compose run --rm e2e" 
                     }
                 }
             }
