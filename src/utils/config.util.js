@@ -43,12 +43,12 @@ export const CONFIG = {
   failedLogin: {
     ip: {
       maxFail: Number(process.env.FL_IP_MAXFAIL) || 100,
-      blockSeconds: Number(process.env.FL_IP_BLOCK_SECONDS) || 120,
+      blockSeconds: Number(process.env.FL_IP_BLOCK_SECONDS) || 1200,
       resetSeconds: Number(process.env.FL_IP_RESET_SECONDS) || 86400
     },
     userId: {
-      maxFail: Number(process.env.FL_USER_MAXFAIL) || 5,
-      blockSeconds: Number(process.env.FL_USER_BLOCK_SECONDS) || 60,
+      maxFail: Number(process.env.FL_USER_MAXFAIL) || 3,
+      blockSeconds: Number(process.env.FL_USER_BLOCK_SECONDS) || 1200,
       resetSeconds: Number(process.env.FL_USER_RESET_SECONDS) || 86400
     }
   },
