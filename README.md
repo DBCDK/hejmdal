@@ -103,16 +103,16 @@ The variables are specified at the form `name : internal config object`. Referen
   Number of continous failed logins from the same ip-adress. Defaults to 100
 
 - `FL_IP_BLOCK_SECONDS` : `failedLogin.ip.blockSeconds`  
-  Number of seconds an ip-adresse will be blocked. Defaults to 120
+  Number of seconds an ip-adresse will be blocked. Defaults to 1200
 
 - `FL_IP_RESET_SECONDS` : `failedLogin.ip.resetSeconds`  
   Number of seconds a failed ip login is kept. Defaults to 86400
 
 - `FL_USER_MAXFAIL` : `failedLogin.userId.maxFails`  
-  Number of continous failed logins using the same userId. Defaults to 5
+  Number of continous failed logins using the same userId. Defaults to 3
 
 - `FL_USER_BLOCK_SECONDS` : `failedLogin.userId.blockSeconds`  
-  Number of seconds an userId will be blocked. Defaults to 60
+  Number of seconds an userId will be blocked. Defaults to 1200
 
 - `FL_USER_RESET_SECONDS` : `failedLogin.userId.resetSeconds`  
   Number of seconds a failed userId login is kept. Defaults to 86400
