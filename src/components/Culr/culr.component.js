@@ -48,11 +48,16 @@ export async function getUserAttributesFromCulr(user = {}) {
       const createUserResponse = await createUser(user, agencyId);
       if (createUserResponse) {
         if (!user.cpr) {
-          response = await culr.getAccountsByLocalId({userIdValue: userId});
+          response = await culr.getAccountsByLocalId({
+            userIdValue: userId,
+            agencyId
+          });
         } else {
-          response = await culr.getAccountsByGlobalId({userIdValue: userId});
+          response = await culr.getAccountsByGlobalId({
+            userIdValue: userId,
+            agencyId
+          });
         }
-        // response = await culr.getAccountsByGlobalId({userIdValue: userId});
         responseCode = response && response.result.responseStatus.responseCode;
       }
     }
@@ -141,7 +146,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
  */
 async function createUser(user, agencyId) {
   // Check if required data exists
-  if (!agencyId) {
+  if ((!user.cpr || !user.userId) && !agencyId) {
     return false;
   }
 
@@ -172,7 +177,7 @@ async function createUser(user, agencyId) {
  * @returns
  */
 function shouldCreateAccount(library, user, response) {
-  //-- Temporary solution for Thorshavn (agencyId: 911116)
+  // -- Temporary solution for Thorshavn (agencyId: 911116)
   if (!library || !(library.indexOf('7') === 0 || library === '911116')) {
     return false;
   }

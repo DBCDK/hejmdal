@@ -65,7 +65,6 @@ export const CulrMockClient = {
     }
     return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
   },
-  // getAccountsByLocalIdAsync: () => Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]),
   createAccountAsync: ({userCredentials, agencyId, municipalityNo = null}) => {
     const userExistGlobal = globalAccounts.has(userCredentials.userIdValue);
     const userExistLocal = localAccounts.has(userCredentials.userIdValue);
