@@ -21,10 +21,6 @@ let localAccounts;
 
 function initMock() {
   globalAccounts = new Map();
-  globalAccounts.set('87654321', {
-    Account: defaultLibraies,
-    MunicipalityNo: '909'
-  });
   globalAccounts.set('5555666677', {
     Account: defaultLibraies,
     MunicipalityNo: '909'
@@ -40,6 +36,16 @@ function initMock() {
   });
 
   localAccounts = new Map();
+  localAccounts.set('87654321', {
+    Account: [
+      {
+        provider: '733000',
+        userIdType: 'LOCAL',
+        userIdValue: '87654321'
+      }
+    ],
+    MunicipalityNo: '909'
+  });
 }
 initMock();
 
