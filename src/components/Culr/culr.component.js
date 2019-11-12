@@ -38,7 +38,7 @@ export async function getUserAttributesFromCulr(user = {}) {
   }
 
   try {
-    // If possible user should be created. This requires following, CPR, AgencyID
+    // If possible user should be created. This requires following, CPR/UserID, AgencyID
     // and optionally MuncipalityID:
     if (shouldCreateAccount(agencyId, user, response)) {
       // It should not have been possible for a user to have authenticated through borchk,
@@ -47,7 +47,12 @@ export async function getUserAttributesFromCulr(user = {}) {
 
       const createUserResponse = await createUser(user, agencyId);
       if (createUserResponse) {
-        response = await culr.getAccountsByGlobalId({userIdValue: userId});
+        if (!user.cpr) {
+          response = await culr.getAccountsByLocalId({userIdValue: userId});
+        } else {
+          response = await culr.getAccountsByGlobalId({userIdValue: userId});
+        }
+        // response = await culr.getAccountsByGlobalId({userIdValue: userId});
         responseCode = response && response.result.responseStatus.responseCode;
       }
     }
@@ -136,16 +141,23 @@ export async function getMunicipalityInformation(culrResponse, user) {
  */
 async function createUser(user, agencyId) {
   // Check if required data exists
-  if (!user.cpr || !agencyId) {
+  if (!agencyId) {
     return false;
   }
+
+  // If user has no CPR set userIdType to 'LOCAL'
+  const userIdType = user.cpr ? 'CPR' : 'LOCAL';
+  const userIdValue = user.cpr ? user.cpr : user.userId;
+
   // Check if user has logged in on municipality
   // Create user on CULR.
   const response = await culr.createAccount({
-    userIdValue: user.cpr,
-    agencyId: agencyId,
+    userIdType,
+    userIdValue,
+    agencyId,
     municipalityNo: await getMunicipalityId(user)
   });
+
   const responseCode = response && response.return.responseStatus.responseCode;
 
   return responseCode === 'OK200';
@@ -160,7 +172,8 @@ async function createUser(user, agencyId) {
  * @returns
  */
 function shouldCreateAccount(library, user, response) {
-  if (!library || !library.indexOf('7') === 0) {
+  //-- Temporary solution for Thorshavn (agencyId: 911116)
+  if (!library || !(library.indexOf('7') === 0 || library === '911116')) {
     return false;
   }
 

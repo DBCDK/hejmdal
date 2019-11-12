@@ -51,4 +51,47 @@ context('Create Account flow', () => {
       ]);
     });
   });
+
+  it('should create user in culr with userId', () => {
+    cy.visit('/example');
+    cy.get('#input-login-client')
+      .clear()
+      .type('hejmdal');
+    cy.get('#login-button').click();
+
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .clear()
+      .type('sla{enter}');
+    cy.get('#userid-input').type('9999999');
+    cy.get('#pin-input').type('1111');
+    cy.get('#borchk-submit').click();
+    cy.get('#get-ticket-button').click();
+    cy.get('#get-userinfo-button').click();
+    cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
+      const token = JSON.parse(text);
+      expect(token).to.have.property('attributes');
+      expect(token.attributes).to.have.property('uniqueId');
+    });
+  });
+
+  it('should create user from Thorshavn in culr with userId', () => {
+    cy.visit(authorize(911116));
+    cy.get('#userid-input').type('9999998');
+    cy.get('#pin-input').type('1111');
+    cy.get('#borchk-submit').click();
+    cy.get('#get-ticket-button').click();
+    cy.get('#get-userinfo-button').click();
+
+    cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
+      const token = JSON.parse(text);
+      expect(token).to.have.property('attributes');
+      expect(token.attributes.agencies).to.deep.equal([
+        {
+          agencyId: '911116',
+          userId: '9999998',
+          userIdType: 'LOCAL'
+        }
+      ]);
+    });
+  });
 });

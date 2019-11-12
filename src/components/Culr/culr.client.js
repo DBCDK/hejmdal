@@ -83,6 +83,7 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
  * @export
  */
 export async function createAccount({
+  userIdType = 'CPR',
   userIdValue,
   agencyId,
   municipalityNo = null
@@ -92,8 +93,8 @@ export async function createAccount({
   const params = {
     agencyId,
     userCredentials: {
-      userIdType: 'CPR',
-      userIdValue: userIdValue
+      userIdType,
+      userIdValue
     },
     authCredentials: CULR_CREATE_AUTH_CREDENTIALS
   };
