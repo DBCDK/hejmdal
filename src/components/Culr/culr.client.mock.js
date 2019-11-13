@@ -16,15 +16,16 @@ const defaultLibraies = [
   }
 ];
 
-let accounts;
+let globalAccounts;
+let localAccounts;
+
 function initMock() {
-  accounts = new Map();
-  accounts.set('87654321', {Account: defaultLibraies, MunicipalityNo: '909'});
-  accounts.set('5555666677', {
+  globalAccounts = new Map();
+  globalAccounts.set('5555666677', {
     Account: defaultLibraies,
     MunicipalityNo: '909'
   });
-  accounts.set('0101011234', {
+  globalAccounts.set('0101011234', {
     Account: [
       {
         provider: '790900',
@@ -32,6 +33,18 @@ function initMock() {
         userIdValue: '0101011234'
       }
     ]
+  });
+
+  localAccounts = new Map();
+  localAccounts.set('87654321', {
+    Account: [
+      {
+        provider: '733000',
+        userIdType: 'LOCAL',
+        userIdValue: '87654321'
+      }
+    ],
+    MunicipalityNo: '909'
   });
 }
 initMock();
@@ -46,25 +59,64 @@ export const CulrMockClient = {
    */
   getAccountsByGlobalIdAsync: params => {
     const userId = params.userCredentials.userIdValue;
-    if (accounts.has(userId)) {
-      return Promise.resolve([OK200(accounts.get(userId), userId)]);
+    if (globalAccounts.has(userId)) {
+      return Promise.resolve([OK200(globalAccounts.get(userId), userId)]);
     }
     return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
   },
-  getAccountsByLocalIdAsync: () => Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]),
-  createAccountAsync: ({userCredentials, agencyId, municipalityNo = null}) => {
-    if (accounts.has(userCredentials.userIdValue)) {
-      const account = accounts.get(userCredentials.userIdValue);
-      account.Account.push({
-        provider: agencyId,
-        userIdType: userCredentials.userIdType,
-        userIdValue: userCredentials.userIdValue
-      });
-      if (municipalityNo) {
-        account.MunicipalityNo = municipalityNo;
-      }
-      accounts.set(userCredentials.userIdValue, account);
+  getAccountsByLocalIdAsync: params => {
+    const userId = params.userCredentials.userIdValue;
+    if (localAccounts.has(userId)) {
+      return Promise.resolve([OK200(localAccounts.get(userId), userId)]);
     }
+    return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
+  },
+  createAccountAsync: ({userCredentials, agencyId, municipalityNo = null}) => {
+    const userExistGlobal = globalAccounts.has(userCredentials.userIdValue);
+    const userExistLocal = localAccounts.has(userCredentials.userIdValue);
+    const userIdType = userCredentials.userIdType;
+    let account = {Account: []};
+
+    // If userIdType is local (no CPR)
+    if (userIdType === 'LOCAL') {
+      if (userExistLocal) {
+        account = localAccounts.get(userCredentials.userIdValue);
+      } else {
+        localAccounts.set(userCredentials.userIdValue, {Account: []});
+        account = localAccounts.get(userCredentials.userIdValue);
+      }
+    }
+
+    // If userIdType is CPR
+    if (userIdType === 'CPR') {
+      if (userExistGlobal) {
+        account = globalAccounts.get(userCredentials.userIdValue);
+      } else {
+        globalAccounts.set(userCredentials.userIdValue, {Account: []});
+        account = globalAccounts.get(userCredentials.userIdValue);
+      }
+    }
+
+    account.Account.push({
+      provider: agencyId,
+      userIdType: userCredentials.userIdType,
+      userIdValue: userCredentials.userIdValue
+    });
+
+    if (municipalityNo) {
+      account.MunicipalityNo = municipalityNo;
+    }
+
+    // Add to localAccounts, if user DO NOT have CPR
+    if (userIdType === 'LOCAL') {
+      localAccounts.set(userCredentials.userIdValue, account);
+    }
+
+    // Add to globalAccounts, if user have CPR
+    if (userIdType === 'GLOBAL') {
+      globalAccounts.set(userCredentials.userIdValue, account);
+    }
+
     return Promise.resolve([CREATE_ACCOUNT()]);
   }
 };

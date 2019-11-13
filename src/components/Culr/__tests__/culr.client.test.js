@@ -20,6 +20,7 @@ describe('Tests for CULR client. Assert that methods are called with correct par
   describe('createAccount', () => {
     it('should call createAccount with correct params', async () => {
       const res = await createAccount({
+        userIdType: 'CPR',
         userIdValue: 'user',
         agencyId: '1234',
         municipalityNo: '101'
@@ -28,6 +29,7 @@ describe('Tests for CULR client. Assert that methods are called with correct par
     });
     it('should call createAccount without municipalityNo', async () => {
       const res = await createAccount({
+        userIdType: 'CPR',
         userIdValue: 'user',
         agencyId: '1234'
       });
