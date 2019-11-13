@@ -146,7 +146,11 @@ export async function getMunicipalityInformation(culrResponse, user) {
  */
 async function createUser(user, agencyId) {
   // Check if required data exists
-  if ((!user.cpr || !user.userId) && !agencyId) {
+  if (!agencyId) {
+    return false;
+  }
+
+  if (!(user.cpr || user.userId)) {
     return false;
   }
 
