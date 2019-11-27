@@ -152,7 +152,7 @@ const helpTexts = {
       {
         header: 'Pinkode',
         texts: [
-          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner.'
+          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner. Alternativt kan du logge ind på dit lokale folkebibliotek med NemID og oprette en ny pinkode under brugerprofil.'
         ]
       }
     ]
