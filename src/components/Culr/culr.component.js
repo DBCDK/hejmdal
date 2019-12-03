@@ -99,7 +99,7 @@ async function getMunicipalityId(user) {
     CONFIG.borchk.serviceRequesterInMunicipality,
     user
   );
-  if (!result.error) {
+  if (!result.error && user.agency.startsWith('7')) {
     return user.agency.slice(1, 4);
   }
   return null;
