@@ -125,7 +125,7 @@ async function toManyLogins(key, settings) {
 async function getLoginsLeft(key, settings) {
   const fail = await storage.read(key);
   const fails = fail ? fail.count : 0;
-  return Math.max(0, settings.maxFail - fails + 1);
+  return Math.max(0, settings.maxFail - fails);
 }
 
 /**
