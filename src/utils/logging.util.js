@@ -73,6 +73,9 @@ function doLog(level, msg, args = {}) {
  * @returns {{}}
  */
 function removeSecrets(obj) {
+  if (typeof obj !== 'object') {
+    return obj;
+  }
   const cleaned = {};
   Object.keys(obj).forEach((key) => {
     if (typeof obj[key] === 'object') {
