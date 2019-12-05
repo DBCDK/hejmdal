@@ -232,7 +232,7 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
       'sl{downarrow}{downarrow}{downarrow}{enter}'
     );
-    for (var i = 5; i; i--) {
+    for (var i = 2; i; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1234{enter}');
       cy.get('#error-body').should(
@@ -278,7 +278,7 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
       'sl{downarrow}{downarrow}{downarrow}{enter}'
     );
-    for (var i = 5; i > 1; i--) {
+    for (var i = 2; i > 1; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1234{enter}');
       cy.get('#error-body').should(
