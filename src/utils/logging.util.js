@@ -73,7 +73,7 @@ function doLog(level, msg, args = {}) {
  * @returns {{}}
  */
 function removeSecrets(obj) {
-  if (typeof obj !== 'object') {
+  if (!obj || typeof obj !== 'object') {
     return obj;
   }
   const cleaned = {};
