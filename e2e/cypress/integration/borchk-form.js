@@ -301,6 +301,6 @@ context('Borchk form', () => {
     );
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
-    cy.get('#error-body').should('contain', 'Du har 5 forsøg tilbage');
+    cy.get('#error-body').should('contain', 'Du har 2 forsøg tilbage');
   });
 });
