@@ -64,7 +64,30 @@ function doLog(level, msg, args = {}) {
     blob.msg = msg;
   }
 
-  console.log(JSON.stringify(Object.assign(blob, args), null, PRETTY_PRINT)); // eslint-disable-line no-console
+  console.log(JSON.stringify(Object.assign(blob, removeSecrets(args)), null, PRETTY_PRINT)); // eslint-disable-line no-console
+}
+
+/**
+ * Remove user identifications from log object
+ * @param obj
+ * @returns {{}}
+ */
+function removeSecrets(obj) {
+  if (!obj || typeof obj !== 'object') {
+    return obj;
+  }
+  const cleaned = {};
+  Object.keys(obj).forEach((key) => {
+    if (typeof obj[key] === 'object') {
+      cleaned[key] = removeSecrets(obj[key]);
+    }
+    else if (['userPincode', 'pincode', 'pinCode'].includes(key)) {
+      cleaned[key] = '****';
+    } else {
+      cleaned[key] = obj[key];
+    }
+  });
+  return cleaned;
 }
 
 /**

@@ -47,7 +47,7 @@ export const CONFIG = {
       resetSeconds: Number(process.env.FL_IP_RESET_SECONDS) || 86400
     },
     userId: {
-      maxFail: Number(process.env.FL_USER_MAXFAIL) || 3,
+      maxFail: Number(process.env.FL_USER_MAXFAIL) || 2,
       blockSeconds: Number(process.env.FL_USER_BLOCK_SECONDS) || 1200,
       resetSeconds: Number(process.env.FL_USER_RESET_SECONDS) || 86400
     }
