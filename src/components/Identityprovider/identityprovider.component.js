@@ -19,7 +19,6 @@ import {
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
-import moment from 'moment';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {ERRORS} from '../../utils/errors.util';
@@ -167,7 +166,7 @@ export async function borchkCallback(req, res) {
   }
 
   if (!validated.error) {
-    await blockLogin.clearFailedUser(userId);
+    await blockLogin.clearFailedUser(userId, formData.agency);
     const user = {
       userId: userId,
       cpr: isValidCpr(userId) ? userId : null,
@@ -180,7 +179,7 @@ export async function borchkCallback(req, res) {
     req.setUser(user);
     return true;
   }
-  const blockToTime = await blockLogin.toManyLoginsFromUser(userId);
+  const blockToTime = await blockLogin.toManyLoginsFromUser(userId, formData.agency);
   if (blockToTime) {
     validated.message = 'tmul';
     blockClientUntilTime(res, blockToTime);
@@ -190,7 +189,7 @@ export async function borchkCallback(req, res) {
       res,
       validated,
       formData.agency,
-      await blockLogin.getLoginsLeftUserId(userId)
+      await blockLogin.getLoginsLeftUserId(userId, formData.agency)
     );
   }
   return false;
@@ -406,11 +405,6 @@ function blockClientUntilTime(res, blockToTime) {
       blockMinutes +
       ' minut' +
       (blockMinutes !== 1 ? 'ter.' : '.');
-    const toTxt =
-      ' Indtil ' +
-      moment(blocked)
-        .local()
-        .format('D MMMM Y H:mm:ss');
     res.status(429);
     res.render('Blocked', {error: minutesTxt});
   }
