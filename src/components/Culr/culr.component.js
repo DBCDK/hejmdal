@@ -64,26 +64,33 @@ export async function getUserAttributesFromCulr(user = {}) {
   } catch (e) {
     log.error('Could not create User in CULR', {userId, agencyId, e});
   }
-  if (responseCode === 'OK200') {
-    attributes.accounts = response.result.Account;
-    const {
-      municipalityNumber,
-      municipalityAgencyId
-    } = await getMunicipalityInformation(response.result, user);
-    attributes.municipalityNumber = municipalityNumber;
-    attributes.municipalityAgencyId = municipalityAgencyId;
-    attributes.culrId = response.result.Guid || null;
-    // Quick fix for Býarbókasavnið. TODO: clean up.
-  } else {
-    const {
-      municipalityNumber,
-      municipalityAgencyId
-    } = await getMunicipalityInformation({}, user);
-    attributes.municipalityNumber = municipalityNumber;
-    attributes.municipalityAgencyId = municipalityAgencyId;
-  }
+  try {
+    if (responseCode === 'OK200') {
+      attributes.accounts = response.result.Account;
+      const {
+        municipalityNumber,
+        municipalityAgencyId
+      } = await getMunicipalityInformation(response.result, user);
+      attributes.municipalityNumber = municipalityNumber;
+      attributes.municipalityAgencyId = municipalityAgencyId;
+      attributes.culrId = response.result.Guid || null;
+      // Quick fix for Býarbókasavnið. TODO: clean up.
+    } else {
+      const {
+        municipalityNumber,
+        municipalityAgencyId
+      } = await getMunicipalityInformation({}, user);
+      attributes.municipalityNumber = municipalityNumber;
+      attributes.municipalityAgencyId = municipalityAgencyId;
+    }
 
-  return attributes;
+    return attributes;
+  } catch (e) {
+    log.error('could not generate attributes', {
+      error: e.message,
+      stack: e.stack
+    });
+  }
 }
 
 /**
