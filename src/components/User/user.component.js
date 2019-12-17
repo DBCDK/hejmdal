@@ -26,8 +26,8 @@ const storage = CONFIG.mock_storage
  * @param next
  */
 export async function getUser(req, res, next) {
-  const {user, client: clientId} = res.locals.oauth.token;
   try {
+    const {user, client: clientId} = res.locals.oauth.token;
     const ticketAttributes = await getUserAttributesForClient(user, clientId);
     res.json({attributes: ticketAttributes});
   } catch (error) {
