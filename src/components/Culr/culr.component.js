@@ -124,10 +124,12 @@ async function getMunicipalityId(user) {
 export async function getMunicipalityInformation(culrResponse, user) {
   let response = {};
   if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
-    response = {
-      municipalityNumber: culrResponse.MunicipalityNo,
-      municipalityAgencyId: `7${culrResponse.MunicipalityNo}00`
-    };
+    response.municipalityNumber = culrResponse.MunicipalityNo;
+    if (user.agency) {
+      response.municipalityAgencyId = user.agency.startsWith('7')
+        ? `7${culrResponse.MunicipalityNo}00`
+        : user.agency;
+    }
   } else if (user.agency) {
     const result = await validateUserInLibrary(
       CONFIG.borchk.serviceRequesterInMunicipality,
