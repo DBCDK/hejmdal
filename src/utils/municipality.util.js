@@ -8,6 +8,7 @@ export const municipalityName = {
   700400: 'Sydslesvig',
   710100: 'København',
   911116: 'Býarbókasavnið',
+  911130: 'Nunatta Atuagaateqarfia',
   714700: 'Frederiksberg',
   715100: 'Ballerup',
   715300: 'Brøndby',
