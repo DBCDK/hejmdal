@@ -7,6 +7,7 @@ import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
+import {municipalityName} from '../../utils/municipality.util';
 
 /**
  * Retrieval of user identity/identities from CULR webservice
@@ -124,10 +125,12 @@ async function getMunicipalityId(user) {
 export async function getMunicipalityInformation(culrResponse, user) {
   let response = {};
   if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
-    response = {
-      municipalityNumber: culrResponse.MunicipalityNo,
-      municipalityAgencyId: `7${culrResponse.MunicipalityNo}00`
-    };
+    response.municipalityNumber = culrResponse.MunicipalityNo;
+    if (user.agency) {
+      response.municipalityAgencyId = user.agency.startsWith('7')
+        ? `7${culrResponse.MunicipalityNo}00`
+        : user.agency;
+    }
   } else if (user.agency) {
     const result = await validateUserInLibrary(
       CONFIG.borchk.serviceRequesterInMunicipality,
@@ -187,20 +190,18 @@ async function createUser(user, agencyId) {
  * @param {Object} response
  * @returns
  */
-function shouldCreateAccount(library, user, response) {
-  // -- Temporary solution for Thorshavn (agencyId: 911116)
-  if (!library || !(library.indexOf('7') === 0 || library === '911116')) {
+export function shouldCreateAccount(library, user, response) {
+  if (!library || !municipalityName[library]) {
     return false;
   }
 
   const currentProvider =
     user.identityProviders && user.identityProviders.slice(-1)[0];
-  if (!currentProvider === 'borchk') {
+  if (currentProvider !== 'borchk') {
     return false;
   }
 
   const responseCode = response && response.result.responseStatus.responseCode;
-
   if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
     return true;
   }

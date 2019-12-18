@@ -4,6 +4,7 @@
  */
 
 import {
+  shouldCreateAccount,
   getUserAttributesFromCulr,
   getMunicipalityInformation
 } from '../culr.component';
@@ -63,6 +64,36 @@ describe('Unittesting methods in culr.component:', () => {
         municipalityNumber: '909'
       });
     });
+
+    it('should generate municipalityAgencyId from municipalityNo if agency starts with 7', async () => {
+      const result = await getMunicipalityInformation(
+        {MunicipalityNo: '123'},
+        {
+          userId: '5555666677',
+          agency: '711100',
+          pincode: '1111'
+        }
+      );
+      expect(result).toEqual({
+        municipalityAgencyId: '712300',
+        municipalityNumber: '123'
+      });
+    });
+    it('should NOT generate municipalityAgencyId from municipalityNo if agency does NOT start with 7', async () => {
+      const result = await getMunicipalityInformation(
+        {MunicipalityNo: '123'},
+        {
+          userId: '5555666677',
+          agency: '911130',
+          pincode: '1111'
+        }
+      );
+      expect(result).toEqual({
+        municipalityAgencyId: '911130',
+        municipalityNumber: '123'
+      });
+    });
+
     it('should return municipalityAgencyId even without MunicipalityNo', async () => {
       const result = await getMunicipalityInformation(
         {},
@@ -98,6 +129,55 @@ describe('Unittesting methods in culr.component:', () => {
         }
       );
       expect(result).toEqual({});
+    });
+  });
+  describe('shouldCreateAccount', () => {
+    const ACCOUNT_DOES_NOT_EXIST = {
+      result: {responseStatus: {responseCode: 'ACCOUNT_DOES_NOT_EXIST'}}
+    };
+    const ACCOUNT_EXISTS = {
+      result: {
+        Account: [{provider: '710100'}],
+        responseStatus: {responseCode: 'OK200'}
+      }
+    };
+    const BORCHK_USER = {identityProviders: ['borchk']};
+    const NEMID_USER = {identityProviders: ['nemlogin']};
+    it('should return false if library is not on municipalityName list', async () => {
+      const result = await shouldCreateAccount('999999');
+      expect(result).toEqual(false);
+    });
+    it('should return true if library is not on municipalityName list and using borchk', async () => {
+      const result = await shouldCreateAccount(
+        '710100',
+        BORCHK_USER,
+        ACCOUNT_DOES_NOT_EXIST
+      );
+      expect(result).toEqual(true);
+    });
+    it('should return false if NOT using borchk', async () => {
+      const result = await shouldCreateAccount(
+        '710100',
+        NEMID_USER,
+        ACCOUNT_DOES_NOT_EXIST
+      );
+      expect(result).toEqual(false);
+    });
+    it('should return false if account exists', async () => {
+      const result = await shouldCreateAccount(
+        '710100',
+        BORCHK_USER,
+        ACCOUNT_EXISTS
+      );
+      expect(result).toEqual(false);
+    });
+    it('should return true if account does not exists', async () => {
+      const result = await shouldCreateAccount(
+        '911130',
+        BORCHK_USER,
+        ACCOUNT_EXISTS
+      );
+      expect(result).toEqual(true);
     });
   });
 });
