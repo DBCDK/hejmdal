@@ -60,6 +60,18 @@ const mockFindLibrary = {
     '"longitude":{"$":"12.3083103"},' +
     '"distanceInMeter":{"$":"2905"}}' +
     '},' +
+    '{"agencyName":{"$":"Nunatta Atuagaateqarfia"},' +
+    '"agencyId":{"$":"911130"},' +
+    '"branchId":{"$":"911130"},' +
+    '"branchName":[{"$":"Nunatta Atuagaateqarfia"}],' +
+    '"postalAddress":{"$":"XXX"},' +
+    '"branchType":{"$":"H"},' +
+    '"agencyType":{"$":"Folkebibliotek"},' +
+    '"geolocation":{' +
+    '"latitude":{"$":"55.7315365"},' +
+    '"longitude":{"$":"12.3083103"},' +
+    '"distanceInMeter":{"$":"2905"}}' +
+    '},' +
     '{"agencyName":{"$":"Aarhus"},' +
     '"agencyId":{"$":"775100"},' +
     '"branchId":{"$":"775100"},' +
