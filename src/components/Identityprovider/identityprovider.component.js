@@ -34,7 +34,6 @@ import {ERRORS} from '../../utils/errors.util';
 export async function authenticate(req, res, next) {
   const state = req.getState();
 
-  blockClientUntilTime(res, await blockLogin.toManyLoginsFromIp(req.ip));
   try {
     const identityProviders = getIdentityProviders(state);
 
@@ -167,6 +166,7 @@ export async function borchkCallback(req, res) {
 
   if (!validated.error) {
     await blockLogin.clearFailedUser(userId, formData.agency);
+    await blockLogin.clearFailedIp(req.ip);
     const user = {
       userId: userId,
       cpr: isValidCpr(userId) ? userId : null,
@@ -179,7 +179,8 @@ export async function borchkCallback(req, res) {
     req.setUser(user);
     return true;
   }
-  const blockToTime = await blockLogin.toManyLoginsFromUser(userId, formData.agency);
+  blockClientUntilTime(res, await blockLogin.toManyLoginsFromIp(req.ip, validated.message));
+  const blockToTime = await blockLogin.toManyLoginsFromUser(userId, formData.agency, validated.message);
   if (blockToTime) {
     validated.message = 'tmul';
     blockClientUntilTime(res, blockToTime);
@@ -189,7 +190,10 @@ export async function borchkCallback(req, res) {
       res,
       validated,
       formData.agency,
-      await blockLogin.getLoginsLeftUserId(userId, formData.agency)
+      Math.min(
+        await blockLogin.getLoginsLeftUserId(userId, formData.agency),
+        await blockLogin.getLoginsLeftIp(req.ip)
+      )
     );
   }
   return false;
@@ -291,7 +295,6 @@ export async function identityProviderCallback(req, res) {
   if (res.headersSent) {
     return; // Something went wrong, and redirect is initiated.
   }
-  await blockLogin.clearFailedIp(req.ip);
   req.session.save(() => {
     if (req.session.hasOwnProperty('query')) {
       return res.redirect(
