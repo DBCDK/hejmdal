@@ -36,6 +36,6 @@ div#error-body
     // Helptext
     include Helptext.container.pug
 
-  if retries
+  if retries && error === 'bonfd'
     div
       p Du har #{retries} forsøg tilbage

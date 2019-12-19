@@ -27,34 +27,42 @@ const gcFailed = {divisor: CONFIG.garbageCollect.failedLogin.divisor, seconds: C
  * if user is blocked, return date when blocking is dropped
  *
  * @param userId
+ * @param agency
+ * @param message
+ * @returns {Promise<*>}
  */
-export async function toManyLoginsFromUser(userId) {
+export async function toManyLoginsFromUser(userId, agency, message) {
   garbageCollect();
-  return await toManyLogins(userId, failedSettings.userId);
+  return await toManyLogins(userId + agency, failedSettings.userId, isUserFailure(message, 'user'));
 }
 
 /**
  * if ip is blocked, return date when blocking is dropped
  *
  * @param ip
+ * @param message
+ * @returns {Promise<*>}
  */
-export async function toManyLoginsFromIp(ip) {
-  return await toManyLogins(ip, failedSettings.ip);
+export async function toManyLoginsFromIp(ip, message) {
+  return await toManyLogins(ip, failedSettings.ip, isUserFailure(message, 'ip'));
 }
 
 /**
  * return login left for a given userId
  *
  * @param userId
+ * @param agency
+ * @returns {Promise<number>}
  */
-export async function getLoginsLeftUserId(userId) {
-  return await getLoginsLeft(userId, failedSettings.userId);
+export async function getLoginsLeftUserId(userId, agency) {
+  return await getLoginsLeft(userId + agency, failedSettings.userId);
 }
 
 /**
  * return login left for a given ip
  *
  * @param ip
+ * @returns {Promise<number>}
  */
 export async function getLoginsLeftIp(ip) {
   return await getLoginsLeft(ip, failedSettings.ip);
@@ -64,15 +72,18 @@ export async function getLoginsLeftIp(ip) {
  * clear failed login attemps
  *
  * @param userId
+ * @param agency
+ * @returns {Promise<void>}
  */
-export async function clearFailedUser(userId) {
-  return await clearFailed(userId);
+export async function clearFailedUser(userId, agency) {
+  return await clearFailed(userId + agency);
 }
 
 /**
  * clear failed login attemps
  *
  * @param ip
+ * @returns {Promise<void>}
  */
 export async function clearFailedIp(ip) {
   return await clearFailed(ip);
@@ -96,9 +107,10 @@ async function garbageCollect() {
  *
  * @param key
  * @param settings
+ * @param userFailed
  * @returns {*}
  */
-async function toManyLogins(key, settings) {
+async function toManyLogins(key, settings, userFailed) {
   const now = new Date().getTime();
   const fail = await storage.read(key);
   if (fail && (now - fail.timeStamp > (settings.resetSeconds * 1000))) {
@@ -112,7 +124,9 @@ async function toManyLogins(key, settings) {
       return blockedTo;
     }
   }
-  await incrementFailed(key, settings);
+  if (userFailed) {
+    await incrementFailed(key, settings);
+  }
   return false;
 }
 
@@ -149,4 +163,15 @@ async function clearFailed(key) {
   if (key) {
     await storage.delete(key);
   }
+}
+
+/**
+ * Return true if the user made an error
+ *
+ * @param message
+ * @param failType
+ * @returns {boolean|boolean}
+ */
+function isUserFailure(message, failType) {
+  return (failType === 'user' && message === 'bonfd') || (failType === 'ip' && message === 'bonfd');
 }

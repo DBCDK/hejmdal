@@ -276,31 +276,26 @@ context('Borchk form', () => {
       .slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{downarrow}{downarrow}{enter}'
+      'sl{downarrow}{enter}'
     );
     for (var i = 2; i > 1; i--) {
       cy.get('#userid-input').type(uid);
-      cy.get('#pin-input').type('1234{enter}');
+      cy.get('#pin-input').type('1233{enter}');
       cy.get('#error-body').should(
         'contain',
         'Du har ' + i + ' forsøg tilbage'
       );
     }
-    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{enter}'
-    );
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
     cy.get('#logout button').click();
     cy.visit(authorize);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{downarrow}{downarrow}{enter}'
+      'sl{downarrow}{enter}'
     );
     cy.get('#userid-input').type(uid);
-    cy.get('#pin-input').type('1234{enter}');
+    cy.get('#pin-input').type('1233{enter}');
     cy.get('#error-body').should('contain', 'Du har 2 forsøg tilbage');
   });
 });

@@ -14,7 +14,7 @@ export default function getMockClient(agency, userId, pinCode) {
     body:
       agency === '710100' ||
       agency === '724000' ||
-      agency === '733000' ||
+      (agency === '733000' && pinCode === '1234') ||
       pinCode === '1111'
         ? mockDataOk
         : mockDataNotFound
