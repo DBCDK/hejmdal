@@ -74,7 +74,7 @@ export async function getToken(clientId, agency, username, password) {
       },
       form: {
         grant_type: 'password',
-        username: agency ? `${username}@DK-${agency}` : username,
+        username: agency ? `${username}@${agency}` : username,
         password: `${password}`
       }
     });
