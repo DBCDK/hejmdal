@@ -18,5 +18,5 @@ export default async function errorMiddleware(err, req, res, next) {
     url: req.url
   });
 
-  req.render('Error', {error: 'Der er sket en fejl. Prøv at logge ind igen'});
+  res.render('Error', {error: 'Der er sket en fejl. Prøv at logge ind igen'});
 }
