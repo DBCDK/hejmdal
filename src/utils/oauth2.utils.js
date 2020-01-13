@@ -1,5 +1,58 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+import {promiseRequest} from './request.util';
+import {
+  getClientById,
+  getClientByToken
+} from '../components/Smaug/smaug.client';
 import {log} from './logging.util';
+
+/**
+ * ...
+ *
+ * @export
+ * @param {*} autorization string
+ * @returns token string
+ */
+
+export async function validateClient(auth) {
+  console.log('validateClient() .........');
+
+  const response = await promiseRequest('post', {
+    url: 'https://auth.dbc.dk/oauth/token',
+    method: 'POST',
+    body: 'grant_type=password&username=@&password=@',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: auth
+    }
+  });
+
+  const parsed = JSON.parse(response.body);
+  return parsed.access_token;
+}
+
+/**
+ * ...
+ *
+ * @export
+ * @param {*} token
+ * @returns Boolean
+ */
+
+export async function validateIntrospectionAccess(token) {
+  console.log('validateClientIntrospectionAccess() .........');
+  try {
+    if (token) {
+      const response = await getClientByToken(token);
+      return response.introspection;
+    }
+
+    log.error('validateIntrospectionAccess() - Missing client or token');
+    return false;
+  } catch (error) {
+    log.error('Error validating client introspection access');
+  }
+}
 
 /**
  * Clear session when login is initiated

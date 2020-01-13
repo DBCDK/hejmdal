@@ -1,12 +1,16 @@
+import {Router} from 'express';
+
+import {getClientByToken} from '../components/Smaug/smaug.client';
+import {setDefaultState} from '../middlewares/state.middleware';
 import {
   validateAuthRequest,
   clearClientOnSession,
   isUserLoggedIn,
   authorizationMiddleware,
-  addClientToListOfClients
+  addClientToListOfClients,
+  validateIntrospectionAccess,
+  validateClient
 } from '../utils/oauth2.utils';
-import {Router} from 'express';
-import {setDefaultState} from '../middlewares/state.middleware';
 
 const router = Router();
 
@@ -32,6 +36,82 @@ router.get(
   authorizationMiddleware,
   addClientToListOfClients
 );
+
+// curl --user CLIENT_ID:CLIENT_SECRET -X POST login.bib.dk/oauth/introspection?access_token=MY_ACCESS_TOKEN
+// curl --user 6589442e-0018-4230-89b3-d61ac4d52565:d4733291acad68f02539336d2003a2d3c531534929f8ba61251c38d8f3d7878c -X POST login.bib.dk/oauth/introspection?access_token=MY_ACCESS_TOKEN
+// curl --user 6589442e-0018-4230-89b3-d61ac4d52565:d4733291acad68f02539336d2003a2d3c531534929f8ba61251c38d8f3d7878c -X POST localhost:3010/oauth/introspection?access_token=MY_ACCESS_TOKEN
+
+/**
+ * POST request
+ * Endpoint to retrieve token informations
+ * Informations: active, clientId, expires, uniqueId
+ *
+ * CURL Example request:
+ * curl --user CLIENT_ID:CLIENT_SECRET -X POST login.bib.dk/oauth/introspection?access_token=MY_ACCESS_TOKEN
+ *
+ * @param {*} access_token
+ * @returns obj
+ */
+
+router.post('/introspection', async (req, res) => {
+  // Errormessage
+  let errorMessage = null;
+  // Retrieve Token from request query
+  const token = req.query.access_token;
+  console.log('############ token', token);
+
+  if (token) {
+    // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
+    const auth = req.headers.authorization;
+    console.log('############ auth', auth);
+
+    // Validate authorization ("Basic" encoded CLIENT_ID:CLIENT_SECRET)
+    // Check if token can be recieved from auth.dbc.dk
+    const clientToken = await validateClient(auth);
+    console.log('############ !!clientToken', !!clientToken);
+
+    // If ClientId + secret can return a valid token
+    if (!!clientToken) {
+      // Check if client is allowed to access introspection endpoint (by clientToken)
+      const isAllowed = await validateIntrospectionAccess(clientToken);
+      console.log('############ Introspection access isAllowed:', isAllowed);
+
+      // If Cĺient is allowed to access the /introspection endpoint
+      if (isAllowed) {
+        // Retrieve client from recieved token (requested)
+        const response = await getClientByToken(token);
+
+        const active = true;
+        const clientId = response.app.clientId;
+        const expires = response.expires;
+        const uniqueId = response.user.uniqueId;
+
+        // return token data
+        res.status = 200;
+        res.json({
+          active,
+          clientId,
+          expires,
+          uniqueId
+        });
+      } else {
+        errorMessage = 'Client is not allowed to use /introspection endpoint';
+      }
+    } else {
+      errorMessage = 'Invalid client and/or secret';
+    }
+  } else {
+    errorMessage = 'Missing param access_token';
+  }
+
+  // If something went wrong
+  // returns status and error message
+  res.status = 400;
+  res.json({
+    error: 'Something went wrong :(',
+    message: errorMessage
+  });
+});
 
 /**
  * token.
