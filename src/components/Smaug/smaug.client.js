@@ -1,10 +1,31 @@
 import {CONFIG} from '../../utils/config.util';
 import {TokenError} from './smaug.errors';
+import {promiseRequest} from '../../utils/request.util';
 import mockClient, {
   getMockValidateUserTokenClient,
-  mockRevokeToken
+  mockRevokeToken,
+  mockGetTokenByAuth
 } from './mock/smaug.client.mock';
-import {promiseRequest} from '../../utils/request.util';
+
+export async function getTokenByAuth(params) {
+  if (!params) {
+    log.error('Missing required params');
+    return false;
+  }
+
+  if (CONFIG.mock_externals.smaug) {
+    return mockGetTokenByAuth(params.headers.Authorization);
+  }
+
+  try {
+    const response = await promiseRequest('post', params);
+    const parsed = JSON.parse(response.body);
+    return parsed.access_token;
+  } catch (e) {
+    log.error('Error validating authorization');
+  }
+}
+
 /**
  * Retreives context based on given token
  *

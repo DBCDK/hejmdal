@@ -9,7 +9,7 @@ import {
   authorizationMiddleware,
   addClientToListOfClients,
   validateIntrospectionAccess,
-  validateClient
+  getValidTokenFromClient
 } from '../utils/oauth2.utils';
 
 const router = Router();
@@ -43,7 +43,7 @@ router.get(
 
 /**
  * POST request
- * Endpoint to retrieve token informations
+ * Endpoint to return token informations
  * Informations: active, clientId, expires, uniqueId
  *
  * CURL Example request:
@@ -54,62 +54,69 @@ router.get(
  */
 
 router.post('/introspection', async (req, res) => {
-  // Errormessage
-  let errorMessage = null;
-  // Retrieve Token from request query
-  const token = req.query.access_token;
-  console.log('############ token', token);
+  // Endpoint response
+  let response = {error: null, status: 200, data: {}};
+
+  // Retrieve Token from request query / body
+  const token = req.query.access_token || req.body.access_token;
 
   if (token) {
     // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
     const auth = req.headers.authorization;
-    console.log('############ auth', auth);
 
     // Validate authorization ("Basic" encoded CLIENT_ID:CLIENT_SECRET)
-    // Check if token can be recieved from auth.dbc.dk
-    const clientToken = await validateClient(auth);
-    console.log('############ !!clientToken', !!clientToken);
+    // Used for checking that token can be returned from auth.dbc.dk
+    const clientToken = await getValidTokenFromClient(auth);
 
-    // If ClientId + secret can return a valid token
+    console.log('clientToken', clientToken);
+
+    // If valid token returned
     if (!!clientToken) {
       // Check if client is allowed to access introspection endpoint (by clientToken)
       const isAllowed = await validateIntrospectionAccess(clientToken);
-      console.log('############ Introspection access isAllowed:', isAllowed);
 
       // If Cĺient is allowed to access the /introspection endpoint
       if (isAllowed) {
-        // Retrieve client from recieved token (requested)
-        const response = await getClientByToken(token);
+        // Retrieve client information from recieved token (requested)
+        try {
+          const information = await getClientByToken(token);
 
-        const active = true;
-        const clientId = response.app.clientId;
-        const expires = response.expires;
-        const uniqueId = response.user.uniqueId;
-
-        // return token data
-        res.status = 200;
-        res.json({
-          active,
-          clientId,
-          expires,
-          uniqueId
-        });
+          // Set client information
+          response.data = {
+            active: true,
+            clientId: information.app.clientId,
+            expires: information.expires,
+            uniqueId: information.user.uniqueId || null,
+            type: information.user.uniqueId ? 'Authorized' : 'Anonymous'
+          };
+        } catch (e) {
+          response.data = {active: false};
+        }
       } else {
-        errorMessage = 'Client is not allowed to use /introspection endpoint';
+        response.status = 400;
+        response.error = 'Client is not allowed to use /introspection endpoint';
       }
     } else {
-      errorMessage = 'Invalid client and/or secret';
+      response.status = 403;
+      response.error = 'Invalid client and/or secret';
     }
   } else {
-    errorMessage = 'Missing param access_token';
+    response.status = 403;
+    response.error =
+      token === '' ? 'Empty value access_token' : 'Missing param access_token';
+  }
+
+  // Return status code
+  res.status = response.status;
+
+  // If all-good
+  if (!response.error) {
+    res.json(response.data);
   }
 
   // If something went wrong
-  // returns status and error message
-  res.status = 400;
   res.json({
-    error: 'Something went wrong :(',
-    message: errorMessage
+    error: response.error
   });
 });
 
@@ -180,7 +187,6 @@ router.delete('/revoke', async (req, res) => {
   }
 
   res.status = 400;
-
   res.json({
     error: 'no valid access_token'
   });

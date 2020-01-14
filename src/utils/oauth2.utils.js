@@ -1,23 +1,28 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
-import {promiseRequest} from './request.util';
+
 import {
   getClientById,
-  getClientByToken
+  getClientByToken,
+  getTokenByAuth
 } from '../components/Smaug/smaug.client';
 import {log} from './logging.util';
 
 /**
- * ...
+ * Returns token if authorization (Basic string) is valid.
+ * Used for validating CLIENT_ID and CLIENT_SECRET
  *
  * @export
- * @param {*} autorization string
+ * @param {*} authorization string
  * @returns token string
  */
 
-export async function validateClient(auth) {
-  console.log('validateClient() .........');
+export async function getValidTokenFromClient(auth) {
+  if (!auth) {
+    log.error('Missing required param `auth`');
+    return false;
+  }
 
-  const response = await promiseRequest('post', {
+  const token = await getTokenByAuth({
     url: 'https://auth.dbc.dk/oauth/token',
     method: 'POST',
     body: 'grant_type=password&username=@&password=@',
@@ -27,28 +32,27 @@ export async function validateClient(auth) {
     }
   });
 
-  const parsed = JSON.parse(response.body);
-  return parsed.access_token;
+  return token;
 }
 
 /**
- * ...
+ * Retrieves Smaug client data from token, and checks if
+ * client is allowed to access the introspection endpoint.
  *
  * @export
- * @param {*} token
+ * @param {*} token string
  * @returns Boolean
  */
 
 export async function validateIntrospectionAccess(token) {
-  console.log('validateClientIntrospectionAccess() .........');
-  try {
-    if (token) {
-      const response = await getClientByToken(token);
-      return response.introspection;
-    }
-
-    log.error('validateIntrospectionAccess() - Missing client or token');
+  if (!token) {
+    log.error('Missing required param `token`');
     return false;
+  }
+
+  try {
+    const response = await getClientByToken(token);
+    return response.introspection;
   } catch (error) {
     log.error('Error validating client introspection access');
   }
