@@ -22,15 +22,7 @@ export async function getValidTokenFromClient(auth) {
     return false;
   }
 
-  const token = await getTokenByAuth({
-    url: 'https://auth.dbc.dk/oauth/token',
-    method: 'POST',
-    body: 'grant_type=password&username=@&password=@',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: auth
-    }
-  });
+  const token = await getTokenByAuth(auth);
 
   return token;
 }

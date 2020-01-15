@@ -13,6 +13,15 @@ context('Introspection', () => {
       .should('include', 'Empty value access_token');
   });
 
+  it('should get access_token from url (as fallback) - no body', () => {
+    cy.request({
+      method: 'POST',
+      url: `${url}?access_token=`
+    })
+      .its('body.error')
+      .should('include', 'Empty value access_token');
+  });
+
   it('should get error `Invalid client and/or secret`', () => {
     cy.request({
       method: 'POST',
@@ -52,7 +61,7 @@ context('Introspection', () => {
       method: 'POST',
       url,
       body: {
-        access_token: 'invalid_access_token'
+        access_token: 'some_invalid_token'
       },
       headers: {
         authorization: 'Basic: im-all-authorized'
@@ -62,18 +71,41 @@ context('Introspection', () => {
     });
   });
 
-  it.skip('should get introspection info from anonymous token', () => {
+  it('should get introspection info from anonymous token', () => {
     cy.request({
       method: 'POST',
       url,
       body: {
-        access_token: 'valid_access_token'
+        access_token: 'some_anonymous_token'
       },
       headers: {
-        authorization: 'Basic: im-authorized'
+        authorization: 'Basic: im-all-authorized'
       }
-    }).should(res => {
-      console.log('res', res);
+    }).should(response => {
+      expect(response.body).to.have.property('active', true);
+      expect(response.body).to.have.property('clientId');
+      expect(response.body).to.have.property('expires');
+      expect(response.body).to.have.property('uniqueId', null);
+      expect(response.body).to.have.property('type', 'anonymous');
+    });
+  });
+
+  it('should get introspection info from authorized token', () => {
+    cy.request({
+      method: 'POST',
+      url,
+      body: {
+        access_token: 'some_authorized_token'
+      },
+      headers: {
+        authorization: 'Basic: im-all-authorized'
+      }
+    }).should(response => {
+      expect(response.body).to.have.property('active', true);
+      expect(response.body).to.have.property('clientId');
+      expect(response.body).to.have.property('expires');
+      expect(response.body).to.have.property('uniqueId', 'qwerty');
+      expect(response.body).to.have.property('type', 'authorized');
     });
   });
 });

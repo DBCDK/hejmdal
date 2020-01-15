@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import _ from 'lodash';
 
 import {getClientByToken} from '../components/Smaug/smaug.client';
 import {setDefaultState} from '../middlewares/state.middleware';
@@ -37,10 +38,6 @@ router.get(
   addClientToListOfClients
 );
 
-// curl --user CLIENT_ID:CLIENT_SECRET -X POST login.bib.dk/oauth/introspection?access_token=MY_ACCESS_TOKEN
-// curl --user 6589442e-0018-4230-89b3-d61ac4d52565:d4733291acad68f02539336d2003a2d3c531534929f8ba61251c38d8f3d7878c -X POST login.bib.dk/oauth/introspection?access_token=MY_ACCESS_TOKEN
-// curl --user 6589442e-0018-4230-89b3-d61ac4d52565:d4733291acad68f02539336d2003a2d3c531534929f8ba61251c38d8f3d7878c -X POST localhost:3010/oauth/introspection?access_token=MY_ACCESS_TOKEN
-
 /**
  * POST request
  * Endpoint to return token informations
@@ -57,8 +54,13 @@ router.post('/introspection', async (req, res) => {
   // Endpoint response
   let response = {error: null, status: 200, data: {}};
 
-  // Retrieve Token from request query / body
-  const token = req.query.access_token || req.body.access_token;
+  // Retrieve Token from request body || query
+  let token = req.body.access_token;
+
+  // Fallback if token is type of undefined or null
+  if (typeof token === 'undefined' || token === null) {
+    token = req.query.access_token;
+  }
 
   if (token) {
     // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
@@ -68,28 +70,28 @@ router.post('/introspection', async (req, res) => {
     // Used for checking that token can be returned from auth.dbc.dk
     const clientToken = await getValidTokenFromClient(auth);
 
-    console.log('clientToken', clientToken);
-
     // If valid token returned
-    if (!!clientToken) {
+    if (clientToken) {
       // Check if client is allowed to access introspection endpoint (by clientToken)
       const isAllowed = await validateIntrospectionAccess(clientToken);
 
       // If Cĺient is allowed to access the /introspection endpoint
       if (isAllowed) {
-        // Retrieve client information from recieved token (requested)
         try {
+          // Retrieve client information from recieved token (access_token)
           const information = await getClientByToken(token);
 
           // Set client information
-          response.data = {
-            active: true,
-            clientId: information.app.clientId,
-            expires: information.expires,
-            uniqueId: information.user.uniqueId || null,
-            type: information.user.uniqueId ? 'Authorized' : 'Anonymous'
-          };
+          const active = true;
+          const clientId = information.app.clientId;
+          const expires = information.expires;
+          const uniqueId = _.get(information, 'user.uniqueId', null);
+          const type = uniqueId ? 'authorized' : 'anonymous';
+
+          // Set Response
+          response.data = {active, clientId, expires, uniqueId, type};
         } catch (e) {
+          // Token is invallid or expired - request is ok (status: 200)
           response.data = {active: false};
         }
       } else {

@@ -66,8 +66,16 @@ export default function getMockClient(clientId) {
     return hejmdalMockData;
   }
 
-  if ((clientId = 'introspection-allowed-access-token')) {
+  if (clientId === 'introspection-allowed-access-token') {
     return {...mockData, introspection: true};
+  }
+
+  if (clientId === 'some_anonymous_token') {
+    return mockData;
+  }
+
+  if (clientId === 'some_authorized_token') {
+    return {...mockData, user: {uniqueId: 'qwerty'}};
   }
 
   return null;
