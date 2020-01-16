@@ -97,8 +97,7 @@ export const CONFIG = {
   },
   smaug: {
     uri: process.env.SMAUG_URI,
-    oauthTokenUri:
-      process.env.SMAUG_OAUTH_TOKEN_URI || 'https://auth.dbc.dk/oauth/token',
+    oauthTokenUri: `${process.env.SMAUG_URI}/oauth/token`,
     configUri: process.env.SMAUG_CONFIG_URI,
     adminUri: process.env.SMAUG_ADMIN_URI,
     adminUsername: process.env.SMAUG_ADMIN_USERNAME,

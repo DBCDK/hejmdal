@@ -104,7 +104,10 @@ context('Introspection', () => {
       expect(response.body).to.have.property('active', true);
       expect(response.body).to.have.property('clientId');
       expect(response.body).to.have.property('expires');
-      expect(response.body).to.have.property('uniqueId', 'qwerty');
+      expect(response.body).to.have.property(
+        'uniqueId',
+        'some_authorized_user_id'
+      );
       expect(response.body).to.have.property('type', 'authorized');
     });
   });

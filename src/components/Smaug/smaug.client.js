@@ -14,9 +14,9 @@ export async function getTokenByAuth(auth) {
     return false;
   }
 
-  if (CONFIG.mock_externals.smaug) {
-    return mockGetTokenByAuth(auth);
-  }
+  // if (CONFIG.mock_externals.smaug) {
+  //   return mockGetTokenByAuth(auth);
+  // }
 
   try {
     const response = await promiseRequest('post', {

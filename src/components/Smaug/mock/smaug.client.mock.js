@@ -23,8 +23,7 @@ export const mockData = {
   urls: {
     host: `http://localhost:${CONFIG.app.port}`,
     returnUrl: '/example/'
-  },
-  expires: 'In the future'
+  }
 };
 
 export const hejmdalMockData = {
@@ -64,18 +63,6 @@ export default function getMockClient(clientId) {
 
   if (clientId === 'hejmdal-access-token') {
     return hejmdalMockData;
-  }
-
-  if (clientId === 'introspection-allowed-access-token') {
-    return {...mockData, introspection: true};
-  }
-
-  if (clientId === 'some_anonymous_token') {
-    return mockData;
-  }
-
-  if (clientId === 'some_authorized_token') {
-    return {...mockData, user: {uniqueId: 'qwerty'}};
   }
 
   return null;
@@ -142,21 +129,4 @@ export function mockRevokeToken(token) {
     return {count: 0};
   }
   return {count: 0};
-}
-
-/**
- *
- * @param Authorization
- * @returns token
- */
-export function mockGetTokenByAuth(auth) {
-  if (auth === 'Basic: im-authorized-but-not-allowed-to-access-introspection') {
-    return 'hejmdal-access-token';
-  }
-
-  if (auth === 'Basic: im-all-authorized') {
-    return 'introspection-allowed-access-token';
-  }
-
-  return false;
 }

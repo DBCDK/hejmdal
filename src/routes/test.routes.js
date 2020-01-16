@@ -111,9 +111,51 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
   }
   if (token.includes('hejmdal')) {
     res.send(JSON.stringify(createClient(token, overrides)));
+  }
+  if (token.includes('not-allowed-to-use-introspection-token')) {
+    res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  if (token.includes('im-all-allowed-to-use-introspection-token')) {
+    overrides.introspection = true;
+    res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  if (token.includes('some_anonymous_token')) {
+    overrides.expires = 'in the future';
+    res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  if (token.includes('some_authorized_token')) {
+    overrides.expires = 'in the future';
+    overrides.user = {uniqueId: 'some_authorized_user_id'};
+    res.send(JSON.stringify(createClient('some_client', overrides)));
   } else {
     res.status(403);
     res.send(JSON.stringify({error: 'invalid_token'}));
+  }
+});
+
+smaugMockRouter.post('/auth/oauth/token', (req, res) => {
+  const {authorization} = req.headers;
+
+  if (authorization === 'Basic: im-not-authorized') {
+    // Sorry - No access_token for you
+    res.send(JSON.stringify({}));
+  }
+
+  if (
+    authorization ===
+    'Basic: im-authorized-but-not-allowed-to-access-introspection'
+  ) {
+    res.send(
+      JSON.stringify({access_token: 'not-allowed-to-use-introspection-token'})
+    );
+  }
+
+  if (authorization === 'Basic: im-all-authorized') {
+    res.send(
+      JSON.stringify({
+        access_token: 'im-all-allowed-to-use-introspection-token'
+      })
+    );
   }
 });
 
