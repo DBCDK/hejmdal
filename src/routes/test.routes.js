@@ -105,25 +105,19 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
   let overrides = {};
   if (token.includes('no-cas')) {
     overrides.grants = ['authorization_code', 'password'];
-  }
-  if (token.includes('no-single-logout-support')) {
+  } else if (token.includes('no-single-logout-support')) {
     overrides.singleLogoutPath = null;
-  }
-  if (token.includes('hejmdal')) {
+  } else if (token.includes('hejmdal')) {
     res.send(JSON.stringify(createClient(token, overrides)));
-  }
-  if (token.includes('not-allowed-to-use-introspection-token')) {
+  } else if (token.includes('not-allowed-to-use-introspection-token')) {
     res.send(JSON.stringify(createClient('some_client', overrides)));
-  }
-  if (token.includes('im-all-allowed-to-use-introspection-token')) {
+  } else if (token.includes('im-all-allowed-to-use-introspection-token')) {
     overrides.introspection = true;
     res.send(JSON.stringify(createClient('some_client', overrides)));
-  }
-  if (token.includes('some_anonymous_token')) {
+  } else if (token.includes('some_anonymous_token')) {
     overrides.expires = 'in the future';
     res.send(JSON.stringify(createClient('some_client', overrides)));
-  }
-  if (token.includes('some_authorized_token')) {
+  } else if (token.includes('some_authorized_token')) {
     overrides.expires = 'in the future';
     overrides.user = {uniqueId: 'some_authorized_user_id'};
     res.send(JSON.stringify(createClient('some_client', overrides)));
