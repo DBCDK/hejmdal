@@ -8,26 +8,6 @@ import {
 import {log} from './logging.util';
 
 /**
- * Returns token if authorization (Basic string) is valid.
- * Used for validating CLIENT_ID and CLIENT_SECRET
- *
- * @export
- * @param {*} authorization string
- * @returns token string
- */
-
-export async function getValidTokenFromClient(auth) {
-  if (!auth) {
-    log.error('Missing required param `auth`');
-    return false;
-  }
-
-  const token = await getTokenByAuth(auth);
-
-  return token;
-}
-
-/**
  * Retrieves Smaug client data from token, and checks if
  * client is allowed to access the introspection endpoint.
  *
@@ -46,7 +26,10 @@ export async function validateIntrospectionAccess(token) {
     const response = await getClientByToken(token);
     return response.introspection;
   } catch (error) {
-    log.error('Error validating client introspection access');
+    log.error('Error validating client introspection access', {
+      stack: error.stack,
+      message: error.message
+    });
   }
 }
 

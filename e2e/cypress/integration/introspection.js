@@ -7,21 +7,6 @@ context('Introspection', () => {
       .should('include', 'Missing param access_token');
   });
 
-  it('should get error `empty value access_token`', () => {
-    cy.request({method: 'POST', url, body: {access_token: ''}})
-      .its('body.error')
-      .should('include', 'Empty value access_token');
-  });
-
-  it('should get access_token from url (as fallback) - no body', () => {
-    cy.request({
-      method: 'POST',
-      url: `${url}?access_token=`
-    })
-      .its('body.error')
-      .should('include', 'Empty value access_token');
-  });
-
   it('should get error `Invalid client and/or secret`', () => {
     cy.request({
       method: 'POST',
@@ -97,6 +82,25 @@ context('Introspection', () => {
       body: {
         access_token: 'some_authorized_token'
       },
+      headers: {
+        authorization: 'Basic: im-all-authorized'
+      }
+    }).should(response => {
+      expect(response.body).to.have.property('active', true);
+      expect(response.body).to.have.property('clientId');
+      expect(response.body).to.have.property('expires');
+      expect(response.body).to.have.property(
+        'uniqueId',
+        'some_authorized_user_id'
+      );
+      expect(response.body).to.have.property('type', 'authorized');
+    });
+  });
+
+  it('should get introspection info from authorized token - Param from url (fallback)', () => {
+    cy.request({
+      method: 'POST',
+      url: `${url}?access_token=some_authorized_token`,
       headers: {
         authorization: 'Basic: im-all-authorized'
       }

@@ -26,8 +26,11 @@ export async function getTokenByAuth(auth) {
     });
     const parsed = JSON.parse(response.body);
     return parsed.access_token;
-  } catch (e) {
-    log.error('Error validating authorization');
+  } catch (error) {
+    log.error('Error validating authorization', {
+      stack: error.stack,
+      message: error.message
+    });
   }
 }
 

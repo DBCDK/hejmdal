@@ -1,7 +1,10 @@
 import {Router} from 'express';
 import _ from 'lodash';
 
-import {getClientByToken} from '../components/Smaug/smaug.client';
+import {
+  getClientByToken,
+  getTokenByAuth
+} from '../components/Smaug/smaug.client';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {
   validateAuthRequest,
@@ -9,8 +12,7 @@ import {
   isUserLoggedIn,
   authorizationMiddleware,
   addClientToListOfClients,
-  validateIntrospectionAccess,
-  getValidTokenFromClient
+  validateIntrospectionAccess
 } from '../utils/oauth2.utils';
 
 const router = Router();
@@ -55,12 +57,7 @@ router.post('/introspection', async (req, res) => {
   let response = {error: null, status: 200, data: {}};
 
   // Retrieve Token from request body || query
-  let token = req.body.access_token;
-
-  // Fallback if token is type of undefined or null
-  if (typeof token === 'undefined' || token === null) {
-    token = req.query.access_token;
-  }
+  const token = req.body.access_token || req.query.access_token;
 
   if (token) {
     // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
@@ -68,7 +65,7 @@ router.post('/introspection', async (req, res) => {
 
     // Validate authorization ("Basic" encoded CLIENT_ID:CLIENT_SECRET)
     // Used for checking that token can be returned from auth.dbc.dk
-    const clientToken = await getValidTokenFromClient(auth);
+    const clientToken = await getTokenByAuth(auth);
 
     // If valid token returned
     if (clientToken) {
@@ -91,7 +88,7 @@ router.post('/introspection', async (req, res) => {
           // Set Response
           response.data = {active, clientId, expires, uniqueId, type};
         } catch (e) {
-          // Token is invallid or expired - request is ok (status: 200)
+          // Token is invalid or expired - request is ok (status: 200)
           response.data = {active: false};
         }
       } else {
@@ -104,8 +101,7 @@ router.post('/introspection', async (req, res) => {
     }
   } else {
     response.status = 403;
-    response.error =
-      token === '' ? 'Empty value access_token' : 'Missing param access_token';
+    response.error = 'Missing param access_token';
   }
 
   // Return status code
@@ -115,11 +111,12 @@ router.post('/introspection', async (req, res) => {
   if (!response.error) {
     res.json(response.data);
   }
-
   // If something went wrong
-  res.json({
-    error: response.error
-  });
+  else {
+    res.json({
+      error: response.error
+    });
+  }
 });
 
 /**

@@ -144,20 +144,20 @@ smaugMockRouter.post('/auth/oauth/token', (req, res) => {
 
   if (authorization === 'Basic: im-not-authorized') {
     // Sorry - No access_token for you
-    res.send(JSON.stringify({}));
+    return res.send(JSON.stringify({}));
   }
 
   if (
     authorization ===
     'Basic: im-authorized-but-not-allowed-to-access-introspection'
   ) {
-    res.send(
+    return res.send(
       JSON.stringify({access_token: 'not-allowed-to-use-introspection-token'})
     );
   }
 
   if (authorization === 'Basic: im-all-authorized') {
-    res.send(
+    return res.send(
       JSON.stringify({
         access_token: 'im-all-allowed-to-use-introspection-token'
       })
