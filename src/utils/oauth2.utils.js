@@ -1,5 +1,37 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+
+import {
+  getClientById,
+  getClientByToken,
+  getTokenByAuth
+} from '../components/Smaug/smaug.client';
 import {log} from './logging.util';
+
+/**
+ * Retrieves Smaug client data from token, and checks if
+ * client is allowed to access the introspection endpoint.
+ *
+ * @export
+ * @param {*} token string
+ * @returns Boolean
+ */
+
+export async function validateIntrospectionAccess(token) {
+  if (!token) {
+    log.error('Missing required param `token`');
+    return false;
+  }
+
+  try {
+    const response = await getClientByToken(token);
+    return response.introspection;
+  } catch (error) {
+    log.error('Error validating client introspection access', {
+      stack: error.stack,
+      message: error.message
+    });
+  }
+}
 
 /**
  * Clear session when login is initiated

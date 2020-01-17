@@ -1,10 +1,39 @@
 import {CONFIG} from '../../utils/config.util';
 import {TokenError} from './smaug.errors';
+import {promiseRequest} from '../../utils/request.util';
+import {log} from '../../utils/logging.util';
 import mockClient, {
   getMockValidateUserTokenClient,
-  mockRevokeToken
+  mockRevokeToken,
+  mockGetTokenByAuth
 } from './mock/smaug.client.mock';
-import {promiseRequest} from '../../utils/request.util';
+
+export async function getTokenByAuth(auth) {
+  if (!auth) {
+    log.error('Missing required auth');
+    return false;
+  }
+
+  try {
+    const response = await promiseRequest('post', {
+      url: CONFIG.smaug.oauthTokenUri,
+      method: 'POST',
+      body: 'grant_type=password&username=@&password=@',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: auth
+      }
+    });
+    const parsed = JSON.parse(response.body);
+    return parsed.access_token;
+  } catch (error) {
+    log.error('Error validating authorization', {
+      stack: error.stack,
+      message: error.message
+    });
+  }
+}
+
 /**
  * Retreives context based on given token
  *
