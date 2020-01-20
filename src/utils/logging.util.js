@@ -50,7 +50,7 @@ function doLog(level, msg, args = {}) {
   }
 
   var blob = {
-    '@timestamp': (new Date()).toISOString(),
+    '@timestamp': new Date().toISOString(),
     '@version': 1,
     app: 'hejmdal',
     version: version,
@@ -64,7 +64,9 @@ function doLog(level, msg, args = {}) {
     blob.msg = msg;
   }
 
-  console.log(JSON.stringify(Object.assign(blob, removeSecrets(args)), null, PRETTY_PRINT)); // eslint-disable-line no-console
+  console.log(
+    JSON.stringify(Object.assign(blob, removeSecrets(args)), null, PRETTY_PRINT)
+  ); // eslint-disable-line no-console
 }
 
 /**
@@ -77,12 +79,13 @@ function removeSecrets(obj) {
     return obj;
   }
   const cleaned = {};
-  Object.keys(obj).forEach((key) => {
+  Object.keys(obj).forEach(key => {
     if (typeof obj[key] === 'object') {
       cleaned[key] = removeSecrets(obj[key]);
-    }
-    else if (['userPincode', 'pincode', 'pinCode'].includes(key)) {
+    } else if (['userPincode', 'pincode', 'pinCode'].includes(key)) {
       cleaned[key] = '****';
+    } else if (['cpr', 'userId', 'userIdValue'].includes(key)) {
+      cleaned[key] = obj[key].substring(0, 6);
     } else {
       cleaned[key] = obj[key];
     }
@@ -100,8 +103,7 @@ export function isDir(path) {
     if (stats.isDirectory()) {
       return true;
     }
-  }
-  catch (e) {
+  } catch (e) {
     doLog('warn', 'Failed checking for directory');
   }
   return false;
