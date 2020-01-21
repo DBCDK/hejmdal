@@ -15,13 +15,12 @@ describe('Should remove sensitive info from log', () => {
     expect(JSON.parse(global.console.log.mock.calls[0][0]).msg).toBe(
       'Hide user pin'
     );
-
     expect(JSON.parse(global.console.log.mock.calls[0][0]).pincode).toBe(
       '****'
     );
   });
 
-  it('Should only use 6 first numbers from CPR', () => {
+  it('Should only show 6 first numbers from CPR', () => {
     const user = {agency: '710100', userId: '1234567890'};
 
     log.error('Hide 4 last numbers in pin', user);
@@ -29,7 +28,6 @@ describe('Should remove sensitive info from log', () => {
     expect(JSON.parse(global.console.log.mock.calls[0][0]).msg).toBe(
       'Hide 4 last numbers in pin'
     );
-
     expect(JSON.parse(global.console.log.mock.calls[0][0]).userId).toBe(
       '123456'
     );
@@ -43,18 +41,16 @@ describe('Should remove sensitive info from log', () => {
     expect(JSON.parse(global.console.log.mock.calls[0][0]).msg).toBe(
       'Hide 4 last numbers in pin'
     );
-
     expect(JSON.parse(global.console.log.mock.calls[0][0]).pincode).toBe(
       '****'
     );
-
     expect(JSON.parse(global.console.log.mock.calls[0][0]).userId).toBe(
       '123456'
     );
   });
 
   it('Should deeply remove 4 last numbers from CPR', () => {
-    log.error('############################ trim', {
+    log.error('Deeply hide 4 last numbers ($)', {
       borrowerCheckResponse: {
         userId: {
           $: '1234567890'
@@ -65,6 +61,9 @@ describe('Should remove sensitive info from log', () => {
       }
     });
 
+    expect(JSON.parse(global.console.log.mock.calls[0][0]).msg).toBe(
+      'Deeply hide 4 last numbers ($)'
+    );
     expect(
       JSON.parse(global.console.log.mock.calls[0][0]).borrowerCheckResponse
         .userId.$
