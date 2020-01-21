@@ -82,6 +82,13 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   const {clientId} = req.params;
   const {password} = req.body;
 
+  /* Removed when smaug auth call fixed */
+  if (clientId.includes('-authorized')) {
+    // Sorry - No access_token for you
+    return res.send(JSON.stringify({access_token: clientId}));
+  }
+  /* ----------------------------------- */
+
   if (clientId.includes('hejmdal') && password !== 'fail') {
     res.send(
       JSON.stringify({
@@ -103,6 +110,19 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
 smaugMockRouter.get('/config/configuration', (req, res) => {
   const {token} = req.query;
   let overrides = {};
+
+  /* Removed when smaug auth call fixed */
+  if (token.includes('im-not-authorized')) {
+    return res.send(JSON.stringify(false));
+  }
+  if (token.includes('im-authorized-but-not-allowed-to-access-introspection')) {
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  if (token.includes('im-all-authorized')) {
+    overrides.introspection = true;
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  /* ----------------------------------- */
 
   if (token.includes('not-allowed-to-use-introspection-token')) {
     return res.send(JSON.stringify(createClient('some_client', overrides)));
@@ -142,10 +162,11 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
 smaugMockRouter.post('/auth/oauth/token', (req, res) => {
   const {authorization} = req.headers;
 
-  if (authorization === 'Basic: im-not-authorized') {
-    // Sorry - No access_token for you
+  /* Removed when smaug auth call fixed */
+  if (authorization === 'im-not-authorized') {
     return res.send(JSON.stringify({}));
   }
+  /* ----------------------------------- */
 
   if (
     authorization ===
