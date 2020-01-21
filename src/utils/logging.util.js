@@ -74,6 +74,8 @@ function doLog(level, msg, args = {}) {
  * @param obj
  * @returns {{}}
  */
+
+let parent = null;
 function removeSecrets(obj) {
   if (!obj || typeof obj !== 'object') {
     return obj;
@@ -81,11 +83,20 @@ function removeSecrets(obj) {
   const cleaned = {};
   Object.keys(obj).forEach(key => {
     if (typeof obj[key] === 'object') {
+      parent = key;
       cleaned[key] = removeSecrets(obj[key]);
     } else if (['userPincode', 'pincode', 'pinCode'].includes(key)) {
       cleaned[key] = '****';
-    } else if (['cpr', 'userId', 'userIdValue'].includes(key)) {
-      cleaned[key] = obj[key].substring(0, 6);
+    } else if (['cpr', 'userId', 'userIdValue', '$'].includes(key)) {
+      if (key === '$') {
+        if (parent === 'userId') {
+          cleaned[key] = obj[key].substring(0, 6);
+        } else {
+          cleaned[key] = obj[key];
+        }
+      } else {
+        cleaned[key] = obj[key].substring(0, 6);
+      }
     } else {
       cleaned[key] = obj[key];
     }
