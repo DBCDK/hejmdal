@@ -103,17 +103,65 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
 smaugMockRouter.get('/config/configuration', (req, res) => {
   const {token} = req.query;
   let overrides = {};
+
+  if (token.includes('not-allowed-to-use-introspection-token')) {
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+
+  if (token.includes('im-all-allowed-to-use-introspection-token')) {
+    overrides.introspection = true;
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+
+  if (token.includes('some_anonymous_token')) {
+    overrides.expires = 'in the future';
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+  if (token.includes('some_authorized_token')) {
+    overrides.expires = 'in the future';
+    overrides.user = {uniqueId: 'some_authorized_user_id'};
+    return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+
   if (token.includes('no-cas')) {
     overrides.grants = ['authorization_code', 'password'];
   }
+
   if (token.includes('no-single-logout-support')) {
     overrides.singleLogoutPath = null;
   }
+
   if (token.includes('hejmdal')) {
     res.send(JSON.stringify(createClient(token, overrides)));
   } else {
     res.status(403);
     res.send(JSON.stringify({error: 'invalid_token'}));
+  }
+});
+
+smaugMockRouter.post('/auth/oauth/token', (req, res) => {
+  const {authorization} = req.headers;
+
+  if (authorization === 'Basic: im-not-authorized') {
+    // Sorry - No access_token for you
+    return res.send(JSON.stringify({}));
+  }
+
+  if (
+    authorization ===
+    'Basic: im-authorized-but-not-allowed-to-access-introspection'
+  ) {
+    return res.send(
+      JSON.stringify({access_token: 'not-allowed-to-use-introspection-token'})
+    );
+  }
+
+  if (authorization === 'Basic: im-all-authorized') {
+    return res.send(
+      JSON.stringify({
+        access_token: 'im-all-allowed-to-use-introspection-token'
+      })
+    );
   }
 });
 
