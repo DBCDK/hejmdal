@@ -52,10 +52,12 @@ const convertSessions = knex => {
     });
 };
 
-exports.up = function(knex, Promise) {
-  return Promise.all(convertConsents(knex), convertSessions(knex)).catch(e => {
-    throw new Error(e);
-  });
+exports.up = function(knex) {
+  return Promise.all([convertConsents(knex), convertSessions(knex)]).catch(
+    e => {
+      throw new Error(e);
+    }
+  );
 };
 
 exports.down = function() {};

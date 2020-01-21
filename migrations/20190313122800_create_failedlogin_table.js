@@ -4,7 +4,7 @@
  */
 
 exports.up = function(knex) {
-  return knex.schema.createTableIfNotExists('failedlogin', (table) => {
+  return knex.schema.createTableIfNotExists('failedlogin', table => {
     table.string('id', 64);
     table.jsonb('failInfo');
     table.dateTime('created').defaultTo(knex.fn.now());

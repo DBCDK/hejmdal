@@ -31,6 +31,7 @@ pipeline {
             steps { 
                 script {
                     ansiColor("xterm") {
+                        sh "docker pull docker.dbc.dk/cypress:latest" 
                         sh "docker-compose build" 
                         sh "IMAGE=${IMAGE_NAME} docker-compose run --rm e2e" 
                     }
