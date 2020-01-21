@@ -68,5 +68,11 @@ describe('Should remove sensitive info from log', () => {
       JSON.parse(global.console.log.mock.calls[0][0]).borrowerCheckResponse
         .userId.$
     ).toBe('123456');
+
+    // requestStatus => $ value should stay unchanged:
+    expect(
+      JSON.parse(global.console.log.mock.calls[0][0]).borrowerCheckResponse
+        .requestStatus.$
+    ).toBe('borrower_not_found');
   });
 });
