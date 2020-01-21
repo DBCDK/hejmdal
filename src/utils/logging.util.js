@@ -64,9 +64,11 @@ function doLog(level, msg, args = {}) {
     blob.msg = msg;
   }
 
+  /* eslint-disable no-console */
   console.log(
     JSON.stringify(Object.assign(blob, removeSecrets(args)), null, PRETTY_PRINT)
-  ); // eslint-disable-line no-console
+  );
+  /* eslint-enable no-console */
 }
 
 /**
