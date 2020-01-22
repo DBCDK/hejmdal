@@ -1,11 +1,32 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
 
 import {
-  getClientById,
   getClientByToken,
   getTokenByAuth
 } from '../components/Smaug/smaug.client';
 import {log} from './logging.util';
+
+/**
+ * Extracts ClientId from auth
+ *
+ * @export
+ * @param {*} auth String
+ * @returns {String} ClientId
+ */
+
+export async function getClientByAuth(auth) {
+  if (!auth) {
+    log.error('Missing required param `auth`');
+    return false;
+  }
+
+  // Removes the "Basic " sub-string from auth and decodes the base64 to string.
+  const base = Buffer.from(auth.replace('Basic ', ''), 'base64');
+  const str = base.toString();
+
+  // Returns ClientId from string ("CLIENT_ID:CLIENT_SECRET")
+  return str.split(':')[0];
+}
 
 /**
  * Retrieves Smaug client data from token, and checks if

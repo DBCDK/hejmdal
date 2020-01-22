@@ -15,7 +15,10 @@ context('Introspection', () => {
         access_token: 'some_token'
       },
       headers: {
-        authorization: 'Basic: im-not-authorized'
+        // authorization: 'Basic: im-not-authorized:client_secret'
+        authorization: `Basic ${Buffer.from(
+          'im-not-authorized:client_secret'
+        ).toString('base64')}`
       }
     })
       .its('body.error')
@@ -30,8 +33,10 @@ context('Introspection', () => {
         access_token: 'some_token'
       },
       headers: {
-        authorization:
-          'Basic: im-authorized-but-not-allowed-to-access-introspection'
+        // authorization: 'Basic: im-authorized-but-not-allowed-to-access-introspection'
+        authorization: `Basic ${Buffer.from(
+          'im-authorized-but-not-allowed-to-access-introspection:client_secret'
+        ).toString('base64')}`
       }
     })
       .its('body.error')
@@ -49,7 +54,10 @@ context('Introspection', () => {
         access_token: 'some_invalid_token'
       },
       headers: {
-        authorization: 'Basic: im-all-authorized'
+        // authorization: 'Basic: im-all-authorized'
+        authorization: `Basic ${Buffer.from(
+          'im-all-authorized:client_secret'
+        ).toString('base64')}`
       }
     }).then(response => {
       expect(response.body).to.have.property('active', false);
@@ -64,7 +72,10 @@ context('Introspection', () => {
         access_token: 'some_anonymous_token'
       },
       headers: {
-        authorization: 'Basic: im-all-authorized'
+        // authorization: 'Basic: im-all-authorized'
+        authorization: `Basic ${Buffer.from(
+          'im-all-authorized:client_secret'
+        ).toString('base64')}`
       }
     }).should(response => {
       expect(response.body).to.have.property('active', true);
@@ -83,7 +94,10 @@ context('Introspection', () => {
         access_token: 'some_authorized_token'
       },
       headers: {
-        authorization: 'Basic: im-all-authorized'
+        // authorization: 'Basic: im-all-authorized'
+        authorization: `Basic ${Buffer.from(
+          'im-all-authorized:client_secret'
+        ).toString('base64')}`
       }
     }).should(response => {
       expect(response.body).to.have.property('active', true);
@@ -102,7 +116,10 @@ context('Introspection', () => {
       method: 'POST',
       url: `${url}?access_token=some_authorized_token`,
       headers: {
-        authorization: 'Basic: im-all-authorized'
+        // authorization: 'Basic: im-all-authorized'
+        authorization: `Basic ${Buffer.from(
+          'im-all-authorized:client_secret'
+        ).toString('base64')}`
       }
     }).should(response => {
       expect(response.body).to.have.property('active', true);

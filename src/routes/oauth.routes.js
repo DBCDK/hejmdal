@@ -3,7 +3,8 @@ import _ from 'lodash';
 
 import {
   getClientByToken,
-  getTokenByAuth
+  getTokenByAuth,
+  getClientById
 } from '../components/Smaug/smaug.client';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {
@@ -12,7 +13,8 @@ import {
   isUserLoggedIn,
   authorizationMiddleware,
   addClientToListOfClients,
-  validateIntrospectionAccess
+  validateIntrospectionAccess,
+  getClientByAuth
 } from '../utils/oauth2.utils';
 
 const router = Router();
@@ -63,14 +65,19 @@ router.post('/introspection', async (req, res) => {
     // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
     const auth = req.headers.authorization;
 
+    // extract ClientId from Auth string
+    const id = await getClientByAuth(auth);
+
     // Validate authorization ("Basic" encoded CLIENT_ID:CLIENT_SECRET)
     // Used for checking that token can be returned from auth.dbc.dk
-    const clientToken = await getTokenByAuth(auth);
+    // const clientToken = await getTokenByAuth(auth);
+    const client = await getClientById(id);
 
     // If valid token returned
-    if (clientToken) {
+    if (client) {
       // Check if client is allowed to access introspection endpoint (by clientToken)
-      const isAllowed = await validateIntrospectionAccess(clientToken);
+      // const isAllowed = await validateIntrospectionAccess(clientToken);
+      const isAllowed = client.introspection;
 
       // If Cĺient is allowed to access the /introspection endpoint
       if (isAllowed) {
