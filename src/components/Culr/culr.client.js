@@ -70,7 +70,7 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
     service: 'Culr',
-    method: 'getAccountsByLocalId',
+    function: 'getAccountsByLocalId',
     ms: elapsedTimeInMs
   });
 

@@ -13,6 +13,7 @@ import KeyValueStorage from '../../models/keyvalue.storage.model';
 import MemoryStorage from '../../models/memory.storage.model';
 import {CONFIG} from '../../utils/config.util';
 import {createHash} from '../../utils/hash.utils';
+import startTiming from '../../utils/timing.util';
 
 const storage = CONFIG.mock_storage
   ? new KeyValueStorage(new MemoryStorage())
@@ -66,8 +67,16 @@ export async function getUserAttributesForClient(user, clientId) {
  * @param {String} token
  */
 export async function readUser(token) {
+  const stopTiming = startTiming();
   const hashedToken = createHash(token);
-  return await storage.read(hashedToken);
+  const result = await storage.read(hashedToken);
+  const elapsedTimeInMs = stopTiming();
+  log.debug('timing', {
+    service: 'database',
+    function: 'readUser',
+    ms: elapsedTimeInMs
+  });
+  return result;
 }
 
 /**
@@ -77,8 +86,17 @@ export async function readUser(token) {
  * @param {Object} user
  */
 export async function saveUser(token, user) {
+  const stopTiming = startTiming();
   const hashedToken = createHash(token);
-  return await storage.update(hashedToken, user);
+  const result = await storage.update(hashedToken, user);
+  const elapsedTimeInMs = stopTiming();
+  log.debug('timing', {
+    service: 'database',
+    function: 'readUser',
+    ms: elapsedTimeInMs
+  });
+
+  return result;
 }
 
 /**

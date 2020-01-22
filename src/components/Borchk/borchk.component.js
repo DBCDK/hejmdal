@@ -25,7 +25,11 @@ export async function validateUserInLibrary(serviceRequester, userInput) {
     serviceRequester
   );
   const elapsedTimeInMs = stopTiming();
-  log.debug('timing', {service: 'BorChk', ms: elapsedTimeInMs});
+  log.debug('timing', {
+    service: 'BorChk',
+    function: 'validateUserInLibrary',
+    ms: elapsedTimeInMs
+  });
   userValidate = extractInfo(response);
 
   return userValidate;
@@ -77,25 +81,27 @@ function extractInfo(response) {
         statusResponse.message = ERRORS[message];
         break;
       case 'library_not_found':
-        log.error('Borchk: The requested library was not found', {
+        log.warning('Borchk: The requested library was not found', {
           response: response
         });
         statusResponse.message = ERRORS[message];
         break;
       case 'borrowercheck_not_allowed':
-        log.error('Borchk: Borrowercheck is no allowed', {response: response});
+        log.warning('Borchk: Borrowercheck is no allowed', {
+          response: response
+        });
         statusResponse.message = ERRORS[message];
         break;
       case 'borrower_not_found':
-        log.error('Borchk: Borrower not found', {response: response});
+        log.debug('Borchk: Borrower not found', {response: response});
         statusResponse.message = ERRORS[message];
         break;
       case 'borrower_not_in_municipality':
-        log.error('Borchk: Borrower not in municipality', {response: response});
+        log.debug('Borchk: Borrower not in municipality', {response: response});
         statusResponse.message = ERRORS[message];
         break;
       case 'municipality_check_not_supported_by_library':
-        log.error('Borchk: Municipality check not supported by library', {
+        log.debug('Borchk: Municipality check not supported by library', {
           response: response
         });
         statusResponse.message = ERRORS[message];

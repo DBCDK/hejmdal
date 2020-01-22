@@ -18,6 +18,7 @@ export async function loggerMiddleware(req, res, next) {
       const elapsedTimeInMs = stopTiming();
       log.debug('timing', {
         service: 'Hejmdal',
+        function: 'pagerequest',
         ms: elapsedTimeInMs,
         baseUrl: (req.baseUrl || '') + (req.path || '')
       });
