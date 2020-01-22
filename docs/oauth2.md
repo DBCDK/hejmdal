@@ -173,6 +173,47 @@ If authorization was done using a password grant, it is possible to revoke the a
 
 `curl -X DELETE https://login.bib.dk/oauth/revoke?access_token={ACCESS_TOKEN}`
 
-# Single Logout
+# 4. Single Logout
 
 For information about single logout flow see - [single-logout](single-logout.md)
+
+# 5. Introspection
+
+Endpoint to return a token status and some other useful informations about a given token
+
+The requesting client must be authorized to access the introspection endpoint. Authorization is set in the smaug client configuration. 
+
+```
+{
+  "introspection": true,
+}
+```
+
+### Example call: 
+
+`curl --user CLIENT_ID:CLIENT_SECRET -X POST login.bib.dk/oauth/introspection?access_token=SOME_ACCESS_TOKEN`
+
+### Returns:
+
+```
+{
+    "active": true, // false if token is not recognized or expired
+    "clientId": "1234-qwerty", 
+    "uniqueId": "0101701234",
+    "type": "authorized", // authorized/anonymous according to token
+    "expires": "3600"
+}   
+```
+Only the `{"active": false}` prop is returned if token is not recognized or expired. 
+
+
+### Error messages
+
+`{"error": "Missing param access_token"}` 
+- access_token is missing or empty
+
+ `{"error": "Invalid client and/or secret"}` 
+- Request from an unknown client - client can't be validated
+ 
+`{"error": "Client is not allowed to use /introspection endpoint"}` 
+- Client missing authorization to access the /introspection endpoint
