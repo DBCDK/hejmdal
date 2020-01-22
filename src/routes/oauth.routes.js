@@ -65,16 +65,18 @@ router.post('/introspection', async (req, res) => {
     // Retrieve authorization string ("Basic" encoded CLIENT_ID:CLIENT_SECRET) from request header
     const auth = req.headers.authorization;
 
-    // extract ClientId from Auth string
-    const id = await getClientByAuth(auth);
-
     // Validate authorization ("Basic" encoded CLIENT_ID:CLIENT_SECRET)
     // Used for checking that token can be returned from auth.dbc.dk
-    // const clientToken = await getTokenByAuth(auth);
-    const client = await getClientById(id);
+    const clientToken = await getTokenByAuth(auth);
 
     // If valid token returned
-    if (client) {
+    if (clientToken) {
+      // extract ClientId from Auth string
+      const id = await getClientByAuth(auth);
+
+      // Retrieve client by id
+      const client = await getClientById(id);
+
       // Check if client is allowed to access introspection endpoint (by clientToken)
       // const isAllowed = await validateIntrospectionAccess(clientToken);
       const isAllowed = client.introspection;

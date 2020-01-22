@@ -14,7 +14,7 @@ import {log} from './logging.util';
  * @returns {String} ClientId
  */
 
-export async function getClientByAuth(auth) {
+export function getClientByAuth(auth) {
   if (!auth) {
     log.error('Missing required param `auth`');
     return false;

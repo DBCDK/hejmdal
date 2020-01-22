@@ -6,6 +6,7 @@
 
 import {Router} from 'express';
 import {ATTRIBUTES} from '../utils/attributes.util';
+import {getClientByAuth} from '../utils/oauth2.utils';
 const router = Router();
 
 /**
@@ -160,11 +161,27 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
 });
 
 smaugMockRouter.post('/auth/oauth/token', (req, res) => {
-  const {authorization} = req.headers;
+  let {authorization} = req.headers;
 
   /* Removed when smaug auth call fixed */
+  authorization = getClientByAuth(authorization);
+
   if (authorization === 'im-not-authorized') {
     return res.send(JSON.stringify({}));
+  }
+  if (
+    authorization === 'im-authorized-but-not-allowed-to-access-introspection'
+  ) {
+    return res.send(
+      JSON.stringify({access_token: 'not-allowed-to-use-introspection-token'})
+    );
+  }
+  if (authorization === 'im-all-authorized') {
+    return res.send(
+      JSON.stringify({
+        access_token: 'im-all-allowed-to-use-introspection-token'
+      })
+    );
   }
   /* ----------------------------------- */
 
