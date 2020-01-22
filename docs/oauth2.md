@@ -199,12 +199,12 @@ The requesting client must be authorized to access the introspection endpoint. A
 {
     "active": true, // false if token is not recognized or expired
     "clientId": "1234-qwerty", 
-    "uniqueId": "0101701234",
+    "uniqueId": "0101701234", // null if token is anonymous
     "type": "authorized", // authorized/anonymous according to token
     "expires": "3600"
 }   
 ```
-Only the `{"active": false}` prop is returned if token is not recognized or expired. 
+Only `{"active": false}` response is returned if token is not recognized or expired. 
 
 
 ### Error messages
