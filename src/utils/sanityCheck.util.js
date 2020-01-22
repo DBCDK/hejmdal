@@ -31,9 +31,11 @@ export default async function sanityCheck() {
 async function wrap(check, name) {
   const stopTiming = startTiming();
   let state = 'ok';
+  let error;
   try {
     await check();
   } catch (e) {
+    error = e.message;
     log.error(`call to ${name} failed during sanity check`, {
       error: e.message,
       stack: e.stack
@@ -48,10 +50,10 @@ async function wrap(check, name) {
   });
 
   if (elapsedTimeInMs > 3000) {
+    error = 'request took more than 3000 ms';
     state = 'fail';
   }
-
-  return {name, state, ms: elapsedTimeInMs};
+  return {name, state, ms: elapsedTimeInMs, errorMessage: error};
 }
 
 /**
