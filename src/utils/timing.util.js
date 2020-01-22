@@ -16,11 +16,14 @@
  * @export
  * @returns {Function} function for getting elapsed time
  */
+const {performance} = require('perf_hooks');
+
 export default function startTiming() {
-  const startHrTime = process.hrtime();
+  const startHrTime = performance.now();
+
   return () => {
-    const elapsedHrTime = process.hrtime(startHrTime);
-    const elapsedTimeInMs = elapsedHrTime[0] * 1000 + elapsedHrTime[1] / 1e6;
+    const elapsedHrTime = performance.now();
+    const elapsedTimeInMs = Math.round(elapsedHrTime - startHrTime);
     return elapsedTimeInMs;
   };
 }

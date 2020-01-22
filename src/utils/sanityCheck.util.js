@@ -10,6 +10,7 @@ import * as Smaug from '../components/Smaug/smaug.client';
 import * as OpenAgency from '../components/OpenAgency/openAgency.client';
 
 import {log} from './logging.util';
+import startTiming from './timing.util';
 
 export default async function sanityCheck() {
   return await Promise.all([
@@ -28,16 +29,31 @@ export default async function sanityCheck() {
  * @returns {{name: string}}
  */
 async function wrap(check, name) {
+  const stopTiming = startTiming();
   let state = 'ok';
+  let error;
   try {
     await check();
-  }
-  catch (e) {
-    log.error(`call to ${name} failed during sanity check`, {error: e.message, stack: e.stack});
+  } catch (e) {
+    error = e.message;
+    log.error(`call to ${name} failed during sanity check`, {
+      error: e.message,
+      stack: e.stack
+    });
     state = 'fail';
   }
+  const elapsedTimeInMs = stopTiming();
+  log.debug('timing', {
+    service: 'database',
+    function: `health:${name}`,
+    ms: elapsedTimeInMs
+  });
 
-  return {name, state};
+  if (elapsedTimeInMs > 3000) {
+    error = 'request took more than 3000 ms';
+    state = 'fail';
+  }
+  return {name, state, ms: elapsedTimeInMs, errorMessage: error};
 }
 
 /**
@@ -83,4 +99,3 @@ async function checkSmaug() {
 async function checkOpenAgency() {
   return OpenAgency.libraryListFromName('test');
 }
-
