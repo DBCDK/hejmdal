@@ -81,13 +81,13 @@ function extractInfo(response) {
         statusResponse.message = ERRORS[message];
         break;
       case 'library_not_found':
-        log.warning('Borchk: The requested library was not found', {
+        log.warn('Borchk: The requested library was not found', {
           response: response
         });
         statusResponse.message = ERRORS[message];
         break;
       case 'borrowercheck_not_allowed':
-        log.warning('Borchk: Borrowercheck is no allowed', {
+        log.warn('Borchk: Borrowercheck is no allowed', {
           response: response
         });
         statusResponse.message = ERRORS[message];
