@@ -254,9 +254,9 @@ export async function netpunktCallback(req, res) {
 
       // Set user session
       return req.setUser(user);
-    } else {
-      validated.message = 'fimis';
     }
+
+    validated.message = 'fimis';
   } else {
     validated.message = 'fve';
   }
