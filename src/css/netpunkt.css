@@ -1,0 +1,29 @@
+#netpunkt {
+  #helptext-link {
+    display: none !important;
+  }
+
+  .form-group {
+    .input-prefix {
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      font-weight: bold;
+      border-right: 1px solid var(--grey-lighten-4);
+    }
+  }
+
+  .action-container {
+    button {
+      &:hover,
+      &:focus {
+        background-color: var(--netpunkt);
+      }
+    }
+  }
+}
+
+.medias {
+  display: none;
+}

@@ -77,7 +77,8 @@ export async function mapCulrResponse(culr, attributes, user) {
 
   const fields = Object.keys(attributes);
   await Promise.all(
-    fields.map(async field => {  // eslint-disable-line complexity
+    fields.map(async field => {
+      // eslint-disable-line complexity
       try {
         switch (field) {
           case 'birthDate':
@@ -120,6 +121,9 @@ export async function mapCulrResponse(culr, attributes, user) {
               [];
             break;
           }
+          case 'netpunktAgency':
+            mapped.netpunktAgency = user.agency || null;
+            break;
           default:
             log.warn('Cannot map attribute: ' + field);
             break;

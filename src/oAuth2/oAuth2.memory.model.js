@@ -3,13 +3,12 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
 import {saveUser} from '../components/User/user.component';
 
-
 /**
  * Module dependencies.
  */
 
 const mock = {
-   tokens: [],
+  tokens: [],
   grants: 'authorization_code',
   users: [],
   authorizationCodes: new Map()
@@ -82,10 +81,10 @@ module.exports.getAccessToken = function(bearerToken) {
  * Get client.
  */
 
-module.exports.getClient = async (clientId) => {
+module.exports.getClient = async clientId => {
   try {
     return await getClientInfoByClientId(clientId);
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     return null;
   }

@@ -16,6 +16,7 @@ import {
   getListOfAgenciesForFrontend,
   getAgency
 } from '../../utils/agencies.util';
+import {validateNetpunktUser} from '../Forsrights/forsrights.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
@@ -61,7 +62,8 @@ export async function authenticate(req, res, next) {
     }
     if (
       state.serviceClient.identityProviders.length === 1 &&
-      state.serviceClient.identityProviders[0] !== 'borchk'
+      state.serviceClient.identityProviders[0] !== 'borchk' &&
+      state.serviceClient.identityProviders[0] !== 'netpunkt'
     ) {
       res.redirect(
         identityProviders[state.serviceClient.identityProviders[0]].link
@@ -102,27 +104,41 @@ export async function authenticate(req, res, next) {
       ip => ip
     ).length;
 
-    res.render('Login', {
-      retries: req.query.retries,
-      error: error,
-      returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
-      serviceClient: state.serviceClient.name,
-      logoColor: state.serviceClient.logoColor,
-      agencyTypeFilter,
-      identityProviders,
-      identityProvidersCount,
-      branches: branches,
-      preselectedName: preselectedName,
-      preselectedId: preselectedId,
-      lockedAgency: state.serviceAgency || null,
-      lockedAgencyName: lockedAgencyName,
-      lockedBranchRegistrationUrl,
-      help: helpText,
-      newUser: getText(['newUser']),
-      cookie: getText(['cookies']),
-      privacyPolicy: getText(['privacyPolicy']),
-      loginToProfile: !!req.session.loginToProfil
-    });
+    if (state.serviceClient.identityProviders.includes('netpunkt')) {
+      res.render('Netpunkt', {
+        retries: req.query.retries,
+        error: error,
+        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
+        serviceClient: state.serviceClient.name,
+        identityProviders,
+        help: helpText,
+        cookie: getText(['cookies']),
+        privacyPolicy: getText(['privacyPolicy']),
+        loginToProfile: !!req.session.loginToProfil
+      });
+    } else {
+      res.render('Login', {
+        retries: req.query.retries,
+        error: error,
+        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
+        serviceClient: state.serviceClient.name,
+        logoColor: state.serviceClient.logoColor,
+        agencyTypeFilter,
+        identityProviders,
+        identityProvidersCount,
+        branches: branches,
+        preselectedName: preselectedName,
+        preselectedId: preselectedId,
+        lockedAgency: state.serviceAgency || null,
+        lockedAgencyName: lockedAgencyName,
+        lockedBranchRegistrationUrl,
+        help: helpText,
+        newUser: getText(['newUser']),
+        cookie: getText(['cookies']),
+        privacyPolicy: getText(['privacyPolicy']),
+        loginToProfile: !!req.session.loginToProfil
+      });
+    }
 
     res.status = 200;
     req.setState({error: null});
@@ -179,8 +195,15 @@ export async function borchkCallback(req, res) {
     req.setUser(user);
     return true;
   }
-  blockClientUntilTime(res, await blockLogin.toManyLoginsFromIp(req.ip, validated.message));
-  const blockToTime = await blockLogin.toManyLoginsFromUser(userId, formData.agency, validated.message);
+  blockClientUntilTime(
+    res,
+    await blockLogin.toManyLoginsFromIp(req.ip, validated.message)
+  );
+  const blockToTime = await blockLogin.toManyLoginsFromUser(
+    userId,
+    formData.agency,
+    validated.message
+  );
   if (blockToTime) {
     validated.message = 'tmul';
     blockClientUntilTime(res, blockToTime);
@@ -196,6 +219,50 @@ export async function borchkCallback(req, res) {
       )
     );
   }
+  return false;
+}
+
+/**
+ * Parses the callback parameters for netpunkt. Parameters from form comes as post
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+export async function netpunktCallback(req, res) {
+  const formData = req.fakeNetpunktPost || req.body;
+  const trimmedGroupId = formData.groupId.toLowerCase().replace('dk-', '');
+  const validated = {error: true, message: 'unknown_error'};
+
+  const userId = formData.userId;
+  const groupId = trimmedGroupId;
+  const password = formData.password;
+
+  if (userId && groupId && password) {
+    // validate user (forsrights)
+
+    const isValid = await validateNetpunktUser(userId, groupId, password);
+
+    if (isValid) {
+      const user = {
+        userId: userId,
+        userType: 'netpunkt',
+        agency: groupId,
+        password: password,
+        userValidated: true
+      };
+
+      // Set user session
+      return req.setUser(user);
+    } else {
+      validated.message = 'fimis';
+    }
+  } else {
+    validated.message = 'fve';
+  }
+
+  identityProviderValidationFailed(req, res, validated, groupId);
+
   return false;
 }
 
@@ -270,6 +337,9 @@ export async function identityProviderCallback(req, res) {
       case 'borchk':
         await borchkCallback(req, res);
         break;
+      case 'netpunkt':
+        await netpunktCallback(req, res);
+        break;
       case 'nemlogin':
         await nemloginCallback(req);
         break;
@@ -339,6 +409,7 @@ function getIdentityProviders(state) {
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
+    netpunkt: null,
     unilogin: null,
     nemlogin: null,
     wayf: null
@@ -347,6 +418,13 @@ function getIdentityProviders(state) {
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
       action: `/login/identityProviderCallback/borchk/${stateHash}`,
+      abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
+    };
+  }
+
+  if (identityProviders.includes('netpunkt')) {
+    providers.netpunkt = {
+      action: `/login/identityProviderCallback/netpunkt/${stateHash}`,
       abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
     };
   }
