@@ -8,8 +8,6 @@ import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 import _ from 'lodash';
 
-import {validateNetpunktUserMock} from './mock/forsrights.client.mock';
-
 export async function validateNetpunktUser(userIdAut, groupIdAut, passwordAut) {
   let requestUrl = CONFIG.forsrights.forsrightsUri;
 
