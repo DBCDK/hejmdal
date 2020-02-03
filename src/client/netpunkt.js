@@ -1,4 +1,8 @@
-// Function to toggle password field visibility
+/**
+ * Function to toggle password field visibility
+ *
+ * @param {String} id
+ */
 window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
@@ -9,6 +13,7 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
 /**
  * Function to validate netpunkt form fields (triggered on form submit)
  *
+ * @param {event} FormSubmit
  */
 window.netpunktSubmit = function netpunktSubmit(event) {
   // get form fields
@@ -64,10 +69,8 @@ window.netpunktSubmit = function netpunktSubmit(event) {
 /**
  * Function to reset form fields
  *
- * @param {element} field
+ * @param {field} Element
  */
-
-// resets the form errors
 function resetFieldErrorMessage(field) {
   if (!field) {
     return;
@@ -86,8 +89,6 @@ function resetFieldErrorMessage(field) {
  * @param {element} field
  * @param {string} message (optional)
  */
-
-// adds error to form inputs
 function addFieldErrorMessage(field, message = '') {
   if (!field) {
     return;
