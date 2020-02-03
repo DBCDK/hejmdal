@@ -31,6 +31,8 @@ div#error-body
       p Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.
       script.
         console.error('Der kan ikke findes en valid identityprovider i konfigurationen i auth.dbc.dk/Smaug. Kontrollér at oplysningerne er rigtige og tag evt. kontakt til DDB/DBC.');
+    when 'fieldValidationErrors'
+      p Et eller flere felter kunne ikke valideres.
 
   div#error-actions
     // Helptext

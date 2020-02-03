@@ -10,5 +10,6 @@ block append body
     div(id='content-container' aria-hidden = error ? 'true' : 'false')
         block content
 
-    div(id='footer-container'  aria-hidden = error ? 'true' : 'false')
-      include Components/Footer
+    if !hideFooter
+      div(id='footer-container'  aria-hidden = error ? 'true' : 'false')
+        include Components/Footer

@@ -90,7 +90,10 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   }
   /* ----------------------------------- */
 
-  if (clientId.includes('hejmdal') && password !== 'fail') {
+  if (
+    (clientId.includes('hejmdal') || clientId.includes('netpunkt')) &&
+    password !== 'fail'
+  ) {
     res.send(
       JSON.stringify({
         access_token: clientId,
@@ -142,6 +145,11 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
     overrides.expires = 'in the future';
     overrides.user = {uniqueId: 'some_authorized_user_id'};
     return res.send(JSON.stringify(createClient('some_client', overrides)));
+  }
+
+  if (token.includes('netpunkt')) {
+    overrides.identityProviders = ['netpunkt'];
+    return res.send(JSON.stringify(createClient(token, overrides)));
   }
 
   if (token.includes('no-cas')) {
@@ -203,6 +211,31 @@ smaugMockRouter.post('/auth/oauth/token', (req, res) => {
   }
 });
 
+/**
+ * FORSRIGHTS MOCK
+ */
+
+const forsrightsMockRouter = Router();
+
+// Validate user (forsrights)
+forsrightsMockRouter.get('/validate', (req, res) => {
+  const {action, userIdAut, groupIdAut, passwordAut} = req.query;
+  const response = {forsRightsResponse: {error: null}};
+
+  if (
+    userIdAut === 'valid-user' &&
+    groupIdAut === '100200' &&
+    passwordAut === '123456'
+  ) {
+    return res.send(JSON.stringify(response));
+  }
+
+  // Simulate validation error (wrong login credentials)
+  response.forsRightsResponse.error = true;
+  return res.send(JSON.stringify(response));
+});
+
+router.use('/forsrights', forsrightsMockRouter);
 router.use('/service', serviceMockRouter);
 router.use('/smaug', smaugMockRouter);
 export default router;

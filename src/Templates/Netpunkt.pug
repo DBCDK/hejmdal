@@ -1,0 +1,40 @@
+extends Main
+
+block append content
+  div(id="login" class=hideFooter ? "vertical-aligned" : "")
+    div.content-container
+      div.top
+        span(id='logo')
+          include ./Components/logo
+          h1 Netpunkt Login
+
+        div#netpunkt
+          form(action=identityProviders.netpunkt.action autocomplete='off' method='post' id='netpunkt-login-form' onsubmit='netpunktSubmit(event)')
+
+            div.form-group
+              label(for='group-input') Gruppe id
+              div.input-container
+                div(class='input-prefix' tabindex="-1") DK-
+                input(type='text' class='form-control' id='group-input' data-cy='group-input' name='groupId' autocomplete='password' tabindex='0')
+              span(id='group-input-text' data-text='')
+
+            div.form-group
+              label(for='user-input') Bruger id
+              div.input-container
+                input(type='text' class='form-control' id='user-input' data-cy='user-input' name='userId' autocomplete='password' tabindex='0')
+              span(id='user-input-text' data-text='')
+
+            div.form-group
+              label(for='pass-input') Adgangskode
+              div.input-container
+                input(type="text" value="" class="form-control" id="autocomplete-pass" name="autocomplete-pass" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="pass")
+                input(type='password' class='form-control' id='pass-input' data-cy='pass-input' name='password' autocomplete='password' tabindex='0')
+                button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex="-1")
+              span(id='pass-input-text' data-text='')
+
+              if error
+                div#error-container
+                  include Components/Error
+
+            div.action-container
+              button(type='submit' id='netpunkt-submit' data-cy='netpunkt-submit' tabindex='0') Log ind

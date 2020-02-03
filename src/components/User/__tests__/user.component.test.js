@@ -36,6 +36,7 @@ describe('test store and get user', () => {
         cpr: '5555666677',
         gender: null,
         municipality: '909',
+        netpunktAgency: null,
         uniloginId: null,
         uniqueId: 'guid-5555666677',
         uniLoginInstitutions: [],

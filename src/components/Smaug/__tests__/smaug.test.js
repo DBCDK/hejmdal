@@ -52,6 +52,7 @@ describe('Test Smaug component', () => {
           name: 'Kommunenummer',
           description: '3 cifret kommunenummer'
         },
+        netpunktAgency: {},
         uniloginId: {
           name: 'UNI-login brugernavn',
           description: 'Brugerens identifikation hos UNI-Login'

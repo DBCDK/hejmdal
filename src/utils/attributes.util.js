@@ -52,6 +52,7 @@ export const ATTRIBUTES = {
   authenticatedToken: {
     skipConsent: true
   },
+  netpunktAgency: {},
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
   }

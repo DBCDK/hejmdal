@@ -92,4 +92,20 @@
       padding-top: 40px;
     }
   }
+
+  &.vertical-aligned {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: translate(0, 0);
+  }
+
+  @media (min-width: 500px) {
+    &.vertical-aligned {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -65%);
+    }
+  }
 }
