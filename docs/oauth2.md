@@ -191,7 +191,7 @@ The requesting client must be authorized to access the introspection endpoint. A
 
 ### Example call: 
 
-`curl --user CLIENT_ID:CLIENT_SECRET -X POST login.bib.dk/oauth/introspection?access_token=SOME_ACCESS_TOKEN`
+`curl --user CLIENT_ID:CLIENT_SECRET -X POST https://login.bib.dk/oauth/introspection?access_token=SOME_ACCESS_TOKEN`
 
 ### Returns:
 
