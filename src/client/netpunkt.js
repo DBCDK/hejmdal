@@ -10,7 +10,6 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
  * Function to validate netpunkt form fields (triggered on form submit)
  *
  */
-//
 window.netpunktSubmit = function netpunktSubmit(event) {
   // get form fields
   var userId = document.getElementById('user-input');
