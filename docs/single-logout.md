@@ -28,4 +28,12 @@ In order for an application to support single logout through login.bib.dk, an en
     	"statusCode": 200
     }
     ```
-4.  Path to endpoint should be preconfigured on the client in login.bib.dk. The endpoint is configured as a relative path on the client. Login.bib.dk will add the host from the redirect_uri used at login. This way single-logout can be tested during development and staging.
+4.  Path to endpoint should be preconfigured on the client in login.bib.dk. The endpoint is configured as a relative path on the client. Login.bib.dk will add the host from the redirect_uri used at login. This way single-logout can be tested during development and staging:
+
+    ```json
+    {
+    	"singleLogoutPath": "/api/singlelogout"
+    }
+    ```
+
+
