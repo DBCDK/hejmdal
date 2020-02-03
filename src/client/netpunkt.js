@@ -13,9 +13,9 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
 //
 window.netpunktSubmit = function netpunktSubmit(event) {
   // get form fields
-  userId = document.getElementById('user-input');
-  groupId = document.getElementById('group-input');
-  password = document.getElementById('pass-input');
+  var userId = document.getElementById('user-input');
+  var groupId = document.getElementById('group-input');
+  var password = document.getElementById('pass-input');
 
   // Reset error messages
   resetFieldErrorMessage(userId, '');
