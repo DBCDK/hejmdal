@@ -1,3 +1,4 @@
+// Function to toggle password field visibility
 window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
   var currentType = field.getAttribute('type');
@@ -5,13 +6,13 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   field.setAttribute('type', newType);
 };
 
+/**
+ * Function to validate netpunkt form fields (triggered on form submit)
+ *
+ */
+//
 window.netpunktSubmit = function netpunktSubmit(event) {
-  // event.preventDefault();
-
-  var userId = false;
-  var groupId = false;
-  var password = false;
-
+  // get form fields
   userId = document.getElementById('user-input');
   groupId = document.getElementById('group-input');
   password = document.getElementById('pass-input');
@@ -45,37 +46,54 @@ window.netpunktSubmit = function netpunktSubmit(event) {
     valid = false;
   }
 
-  // if pin length is not valid
   if (groupId.value) {
+    // trimming groupId in case of user has entered leading DK-
     const trimmedGroupId = groupId.value.toLowerCase().replace('dk-', '');
-
+    // if trimmed groupId length is not 6 characters
     if (trimmedGroupId.length !== 6) {
       addFieldErrorMessage(groupId, errorInvalidField);
       valid = false;
     }
   }
 
-  // if no error found, form is submit
+  // If errors found, do not submit form
   if (!valid) {
     event.preventDefault();
   }
 };
-/* eslint-enable no-unused-vars */
 
-// rests the form errors
+/**
+ * Function to reset form fields
+ *
+ * @param {element} field
+ */
+
+// resets the form errors
 function resetFieldErrorMessage(field) {
-  var text = field.parentNode.nextSibling;
   if (!field) {
     return;
   }
+
+  var text = field.parentNode.nextSibling;
 
   field.parentNode.classList.remove('input-inValid');
   text.classList.remove('text-inValid');
   text.innerText = '';
 }
 
+/**
+ * Function to add error (and message) to field
+ *
+ * @param {element} field
+ * @param {string} message (optional)
+ */
+
 // adds error to form inputs
-function addFieldErrorMessage(field, message) {
+function addFieldErrorMessage(field, message = '') {
+  if (!field) {
+    return;
+  }
+
   var text = field.parentNode.nextSibling;
 
   field.parentNode.classList.add('input-inValid');

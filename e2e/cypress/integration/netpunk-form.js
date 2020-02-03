@@ -56,16 +56,9 @@ context('Netpunkt form', () => {
     cy.get('#pass-input-text').should('not.contain', 'Feltet skal udfyldes');
   });
 
-  it('Login try with invalid user', () => {
-    cy.get('#group-input').type('100200');
-    cy.get('#user-input').type('invalid-user');
-    cy.get('#pass-input').type('123456');
-    cy.get('#netpunkt-submit').click();
-  });
-
   it('Should return error message if user is not recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
-    cy.get('#user-input').type('inValid-user');
+    cy.get('#user-input').type('invalid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
 
@@ -80,8 +73,6 @@ context('Netpunkt form', () => {
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
-
-    // cy.location('pathname').should('contain', '?code');
 
     cy.location().should(loc => {
       expect(loc.search).to.contain('?code');

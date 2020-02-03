@@ -23,7 +23,7 @@ div#error-body
     when 'nouse'
       p Husk at udfylde feltet CPR / lånernummer og prøv igen.
     when 'fimis'
-      p Det ser ud til at oplysningerne ikke er rigtige. 
+      p Det ser ud til at oplysningerne ikke er rigtige.
       p Tjek at du har udfyldt felterne korrekt og prøv igen.
     when 'erreq'
       p Det ser ud til, at de indtastede oplysninger ikke er korrekte.
@@ -31,7 +31,7 @@ div#error-body
       p Der opstod en fejl som skyldes forkert konfiguration af Bibliotekslogin. Kontakt gerne en administrator på dit bibliotek og gør opmærksom på fejlen.
       script.
         console.error('Der kan ikke findes en valid identityprovider i konfigurationen i auth.dbc.dk/Smaug. Kontrollér at oplysningerne er rigtige og tag evt. kontakt til DDB/DBC.');
-    when 'fve'
+    when 'fieldValidationErrors'
       p Et eller flere felter kunne ikke valideres.
 
   div#error-actions

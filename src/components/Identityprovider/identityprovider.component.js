@@ -111,9 +111,7 @@ export async function authenticate(req, res, next) {
         returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
         serviceClient: state.serviceClient.name,
         identityProviders,
-        help: helpText,
-        cookie: getText(['cookies']),
-        privacyPolicy: getText(['privacyPolicy']),
+        hideFooter: true,
         loginToProfile: !!req.session.loginToProfil
       });
     } else {
@@ -258,7 +256,7 @@ export async function netpunktCallback(req, res) {
 
     validated.message = 'fimis';
   } else {
-    validated.message = 'fve';
+    validated.message = 'fieldValidationErrors';
   }
 
   identityProviderValidationFailed(req, res, validated, groupId);
