@@ -104,6 +104,7 @@ context('Introspection', () => {
       expect(response.body).to.have.property('clientId');
       expect(response.body).to.have.property('expires');
       expect(response.body).to.have.property('agency', 'some_agency');
+      expect(response.body).to.have.property('search');
       expect(response.body).to.have.property(
         'uniqueId',
         'some_authorized_user_id'
@@ -127,6 +128,7 @@ context('Introspection', () => {
       expect(response.body).to.have.property('clientId');
       expect(response.body).to.have.property('expires');
       expect(response.body).to.have.property('agency', 'some_agency');
+      expect(response.body).to.have.property('search');
       expect(response.body).to.have.property(
         'uniqueId',
         'some_authorized_user_id'
@@ -158,6 +160,7 @@ context('Introspection', () => {
       );
       expect(response.body).to.have.property('agency', 'some_agency');
       expect(response.body).to.have.property('name', 'some_client_name');
+      expect(response.body).to.have.property('search');
       expect(response.body).to.have.property('contact');
     });
   });

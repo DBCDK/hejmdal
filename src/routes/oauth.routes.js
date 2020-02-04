@@ -95,6 +95,7 @@ router.post('/introspection', async (req, res) => {
             expires: information.expires,
             agency: _.get(information, 'user.agency', null),
             uniqueId: _.get(information, 'user.uniqueId', null),
+            search: _.get(information, 'search', null),
             type: _.get(information, 'user.uniqueId', false)
               ? 'authorized'
               : 'anonymous'

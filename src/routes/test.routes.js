@@ -173,6 +173,10 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
       uniqueId: 'some_authorized_user_id',
       agency: 'some_agency'
     };
+    overrides.search = {
+      profile: 'some_search_profile',
+      agency: 'some_agency'
+    };
     return res.send(JSON.stringify(createClient('some_client', overrides)));
   }
 
