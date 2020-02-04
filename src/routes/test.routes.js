@@ -72,6 +72,31 @@ function createClient(clientId, overrides) {
   };
   return {...clientDefaults, ...overrides};
 }
+
+function createMetadata(clientId, overrides = {}) {
+  const metadataDefaults = {
+    id: clientId,
+    name: 'some_client_name',
+    config: {},
+    contact: {
+      owner: {
+        name: 'mrs. Owner',
+        email: 'owner@mail.dk',
+        phone: '+45 12345678'
+      },
+      'Technical contact': {
+        name: 'mr. Technical',
+        email: 'technical@mail.dk',
+        phone: '+45 87654321'
+      }
+    },
+    auth: null,
+    createdAt: 'some_date',
+    updatedAt: 'some_other_date'
+  };
+  return {...metadataDefaults, ...overrides};
+}
+
 const smaugClients = new Map();
 const smaugMockRouter = Router();
 smaugMockRouter.post('/:clientId', (req, res) => {
@@ -124,6 +149,7 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
   }
   if (token.includes('im-all-authorized')) {
     overrides.introspection = true;
+    overrides.user = {uniqueId: 'some_authorized_user_id'};
     return res.send(JSON.stringify(createClient('some_client', overrides)));
   }
   /* ----------------------------------- */
@@ -143,7 +169,10 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
   }
   if (token.includes('some_authorized_token')) {
     overrides.expires = 'in the future';
-    overrides.user = {uniqueId: 'some_authorized_user_id'};
+    overrides.user = {
+      uniqueId: 'some_authorized_user_id',
+      agency: 'some_agency'
+    };
     return res.send(JSON.stringify(createClient('some_client', overrides)));
   }
 
@@ -209,6 +238,21 @@ smaugMockRouter.post('/auth/oauth/token', (req, res) => {
       })
     );
   }
+});
+
+smaugMockRouter.get('/admin/clients/:clientId', (req, res) => {
+  const auth = getClientByAuth(req.headers.authorization);
+
+  const {clientId} = req.params;
+
+  if (auth === 'admin') {
+    if (clientId === 'some_client') {
+      return res.send(JSON.stringify(createMetadata(clientId)));
+    }
+    return res.send(JSON.stringify('unknown client'));
+  }
+
+  return res.send(JSON.stringify('unauthorized'));
 });
 
 /**

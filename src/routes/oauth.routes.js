@@ -5,7 +5,7 @@ import {
   getClientByToken,
   getTokenByAuth,
   getClientById,
-  getClientMetaByClientId
+  getMetadataByClientId
 } from '../components/Smaug/smaug.client';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {
@@ -102,11 +102,14 @@ router.post('/introspection', async (req, res) => {
 
           // Get client metadata
           let metaObj = {};
-          if (informationObj.agency) {
-            const meta = await getClientMetaByClientId(informationObj.agency);
+          if (informationObj.clientId) {
+            const meta = await getMetadataByClientId(informationObj.clientId);
 
             // Set client metadata
-            metaObj = {name: meta.name, contact: meta.contact};
+            metaObj = {
+              name: _.get(meta, 'name', null),
+              contact: _.get(meta, 'contact', null)
+            };
           }
 
           // Merge client informations and metadata and set response
