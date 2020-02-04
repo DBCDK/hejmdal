@@ -35,6 +35,41 @@ export async function getTokenByAuth(auth) {
 }
 
 /**
+ * Retreives client metadata from auth-admin.dbc.dk
+ * metadata examples: app-name, owner, email, phone, technical support, etc.
+ *
+ * @param {String} clientId
+ * @return {Object}
+ */
+export async function getClientMetaByClientId(clientId) {
+  if (!clientId) {
+    log.error('Missing required clientId');
+    return false;
+  }
+
+  try {
+    const response = await promiseRequest('get', {
+      uri: `${CONFIG.smaug.adminUri}/clients/${clientId}`,
+      auth: {
+        user: CONFIG.smaug.adminUsername,
+        pass: CONFIG.smaug.adminPassword
+      }
+    });
+
+    const parsed = JSON.parse(response.body);
+    return parsed;
+  } catch (error) {
+    log.error(
+      `Error retrieving client metadata from ${CONFIG.smaug.adminUri}`,
+      {
+        stack: error.stack,
+        message: error.message
+      }
+    );
+  }
+}
+
+/**
  * Retreives context based on given token
  *
  * @param {String} token

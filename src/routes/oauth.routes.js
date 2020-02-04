@@ -4,7 +4,8 @@ import _ from 'lodash';
 import {
   getClientByToken,
   getTokenByAuth,
-  getClientById
+  getClientById,
+  getClientMetaByClientId
 } from '../components/Smaug/smaug.client';
 import {setDefaultState} from '../middlewares/state.middleware';
 import {
@@ -87,15 +88,29 @@ router.post('/introspection', async (req, res) => {
           // Retrieve client information from recieved token (access_token)
           const information = await getClientByToken(token);
 
-          // Set client information
-          const active = true;
-          const clientId = information.app.clientId;
-          const expires = information.expires;
-          const uniqueId = _.get(information, 'user.uniqueId', null);
-          const type = uniqueId ? 'authorized' : 'anonymous';
+          // Set client informations object
+          const informationObj = {
+            active: true,
+            clientId: information.app.clientId,
+            expires: information.expires,
+            agency: _.get(information, 'user.agency', null),
+            uniqueId: _.get(information, 'user.uniqueId', null),
+            type: _.get(information, 'user.uniqueId', false)
+              ? 'authorized'
+              : 'anonymous'
+          };
 
-          // Set Response
-          response.data = {active, clientId, expires, uniqueId, type};
+          // Get client metadata
+          let metaObj = {};
+          if (informationObj.agency) {
+            const meta = await getClientMetaByClientId(informationObj.agency);
+
+            // Set client metadata
+            metaObj = {name: meta.name, contact: meta.contact};
+          }
+
+          // Merge client informations and metadata and set response
+          response.data = {...informationObj, ...metaObj};
         } catch (e) {
           // Token is invalid or expired - request is ok (status: 200)
           response.data = {active: false};
