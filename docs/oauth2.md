@@ -198,10 +198,28 @@ The requesting client must be authorized to access the introspection endpoint. A
 ```
 {
     "active": true, // false if token is not recognized or expired
-    "clientId": "1234-qwerty", 
+    "clientId": "id_of_the_client", 
     "uniqueId": "0101701234", // null if token is anonymous
     "type": "authorized", // authorized/anonymous according to token
-    "expires": "3600"
+    "expires": "3600",
+    "agency": "some_agency",
+    "name": "name_of_the_client",
+    "search": {
+      "profile": "client_search_profile",
+      "agency": "some_agency"
+    },
+    "contact": {
+        "owner": {
+          "name": "owner_name",
+          "email": "owner_email",
+          "phone": "owner_phone"
+        },
+        "Technical contact": {
+          "name": "technical_name",
+          "email": "technical_email",
+          "phone": "technical_phone"
+        }
+    }
 }   
 ```
 Only `{"active": false}` response is returned if token is not recognized or expired. 
