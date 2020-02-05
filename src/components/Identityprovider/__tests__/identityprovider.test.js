@@ -14,6 +14,7 @@ describe('test authenticate method', () => {
 
   beforeEach(() => {
     ctx = mockContext();
+    ctx.status = jest.fn();
   });
 
   it('Should return content page', async () => {
@@ -26,7 +27,7 @@ describe('test authenticate method', () => {
       }
     });
     await authenticate(ctx, ctx, next);
-    expect(ctx.status).toEqual(200);
+    expect(ctx.status).toBeCalledWith(200);
   });
 
   it('Should render error page', async () => {
