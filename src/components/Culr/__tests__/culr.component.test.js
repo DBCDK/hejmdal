@@ -8,6 +8,7 @@ import {
   getUserAttributesFromCulr,
   getMunicipalityInformation
 } from '../culr.component';
+import './nockFixtures';
 
 describe('Unittesting methods in culr.component:', () => {
   describe('getCulrAttributes', () => {

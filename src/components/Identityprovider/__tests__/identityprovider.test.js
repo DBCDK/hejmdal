@@ -6,6 +6,7 @@ import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
+import './nockFixtures';
 
 describe('test authenticate method', () => {
   const next = () => {};
@@ -40,9 +41,7 @@ describe('test authenticate method', () => {
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
     expect(ctx.redirect).toBeCalledWith(
-      `/login/identityProviderCallback/nemlogin/${
-        ctx.session.state.stateHash[0]
-      }`
+      `/login/identityProviderCallback/nemlogin/${ctx.session.state.stateHash[0]}`
     );
   });
   it('Should not redirect to nemlogin', async () => {

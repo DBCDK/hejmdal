@@ -4,7 +4,6 @@
  */
 import {CONFIG} from '../../utils/config.util';
 import {BorchkError} from './borchk.errors';
-import getMockClient from './mock/borchk.client.mock';
 import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 
@@ -24,22 +23,17 @@ import {log} from '../../utils/logging.util';
 export async function getClient(agency, userId, pinCode, serviceRequester) {
   let response;
 
-  // for test and development
-  if (CONFIG.mock_externals.borchk) {
-    response = getMockClient(agency, userId, pinCode);
-  } else {
-    const requestParams = {
-      uri: CONFIG.borchk.uri,
-      qs: {
-        serviceRequester: serviceRequester,
-        libraryCode: 'DK-' + agency,
-        userId: userId,
-        userPincode: pinCode
-      }
-    };
-    response = await promiseRequest('get', requestParams);
-    log.debug('Borchk request', {requestParams, body: response.body});
-  }
+  const requestParams = {
+    uri: CONFIG.borchk.uri,
+    qs: {
+      serviceRequester: serviceRequester,
+      libraryCode: 'DK-' + agency,
+      userId: userId,
+      userPincode: pinCode
+    }
+  };
+  response = await promiseRequest('get', requestParams);
+  log.debug('Borchk request', {requestParams, body: response.body});
 
   if (response.statusCode === 200) {
     return JSON.parse(response.body);

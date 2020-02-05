@@ -41,7 +41,7 @@ export async function validateUserInLibrary(
     log.debug('Borchk unavailable - start retry', {
       body: JSON.stringify(response)
     });
-    return validateUserInLibrary(serviceRequester, userValidate, 1);
+    return validateUserInLibrary(serviceRequester, userInput, 1);
   }
 
   return userValidate;
