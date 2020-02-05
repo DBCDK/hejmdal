@@ -21,7 +21,6 @@ router.get('/health', async (req, res) => {
     res.status = 503;
   }
   const healthMap = health.reduce((map, h) => ({...map, [h.name]: h}), {});
-  console.log(healthMap, health);
   log.debug('health', {
     health: healthMap,
     healthStatus: res.status
