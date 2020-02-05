@@ -60,9 +60,7 @@ export async function getMetadataByClientId(clientId) {
     return parsed;
   } catch (error) {
     log.error(
-      `Error retrieving client metadata from ${
-        CONFIG.smaug.adminUri
-      }/clients/${clientId}`,
+      `Error retrieving client metadata from ${CONFIG.smaug.adminUri}/clients/${clientId}`,
       {
         stack: error.stack,
         message: error.message
@@ -121,7 +119,13 @@ export async function getClientById(clientId) {
  * @param {String} password
  * @throws {Error|TokenError}
  */
-export async function getToken(clientId, agency, username, password) {
+export async function getToken(
+  clientId,
+  agency,
+  username,
+  password,
+  retries = 0
+) {
   let response;
   // for test and development
   if (CONFIG.mock_externals.smaug) {
@@ -148,6 +152,14 @@ export async function getToken(clientId, agency, username, password) {
   if (response.statusCode === 200) {
     const obj = JSON.parse(response.body);
     return obj;
+  }
+
+  // Temporary fix: Borchk randomly returns service_unavailable. Retry once
+  if (retries === 0) {
+    log.debug('Token not available - start retry', {
+      body: response.body
+    });
+    return getToken(clientId, agency, username, password, 1);
   }
 
   throw new TokenError(response.statusMessage);

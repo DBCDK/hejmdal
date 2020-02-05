@@ -15,7 +15,11 @@ import startTiming from '../../utils/timing.util';
  * @param {object} userInput
  * @returns {*}
  */
-export async function validateUserInLibrary(serviceRequester, userInput) {
+export async function validateUserInLibrary(
+  serviceRequester,
+  userInput,
+  retries = 0
+) {
   let userValidate = {error: true, message: 'unknown_error'};
   const stopTiming = startTiming();
   const response = await getClient(
@@ -30,7 +34,15 @@ export async function validateUserInLibrary(serviceRequester, userInput) {
     function: 'validateUserInLibrary',
     ms: elapsedTimeInMs
   });
-  userValidate = extractInfo(response);
+  userValidate = extractInfo(response, retries);
+
+  // Temporary fix: Borchk randomly returns service_unavailable. Retry once
+  if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
+    log.debug('Borchk unavailable - start retry', {
+      body: JSON.stringify(response)
+    });
+    return validateUserInLibrary(serviceRequester, userValidate, 1);
+  }
 
   return userValidate;
 }
@@ -53,7 +65,7 @@ export async function validateUserInLibrary(serviceRequester, userInput) {
  * @param {object} response
  * @returns {{error: boolean, message: string}}
  */
-function extractInfo(response) {
+function extractInfo(response, retries = 0) {
   let statusResponse = {
     error: true,
     message: 'unknown_error'
@@ -77,7 +89,10 @@ function extractInfo(response) {
         statusResponse.message = ERRORS[message];
         break;
       case 'service_unavailable':
-        log.error('Borchk service is unavailable', {response: response});
+        log.error('Borchk service is unavailable', {
+          response: response,
+          retries
+        });
         statusResponse.message = ERRORS[message];
         break;
       case 'library_not_found':
