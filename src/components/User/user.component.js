@@ -28,9 +28,13 @@ const storage = CONFIG.mock_storage
  */
 export async function getUser(req, res, next) {
   try {
-    const {user, client: clientId} = res.locals.oauth.token;
+    const {user, client: clientId, accessToken} = res.locals.oauth.token;
 
-    const ticketAttributes = await getUserAttributesForClient(user, clientId);
+    const ticketAttributes = await getUserAttributesForClient(
+      user,
+      clientId,
+      accessToken
+    );
 
     res.json({attributes: ticketAttributes});
   } catch (error) {
@@ -42,7 +46,7 @@ export async function getUser(req, res, next) {
   }
 }
 
-export async function getUserAttributesForClient(user, clientId) {
+export async function getUserAttributesForClient(user, clientId, accessToken) {
   try {
     const [culrAttributes, client] = await Promise.all([
       getUserAttributesFromCulr(user, user.agency),
@@ -52,7 +56,8 @@ export async function getUserAttributesForClient(user, clientId) {
       culrAttributes,
       client.attributes,
       user,
-      clientId
+      clientId,
+      accessToken
     );
   } catch (error) {
     log.error('Could not generate attributes for user', {

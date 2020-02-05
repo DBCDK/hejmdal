@@ -8,6 +8,7 @@
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
+import {getAgencyRights} from '../components/Forsrights/forsrights.client.js';
 
 /**
  * Attribute mapper
@@ -45,7 +46,13 @@ export default async function mapAttributesToTicket(req, res, next) {
  * @see ATTRIBUTES
  * @returns {Promise<{}>}
  */
-export async function mapCulrResponse(culr, attributes, user) {
+export async function mapCulrResponse(
+  culr,
+  attributes,
+  user,
+  clientId,
+  accessToken
+) {
   let mapped = {};
   let cpr = user.cpr || null;
   let agencies = [];
@@ -76,6 +83,7 @@ export async function mapCulrResponse(culr, attributes, user) {
   }
 
   const fields = Object.keys(attributes);
+
   await Promise.all(
     fields.map(async field => {
       // eslint-disable-line complexity
@@ -123,6 +131,11 @@ export async function mapCulrResponse(culr, attributes, user) {
           }
           case 'netpunktAgency':
             mapped.netpunktAgency = user.agency || null;
+            break;
+          case 'forsrights':
+            mapped.forsrights = await getAgencyRights(accessToken, [
+              user.agency
+            ]);
             break;
           default:
             log.warn('Cannot map attribute: ' + field);
