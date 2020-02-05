@@ -348,16 +348,21 @@ const forsrightsMockRouter = Router();
 // Validate user (forsrights)
 forsrightsMockRouter.get('/validate', (req, res) => {
   const {action, userIdAut, groupIdAut, passwordAut, agency} = req.query;
-  const response = {forsRightsResponse: {error: null}, ressource: []};
+  const response = {forsRightsResponse: {error: null, ressource: []}};
 
   if (agency === '100200') {
     const mock = createForsrightsResponse();
     return res.send(JSON.stringify(mock));
   }
 
+  if (agency === '100300') {
+    const mock = createForsrightsResponse();
+    return res.send(JSON.stringify(response));
+  }
+
   if (
     userIdAut === 'valid-user' &&
-    groupIdAut === '100200' &&
+    (groupIdAut === '100200' || groupIdAut === '100300') &&
     passwordAut === '123456'
   ) {
     return res.send(JSON.stringify(response));
