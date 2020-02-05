@@ -134,6 +134,19 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
     );
   }
 });
+
+let smaugHealthOk = true;
+smaugMockRouter.get('/config/health', (req, res) => {
+  res.status(smaugHealthOk ? 200 : 503);
+  res.send({ok: smaugHealthOk});
+});
+
+smaugMockRouter.get('/config/health/setStatus/:status', (req, res) => {
+  const {status} = req.params;
+  smaugHealthOk = status === 'true';
+  res.send({ok: smaugHealthOk});
+});
+
 smaugMockRouter.get('/config/configuration', (req, res) => {
   const {token} = req.query;
   let overrides = {};
