@@ -93,11 +93,11 @@ describe('test identityProviderCallback method', () => {
     expect(ctx.getUser()).toEqual(expected);
   });
 
-  it('Should add nemlogin user and cpr to context', async () => {
+  it('Should add nemlogin user to context', async () => {
     ctx.params.type = 'nemlogin';
     const expected = {
-      userId: '0102030405',
-      cpr: '0102030405',
+      userId: '5555666677',
+      cpr: null,
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };
