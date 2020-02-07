@@ -130,6 +130,8 @@ export async function getMunicipalityInformation(culrResponse, user) {
       response.municipalityAgencyId = user.agency.startsWith('7')
         ? `7${culrResponse.MunicipalityNo}00`
         : user.agency;
+    } else {
+      response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
     }
   } else if (user.agency) {
     const result = await validateUserInLibrary(

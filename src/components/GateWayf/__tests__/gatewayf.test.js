@@ -6,7 +6,7 @@ describe('Test GateWayf component', () => {
 
   it('Lookup a known user from nemlogin', async () => {
     const expected = {
-      userId: '0102030405',
+      userId: '5555666677',
       wayfId: 'WAYF-DK-some-long-md5-like-string'
     };
     expect(await getGateWayfLoginResponse(ctx, 'nemlogin')).toEqual(expected);
