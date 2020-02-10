@@ -123,4 +123,108 @@ context('Netpunkt form', () => {
         });
     });
   });
+
+  it('Expect to get forsrights `rights` exchanged for access_token and agency', () => {
+    cy.get('#group-input').type('100200');
+    cy.get('#user-input').type('valid-user');
+    cy.get('#pass-input').type('123456');
+    cy.get('#netpunkt-submit').click();
+
+    cy.location('search').then(value => {
+      var urlParams = new URLSearchParams(value);
+      const code = urlParams.get('code');
+
+      cy.request({
+        form: true,
+        url: 'oauth/token',
+        method: 'post',
+        auth: {
+          user: 'netpunkt',
+          pass: 'test'
+        },
+        body: {
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: `${Cypress.config().baseUrl}/example`
+        }
+      })
+        .its('body')
+        .should('have.all.keys', ['access_token', 'expires_in', 'token_type'])
+        .then(values => values['access_token'])
+        .then(access_token => {
+          cy.request({
+            form: true,
+            url: 'userinfo',
+            method: 'post',
+            body: {
+              access_token: access_token
+            }
+          }).should(response => {
+            expect(response.body.attributes).to.have.property('forsrights');
+            expect(response.body.attributes.forsrights[0]).to.have.property(
+              'agencyId',
+              '100200'
+            );
+            expect(response.body.attributes.forsrights[0]).to.have.property(
+              'rights'
+            );
+            expect(response.body.attributes.forsrights[0].rights)
+              .to.be.a('array')
+              .lengthOf(3);
+          });
+        });
+    });
+  });
+
+  it('Expect no errors if emty rights retrived from forsrights', () => {
+    cy.get('#group-input').type('100300');
+    cy.get('#user-input').type('valid-user');
+    cy.get('#pass-input').type('123456');
+    cy.get('#netpunkt-submit').click();
+
+    cy.location('search').then(value => {
+      var urlParams = new URLSearchParams(value);
+      const code = urlParams.get('code');
+
+      cy.request({
+        form: true,
+        url: 'oauth/token',
+        method: 'post',
+        auth: {
+          user: 'netpunkt',
+          pass: 'test'
+        },
+        body: {
+          grant_type: 'authorization_code',
+          code: code,
+          redirect_uri: `${Cypress.config().baseUrl}/example`
+        }
+      })
+        .its('body')
+        .should('have.all.keys', ['access_token', 'expires_in', 'token_type'])
+        .then(values => values['access_token'])
+        .then(access_token => {
+          cy.request({
+            form: true,
+            url: 'userinfo',
+            method: 'post',
+            body: {
+              access_token: access_token
+            }
+          }).should(response => {
+            expect(response.body.attributes).to.have.property('forsrights');
+            expect(response.body.attributes.forsrights[0]).to.have.property(
+              'agencyId',
+              '100300'
+            );
+            expect(response.body.attributes.forsrights[0]).to.have.property(
+              'rights'
+            );
+            expect(response.body.attributes.forsrights[0].rights)
+              .to.be.a('array')
+              .lengthOf(0);
+          });
+        });
+    });
+  });
 });

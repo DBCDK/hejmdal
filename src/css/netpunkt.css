@@ -12,6 +12,10 @@
       font-weight: bold;
       border-right: 1px solid var(--grey-lighten-4);
     }
+
+    #user-input {
+      width: 100%;
+    }
   }
 
   .action-container {

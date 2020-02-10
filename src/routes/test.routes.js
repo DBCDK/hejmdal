@@ -274,16 +274,106 @@ smaugMockRouter.get('/admin/clients/:clientId', (req, res) => {
  * FORSRIGHTS MOCK
  */
 
+function createForsrightsResponse() {
+  return {
+    forsRightsResponse: {
+      ressource: [
+        {
+          name: {
+            $: 'some_service',
+            '@': 'fr'
+          },
+          right: [
+            {
+              $: '500',
+              '@': 'fr'
+            }
+          ],
+          '@': 'fr'
+        },
+        {
+          name: {
+            $: 'some_other_service',
+            '@': 'fr'
+          },
+          right: [
+            {
+              $: '508',
+              '@': 'fr'
+            },
+            {
+              $: '501',
+              '@': 'fr'
+            },
+            {
+              $: '502',
+              '@': 'fr'
+            }
+          ],
+          '@': 'fr'
+        },
+        {
+          name: {
+            $: 'some_whole_other_service',
+            '@': 'fr'
+          },
+          right: [
+            {
+              $: '501',
+              '@': 'fr'
+            },
+            {
+              $: '502',
+              '@': 'fr'
+            },
+            {
+              $: '505',
+              '@': 'fr'
+            },
+            {
+              $: '506',
+              '@': 'fr'
+            },
+            {
+              $: '507',
+              '@': 'fr'
+            },
+            {
+              $: '508',
+              '@': 'fr'
+            }
+          ],
+          '@': 'fr'
+        }
+      ],
+      '@': 'fr'
+    },
+    '@namespaces': {
+      fr: 'http://oss.dbc.dk/ns/forsrights'
+    }
+  };
+}
+
 const forsrightsMockRouter = Router();
 
 // Validate user (forsrights)
 forsrightsMockRouter.get('/validate', (req, res) => {
-  const {action, userIdAut, groupIdAut, passwordAut} = req.query;
-  const response = {forsRightsResponse: {error: null}};
+  const {action, userIdAut, groupIdAut, passwordAut, agency} = req.query;
+  const response = {forsRightsResponse: {error: null, ressource: []}};
+
+  if (agency === '100200') {
+    const mock = createForsrightsResponse();
+    return res.send(JSON.stringify(mock));
+  }
+
+  if (agency === '100300') {
+    const mock = createForsrightsResponse();
+    return res.send(JSON.stringify(response));
+  }
 
   if (
     userIdAut === 'valid-user' &&
-    groupIdAut === '100200' &&
+    (groupIdAut === '100200' || groupIdAut === '100300') &&
     passwordAut === '123456'
   ) {
     return res.send(JSON.stringify(response));
