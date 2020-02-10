@@ -138,7 +138,7 @@ export async function authenticate(req, res, next) {
       });
     }
 
-    res.status = 200;
+    res.status(200);
     req.setState({error: null});
   } catch (e) {
     const error =
@@ -328,7 +328,7 @@ export async function identityProviderCallback(req, res) {
   try {
     if (!req.getState().stateHash.includes(req.params.state)) {
       log.error('Invalid state', {params: req.params, state: req.getState()});
-      res.status = 403;
+      res.status(403);
       return res.send('invalid state');
     }
     switch (req.params.type) {

@@ -6,6 +6,7 @@ import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
+import './nockFixtures';
 
 describe('test authenticate method', () => {
   const next = () => {};
@@ -13,6 +14,7 @@ describe('test authenticate method', () => {
 
   beforeEach(() => {
     ctx = mockContext();
+    ctx.status = jest.fn();
   });
 
   it('Should return content page', async () => {
@@ -25,7 +27,7 @@ describe('test authenticate method', () => {
       }
     });
     await authenticate(ctx, ctx, next);
-    expect(ctx.status).toEqual(200);
+    expect(ctx.status).toBeCalledWith(200);
   });
 
   it('Should render error page', async () => {
@@ -40,9 +42,7 @@ describe('test authenticate method', () => {
     ctx.session.query.idp = 'nemlogin';
     await authenticate(ctx, ctx, next);
     expect(ctx.redirect).toBeCalledWith(
-      `/login/identityProviderCallback/nemlogin/${
-        ctx.session.state.stateHash[0]
-      }`
+      `/login/identityProviderCallback/nemlogin/${ctx.session.state.stateHash[0]}`
     );
   });
   it('Should not redirect to nemlogin', async () => {
@@ -93,11 +93,11 @@ describe('test identityProviderCallback method', () => {
     expect(ctx.getUser()).toEqual(expected);
   });
 
-  it('Should add nemlogin user and cpr to context', async () => {
+  it('Should add nemlogin user to context', async () => {
     ctx.params.type = 'nemlogin';
     const expected = {
-      userId: '0102030405',
-      cpr: '0102030405',
+      userId: '5555666677',
+      cpr: null,
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };

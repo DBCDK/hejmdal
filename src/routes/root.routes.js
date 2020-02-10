@@ -15,18 +15,16 @@ router.get('/', renderFrontPage);
 
 router.get('/health', async (req, res) => {
   const health = await sanityCheck();
-
-  res.status = 200;
+  let status = 200;
   if (health.filter(e => e.state === 'fail').length) {
-    res.status = 503;
+    status = 503;
   }
   const healthMap = health.reduce((map, h) => ({...map, [h.name]: h}), {});
-  console.log(healthMap, health);
   log.debug('health', {
     health: healthMap,
-    healthStatus: res.status
+    healthStatus: status
   });
-
+  res.status(status);
   res.send(health);
 });
 

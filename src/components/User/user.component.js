@@ -36,6 +36,11 @@ export async function getUser(req, res, next) {
       accessToken
     );
 
+    log.debug('Userinfo generated', {
+      ticketAttributes,
+      clientId
+    });
+
     res.json({attributes: ticketAttributes});
   } catch (error) {
     log.error('Could not generate user info', {
@@ -97,6 +102,7 @@ export async function saveUser(token, user) {
   const hashedToken = createHash(token);
   const result = await storage.update(hashedToken, user);
   const elapsedTimeInMs = stopTiming();
+  log.debug('save user', {token, user});
   log.debug('timing', {
     service: 'database',
     function: 'readUser',

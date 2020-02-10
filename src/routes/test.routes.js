@@ -18,9 +18,7 @@ serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
-      process.env.HOST
-    }/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
   );
 });
 serviceMockRouter.get('/:service/callback', (req, res) => {
@@ -136,6 +134,19 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
     );
   }
 });
+
+let smaugHealthOk = true;
+smaugMockRouter.get('/config/health', (req, res) => {
+  res.status(smaugHealthOk ? 200 : 503);
+  res.send({ok: smaugHealthOk});
+});
+
+smaugMockRouter.get('/config/health/setStatus/:status', (req, res) => {
+  const {status} = req.params;
+  smaugHealthOk = status === 'true';
+  res.send({ok: smaugHealthOk});
+});
+
 smaugMockRouter.get('/config/configuration', (req, res) => {
   const {token} = req.query;
   let overrides = {};
@@ -373,7 +384,40 @@ forsrightsMockRouter.get('/validate', (req, res) => {
   return res.send(JSON.stringify(response));
 });
 
+/**
+ * BORCHK MOCK
+ */
+
+const mockDataOk =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"ok"}},"@namespaces":null}';
+
+const mockDataNotFound =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
+
+const serviceUnavailable =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"service_unavailable"}},"@namespaces":null}';
+
+const borchkMockRouter = Router();
+
+// Validate user (forsrights)
+borchkMockRouter.get('/', (req, res) => {
+  const {libraryCode, userPincode} = req.query;
+  let body = mockDataNotFound;
+  if (
+    libraryCode === 'DK-710100' ||
+    libraryCode === 'DK-724000' ||
+    (libraryCode === 'DK-733000' && userPincode === '1234') ||
+    userPincode === '1111'
+  ) {
+    body = mockDataOk;
+  } else if (libraryCode === 'DK-860490') {
+    body = serviceUnavailable;
+  }
+  res.send(body);
+});
+
 router.use('/forsrights', forsrightsMockRouter);
 router.use('/service', serviceMockRouter);
 router.use('/smaug', smaugMockRouter);
+router.use('/borchk', borchkMockRouter);
 export default router;

@@ -1,35 +1,7 @@
 import {CONFIG} from '../../../utils/config.util';
 import {validateUserInLibrary} from '../borchk.component';
 import {mockContext} from '../../../utils/test.util';
-import nock from 'nock';
-
-nock('http://localhost:3011', {encodedQueryParams: true})
-  .get('/test/borchk')
-  .query({
-    serviceRequester: 'login.bib.dk',
-    libraryCode: 'DK-710100',
-    userId: '1234567890',
-    userPincode: ''
-  })
-  .reply(200, {
-    borrowerCheckResponse: {userId: {$: '0102030405'}, requestStatus: {$: 'ok'}}
-  });
-
-nock('http://localhost:3011', {encodedQueryParams: true})
-  .get('/test/borchk')
-  .query({
-    serviceRequester: 'login.bib.dk',
-    libraryCode: 'DK-761500',
-    userId: '1234567890',
-    userPincode: ''
-  })
-  .reply(200, {
-    borrowerCheckResponse: {
-      userId: {$: '0102030405'},
-      requestStatus: {$: 'borrower_not_found'}
-    },
-    '@namespaces': null
-  });
+import './nockFixtures';
 
 describe('Test borchk component', () => {
   // Save original config so it can be restored
@@ -41,8 +13,6 @@ describe('Test borchk component', () => {
   afterEach(() => {
     CONFIG.mock_externals.borchk = _BORCHK_CONFIG;
   });
-
-  const ctx = mockContext();
 
   it('Lookup a known user', async () => {
     const user = {agency: '710100', userId: '1234567890', pincode: ''};
