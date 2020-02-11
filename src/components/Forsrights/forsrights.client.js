@@ -18,13 +18,15 @@ import _ from 'lodash';
 function filterForsrightsResponse(forsrights) {
   // Map every agency in response
   return forsrights.map(a => {
+    const a_rights = {};
     const agencyId = a.agencyId;
     // Map every service in agency
-    const a_rights = a.rights.map(s => {
+    a.rights.forEach(s => {
       const name = s.name.$;
       // Map every rights in service + sort ascending
       const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
-      return {name, rights: s_rights};
+      // Set new servicename in object
+      a_rights[name] = s_rights;
     });
     return {agencyId, rights: a_rights};
   });
