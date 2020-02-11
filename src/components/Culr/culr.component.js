@@ -102,7 +102,7 @@ export async function getUserAttributesFromCulr(user = {}) {
  * @param {*} user
  * @returns {string|null}
  */
-async function getMunicipalityId(user) {
+export async function getMunicipalityId(user) {
   const result = await validateUserInLibrary(
     CONFIG.borchk.serviceRequesterInMunicipality,
     user
@@ -124,6 +124,20 @@ async function getMunicipalityId(user) {
  */
 export async function getMunicipalityInformation(culrResponse, user) {
   let response = {};
+
+  // check if user lives in municipality
+  if (user.agency && user.userId && user.pincode) {
+    const borchkMunicipalityNo = await getMunicipalityId(user);
+
+    // If user lives in municipality - Use borchk informations
+    if (borchkMunicipalityNo) {
+      response.municipalityAgencyId = user.agency;
+      response.municipalityNumber = borchkMunicipalityNo;
+      return response;
+    }
+  }
+
+  // If user does NOT live in municipality - Use Culr informations
   if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
     response.municipalityNumber = culrResponse.MunicipalityNo;
     if (user.agency) {
@@ -133,18 +147,40 @@ export async function getMunicipalityInformation(culrResponse, user) {
     } else {
       response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
     }
-  } else if (user.agency) {
-    const result = await validateUserInLibrary(
-      CONFIG.borchk.serviceRequesterInMunicipality,
-      user
-    );
-    if (!result.error) {
-      response.municipalityAgencyId = user.agency;
-      if (user.agency.startsWith('7')) {
-        response.municipalityNumber = user.agency.slice(1, 4);
-      }
-    }
   }
+
+  console.log('################# municipalityInfromations: ', response);
+
+  // ringsted: 329
+  // ---> set municipalityAgencyId
+  // ---> set AgencyId
+
+  // næstved: --> null
+  //----> culr fallback
+  // ---------> set municipalityAgencyId
+  // ---------> set AgencyId
+
+  // if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
+  //   response.municipalityNumber = culrResponse.MunicipalityNo;
+  //   if (user.agency) {
+  //     response.municipalityAgencyId = user.agency.startsWith('7')
+  //       ? `7${culrResponse.MunicipalityNo}00`
+  //       : user.agency;
+  //   } else {
+  //     response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
+  //   }
+  // } else if (user.agency) {
+  //   const result = await validateUserInLibrary(
+  //     CONFIG.borchk.serviceRequesterInMunicipality,
+  //     user
+  //   );
+  //   if (!result.error) {
+  //     response.municipalityAgencyId = user.agency;
+  //     if (user.agency.startsWith('7')) {
+  //       response.municipalityNumber = user.agency.slice(1, 4);
+  //     }
+  //   }
+  // }
 
   return response;
 }

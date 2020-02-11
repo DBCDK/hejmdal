@@ -77,6 +77,8 @@ export const CulrMockClient = {
     const userIdType = userCredentials.userIdType;
     let account = {Account: []};
 
+    console.log('############## municipalityNo in mock', municipalityNo);
+
     // If userIdType is local (no CPR)
     if (userIdType === 'LOCAL') {
       if (userExistLocal) {

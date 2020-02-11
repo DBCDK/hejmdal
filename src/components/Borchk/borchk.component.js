@@ -7,6 +7,34 @@ import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
 import startTiming from '../../utils/timing.util';
+import {CONFIG} from '../../utils/config.util';
+
+/**
+ * Get municipality for user.
+ *
+ * We can only get municipality if user has logged in through library in municipality.
+ *
+ * @param {*} user
+ * @returns {string|null}
+ */
+export async function borrowerIsInMunicipality(user) {
+  const result = await validateUserInLibrary(
+    CONFIG.borchk.serviceRequesterInMunicipality,
+    user
+  );
+
+  console.log('################ result', result);
+
+  if (!result.error && user.agency.startsWith('7')) {
+    console.log(
+      '############ user.agency',
+      user.agency,
+      user.agency.slice(1, 4)
+    );
+    return user.agency.slice(1, 4);
+  }
+  return null;
+}
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -20,6 +48,14 @@ export async function validateUserInLibrary(
   userInput,
   retries = 0
 ) {
+  console.log(
+    '####### userInput',
+    userInput.agency,
+    userInput.userId,
+    userInput.pincode,
+    serviceRequester
+  );
+
   let userValidate = {error: true, message: 'unknown_error'};
   const stopTiming = startTiming();
   const response = await getClient(
@@ -28,6 +64,9 @@ export async function validateUserInLibrary(
     userInput.pincode,
     serviceRequester
   );
+
+  console.log('####### response', response);
+
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
     service: 'BorChk',

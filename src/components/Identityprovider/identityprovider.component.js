@@ -20,7 +20,10 @@ import {validateNetpunktUser} from '../Forsrights/forsrights.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
-import {validateUserInLibrary} from '../Borchk/borchk.component';
+import {
+  validateUserInLibrary,
+  borrowerIsInMunicipality
+} from '../Borchk/borchk.component';
 import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {ERRORS} from '../../utils/errors.util';
 

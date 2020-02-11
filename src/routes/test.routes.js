@@ -18,7 +18,9 @@ serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
+      process.env.HOST
+    }/test/service/${service}/callback`
   );
 });
 serviceMockRouter.get('/:service/callback', (req, res) => {
@@ -394,6 +396,9 @@ const mockDataOk =
 const mockDataNotFound =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
 
+const mockDataNotInMunicipality =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_in_municipality"}},"@namespaces":null}';
+
 const serviceUnavailable =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"service_unavailable"}},"@namespaces":null}';
 
@@ -410,9 +415,14 @@ borchkMockRouter.get('/', (req, res) => {
     userPincode === '1111'
   ) {
     body = mockDataOk;
+  } else if (libraryCode === 'DK-737000' && userPincode === '1234') {
+    body = mockDataOk;
+  } else if (libraryCode === 'DK-732900' && userPincode === '1234') {
+    body = mockDataOk;
   } else if (libraryCode === 'DK-860490') {
     body = serviceUnavailable;
   }
+
   res.send(body);
 });
 

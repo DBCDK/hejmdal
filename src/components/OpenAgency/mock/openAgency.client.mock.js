@@ -72,6 +72,30 @@ const mockFindLibrary = {
     '"longitude":{"$":"12.3083103"},' +
     '"distanceInMeter":{"$":"2905"}}' +
     '},' +
+    '{"agencyName":{"$":"Næstved"},' +
+    '"agencyId":{"$":"737000"},' +
+    '"branchId":{"$":"737000"},' +
+    '"branchName":[{"$":"Næstved bibliotek"}],' +
+    '"postalAddress":{"$":"Flodvej 68 Smørumnedre"},' +
+    '"branchType":{"$":"H"},' +
+    '"agencyType":{"$":"Folkebibliotek"},' +
+    '"geolocation":{' +
+    '"latitude":{"$":"55.7315365"},' +
+    '"longitude":{"$":"12.3083103"},' +
+    '"distanceInMeter":{"$":"2905"}}' +
+    '},' +
+    '{"agencyName":{"$":"Ringsted"},' +
+    '"agencyId":{"$":"732900"},' +
+    '"branchId":{"$":"732900"},' +
+    '"branchName":[{"$":"Ringsted Bibliotek"}],' +
+    '"postalAddress":{"$":"Ringsted Bibliotek"},' +
+    '"branchType":{"$":"H"},' +
+    '"agencyType":{"$":"Folkebibliotek"},' +
+    '"geolocation":{' +
+    '"latitude":{"$":"55.7315365"},' +
+    '"longitude":{"$":"12.3083103"},' +
+    '"distanceInMeter":{"$":"2905"}}' +
+    '},' +
     '{"agencyName":{"$":"Aarhus"},' +
     '"agencyId":{"$":"775100"},' +
     '"branchId":{"$":"775100"},' +
