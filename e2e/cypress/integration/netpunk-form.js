@@ -168,9 +168,11 @@ context('Netpunkt form', () => {
             expect(response.body.attributes.forsrights[0]).to.have.property(
               'rights'
             );
-            expect(response.body.attributes.forsrights[0].rights)
-              .to.be.a('array')
-              .lengthOf(3);
+            expect(response.body.attributes.forsrights[0].rights).to.be.a(
+              'object'
+            );
+            expect(response.body.attributes.forsrights[0].rights).to.not.be
+              .empty;
           });
         });
     });
@@ -220,9 +222,10 @@ context('Netpunkt form', () => {
             expect(response.body.attributes.forsrights[0]).to.have.property(
               'rights'
             );
-            expect(response.body.attributes.forsrights[0].rights)
-              .to.be.a('array')
-              .lengthOf(0);
+            expect(response.body.attributes.forsrights[0].rights).to.be.a(
+              'object'
+            );
+            expect(response.body.attributes.forsrights[0].rights).to.be.empty;
           });
         });
     });
