@@ -24,7 +24,8 @@ function filterForsrightsResponse(forsrights) {
       const name = s.name.$;
       // Map every rights in service + sort ascending
       const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
-      return {name, rights: s_rights};
+
+      return {[name]: s_rights};
     });
     return {agencyId, rights: a_rights};
   });
