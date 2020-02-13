@@ -102,47 +102,43 @@ context('Login flow', () => {
     );
   });
 
-  it('muni => fail', () => {
-    const municipalityAgencyId = 732900;
-    const userId = '01234567';
-    cy.visit(authorize(municipalityAgencyId));
+  it('Should return home-municipality for loaners using libraries outside their home-municipality', () => {
+    const municipalityHome = 329;
+    const municipalityLoaner = 370;
+
+    // userId home municipality is 329 (Culr);
+    const userId = '0102030411';
+
+    cy.visit(authorize(`7${municipalityLoaner}00`));
+
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
 
-    // cy.get('#error-body').should(
-    //   'contain',
-    //   'Det ser ud til, at du ikke bor i kommunen for det valgte bibliotek'
-    // );
+    cy.get('#input-login-client')
+      .clear()
+      .type('hejmdal');
+
+    cy.get('#get-ticket-button').click();
+    cy.get('#get-userinfo-button').click();
+
+    cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
+      const userinfo = JSON.parse(text);
+      expect(userinfo.attributes.userId).to.equal(userId);
+      expect(userinfo.attributes.municipality).to.equal(`${municipalityHome}`);
+      expect(userinfo.attributes.municipalityAgencyId).to.equal(
+        `7${municipalityHome}00`
+      );
+    });
   });
 
-  it.only('muni => success', () => {
-    const municipalityAgencyId = 737000;
-    const userId = Math.random()
-      .toString(10)
-      .slice(-10);
+  it('Should return work-municipality for librarians working outside their home-municipality', () => {
+    const municipalityWork = 370;
 
-    // cy.visit(authorize(737000));
-    cy.visit(authorize(municipalityAgencyId));
+    // userId home municipality is 329 (Culr);
+    const userId = '0102030410';
 
-    cy.get('#userid-input').type(userId);
-    cy.get('#pin-input').type('1234');
-    cy.get('#borchk-submit').click();
-
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
-
-    cy.get('#get-ticket-button').click();
-    cy.get('#get-userinfo-button').click();
-
-    // ...
-
-    cy.get('#logout button').click();
-
-    const municipalityAgencyId2 = 732900;
-
-    cy.visit(authorize(municipalityAgencyId2));
+    cy.visit(authorize(`7${municipalityWork}00`));
 
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
@@ -155,29 +151,13 @@ context('Login flow', () => {
     cy.get('#get-ticket-button').click();
     cy.get('#get-userinfo-button').click();
 
-    cy.get('#logout button').click();
-
-    // ...
-
-    cy.visit(authorize(municipalityAgencyId));
-
-    cy.get('#userid-input').type(userId);
-    cy.get('#pin-input').type('1234');
-    cy.get('#borchk-submit').click();
-
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
-
-    cy.get('#get-ticket-button').click();
-    cy.get('#get-userinfo-button').click();
-
-    // cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
-    //   const userinfo = JSON.parse(text);
-    //   expect(userinfo.attributes.userId).to.equal(userId);
-    //   expect(userinfo.attributes.municipalityAgencyId).to.equal(
-    //     `${municipalityAgencyId}`
-    //   );
-    // });
+    cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
+      const userinfo = JSON.parse(text);
+      expect(userinfo.attributes.userId).to.equal(userId);
+      expect(userinfo.attributes.municipality).to.equal(`${municipalityWork}`);
+      expect(userinfo.attributes.municipalityAgencyId).to.equal(
+        `7${municipalityWork}00`
+      );
+    });
   });
 });

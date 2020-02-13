@@ -396,8 +396,8 @@ const mockDataOk =
 const mockDataNotFound =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
 
-const mockDataNotInMunicipality =
-  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_in_municipality"}},"@namespaces":null}';
+const mockDataNotMunicipality =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030410"},"requestStatus":{"$":"borrower_not_in_municipality"}},"@namespaces":null}';
 
 const serviceUnavailable =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"service_unavailable"}},"@namespaces":null}';
@@ -406,7 +406,7 @@ const borchkMockRouter = Router();
 
 // Validate user (forsrights)
 borchkMockRouter.get('/', (req, res) => {
-  const {libraryCode, userPincode} = req.query;
+  const {userId, libraryCode, userPincode, serviceRequester} = req.query;
   let body = mockDataNotFound;
   if (
     libraryCode === 'DK-710100' ||
@@ -415,9 +415,24 @@ borchkMockRouter.get('/', (req, res) => {
     userPincode === '1111'
   ) {
     body = mockDataOk;
-  } else if (libraryCode === 'DK-737000' && userPincode === '1234') {
+  } else if (
+    userId === '0102030411' &&
+    serviceRequester === 'filmstriben' &&
+    libraryCode === 'DK-737000' &&
+    userPincode === '1234'
+  ) {
+    body = mockDataNotMunicipality;
+  } else if (
+    userId === '0102030410' &&
+    serviceRequester === 'filmstriben' &&
+    libraryCode === 'DK-737000' &&
+    userPincode === '1234'
+  ) {
     body = mockDataOk;
-  } else if (libraryCode === 'DK-732900' && userPincode === '1234') {
+  } else if (
+    (userId === '0102030410' && userPincode === '1234') ||
+    (userId === '0102030411' && userPincode === '1234')
+  ) {
     body = mockDataOk;
   } else if (libraryCode === 'DK-860490') {
     body = serviceUnavailable;

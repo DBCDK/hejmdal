@@ -60,26 +60,13 @@ describe('Unittesting methods in culr.component:', () => {
           pincode: '1111'
         }
       );
+
       expect(result).toEqual({
         municipalityAgencyId: '790900',
         municipalityNumber: '909'
       });
     });
 
-    it('should generate municipalityAgencyId from municipalityNo if agency starts with 7', async () => {
-      const result = await getMunicipalityInformation(
-        {MunicipalityNo: '123'},
-        {
-          userId: '5555666677',
-          agency: '711100',
-          pincode: '1111'
-        }
-      );
-      expect(result).toEqual({
-        municipalityAgencyId: '712300',
-        municipalityNumber: '123'
-      });
-    });
     it('should NOT generate municipalityAgencyId from municipalityNo if agency does NOT start with 7', async () => {
       const result = await getMunicipalityInformation(
         {MunicipalityNo: '123'},
