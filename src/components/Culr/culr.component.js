@@ -22,15 +22,14 @@ export async function getUserAttributesFromCulr(user = {}) {
   let response = null;
   let responseCode;
 
-  // Get user account
-  const {accountResponse, accountResponseCode} = await getUserAccount(user);
-  if (!accountResponse) {
+  const account = await getUserAccount(user);
+  if (!account || !account.response) {
     return attributes;
   }
 
   // set user account informations
-  response = accountResponse;
-  responseCode = accountResponseCode;
+  response = account.response;
+  responseCode = account.responseCode;
 
   // Check if we should create an account (If is NOT in CULR)
   if (shouldCreateAccount(agencyId, user, response)) {
@@ -41,6 +40,7 @@ export async function getUserAttributesFromCulr(user = {}) {
     try {
       const createUserResponse = await createUser(user, agencyId);
       const newAccount = await getUserAccount(user);
+
       // set user account informations
       response = newAccount.response;
       responseCode = newAccount.responseCode;
@@ -88,19 +88,22 @@ async function getUserAccount(user) {
   let responseCode = null;
 
   try {
-    response = await culr.getAccountsByGlobalId({userIdValue: userId});
+    response = await culr.getAccountsByGlobalId({
+      userIdValue: userId,
+      agencyId
+    });
     responseCode = response && response.result.responseStatus.responseCode;
 
     if (responseCode === 'ACCOUNT_DOES_NOT_EXIST' && agencyId) {
       // Not found as global id, lets try as local id
       response = await culr.getAccountsByLocalId({
         userIdValue: userId,
-        agencyId: agencyId
+        agencyId
       });
       responseCode = response && response.result.responseStatus.responseCode;
     }
 
-    return {accountResponse: response, accountResponseCode: responseCode};
+    return {response, responseCode};
   } catch (e) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
     return null;
