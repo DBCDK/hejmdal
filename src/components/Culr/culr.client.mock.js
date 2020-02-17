@@ -35,6 +35,38 @@ function initMock() {
     ]
   });
 
+  globalAccounts.set('0102030410', {
+    Account: [
+      {
+        provider: '737000',
+        userIdType: 'CPR',
+        userIdValue: '0102030410'
+      },
+      {
+        provider: '732900',
+        userIdType: 'CPR',
+        userIdValue: '0102030410'
+      }
+    ],
+    MunicipalityNo: '329'
+  });
+
+  globalAccounts.set('0102030411', {
+    Account: [
+      {
+        provider: '737000',
+        userIdType: 'CPR',
+        userIdValue: '0102030411'
+      },
+      {
+        provider: '732900',
+        userIdType: 'CPR',
+        userIdValue: '0102030411'
+      }
+    ],
+    MunicipalityNo: '329'
+  });
+
   localAccounts = new Map();
   localAccounts.set('87654321', {
     Account: [

@@ -18,7 +18,9 @@ serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
+      process.env.HOST
+    }/test/service/${service}/callback`
   );
 });
 serviceMockRouter.get('/:service/callback', (req, res) => {
@@ -394,6 +396,9 @@ const mockDataOk =
 const mockDataNotFound =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
 
+const mockDataNotMunicipality =
+  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_in_municipality"}},"@namespaces":null}';
+
 const serviceUnavailable =
   '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"service_unavailable"}},"@namespaces":null}';
 
@@ -401,18 +406,42 @@ const borchkMockRouter = Router();
 
 // Validate user (forsrights)
 borchkMockRouter.get('/', (req, res) => {
-  const {libraryCode, userPincode} = req.query;
+  const {userId, libraryCode, userPincode, serviceRequester} = req.query;
   let body = mockDataNotFound;
-  if (
-    libraryCode === 'DK-710100' ||
-    libraryCode === 'DK-724000' ||
-    (libraryCode === 'DK-733000' && userPincode === '1234') ||
-    userPincode === '1111'
-  ) {
-    body = mockDataOk;
-  } else if (libraryCode === 'DK-860490') {
-    body = serviceUnavailable;
+
+  if (serviceRequester === 'bibliotek.dk') {
+    if (
+      libraryCode === 'DK-710100' ||
+      libraryCode === 'DK-724000' ||
+      (libraryCode === 'DK-733000' && userPincode === '1234') ||
+      (userId === '0102030410' && userPincode === '1234') ||
+      (userId === '0102030411' && userPincode === '1234') ||
+      userPincode === '1111'
+    ) {
+      body = mockDataOk;
+    }
+
+    if (libraryCode === 'DK-860490') {
+      body = serviceUnavailable;
+    }
   }
+
+  if (serviceRequester === 'filmstriben') {
+    if (
+      userId === '0102030411' &&
+      libraryCode === 'DK-737000' &&
+      userPincode === '1234'
+    ) {
+      body = mockDataNotMunicipality;
+    } else if (
+      userId === '0102030410' &&
+      libraryCode === 'DK-737000' &&
+      userPincode === '1234'
+    ) {
+      body = mockDataOk;
+    }
+  }
+
   res.send(body);
 });
 

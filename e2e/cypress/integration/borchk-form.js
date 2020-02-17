@@ -154,16 +154,16 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 9);
+    cy.get('#borchk-dropdown .agency').should('have.length', 11);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
-    cy.get('#borchk-dropdown .agency').should('have.length', 4);
+    cy.get('#borchk-dropdown .agency').should('have.length', 6);
     cy.get('#borchk-dropdown .agency').should(
       'contain.text',
-      'AarhusBýarbókasavniðNunatta AtuagaateqarfiaSlagelse'
+      'AarhusBýarbókasavniðNunatta AtuagaateqarfiaNæstvedRingstedSlagelse'
     );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);

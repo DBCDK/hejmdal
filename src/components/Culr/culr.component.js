@@ -22,75 +22,91 @@ export async function getUserAttributesFromCulr(user = {}) {
   let response = null;
   let responseCode;
 
+  const account = await getUserAccount(user);
+  if (!account || !account.response) {
+    return attributes;
+  }
+
+  // set user account informations
+  response = account.response;
+  responseCode = account.responseCode;
+
+  // Check if we should create an account (If is NOT in CULR)
+  if (shouldCreateAccount(agencyId, user, response)) {
+    // It should not have been possible for a user to have authenticated through borchk,
+    // and not to exist in CULR. Therefore a warning is logged.
+    log.warn('Borck user not in culr', {userId, agencyId});
+
+    try {
+      const createUserResponse = await createUser(user, agencyId);
+      const newAccount = await getUserAccount(user);
+
+      // set user account informations
+      response = newAccount.response;
+      responseCode = newAccount.responseCode;
+    } catch (e) {
+      log.error('Could not create User in CULR', {userId, agencyId, e});
+    }
+  }
+
+  if (responseCode === 'OK200') {
+    attributes.accounts = response.result.Account;
+    const {
+      municipalityNumber,
+      municipalityAgencyId
+    } = await getMunicipalityInformation(response.result, user);
+    attributes.municipalityNumber = municipalityNumber;
+    attributes.municipalityAgencyId = municipalityAgencyId;
+    attributes.culrId = response.result.Guid || null;
+    return attributes;
+  }
+
+  // Quick fix for Býarbókasavnið. TODO: clean up.
+  const {
+    municipalityNumber,
+    municipalityAgencyId
+  } = await getMunicipalityInformation({}, user);
+  attributes.municipalityNumber = municipalityNumber;
+  attributes.municipalityAgencyId = municipalityAgencyId;
+
+  return attributes;
+}
+
+/**
+ * Fetches the users account
+ *
+ * Always tries to fetch account by a global-id - then with local-id as fallback
+ *
+ * @param {Object} user
+ * @returns {Object} response (account) + responseCode (error|success)
+ */
+
+async function getUserAccount(user) {
+  const {userId, agency: agencyId = null} = user;
+
+  let response = null;
+  let responseCode = null;
+
   try {
-    response = await culr.getAccountsByGlobalId({userIdValue: userId});
+    response = await culr.getAccountsByGlobalId({
+      userIdValue: userId,
+      agencyId
+    });
     responseCode = response && response.result.responseStatus.responseCode;
+
     if (responseCode === 'ACCOUNT_DOES_NOT_EXIST' && agencyId) {
       // Not found as global id, lets try as local id
       response = await culr.getAccountsByLocalId({
         userIdValue: userId,
-        agencyId: agencyId
+        agencyId
       });
       responseCode = response && response.result.responseStatus.responseCode;
     }
+
+    return {response, responseCode};
   } catch (e) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
-    return attributes;
-  }
-
-  try {
-    // If possible user should be created. This requires following, CPR/UserID, AgencyID
-    // and optionally MuncipalityID:
-    if (shouldCreateAccount(agencyId, user, response)) {
-      // It should not have been possible for a user to have authenticated through borchk,
-      // and not to exist in CULR. Therefore a warning is logged.
-      log.warn('Borck user not in culr', {userId, agencyId});
-
-      const createUserResponse = await createUser(user, agencyId);
-      if (createUserResponse) {
-        if (!user.cpr) {
-          response = await culr.getAccountsByLocalId({
-            userIdValue: userId,
-            agencyId
-          });
-        } else {
-          response = await culr.getAccountsByGlobalId({
-            userIdValue: userId,
-            agencyId
-          });
-        }
-        responseCode = response && response.result.responseStatus.responseCode;
-      }
-    }
-  } catch (e) {
-    log.error('Could not create User in CULR', {userId, agencyId, e});
-  }
-  try {
-    if (responseCode === 'OK200') {
-      attributes.accounts = response.result.Account;
-      const {
-        municipalityNumber,
-        municipalityAgencyId
-      } = await getMunicipalityInformation(response.result, user);
-      attributes.municipalityNumber = municipalityNumber;
-      attributes.municipalityAgencyId = municipalityAgencyId;
-      attributes.culrId = response.result.Guid || null;
-      // Quick fix for Býarbókasavnið. TODO: clean up.
-    } else {
-      const {
-        municipalityNumber,
-        municipalityAgencyId
-      } = await getMunicipalityInformation({}, user);
-      attributes.municipalityNumber = municipalityNumber;
-      attributes.municipalityAgencyId = municipalityAgencyId;
-    }
-
-    return attributes;
-  } catch (e) {
-    log.error('could not generate attributes', {
-      error: e.message,
-      stack: e.stack
-    });
+    return null;
   }
 }
 
@@ -102,7 +118,7 @@ export async function getUserAttributesFromCulr(user = {}) {
  * @param {*} user
  * @returns {string|null}
  */
-async function getMunicipalityId(user) {
+export async function getMunicipalityId(user) {
   const result = await validateUserInLibrary(
     CONFIG.borchk.serviceRequesterInMunicipality,
     user
@@ -124,29 +140,44 @@ async function getMunicipalityId(user) {
  */
 export async function getMunicipalityInformation(culrResponse, user) {
   let response = {};
-  if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length === 3) {
-    response.municipalityNumber = culrResponse.MunicipalityNo;
-    if (user.agency) {
-      response.municipalityAgencyId = user.agency.startsWith('7')
-        ? `7${culrResponse.MunicipalityNo}00`
-        : user.agency;
-    } else {
-      response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
+
+  try {
+    // check if user lives in municipality
+    if (user.agency && user.userId && user.pincode) {
+      const borchkMunicipalityNo = await getMunicipalityId(user);
+      // If user lives in municipality - Use borchk informations
+      if (borchkMunicipalityNo) {
+        response.municipalityAgencyId = user.agency;
+        response.municipalityNumber = borchkMunicipalityNo;
+        return response;
+      }
     }
-  } else if (user.agency) {
-    const result = await validateUserInLibrary(
-      CONFIG.borchk.serviceRequesterInMunicipality,
-      user
-    );
-    if (!result.error) {
+
+    if (
+      culrResponse.MunicipalityNo &&
+      culrResponse.MunicipalityNo.length === 3
+    ) {
+      response.municipalityNumber = culrResponse.MunicipalityNo;
+      if (user.agency) {
+        response.municipalityAgencyId = user.agency.startsWith('7')
+          ? `7${culrResponse.MunicipalityNo}00`
+          : user.agency;
+      } else {
+        response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
+      }
+    } else if (user.agency) {
       response.municipalityAgencyId = user.agency;
       if (user.agency.startsWith('7')) {
         response.municipalityNumber = user.agency.slice(1, 4);
       }
     }
+    return response;
+  } catch (e) {
+    log.error('could not generate attributes', {
+      error: e.message,
+      stack: e.stack
+    });
   }
-
-  return response;
 }
 
 /**

@@ -2,7 +2,7 @@ context('CAS authorization flow', () => {
   const serviceUrl = `${
     Cypress.config().baseUrl
   }/some-arbitrary-value?query=test`;
-  const authorize = `/cas/hejmdal/733000/login?service=${serviceUrl}`;
+  const authorize = `/cas/hejmdal/790900/login?service=${serviceUrl}`;
 
   it('should redirect to login page', () => {
     cy.visit(authorize);

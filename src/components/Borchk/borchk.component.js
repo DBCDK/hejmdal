@@ -7,6 +7,7 @@ import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
 import startTiming from '../../utils/timing.util';
+import {CONFIG} from '../../utils/config.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -28,6 +29,7 @@ export async function validateUserInLibrary(
     userInput.pincode,
     serviceRequester
   );
+
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
     service: 'BorChk',
