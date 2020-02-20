@@ -31,10 +31,10 @@ describe('test store and get user', () => {
             userIdType: 'LOCAL-1'
           }
         ],
-        birthDate: null,
-        birthYear: null,
+        birthDate: '5555',
+        birthYear: '1866',
         cpr: '5555666677',
-        gender: null,
+        gender: 'm',
         municipality: '909',
         municipalityAgencyId: '790900',
         netpunktAgency: null,

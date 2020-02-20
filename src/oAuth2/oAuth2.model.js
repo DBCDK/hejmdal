@@ -109,11 +109,9 @@ module.exports.getClient = async clientId => {
  * Save token.
  */
 module.exports.saveToken = async function(token, client, user) {
-
   try {
     const params = {clientId: client.clientId};
-    if (user.pincode && user.agency) {
-      params.password = user.pincode;
+    if (user.agency) {
       params.username = user.userId;
       params.agency = user.agency;
     }

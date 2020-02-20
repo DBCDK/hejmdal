@@ -6,7 +6,8 @@
 import {
   shouldCreateAccount,
   getUserAttributesFromCulr,
-  getMunicipalityInformation
+  getMunicipalityInformation,
+  sortAgencies
 } from '../culr.component';
 import './nockFixtures';
 
@@ -166,6 +167,65 @@ describe('Unittesting methods in culr.component:', () => {
         ACCOUNT_EXISTS
       );
       expect(result).toEqual(true);
+    });
+    describe('sortAgencies', () => {
+      it('should prefer agency realtion created with CPR', async () => {
+        const MunicipalityNo = '329';
+        const Account = [
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          }
+        ];
+
+        const result = sortAgencies(Account, MunicipalityNo);
+
+        expect(result[0]).toEqual({
+          provider: '732900',
+          userIdType: 'CPR',
+          userIdValue: '0102031111'
+        });
+      });
+
+      it('should prefer provider matching MunicipalityNo above CPR', async () => {
+        const MunicipalityNo = '329';
+        const Account = [
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '737000',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          }
+        ];
+
+        const result = sortAgencies(Account, MunicipalityNo);
+
+        expect(result[0]).toEqual({
+          provider: '732900',
+          userIdType: 'LOCAL',
+          userIdValue: '0102031111'
+        });
+      });
     });
   });
 });

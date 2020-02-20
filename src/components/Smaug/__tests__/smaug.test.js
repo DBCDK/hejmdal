@@ -13,6 +13,48 @@ describe('Test Smaug component', () => {
     CONFIG.mock_externals.smaug = _SMAUG_CONFIG;
   });
 
+  it('should call getTokenForUser() with a password prop', async () => {
+    const response = await smaug.getTokenForUser({
+      clientId: 'hejmdal',
+      agency: '724000',
+      username: '87654321',
+      password: '1234'
+    });
+
+    expect(response).toEqual({
+      access_token: 'qwerty123456asdfgh',
+      expires_in: 3600
+    });
+  });
+
+  it('should call getTokenForUser() with NO password prop', async () => {
+    const response = await smaug.getTokenForUser({
+      clientId: 'hejmdal',
+      agency: '790900',
+      username: 'some_user'
+    });
+
+    expect(response).toEqual({
+      access_token:
+        '0a9696c2677da095cdde9d6e398527fc9fbe167d1d435884acbd8334441308c4',
+      expires_in: 3600
+    });
+  });
+
+  it('should call getTokenForUser() without password prop', async () => {
+    const response = await smaug.getTokenForUser({
+      clientId: 'hejmdal',
+      agency: '790900',
+      username: 'some_user'
+    });
+
+    expect(response).toEqual({
+      access_token:
+        '0a9696c2677da095cdde9d6e398527fc9fbe167d1d435884acbd8334441308c4',
+      expires_in: 3600
+    });
+  });
+
   it('should return client with valid client_id', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('hejmdal');
     expect(clientinfo).toEqual({

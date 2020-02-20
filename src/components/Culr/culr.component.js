@@ -8,6 +8,7 @@ import {log} from '../../utils/logging.util';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
 import {municipalityName} from '../../utils/municipality.util';
+import {sortBy} from 'lodash';
 
 /**
  * Retrieval of user identity/identities from CULR webservice
@@ -246,4 +247,58 @@ export function shouldCreateAccount(library, user, response) {
   }
 
   return false;
+}
+
+/**
+ * Retrieves a 'best-match' user agency if none municipalityAgency is set
+ *
+ * @param {String} CPR
+ * @returns {string} agency
+ */
+
+export async function getAgencyByCpr(cpr) {
+  if (!cpr) {
+    return null;
+  }
+
+  // Fetching user
+  const response = await culr.getAccountsByGlobalId({
+    userIdValue: cpr
+  });
+
+  const result = response && response.result;
+
+  if (result.responseStatus.responseCode === 'OK200') {
+    // If user found but has no agency relations
+    if (!result.Account || result.Account.length === 0) {
+      return null;
+    }
+
+    // Returns the 'best-match' agency from the sorted agency list
+    const match = sortAgencies(result.Account, result.MunicipalityNo)[0];
+    if (match.provider) {
+      return match.provider;
+    }
+    return null;
+  }
+
+  return null;
+}
+
+/**
+ * Function that sorts agencies (From culr response) in a priority order
+ *
+ * agency with provider including the MunicipalityNo is 1. sort priority
+ * agency with type of CPR is. 2. sort priority
+ *
+ * @param {Array} agencies
+ * @param {String} municipalityNumber
+ * @returns {Array}
+ */
+
+export function sortAgencies(agencies, municipalityNo) {
+  return sortBy(agencies, [
+    o => (o.provider.includes(municipalityNo) ? -1 : +1),
+    'userIdType'
+  ]);
 }

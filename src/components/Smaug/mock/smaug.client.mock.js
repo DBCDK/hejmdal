@@ -97,7 +97,7 @@ export function getMockValidateUserTokenClient(
       })
     };
   }
-  if (clientId === mockData.app.clientId) {
+  if (clientId === mockData.app.clientId && !password) {
     const testToken = createHash(clientId + agency + username);
     mockTokenBuffer[testToken] = true;
     return {
@@ -111,6 +111,7 @@ export function getMockValidateUserTokenClient(
       body: JSON.stringify({access_token: 'hejmdal-access-token'})
     };
   }
+
   return {
     statusCode: 403
   };

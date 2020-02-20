@@ -60,7 +60,9 @@ export async function getMetadataByClientId(clientId) {
     return parsed;
   } catch (error) {
     log.error(
-      `Error retrieving client metadata from ${CONFIG.smaug.adminUri}/clients/${clientId}`,
+      `Error retrieving client metadata from ${
+        CONFIG.smaug.adminUri
+      }/clients/${clientId}`,
       {
         stack: error.stack,
         message: error.message
@@ -133,7 +135,7 @@ export async function getToken(
       clientId,
       agency,
       username,
-      password
+      (password = password && username ? password : null)
     );
   } else {
     response = await promiseRequest('post', {
@@ -145,7 +147,7 @@ export async function getToken(
       form: {
         grant_type: 'password',
         username: agency ? `${username}@${agency}` : username,
-        password: `${password}`
+        password: password && username ? `${password}` : null
       }
     });
   }
