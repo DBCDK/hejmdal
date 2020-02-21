@@ -108,7 +108,7 @@ export async function getClientById(clientId) {
   if (CONFIG.mock_externals.smaug) {
     return mockClient(clientId);
   }
-  const token = await getToken(clientId, null);
+  const token = await getToken(clientId, null, '@');
   return await getClientByToken(token.access_token);
 }
 
