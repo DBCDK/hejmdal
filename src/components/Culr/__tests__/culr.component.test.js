@@ -21,7 +21,7 @@ describe('Unittesting methods in culr.component:', () => {
 
     it('should return culr attributes -- OK200', async () => {
       const attributes = await getUserAttributesFromCulr({
-        userId: '5555666677',
+        userId: '0102031111',
         agency: '790900'
       });
 
@@ -30,7 +30,7 @@ describe('Unittesting methods in culr.component:', () => {
           {
             provider: '790900',
             userIdType: 'CPR',
-            userIdValue: '5555666677'
+            userIdValue: '0102031111'
           },
           {
             provider: '100800',
@@ -40,7 +40,7 @@ describe('Unittesting methods in culr.component:', () => {
         ],
         municipalityNumber: '909',
         municipalityAgencyId: '790900',
-        culrId: 'guid-5555666677'
+        culrId: 'guid-0102031111'
       });
     });
 
@@ -56,7 +56,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {MunicipalityNo: '?'},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           agency: '790900',
           pincode: '1111'
         }
@@ -72,7 +72,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {MunicipalityNo: '123'},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           agency: '911130',
           pincode: '1111'
         }
@@ -87,7 +87,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           pincode: '1234',
           agency: '710100'
         }
@@ -101,7 +101,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           pincode: '1111',
           agency: '911116'
         }
@@ -114,7 +114,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677'
+          userId: '0102031111'
         }
       );
       expect(result).toEqual({});
@@ -169,7 +169,7 @@ describe('Unittesting methods in culr.component:', () => {
       expect(result).toEqual(true);
     });
     describe('sortAgencies', () => {
-      it('should prefer agency realtion created with CPR', async () => {
+      it('should prefer agency created with CPR', async () => {
         const MunicipalityNo = '329';
         const Account = [
           {

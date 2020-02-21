@@ -108,7 +108,7 @@ export async function getClientById(clientId) {
   if (CONFIG.mock_externals.smaug) {
     return mockClient(clientId);
   }
-  const token = await getToken(clientId, null, '@', '@');
+  const token = await getToken(clientId, null);
   return await getClientByToken(token.access_token);
 }
 
@@ -129,13 +129,16 @@ export async function getToken(
   retries = 0
 ) {
   let response;
+  // Set password if both user and password is set
+  password = password && username ? password : null;
+
   // for test and development
   if (CONFIG.mock_externals.smaug) {
     response = getMockValidateUserTokenClient(
       clientId,
       agency,
       username,
-      (password = password && username ? password : null)
+      password
     );
   } else {
     response = await promiseRequest('post', {
@@ -147,7 +150,7 @@ export async function getToken(
       form: {
         grant_type: 'password',
         username: agency ? `${username}@${agency}` : username,
-        password: password && username ? `${password}` : null
+        password
       }
     });
   }

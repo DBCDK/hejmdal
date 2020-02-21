@@ -381,12 +381,12 @@ export async function identityProviderCallback(req, res) {
 }
 
 /**
- *
  * @param {object} req
  * @param {object} res
  * @param {object} error
  * @param {string} agency
  * @param loginsLeft number
+ *
  */
 function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
   const agencyParameter = req.getState().serviceAgency

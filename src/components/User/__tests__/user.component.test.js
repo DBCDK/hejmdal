@@ -6,7 +6,7 @@ describe('test store and get user', () => {
   ctx.locals = {
     oauth: {
       token: {
-        user: {userId: '5555666677'},
+        user: {userId: '0102031111'},
         client: 'hejmdal'
       }
     }
@@ -22,7 +22,7 @@ describe('test store and get user', () => {
         agencies: [
           {
             agencyId: '790900',
-            userId: '5555666677',
+            userId: '0102031111',
             userIdType: 'CPR'
           },
           {
@@ -31,17 +31,17 @@ describe('test store and get user', () => {
             userIdType: 'LOCAL-1'
           }
         ],
-        birthDate: '5555',
-        birthYear: '1866',
-        cpr: '5555666677',
+        birthDate: '0102',
+        birthYear: '1903',
+        cpr: '0102031111',
         gender: 'm',
         municipality: '909',
         municipalityAgencyId: '790900',
         netpunktAgency: null,
         uniloginId: null,
-        uniqueId: 'guid-5555666677',
+        uniqueId: 'guid-0102031111',
         uniLoginInstitutions: [],
-        userId: '5555666677',
+        userId: '0102031111',
         wayfId: null
       }
     });

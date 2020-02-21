@@ -98,9 +98,9 @@ describe('test identityProviderCallback method', () => {
   it('Should add nemlogin user to context', async () => {
     ctx.params.type = 'nemlogin';
     const expected = {
-      userId: '5555666677',
+      userId: '0102031111',
       agency: '790900',
-      cpr: '5555666677',
+      cpr: '0102031111',
       userType: 'nemlogin',
       identityProviders: ['nemlogin']
     };

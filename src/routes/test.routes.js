@@ -115,6 +115,16 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   }
   /* ----------------------------------- */
 
+  if ((clientId === 'hejmdal' || clientId === 'some_client') && !password) {
+    return res.send(
+      JSON.stringify({
+        access_token: 'some_authorized_token',
+        expires_in: 3600,
+        token_type: 'password'
+      })
+    );
+  }
+
   if (
     (clientId.includes('hejmdal') || clientId.includes('netpunkt')) &&
     password !== 'fail'

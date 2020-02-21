@@ -1,4 +1,4 @@
-context('Login flow with UNI-login', () => {
+context('Login flow with nemid', () => {
   const authorize = `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${
     Cypress.config().baseUrl
   }/example&presel=733000`;
@@ -27,7 +27,13 @@ context('Login flow with UNI-login', () => {
       })
         .its('body')
         .should('have.all.keys', ['access_token', 'expires_in', 'token_type'])
-        .then(values => values['access_token'])
+        .then(response => {
+          expect(response).to.have.property(
+            'access_token',
+            'some_authorized_token'
+          );
+          return response.access_token;
+        })
         .then(access_token => {
           cy.request({
             form: true,
@@ -36,10 +42,10 @@ context('Login flow with UNI-login', () => {
             body: {
               access_token: access_token
             }
-          })
-            .its('body.attributes')
-            .then(({municipalityAgencyId}) => municipalityAgencyId)
-            .should('equal', '790900');
+          }).then(response => {
+            const user = response.body.attributes;
+            expect(user).to.have.property('municipalityAgencyId', '790900');
+          });
         });
     });
   });

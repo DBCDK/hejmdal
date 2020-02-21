@@ -49,11 +49,6 @@ export function addMilenium(year, seven) {
  * @returns {boolean|Date|boolean}
  */
 export function isValidCpr(cpr) {
-  // Testcase
-  if (cpr === '5555666677') {
-    return '5555666677';
-  }
-
   return isNumeric(cpr) && isValidDate(cpr) && cpr.length === 10;
 }
 

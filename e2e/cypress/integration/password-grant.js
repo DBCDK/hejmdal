@@ -6,7 +6,7 @@ context('Password grant', () => {
       method: 'post',
       body: {
         grant_type: 'password',
-        username: '5555666677',
+        username: '0102031111',
         password: '1234',
         agency: '724000',
         client_id: 'hejmdal',
@@ -27,7 +27,7 @@ context('Password grant', () => {
       },
       body: {
         grant_type: 'password',
-        username: '5555666677',
+        username: '0102031111',
         password: '1234',
         agency: '724000'
       }
@@ -82,7 +82,7 @@ context('Password grant', () => {
       method: 'post',
       body: {
         grant_type: 'password',
-        username: '5555666677',
+        username: '0102031111',
         password: '1234',
         agency: '724000',
         client_id: 'hejmdal',
@@ -101,7 +101,7 @@ context('Password grant', () => {
         .its('body')
         .its('attributes')
         .its('uniqueId')
-        .should('eq', 'guid-5555666677');
+        .should('eq', 'guid-0102031111');
     });
   });
 

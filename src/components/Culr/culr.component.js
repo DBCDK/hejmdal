@@ -276,7 +276,7 @@ export async function getAgencyByCpr(cpr) {
 
     // Returns the 'best-match' agency from the sorted agency list
     const match = sortAgencies(result.Account, result.MunicipalityNo)[0];
-    if (match.provider) {
+    if (match && match.provider) {
       return match.provider;
     }
     return null;
