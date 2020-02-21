@@ -6,6 +6,7 @@ import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
 import {getClientInfoByToken} from '../Smaug/smaug.component';
 import {deleteuser} from '../User/user.component';
 import {log} from '../../utils/logging.util';
+import {validateRedirectUri} from '../../utils/oauth2.utils';
 
 /**
  * Validate if token and redirect_uri are valid.
@@ -23,7 +24,7 @@ export async function validateToken(req, res, next) {
     if (access_token) {
       deleteuser(access_token);
       serviceClient = await getClientInfoByToken(access_token);
-      if (redirect_uri && serviceClient.redirectUris.includes(redirect_uri)) {
+      if (redirect_uri && validateRedirectUri(redirect_uri, serviceClient)) {
         req.setState({redirect_uri});
       }
     } else if (redirect_uri) {
