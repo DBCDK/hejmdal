@@ -60,7 +60,9 @@ async function wrap(check, name) {
  * Check if database is available
  */
 function checkDatabase() {
-  return User.query().count('*');
+  return User.query()
+    .select('*')
+    .limit(1);
 }
 
 /**
