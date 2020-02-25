@@ -60,9 +60,7 @@ export async function getMetadataByClientId(clientId) {
     return parsed;
   } catch (error) {
     log.error(
-      `Error retrieving client metadata from ${
-        CONFIG.smaug.adminUri
-      }/clients/${clientId}`,
+      `Error retrieving client metadata from ${CONFIG.smaug.adminUri}/clients/${clientId}`,
       {
         stack: error.stack,
         message: error.message
@@ -108,7 +106,7 @@ export async function getClientById(clientId) {
   if (CONFIG.mock_externals.smaug) {
     return mockClient(clientId);
   }
-  const token = await getToken(clientId, null, '@');
+  const token = await getToken(clientId, null, '@', '@');
   return await getClientByToken(token.access_token);
 }
 

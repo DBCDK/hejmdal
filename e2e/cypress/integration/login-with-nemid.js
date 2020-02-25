@@ -30,7 +30,7 @@ context('Login flow with nemid', () => {
         .then(response => {
           expect(response).to.have.property(
             'access_token',
-            'some_authorized_token'
+            'im-all-authorized-hejmdal'
           );
           return response.access_token;
         })

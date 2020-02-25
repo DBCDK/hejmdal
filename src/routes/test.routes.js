@@ -18,9 +18,7 @@ serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
-      process.env.HOST
-    }/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
   );
 });
 serviceMockRouter.get('/:service/callback', (req, res) => {
@@ -106,7 +104,7 @@ smaugMockRouter.post('/:clientId', (req, res) => {
 });
 smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   const {clientId} = req.params;
-  const {password} = req.body;
+  const {password, username} = req.body;
 
   /* Removed when smaug auth call fixed */
   if (clientId.includes('-authorized')) {
@@ -115,10 +113,10 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   }
   /* ----------------------------------- */
 
-  if ((clientId === 'hejmdal' || clientId === 'some_client') && !password) {
+  if (clientId === 'hejmdal' && username.includes('0102031111') && !password) {
     return res.send(
       JSON.stringify({
-        access_token: 'some_authorized_token',
+        access_token: 'im-all-authorized-hejmdal',
         expires_in: 3600,
         token_type: 'password'
       })
@@ -126,7 +124,9 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
   }
 
   if (
-    (clientId.includes('hejmdal') || clientId.includes('netpunkt')) &&
+    (clientId.includes('some_client') ||
+      clientId.includes('hejmdal') ||
+      clientId.includes('netpunkt')) &&
     password !== 'fail'
   ) {
     res.send(
@@ -162,6 +162,11 @@ smaugMockRouter.get('/config/health/setStatus/:status', (req, res) => {
 smaugMockRouter.get('/config/configuration', (req, res) => {
   const {token} = req.query;
   let overrides = {};
+
+  if (token.includes('im-all-authorized-hejmdal')) {
+    overrides.user = {uniqueId: 'some_authorized_user_id'};
+    return res.send(JSON.stringify(createClient('hejmdal', overrides)));
+  }
 
   /* Removed when smaug auth call fixed */
   if (token.includes('im-not-authorized')) {
