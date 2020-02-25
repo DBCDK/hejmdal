@@ -98,4 +98,28 @@ context('CAS authorization flow', () => {
       'This client cannot use CAS authorization'
     );
   });
+  it.only('should log user out of proxy', () => {
+    const serviceUrl = `${
+      Cypress.config().baseUrl
+    }/test/service/cas/proxy-1?test=true`;
+    const authorize = `/cas/hejmdal-proxy/790900/login?service=${serviceUrl}`;
+
+    cy.visit(authorize);
+    cy.log('Login user via borchk');
+    cy.get('#userid-input').type('87654321');
+    cy.get('#pin-input').type('1111');
+
+    cy.get('#borchk-submit').click();
+    cy.location('pathname').should('eq', '/test/service/cas/proxy-1');
+    cy.verifyUserOnTestService('proxy-1').should('equal', true);
+    cy.visit('/logout?singlelogout=true');
+    cy.get('.iframeWrapper iframe').should('have.length', 1);
+    cy.get(
+      `iframe[src="${
+        Cypress.config().baseUrl
+      }/test/service/cas/proxy-1/logout"]`
+    ).should('exist');
+
+    cy.verifyUserOnTestService('proxy-1').should('equal', false);
+  });
 });

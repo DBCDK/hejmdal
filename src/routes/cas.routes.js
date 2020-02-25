@@ -37,6 +37,7 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
     if (!client) {
       throw new Error('Invalid client');
     }
+    req.session.casOptions.client = client;
   } catch (e) {
     return next(new Error('Invalid client'));
   }
@@ -52,9 +53,7 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
   }
   // Redirect to authenticate endpoint
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${
-      CONFIG.app.host
-    }/cas/callback&agency=${agencyId}`
+    `/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${CONFIG.app.host}/cas/callback&agency=${agencyId}`
   );
 });
 
@@ -65,7 +64,7 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
  * This endpoint cannot be called directly. It requires that casOptions have been set with
  * a valid service url. This is set through the endpoint /:clientId/:agencyId/login.
  */
-router.get('/callback', (req, res, next) => {
+router.get('/callback', async (req, res, next) => {
   const {code} = req.query;
   const {casOptions} = req.session;
   if (!code) {
@@ -80,22 +79,44 @@ router.get('/callback', (req, res, next) => {
       )
     );
   }
-  // Save service url with oauth code
-  casStorage.insert(code, casOptions);
 
-  // Redirect back to service with a oauth code as ticket
-  res.redirect(
-    `${casOptions.service}${
-      casOptions.service.indexOf('?') ? '&' : '?'
-    }ticket=${code}`
+  // Save service url with oauth code
+  await casStorage.insert(code, casOptions);
+  await addClientToSingleLogout(req, casOptions.service, casOptions.client);
+  await req.session.save(() => {
+    // Redirect back to service with a oauth code as ticket
+    res.redirect(
+      `${casOptions.service}${
+        casOptions.service.indexOf('?') ? '&' : '?'
+      }ticket=${code}`
+    );
+  });
+
+  function createSingleLogoutUrl(service) {
+    if (CONFIG.app.env === 'test') {
+      const {origin, pathname} = new URL(service);
+      return `${origin}${pathname}/logout`;
+    } else {
+      const {href} = new URL('/logout', service);
+      return href;
+    }
+  }
+
+  async function addClientToSingleLogout(req, service, client) {
+    const {clients = []} = req.session;
+    clients.push({
+      singleLogoutUrl: createSingleLogoutUrl(service)
+    });
+    req.session.clients = clients;
+    return new Promise(res => req.session.save(res));
+  }
+
+  router.get(
+    '/:clientId/:agencyId/serviceValidate',
+    validateServiceUrl,
+    convertTicketToUser
   );
 });
-
-router.get(
-  '/:clientId/:agencyId/serviceValidate',
-  validateServiceUrl,
-  convertTicketToUser
-);
 
 /**
  * Validate request to serviceValidate endpoint.

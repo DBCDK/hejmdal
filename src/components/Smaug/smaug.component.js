@@ -62,7 +62,8 @@ export function extractClientInfo(client) {
     clientSecret: client.app.clientSecret,
     requireConsent: !!client.requireConsent,
     logoColor: client.logoColor ? client.logoColor : '#252525',
-    singleLogoutPath: client.singleLogoutPath
+    singleLogoutPath: client.singleLogoutPath,
+    proxy: client.proxy || false
   };
 
   if (CONFIG.app.env === 'test') {

@@ -68,7 +68,12 @@ app.use(
     secure: CONFIG.app.env === 'production',
     resave: true,
     unset: 'destroy',
-    store: !CONFIG.mock_storage && new KnexSessionStore({knex})
+    store:
+      !CONFIG.mock_storage &&
+      new KnexSessionStore({
+        knex,
+        clearInterval: Math.round(600000 * Math.random() + 600000)
+      })
   })
 );
 

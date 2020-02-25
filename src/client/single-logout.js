@@ -70,7 +70,9 @@ class SingleLogout {
       return Promise.reject();
     }
     const iframeElement = document.createElement('iframe');
-    iframeElement.setAttribute('id', client.clientId);
+    if (client.clientId) {
+      iframeElement.setAttribute('id', client.clientId);
+    }
     iframeElement.style.visibility = 'hidden';
     iframeElement.style.position = 'absolute';
     wrapper.appendChild(iframeElement);

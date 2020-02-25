@@ -76,6 +76,10 @@ export function clearClientOnSession(req, res, next) {
 export function addClientToListOfClients(req) {
   try {
     const {clients = [], client = {}, query} = req.session;
+    if (client.proxy) {
+      // A client setup as a proxy should not be registered as a client the user is logged in through
+      return;
+    }
     const redirectUrl = new URL(query.redirect_uri);
     const singleLogoutUrl = client.singleLogoutPath
       ? `${redirectUrl.origin}${client.singleLogoutPath}`

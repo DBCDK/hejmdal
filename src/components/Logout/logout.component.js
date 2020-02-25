@@ -132,14 +132,18 @@ export function logout(req, res, next) {
 
 export function singleLogout(req, res, next) {
   const {clients = [], state = {}} = req.session;
+  let {serviceClient, redirect_uri} = state;
+
   const {singlelogout} = req.query;
-  if (!singlelogout || clients.length < 2) {
+  if (
+    !singlelogout ||
+    (redirect_uri && clients.length < 2) ||
+    clients.length < 1
+  ) {
     return next();
   }
   try {
-    let {serviceClient, redirect_uri} = state;
     const {identityProviders} = req.getUser() || {};
-
     if (redirect_uri) {
       redirect_uri = `${redirect_uri}${
         redirect_uri.indexOf('?') ? '?' : '&'

@@ -14,15 +14,24 @@ const router = Router();
  */
 const loggedInOnServices = new Map();
 const serviceMockRouter = Router();
+serviceMockRouter.get('/cas/:service', (req, res) => {
+  const {service} = req.params;
+  const {ticket} = req.query;
+  if (ticket) {
+    loggedInOnServices.set(service, true);
+    res.send('ok');
+  } else {
+    res.send('fail');
+  }
+});
 serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
-      process.env.HOST
-    }/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
   );
 });
+
 serviceMockRouter.get('/:service/callback', (req, res) => {
   const {service} = req.params;
   loggedInOnServices.set(service, true);
@@ -32,7 +41,7 @@ serviceMockRouter.get('/:service/verify', (req, res) => {
   const {service} = req.params;
   res.send(loggedInOnServices.get(service) || false);
 });
-serviceMockRouter.get('/:service/logout', (req, res) => {
+serviceMockRouter.get('/:cas?/:service/logout', (req, res) => {
   const {service} = req.params;
   setTimeout(() => {
     loggedInOnServices.set(service, false);
@@ -204,6 +213,9 @@ smaugMockRouter.get('/config/configuration', (req, res) => {
 
   if (token.includes('no-single-logout-support')) {
     overrides.singleLogoutPath = null;
+  }
+  if (token.includes('proxy')) {
+    overrides.proxy = true;
   }
 
   if (token.includes('hejmdal')) {
