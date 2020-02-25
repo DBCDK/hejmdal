@@ -98,7 +98,7 @@ context('CAS authorization flow', () => {
       'This client cannot use CAS authorization'
     );
   });
-  it.only('should log user out of proxy', () => {
+  it('should log user out of proxy', () => {
     const serviceUrl = `${
       Cypress.config().baseUrl
     }/test/service/cas/proxy-1?test=true`;

@@ -91,32 +91,31 @@ router.get('/callback', async (req, res, next) => {
       }ticket=${code}`
     );
   });
-
-  function createSingleLogoutUrl(service) {
-    if (CONFIG.app.env === 'test') {
-      const {origin, pathname} = new URL(service);
-      return `${origin}${pathname}/logout`;
-    } else {
-      const {href} = new URL('/logout', service);
-      return href;
-    }
-  }
-
-  async function addClientToSingleLogout(req, service, client) {
-    const {clients = []} = req.session;
-    clients.push({
-      singleLogoutUrl: createSingleLogoutUrl(service)
-    });
-    req.session.clients = clients;
-    return new Promise(res => req.session.save(res));
-  }
-
-  router.get(
-    '/:clientId/:agencyId/serviceValidate',
-    validateServiceUrl,
-    convertTicketToUser
-  );
 });
+
+function createSingleLogoutUrl(service) {
+  if (CONFIG.app.env === 'test') {
+    const {origin, pathname} = new URL(service);
+    return `${origin}${pathname}/logout`;
+  }
+  const {href} = new URL('/logout', service);
+  return href;
+}
+
+async function addClientToSingleLogout(req, service, client) {
+  const {clients = []} = req.session;
+  clients.push({
+    singleLogoutUrl: createSingleLogoutUrl(service)
+  });
+  req.session.clients = clients;
+  return new Promise(res => req.session.save(res));
+}
+
+router.get(
+  '/:clientId/:agencyId/serviceValidate',
+  validateServiceUrl,
+  convertTicketToUser
+);
 
 /**
  * Validate request to serviceValidate endpoint.
