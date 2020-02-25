@@ -81,7 +81,8 @@ describe('Test Smaug component', () => {
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,
         returnUrl: '/example/'
-      }
+      },
+      proxy: false
     });
   });
 

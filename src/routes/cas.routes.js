@@ -93,7 +93,19 @@ router.get('/callback', async (req, res, next) => {
   });
 });
 
-function createSingleLogoutUrl(service) {
+router.get(
+  '/:clientId/:agencyId/serviceValidate',
+  validateServiceUrl,
+  convertTicketToUser
+);
+
+/**
+ * Create a logout url from the CAS service return url.
+ *
+ * @param {String} service
+ * @returns {String}
+ */
+export function createSingleLogoutUrl(service) {
   if (CONFIG.app.env === 'test') {
     const {origin, pathname} = new URL(service);
     return `${origin}${pathname}/logout`;
@@ -102,7 +114,14 @@ function createSingleLogoutUrl(service) {
   return href;
 }
 
-async function addClientToSingleLogout(req, service, client) {
+/**
+ * Add Singlelogout endpoint to List of clients user is logged into.
+ *
+ * @param {Request} req
+ * @param {String} service
+ * @returns {Promise}
+ */
+async function addClientToSingleLogout(req, service) {
   const {clients = []} = req.session;
   clients.push({
     singleLogoutUrl: createSingleLogoutUrl(service)
@@ -110,12 +129,6 @@ async function addClientToSingleLogout(req, service, client) {
   req.session.clients = clients;
   return new Promise(res => req.session.save(res));
 }
-
-router.get(
-  '/:clientId/:agencyId/serviceValidate',
-  validateServiceUrl,
-  convertTicketToUser
-);
 
 /**
  * Validate request to serviceValidate endpoint.
@@ -133,7 +146,7 @@ async function validateServiceUrl(req, res, next) {
     return res.send(invalidResponseXml(ticket, 'INVALID_TICKET'));
   }
   // remove ticket from db.
-  casStorage.delete(ticket);
+  await casStorage.delete(ticket);
 
   if (casOptions.service !== service) {
     res.set('Content-Type', 'text/xml');
@@ -141,7 +154,6 @@ async function validateServiceUrl(req, res, next) {
   }
 
   next();
-  // service url matches original service url.
 }
 
 /**

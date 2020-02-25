@@ -45,7 +45,7 @@ export async function getClientInfoByToken(token) {
  * @returns {{id: String, identityProviders: Array, attributes: Array}}
  */
 export function extractClientInfo(client) {
-  if (!client.app.clientId) {
+  if (!client || !client.app || !client.app.clientId) {
     throw new Error('Invalid Client', client);
   }
 
