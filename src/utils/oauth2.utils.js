@@ -73,7 +73,7 @@ export function clearClientOnSession(req, res, next) {
  * @export
  * @param {object} req
  */
-export function addClientToListOfClients(req) {
+export function addClientToListOfClients(req, res, next) {
   try {
     const {clients = [], client = {}, query} = req.session;
     const redirectUrl = new URL(query.redirect_uri);
@@ -85,12 +85,13 @@ export function addClientToListOfClients(req) {
       ...client
     });
     req.session.clients = clients;
-    req.session.save();
+    req.session.save(() => next());
   } catch (error) {
     log.error('Error when adding login client', {
       stack: error.stack,
       message: error.message
     });
+    next();
   }
 }
 

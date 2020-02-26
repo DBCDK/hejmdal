@@ -9,7 +9,7 @@
 const mockNemloginOk = {
   mail: [],
   schacPersonalUniqueID: [
-    'urn:mace:terena.org:schac:personalUniqueID:dk:CPR:5555666677'
+    'urn:mace:terena.org:schac:personalUniqueID:dk:CPR:0102031111'
   ],
   eduPersonTargetedID: ['WAYF-DK-some-long-md5-like-string'],
   hash: 'md5:shac...+edu...+salt',

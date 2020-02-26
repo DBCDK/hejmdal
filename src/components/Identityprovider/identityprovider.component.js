@@ -23,6 +23,7 @@ import _ from 'lodash';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {ERRORS} from '../../utils/errors.util';
+import {getAgencyByCpr} from '../Culr/culr.component';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -293,11 +294,14 @@ export async function uniloginCallback(req) {
  */
 export async function nemloginCallback(req) {
   const response = await getGateWayfLoginResponse(req, 'nemlogin');
+  const cpr = isValidCpr(response.userId) ? response.userId : null;
+  const agency = (await getAgencyByCpr(cpr)) || null;
 
   req.setUser({
     userId: response.userId,
-    cpr: isValidCpr(response.userId) ? response.userId : null,
-    userType: 'nemlogin'
+    cpr,
+    userType: 'nemlogin',
+    agency
   });
 
   return req;
@@ -377,12 +381,12 @@ export async function identityProviderCallback(req, res) {
 }
 
 /**
- *
  * @param {object} req
  * @param {object} res
  * @param {object} error
  * @param {string} agency
  * @param loginsLeft number
+ *
  */
 function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
   const agencyParameter = req.getState().serviceAgency

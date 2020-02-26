@@ -7,7 +7,7 @@ const defaultLibraies = [
   {
     provider: '790900',
     userIdType: 'CPR',
-    userIdValue: '5555666677'
+    userIdValue: '0102031111'
   },
   {
     provider: '100800',
@@ -21,7 +21,7 @@ let localAccounts;
 
 function initMock() {
   globalAccounts = new Map();
-  globalAccounts.set('5555666677', {
+  globalAccounts.set('0102031111', {
     Account: defaultLibraies,
     MunicipalityNo: '909'
   });

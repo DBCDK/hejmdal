@@ -6,7 +6,8 @@
 import {
   shouldCreateAccount,
   getUserAttributesFromCulr,
-  getMunicipalityInformation
+  getMunicipalityInformation,
+  sortAgencies
 } from '../culr.component';
 import './nockFixtures';
 
@@ -20,7 +21,7 @@ describe('Unittesting methods in culr.component:', () => {
 
     it('should return culr attributes -- OK200', async () => {
       const attributes = await getUserAttributesFromCulr({
-        userId: '5555666677',
+        userId: '0102031111',
         agency: '790900'
       });
 
@@ -29,7 +30,7 @@ describe('Unittesting methods in culr.component:', () => {
           {
             provider: '790900',
             userIdType: 'CPR',
-            userIdValue: '5555666677'
+            userIdValue: '0102031111'
           },
           {
             provider: '100800',
@@ -39,7 +40,7 @@ describe('Unittesting methods in culr.component:', () => {
         ],
         municipalityNumber: '909',
         municipalityAgencyId: '790900',
-        culrId: 'guid-5555666677'
+        culrId: 'guid-0102031111'
       });
     });
 
@@ -55,7 +56,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {MunicipalityNo: '?'},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           agency: '790900',
           pincode: '1111'
         }
@@ -71,7 +72,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {MunicipalityNo: '123'},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           agency: '911130',
           pincode: '1111'
         }
@@ -86,7 +87,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           pincode: '1234',
           agency: '710100'
         }
@@ -100,7 +101,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677',
+          userId: '0102031111',
           pincode: '1111',
           agency: '911116'
         }
@@ -113,7 +114,7 @@ describe('Unittesting methods in culr.component:', () => {
       const result = await getMunicipalityInformation(
         {},
         {
-          userId: '5555666677'
+          userId: '0102031111'
         }
       );
       expect(result).toEqual({});
@@ -166,6 +167,65 @@ describe('Unittesting methods in culr.component:', () => {
         ACCOUNT_EXISTS
       );
       expect(result).toEqual(true);
+    });
+    describe('sortAgencies', () => {
+      it('should prefer agency created with CPR', async () => {
+        const MunicipalityNo = '329';
+        const Account = [
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          }
+        ];
+
+        const result = sortAgencies(Account, MunicipalityNo);
+
+        expect(result[0]).toEqual({
+          provider: '732900',
+          userIdType: 'CPR',
+          userIdValue: '0102031111'
+        });
+      });
+
+      it('should prefer provider matching MunicipalityNo above CPR', async () => {
+        const MunicipalityNo = '329';
+        const Account = [
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '737000',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          }
+        ];
+
+        const result = sortAgencies(Account, MunicipalityNo);
+
+        expect(result[0]).toEqual({
+          provider: '732900',
+          userIdType: 'LOCAL',
+          userIdValue: '0102031111'
+        });
+      });
     });
   });
 });

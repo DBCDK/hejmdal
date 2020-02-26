@@ -5,7 +5,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
   .query({
     serviceRequester: 'filmstriben',
     libraryCode: 'DK-790900',
-    userId: '5555666677',
+    userId: '0102031111',
     userPincode: '1111'
   })
   .reply(200, {
@@ -21,7 +21,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
   .query({
     serviceRequester: 'filmstriben',
     libraryCode: 'DK-911130',
-    userId: '5555666677',
+    userId: '0102031111',
     userPincode: '1111'
   })
   .reply(200, {
@@ -37,7 +37,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
   .query({
     serviceRequester: 'filmstriben',
     libraryCode: 'DK-710100',
-    userId: '5555666677',
+    userId: '0102031111',
     userPincode: '1234'
   })
   .reply(200, {
@@ -53,7 +53,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
   .query({
     serviceRequester: 'filmstriben',
     libraryCode: 'DK-911116',
-    userId: '5555666677',
+    userId: '0102031111',
     userPincode: '1111'
   })
   .reply(200, {
@@ -66,7 +66,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
 
 nock('http://localhost:3011', {encodedQueryParams: true})
   .get('/test/borchk')
-  .query({libraryCode: 'DK-790900', userId: '5555666677', userPincode: '1111'})
+  .query({libraryCode: 'DK-790900', userId: '0102031111', userPincode: '1111'})
   .reply(200, {
     borrowerCheckResponse: {
       userId: {$: '0102030405'},
@@ -77,7 +77,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
 
 nock('http://localhost:3011', {encodedQueryParams: true})
   .get('/test/borchk')
-  .query({libraryCode: 'DK-710100', userId: '5555666677', userPincode: '1234'})
+  .query({libraryCode: 'DK-710100', userId: '0102031111', userPincode: '1234'})
   .reply(200, {
     borrowerCheckResponse: {
       userId: {$: '0102030405'},
@@ -88,7 +88,7 @@ nock('http://localhost:3011', {encodedQueryParams: true})
 
 nock('http://localhost:3011', {encodedQueryParams: true})
   .get('/test/borchk')
-  .query({libraryCode: 'DK-911116', userId: '5555666677', userPincode: '1111'})
+  .query({libraryCode: 'DK-911116', userId: '0102031111', userPincode: '1111'})
   .reply(200, {
     borrowerCheckResponse: {
       userId: {$: '0102030405'},

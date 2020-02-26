@@ -41,7 +41,6 @@ export function addMilenium(year, seven) {
     default:
       return '??' + year;
   }
-
 }
 /**
  * Check for validity of a cpr
@@ -50,7 +49,7 @@ export function addMilenium(year, seven) {
  * @returns {boolean|Date|boolean}
  */
 export function isValidCpr(cpr) {
-  return (isNumeric(cpr) && isValidDate(cpr) && cpr.length === 10);
+  return isNumeric(cpr) && isValidDate(cpr) && cpr.length === 10;
 }
 
 /**
@@ -70,5 +69,5 @@ export function isNumeric(n) {
 export function isValidDate(ddmmyy) {
   const mm = ddmmyy.substr(2, 2) || '00';
   const d = new Date(ddmmyy.substr(4, 2), mm - 1, ddmmyy.substr(0, 2));
-  return d && (d.getMonth() + 1) === parseInt(mm, 10);
+  return d && d.getMonth() + 1 === parseInt(mm, 10);
 }

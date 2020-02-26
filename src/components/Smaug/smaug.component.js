@@ -75,8 +75,8 @@ export function extractClientInfo(client) {
 export function getTokenForUser({
   clientId,
   agency = '',
-  username = '@',
-  password = '@'
+  username = null,
+  password = null
 }) {
   return getToken(clientId, agency, username, password);
 }

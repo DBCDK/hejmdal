@@ -127,6 +127,9 @@ export async function getToken(
   retries = 0
 ) {
   let response;
+  // Set password if both user and password is set
+  password = password && username ? password : null;
+
   // for test and development
   if (CONFIG.mock_externals.smaug) {
     response = getMockValidateUserTokenClient(
@@ -145,7 +148,7 @@ export async function getToken(
       form: {
         grant_type: 'password',
         username: agency ? `${username}@${agency}` : username,
-        password: `${password}`
+        password
       }
     });
   }
