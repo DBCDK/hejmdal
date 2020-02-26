@@ -56,3 +56,7 @@ On failure the following response is given:
   </cas:authenticationFailure>
 </cas:serviceResponse>
 ```
+
+# Logout
+
+The proxy licences can be logged out through http://example.bibbaser.dk/logout. When a user is logged in on different services through login.bib.dk and the user logs out through single-logout .i.e `login.bib.dk/logout?singlelogout=true`, then the user is also logged out of the HA-proxy.
