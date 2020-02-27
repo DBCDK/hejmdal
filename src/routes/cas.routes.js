@@ -85,11 +85,9 @@ router.get('/callback', async (req, res, next) => {
   await addClientToSingleLogout(req, casOptions.service, casOptions.client);
   await req.session.save(() => {
     // Redirect back to service with a oauth code as ticket
-    res.redirect(
-      `${casOptions.service}${
-        casOptions.service.indexOf('?') ? '&' : '?'
-      }ticket=${code}`
-    );
+    const redirectUrl = new URL(casOptions.service);
+    redirectUrl.searchParams.append('ticket', code);
+    res.redirect(redirectUrl);
   });
 });
 

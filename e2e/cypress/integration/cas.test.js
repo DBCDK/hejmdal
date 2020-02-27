@@ -20,6 +20,22 @@ context('CAS authorization flow', () => {
     cy.location('pathname').should('eq', '/some-arbitrary-value');
     cy.location('search').should('contain', 'ticket');
   });
+
+  it('should redirect to service url without query parameters on login.', () => {
+    const serviceUrl = `${Cypress.config().baseUrl}/some-arbitrary-value`;
+    const authorize = `/cas/hejmdal/790900/login?service=${serviceUrl}`;
+
+    cy.visit(authorize);
+    cy.log('Login user via borchk');
+    cy.get('#userid-input').type('87654321');
+    cy.get('#pin-input').type('1111');
+
+    cy.get('#borchk-submit').click();
+
+    cy.location('pathname').should('eq', '/some-arbitrary-value');
+    cy.location('search').should('contain', 'ticket');
+  });
+
   it('should validate service with valid ticket', () => {
     cy.visit(authorize);
     cy.log('Login user via borchk');
