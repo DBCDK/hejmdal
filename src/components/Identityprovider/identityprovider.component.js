@@ -330,7 +330,7 @@ export async function wayfCallback(req) {
  */
 export async function identityProviderCallback(req, res) {
   try {
-    if (!req.getState().stateHash.includes(req.params.state)) {
+    if (req.getState().stateHash !== req.params.state) {
       log.error('Invalid state', {params: req.params, state: req.getState()});
       res.status(403);
       return res.send('invalid state');
@@ -407,7 +407,7 @@ function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-  const stateHash = state.stateHash[state.stateHash.length - 1];
+  const {stateHash} = state;
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,

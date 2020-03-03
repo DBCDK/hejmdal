@@ -1,4 +1,5 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
+import {uniqBy} from 'lodash';
 
 import {
   getClientByToken,
@@ -86,9 +87,12 @@ export function addClientToListOfClients(req, res, next) {
       : null;
     clients.push({
       singleLogoutUrl,
-      ...client
+      clientId: client.clientId,
+      name: client.name,
+      redirectUris: client.redirectUris,
+      urls: client.urls
     });
-    req.session.clients = clients;
+    req.session.clients = uniqBy(clients, 'clientId');
     req.session.save(() => next());
   } catch (error) {
     log.error('Error when adding login client', {
