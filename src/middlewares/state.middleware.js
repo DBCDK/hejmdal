@@ -1,4 +1,5 @@
 import {createHash} from '../utils/hash.utils';
+import {get} from 'lodash';
 /**
  * @file
  * Add methods for handling the state object
@@ -59,13 +60,13 @@ export async function setDefaultState(req, res, next) {
  * @returns {Array} A list of valid hash values.
  */
 function setStateHash(req) {
-  const currentHash =
-    (req.session && req.session.state && req.session.state.stateHash) || [];
-  const stateHash = req.session.query
-    ? generateStateHash(req.session.query)
-    : '';
-  currentHash.push(stateHash);
-  return currentHash;
+  let currentHash = get(req, 'session.state.stateHash');
+  const {query = {}} = req.session;
+  // Statehash used to be an array, so this is needed for legacy reasons.
+  if (Array.isArray(currentHash) && currentHash[0]) {
+    currentHash = currentHash[0];
+  }
+  return currentHash || generateStateHash(query);
 }
 
 /**
