@@ -64,9 +64,9 @@ app.use(
   session({
     secret: CONFIG.session.secret,
     maxAge: CONFIG.session.life_time,
-    saveUninitialized: true,
+    saveUninitialized: false,
     secure: CONFIG.app.env === 'production',
-    resave: true,
+    resave: false,
     unset: 'destroy',
     store:
       !CONFIG.mock_storage &&
