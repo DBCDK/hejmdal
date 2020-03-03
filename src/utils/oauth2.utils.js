@@ -81,12 +81,11 @@ export function addClientToListOfClients(req, res, next) {
       // A client setup as a proxy should not be registered as a client the user is logged in through
       return;
     }
-    const redirectUrl = new URL(query.redirect_uri);
-    const singleLogoutUrl = client.singleLogoutPath
-      ? `${redirectUrl.origin}${client.singleLogoutPath}`
-      : null;
     clients.push({
-      singleLogoutUrl,
+      singleLogoutUrl: createSingleLogoutUrl(
+        query.redirect_uri,
+        client.singleLogoutPath
+      ),
       clientId: client.clientId,
       name: client.name,
       redirectUris: client.redirectUris,
@@ -103,6 +102,32 @@ export function addClientToListOfClients(req, res, next) {
   }
 }
 
+/**
+ * Convert a singlelogout path to a full url dependant on the redirect url used for login.
+ *
+ * @param {String} originUrl
+ * @param {String} singleLogoutPath
+ * @returns {String}
+ */
+export function createSingleLogoutUrl(originUrl, singleLogoutPath) {
+  try {
+    const redirectUrl = new URL(originUrl);
+    const singleLogoutUrl = singleLogoutPath
+      ? `${redirectUrl.origin}${singleLogoutPath}`
+      : '';
+    console.log({singleLogoutUrl});
+    return singleLogoutUrl.includes('localhost') ||
+      singleLogoutUrl.includes('web')
+      ? singleLogoutUrl
+      : singleLogoutUrl.replace('http://', 'https://');
+  } catch (e) {
+    log.warn('Singlelogout url could not be generated', {
+      error: e.message,
+      stack: e.stack
+    });
+    return '';
+  }
+}
 /**
  * Helper function to validate redirectUris with wildcards.
  *
