@@ -17,7 +17,7 @@ describe('CAS utils test', () => {
     const res = createSingleLogoutUrl(
       'http://bib000.bibbaser.dk/login?url=http://www.altavista.com'
     );
-    expect(res).toBe('http://bib000.bibbaser.dk/logout');
+    expect(res).toBe('https://bib000.bibbaser.dk/logout');
   });
   it('Should return relavtive logout url during test', () => {
     CONFIG.app.env = 'test';
