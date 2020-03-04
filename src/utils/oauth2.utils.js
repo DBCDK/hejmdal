@@ -115,7 +115,6 @@ export function createSingleLogoutUrl(originUrl, singleLogoutPath) {
     const singleLogoutUrl = singleLogoutPath
       ? `${redirectUrl.origin}${singleLogoutPath}`
       : '';
-    console.log({singleLogoutUrl});
     return singleLogoutUrl.includes('localhost') ||
       singleLogoutUrl.includes('web')
       ? singleLogoutUrl

@@ -109,7 +109,7 @@ export function createSingleLogoutUrl(service) {
     return `${origin}${pathname}/logout`;
   }
   const {href} = new URL('/logout', service);
-  return href;
+  return href.replace('http://', 'https://');
 }
 
 /**
