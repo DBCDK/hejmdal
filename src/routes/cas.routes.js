@@ -51,10 +51,12 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
   if (!client.redirectUris.includes(getHost(service))) {
     return next(new Error('Invalid service url'));
   }
-  // Redirect to authenticate endpoint
-  res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${CONFIG.app.host}/cas/callback&agency=${agencyId}`
-  );
+  req.session.save(() => {
+    // Redirect to authenticate endpoint
+    res.redirect(
+      `/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${CONFIG.app.host}/cas/callback&agency=${agencyId}`
+    );
+  });
 });
 
 /**
@@ -72,7 +74,7 @@ router.get('/callback', async (req, res, next) => {
       new Error('code is required. This url cannot be called directly')
     );
   }
-  if (!casOptions && !casOptions.service) {
+  if (!casOptions || !casOptions.service) {
     return next(
       new Error(
         'No service url have been registered. this url cannot be called directly'
@@ -218,7 +220,10 @@ function invalidResponseXml(ticket, errorCode) {
  */
 router.use((err, req, res, next) => {
   res.status(400);
-  log.error('CAS authentication error', {error: err.message, stack: err.stack});
+  log.error('CAS authentication error', {
+    error: err.message,
+    stack: err.stack
+  });
   res.send(err.message);
 });
 
