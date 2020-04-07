@@ -18,65 +18,6 @@
 
     .medias {
       padding: 0 0 20px 0;
-
-      .media-group {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        height: auto;
-
-        .media {
-          width: 150px;
-          height: 30px;
-          opacity: 0;
-          margin: 0 auto 20px auto;
-          display: none;
-
-          &.visible {
-            opacity: 1;
-            display: block;
-          }
-
-          &.ereolen {
-            background: svg-inline(--ereolen) no-repeat center;
-            background-size: 60% auto;
-          }
-          &.ereolen-global {
-            background: svg-inline(--ereolen-global) no-repeat center;
-            background-size: 150% auto;
-          }
-          &.laesekompas {
-            background: svg-inline(--laesekompas) no-repeat center;
-            background-size: 100% auto;
-          }
-          &.bibliotek-dk {
-            background: svg-inline(--bibliotek-dk) no-repeat center;
-            background-size: 90% auto;
-          }
-          &.filmstriben {
-            background: svg-inline(--filmstriben) no-repeat center;
-            background-size: 90% auto;
-          }
-        }
-      }
-
-      @media (min-width: 335px) {
-        .media-group {
-          flex-direction: row;
-
-          .media {
-            margin: 0 0 20px 0;
-            display: block;
-          }
-        }
-      }
-      @media (min-width: 486px) {
-        .media-group {
-          .media {
-            width: 200px;
-          }
-        }
-      }
     }
 
     .links {
