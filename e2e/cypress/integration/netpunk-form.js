@@ -20,7 +20,7 @@ context('Netpunkt form', () => {
     cy.get('#group-input-text').should('contain', 'Feltet skal udfyldes');
     cy.get('#pass-input-text').should('contain', 'Feltet skal udfyldes');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
     cy.get('#netpunkt-submit').click();
     cy.get('#user-input-text').should('contain', 'Feltet skal udfyldes');
@@ -62,7 +62,7 @@ context('Netpunkt form', () => {
   it('Should return error message if user is not recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
 
     cy.get('#user-input').type('invalid-user');
@@ -78,7 +78,7 @@ context('Netpunkt form', () => {
   it('Should login user if recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
 
     cy.get('#user-input').type('valid-user');
@@ -93,7 +93,7 @@ context('Netpunkt form', () => {
   it('Expect to get netpunktAgency exchanged for access_token', () => {
     cy.get('#group-input').type('100200');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
 
     cy.get('#user-input').type('valid-user');
@@ -142,7 +142,7 @@ context('Netpunkt form', () => {
   it('Expect to get forsrights `rights` exchanged for access_token and agency', () => {
     cy.get('#group-input').type('100200');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
 
     cy.get('#user-input').type('valid-user');
@@ -200,7 +200,7 @@ context('Netpunkt form', () => {
   it('Expect no errors if emty rights retrived from forsrights', () => {
     cy.get('#group-input').type('100300');
 
-    // Clear preset value in user field
+    // Clear default value in user field
     cy.get('#user-input').clear();
 
     cy.get('#user-input').type('valid-user');
