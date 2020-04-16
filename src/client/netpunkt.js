@@ -28,7 +28,7 @@ window.netpunktSubmit = function netpunktSubmit(event) {
 
   // Error messages
   var errorRequiredField = 'Feltet skal udfyldes';
-  var errorInvalidField = 'Indtast et gyldigt gruppe id';
+  var errorInvalidField = 'Indtast et gyldigt biblioteksnummer';
 
   // Default state
   var valid = true;
