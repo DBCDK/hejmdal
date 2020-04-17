@@ -17,16 +17,19 @@ context('Netpunkt form', () => {
   it('Should validate forms', () => {
     // Assert validation errors
     cy.get('#netpunkt-submit').click();
-
     cy.get('#group-input-text').should('contain', 'Feltet skal udfyldes');
-    cy.get('#user-input-text').should('contain', 'Feltet skal udfyldes');
     cy.get('#pass-input-text').should('contain', 'Feltet skal udfyldes');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+    cy.get('#netpunkt-submit').click();
+    cy.get('#user-input-text').should('contain', 'Feltet skal udfyldes');
 
     // should throw validation error
     cy.get('#group-input').type('12{enter}');
     cy.get('#group-input-text').should(
       'contain',
-      'Indtast et gyldigt gruppe id'
+      'Indtast et gyldigt biblioteksnummer'
     );
 
     // Should accept 6 char. code with leading DK-
@@ -34,7 +37,7 @@ context('Netpunkt form', () => {
     cy.get('#group-input').type('DK-123456{enter}');
     cy.get('#group-input-text').should(
       'not.contain',
-      'Indtast et gyldigt gruppe id'
+      'Indtast et gyldigt biblioteksnummer'
     );
 
     // Should accept 6 char. code
@@ -42,7 +45,7 @@ context('Netpunkt form', () => {
     cy.get('#group-input').type('123456{enter}');
     cy.get('#group-input-text').should(
       'not.contain',
-      'Indtast et gyldigt gruppe id'
+      'Indtast et gyldigt biblioteksnummer'
     );
 
     // remove validation error from user field
@@ -58,6 +61,10 @@ context('Netpunkt form', () => {
 
   it('Should return error message if user is not recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+
     cy.get('#user-input').type('invalid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
@@ -70,6 +77,10 @@ context('Netpunkt form', () => {
 
   it('Should login user if recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
@@ -81,6 +92,10 @@ context('Netpunkt form', () => {
 
   it('Expect to get netpunktAgency exchanged for access_token', () => {
     cy.get('#group-input').type('100200');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
@@ -126,6 +141,10 @@ context('Netpunkt form', () => {
 
   it('Expect to get forsrights `rights` exchanged for access_token and agency', () => {
     cy.get('#group-input').type('100200');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
@@ -180,6 +199,10 @@ context('Netpunkt form', () => {
 
   it('Expect no errors if emty rights retrived from forsrights', () => {
     cy.get('#group-input').type('100300');
+
+    // Clear default value in user field
+    cy.get('#user-input').clear();
+
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
