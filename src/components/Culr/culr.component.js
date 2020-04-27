@@ -45,8 +45,13 @@ export async function getUserAttributesFromCulr(user = {}) {
       // set user account informations
       response = newAccount.response;
       responseCode = newAccount.responseCode;
-    } catch (e) {
-      log.error('Could not create User in CULR', {userId, agencyId, e});
+    } catch (error) {
+      log.error('Could not create User in CULR', {
+        userId,
+        agencyId,
+        errorMessage: error.message,
+        stack: error.stack
+      });
     }
   }
 
@@ -213,7 +218,11 @@ async function createUser(user, agencyId) {
 
   const responseCode = response && response.return.responseStatus.responseCode;
 
-  return responseCode === 'OK200';
+  if (responseCode === 'OK200') {
+    return true;
+  }
+  log.error('user not created in CULR', {culrResponse: JSON.stringify(response), userData: JSON.stringify(user), agencyId});
+  return false;
 }
 
 /**

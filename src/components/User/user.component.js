@@ -67,7 +67,8 @@ export async function getUserAttributesForClient(user, clientId, accessToken) {
   } catch (error) {
     log.error('Could not generate attributes for user', {
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
+      userData: JSON.stringify(user)
     });
     return;
   }

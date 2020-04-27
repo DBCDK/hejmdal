@@ -32,6 +32,10 @@ router.get('/:clientId/:agencyId/login', async (req, res, next) => {
     clientId,
     agencyId
   };
+    if (!service) {
+      return next(new Error('Missing required parameter "service"'));
+    }
+
   try {
     client = await getClientById(clientId);
     if (!client) {
@@ -143,14 +147,14 @@ async function validateServiceUrl(req, res, next) {
   const {ticket, service} = req.query;
   const casOptions = await casStorage.read(ticket);
   if (!casOptions) {
-    return res.send(invalidResponseXml(ticket, 'INVALID_TICKET'));
+    return res.send(invalidResponseXml('INVALID_TICKET', `Ticket ${ticket} is invalid`));
   }
   // remove ticket from db.
   await casStorage.delete(ticket);
 
   if (casOptions.service !== service) {
     res.set('Content-Type', 'text/xml');
-    return res.send(invalidResponseXml(ticket, 'INVALID_SERVICE_URL'));
+    return res.send(invalidResponseXml('INVALID_SERVICE_URL', `service url is invalid: ${service}`));
   }
 
   next();
@@ -170,16 +174,17 @@ async function convertTicketToUser(req, res, next) {
   const {clientId} = req.params;
   const authCodeResponse = await getAuthorizationCode(ticket);
   if (!authCodeResponse) {
-    return res.send(invalidResponseXml(ticket, 'INVALID_TICKET'));
+    return res.send(invalidResponseXml('INVALID_TICKET', `Ticket ${ticket} is invalid`));
   }
   const {uniqueId, municipality} = await getUserAttributesForClient(
     authCodeResponse.user,
     clientId
   );
   if (!uniqueId) {
-    return res.send(invalidResponseXml(ticket, 'INVALID_USER'));
+    // This should not happen, if a user can log in the user should be in CULR (Or be created)
+    log.warn('User not in CULR', {userData: JSON.stringify(authCodeResponse.user, clientId)});
+    return res.send(invalidResponseXml('INVALID_USER', 'user is not recognized'));
   }
-
   return res.send(validResponseXml(uniqueId, municipality));
 }
 
@@ -206,11 +211,11 @@ function validResponseXml(user, municipality = '') {
  * @param {String} errorCode
  * @returns {String}
  */
-function invalidResponseXml(ticket, errorCode) {
+function invalidResponseXml(errorCode, errorMessage) {
   return `
   <cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">
     <cas:authenticationFailure code="${errorCode}">
-      Ticket ${ticket} not recognized
+      ${errorMessage}
     </cas:authenticationFailure>
   </cas:serviceResponse>`;
 }
