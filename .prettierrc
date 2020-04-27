@@ -1,5 +1,5 @@
 {
-  "trailingComma": false,
+  "trailingComma": "none",
   "singleQuote": true,
   "bracketSpacing": false
 }
