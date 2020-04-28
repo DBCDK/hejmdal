@@ -210,7 +210,7 @@ router.delete('/revoke', async (req, res) => {
 
   if (token) {
     const response = await req.app.model.revokeToken(token);
-    res.json(response);
+    return res.json(response);
   }
 
   res.status = 400;

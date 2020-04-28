@@ -105,6 +105,12 @@ context('CAS authorization flow', () => {
     });
     cy.get('body').should('contain', 'Invalid service url');
   });
+  it('should fail on missing service url', () => {
+    cy.visit('/cas/hejmdal/733000/login', {
+      failOnStatusCode: false
+    });
+    cy.get('body').should('contain', 'Missing required parameter "service"');
+  });
   it('should fail when client is not CAS enabled', () => {
     cy.visit(`/cas/hejmdal-no-cas/733000/login?service=${serviceUrl}`, {
       failOnStatusCode: false
