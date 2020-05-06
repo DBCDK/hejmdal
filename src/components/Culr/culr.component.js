@@ -221,7 +221,11 @@ async function createUser(user, agencyId) {
   if (responseCode === 'OK200') {
     return true;
   }
-  log.error('user not created in CULR', {culrResponse: JSON.stringify(response), userData: JSON.stringify(user), agencyId});
+  log.error('user not created in CULR', {
+    culrResponse: JSON.stringify(response),
+    userData: JSON.stringify(user),
+    agencyId
+  });
   return false;
 }
 
@@ -275,6 +279,7 @@ export async function getAgencyByCpr(cpr) {
     userIdValue: cpr
   });
 
+  // Fetch user result
   const result = response && response.result;
 
   if (result.responseStatus.responseCode === 'OK200') {
@@ -283,15 +288,47 @@ export async function getAgencyByCpr(cpr) {
       return null;
     }
 
-    // Returns the 'best-match' agency from the sorted agency list
-    const match = sortAgencies(result.Account, result.MunicipalityNo)[0];
+    let match = null;
+    const municipalityNo = result.MunicipalityNo || null;
+
+    // Remove forbidden/unwanted agencies from result
+    match = filterAgencies(result.Account);
+
+    if (match.length > 1) {
+      // Sort best-match providers if more than one provider is available
+      match = sortAgencies(match, municipalityNo)[0];
+    }
+
+    // Return provider from best-match
     if (match && match.provider) {
       return match.provider;
     }
+
+    if (municipalityNo) {
+      // If none valid provider was found, we will create and return a MunicipalityAgencyId based on the users MunicipalityNo
+      return `7${municipalityNo}00`;
+    }
+
     return null;
   }
 
   return null;
+}
+
+/**
+ * Function that filters agencies (From culr response)
+ *
+ * Providers listed in the 'blacklist' array, will be removed from the given agencies list.
+ *
+ * @param {Array} agencies
+ * @returns {Array}
+ */
+
+export function filterAgencies(agencies) {
+  // Providers which is not allowed to be returned
+  const blacklist = ['190110'];
+
+  return agencies.filter(agency => !blacklist.includes(agency.provider));
 }
 
 /**
