@@ -81,7 +81,15 @@ pipeline {
     }
     post {
         always {
-            sh "docker-compose down -v"
+            sh """
+                echo Clean up
+                mkdir -p logs
+                docker-compose logs web > logs/web-log.txt
+                docker-compose down -v
+                docker rmi ${IMAGE_NAME}
+            """
+            archiveArtifacts 'e2e/cypress/screenshots/*, e2e/cypress/videos/*, logs/*'
+            junit 'e2e/reports/*.xml'
         }
         failure {
             script {
