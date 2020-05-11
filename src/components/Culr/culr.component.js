@@ -291,7 +291,12 @@ export async function getAgencyByCpr(cpr) {
     let match = null;
     const municipalityNo = result.MunicipalityNo || null;
 
-    // Remove forbidden/unwanted agencies from result
+    if (municipalityNo) {
+      // If a municipalityNo was found - return a MunicipalityAgencyId based on the users MunicipalityNo
+      return `7${municipalityNo}00`;
+    }
+
+    // If NO municipalityNo was found - Remove forbidden/unwanted agencies from provider result
     match = filterAgencies(result.Account);
 
     if (match.length > 1) {
@@ -302,11 +307,6 @@ export async function getAgencyByCpr(cpr) {
     // Return provider from best-match
     if (match && match.provider) {
       return match.provider;
-    }
-
-    if (municipalityNo) {
-      // If none valid provider was found, we will create and return a MunicipalityAgencyId based on the users MunicipalityNo
-      return `7${municipalityNo}00`;
     }
 
     return null;
