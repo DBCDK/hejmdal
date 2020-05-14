@@ -7,7 +7,8 @@ import {
   shouldCreateAccount,
   getUserAttributesFromCulr,
   getMunicipalityInformation,
-  sortAgencies
+  sortAgencies,
+  filterAgencies
 } from '../culr.component';
 import './nockFixtures';
 
@@ -225,6 +226,41 @@ describe('Unittesting methods in culr.component:', () => {
           userIdType: 'LOCAL',
           userIdValue: '0102031111'
         });
+      });
+
+      it('should remove agencies listed in blacklist', async () => {
+        const Account = [
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '190110',
+            userIdType: 'LOCAL',
+            userIdValue: 'some-value'
+          }
+        ];
+
+        const result = filterAgencies(Account);
+
+        expect(result).toEqual([
+          {
+            provider: '737000',
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
+          },
+          {
+            provider: '732900',
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
+          }
+        ]);
       });
     });
   });
