@@ -1,10 +1,10 @@
-context('Netpunkt form', () => {
-  it('Should be forced to login with idp=netpunkt', () => {
+context('User should have logged in using a required idp ', () => {
+  it('Should be forced to login with netpunkt', () => {
     cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-2');
     const serviceUrl = `${Cypress.config().baseUrl}/example`;
 
-    const authorize = `/oauth/authorize?response_type=code&client_id=netpunkt&redirect_uri=${serviceUrl}&idp=netpunkt`;
+    const authorize = `/oauth/authorize?response_type=code&client_id=netpunkt&redirect_uri=${serviceUrl}`;
     cy.visit(authorize);
     cy.location('pathname').should('eq', '/login');
     cy.get('#group-input').type('100200');
