@@ -193,19 +193,51 @@ export function isUserLoggedIn(req, res, next) {
     agencytype: req.query.agencytype,
     idp: req.query.idp
   };
-  if (
-    (!req.session.user ||
-      (req.query.idp &&
-        !req.session.user.identityProviders.includes(req.query.idp)) ||
-      !req.session.user.userId) &&
-    req.session.client
-  ) {
+  if (shouldUserLogIn(req.session)) {
     req.session.save(() => {
       return res.redirect('/login');
     });
   } else {
     next();
   }
+}
+
+/**
+ * Utility function that determines if the session meets the conditions for skipping log in.
+ *
+ * @param {Object} session
+ */
+function shouldUserLogIn(session) {
+  // If client is not set we continue the flow and fail later in the process.
+  if (!session.client) {
+    return false;
+  }
+
+  // If user is not set, they should log in.
+  if (!session.user || !session.user.userId) {
+    return true;
+  }
+
+  // if idp is set and user have not used that idp, the user should log in
+  if (
+    session.query.idp &&
+    !session.user.identityProviders.includes(session.query.idp)
+  ) {
+    return true;
+  }
+
+  // Test if user has logged in with idp that matches client.
+  const matchingIdp = session.client.identityProviders.filter((idp) =>
+    session.user.identityProviders.includes(idp)
+  );
+
+  // If it matches, login is not needed
+  if (matchingIdp.length > 0) {
+    return false;
+  }
+
+  // In all remaining conditions login is needed.
+  return true;
 }
 
 /**
