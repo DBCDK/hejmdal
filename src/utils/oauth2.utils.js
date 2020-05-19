@@ -137,7 +137,7 @@ export function createSingleLogoutUrl(originUrl, singleLogoutPath) {
  */
 export function validateRedirectUri(redirect_uri, client) {
   const res =
-    client.redirectUris.filter(uri => {
+    client.redirectUris.filter((uri) => {
       const req = new RegExp(
         `^${uri.replace('.', '\\.').replace(['*'], '.*')}$`
       );
@@ -193,7 +193,11 @@ export function isUserLoggedIn(req, res, next) {
     agencytype: req.query.agencytype,
     idp: req.query.idp
   };
-  if ((!req.session.user || !req.session.user.userId) && req.session.client) {
+  if (
+    req.query.idp ||
+    ((!req.session.user || req.query.idp || !req.session.user.userId) &&
+      req.session.client)
+  ) {
     req.session.save(() => {
       return res.redirect('/login');
     });
