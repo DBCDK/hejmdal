@@ -15,6 +15,6 @@ context('Netpunkt form', () => {
     cy.get('#user-input').type('valid-user');
     cy.get('#pass-input').type('123456');
     cy.get('#netpunkt-submit').click();
-    cy.location('pathname').should('eq', '/example');
+    cy.location('pathname').should('eq', '/example/');
   });
 });
