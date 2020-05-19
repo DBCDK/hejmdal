@@ -194,9 +194,11 @@ export function isUserLoggedIn(req, res, next) {
     idp: req.query.idp
   };
   if (
-    req.query.idp ||
-    ((!req.session.user || req.query.idp || !req.session.user.userId) &&
-      req.session.client)
+    (!req.session.user ||
+      (req.query.idp &&
+        !req.session.user.identityProviders.includes(req.query.idp)) ||
+      !req.session.user.userId) &&
+    req.session.client
   ) {
     req.session.save(() => {
       return res.redirect('/login');
