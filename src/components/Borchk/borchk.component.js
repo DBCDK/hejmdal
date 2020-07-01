@@ -75,10 +75,9 @@ function extractInfo(response, retries = 0) {
 
   if (
     response &&
-    response.borrowerCheckResponse &&
-    response.borrowerCheckResponse.requestStatus
+    response.requestStatus
   ) {
-    const message = response.borrowerCheckResponse.requestStatus.$;
+    const message = response.requestStatus;
     switch (message) {
       case 'ok':
         statusResponse.error = false;

@@ -3,9 +3,11 @@
  *
  */
 import {CONFIG} from '../../utils/config.util';
-import {BorchkError} from './borchk.errors';
-import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
+import startTiming from '../../utils/timing.util';
+import * as soap from 'soap';
+
+let BorcheckClient = null;
 
 /**
  * Retreives if a user is known on a given library
@@ -13,31 +15,53 @@ import {log} from '../../utils/logging.util';
  * @param agency
  * @param userId
  * @param pinCode
- * @param serviceName
- * @return {Object}
- * @throws {Error|TokenError}
- */
-/**
- *
+ * @param serviceRequester
+ * @returns {Promise<*>}
  */
 export async function getClient(agency, userId, pinCode, serviceRequester) {
-  let response;
+  const stopTiming = startTiming();
 
-  const requestParams = {
-    uri: CONFIG.borchk.uri,
-    qs: {
-      serviceRequester: serviceRequester,
-      libraryCode: 'DK-' + agency,
-      userId: userId,
-      userPincode: pinCode
+  if (!BorcheckClient) {
+    await init();
+  }
+  const params = {
+    serviceRequester: serviceRequester,
+    libraryCode: agency,
+    userId: userId,
+    userPincode: pinCode
+  };
+  const response = await BorcheckClient.borrowerCheckAsync(params);
+  const elapsedTimeInMs = stopTiming();
+  log.debug('timing', {
+    service: 'Borchk',
+    method: 'borrowerCheck',
+    ms: elapsedTimeInMs
+  });
+  return response[0];
+}
+
+export async function init() {
+  const options = {
+    ignoredNamespaces: {
+      namespaces: [],
+      override: true
     }
   };
-  response = await promiseRequest('get', requestParams);
-  log.debug('Borchk request', {requestParams, body: response.body});
-
-  if (response.statusCode === 200) {
-    return JSON.parse(response.body);
+  if (!BorcheckClient) {
+    try {
+      const client = await soap.createClientAsync(CONFIG.borchk.uri, options);
+      client.on('request', request => {
+        log.debug('A request was made to BORCHK', {requestString: request});
+      });
+      client.on('response', response => {
+        log.debug('A response was received from BORCHK', {
+          responseString: response
+        });
+      });
+      BorcheckClient = client;
+    } catch (error) {
+      log.error('Error when creating BORCHK client', {error});
+      throw new Error('BORCHK client is not initialised');
+    }
   }
-
-  throw new BorchkError(response.statusMessage);
 }
