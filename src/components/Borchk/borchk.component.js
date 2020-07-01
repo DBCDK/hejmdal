@@ -6,7 +6,6 @@
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
-import startTiming from '../../utils/timing.util';
 import {CONFIG} from '../../utils/config.util';
 
 /**
@@ -14,15 +13,14 @@ import {CONFIG} from '../../utils/config.util';
  *
  * @param {object} serviceRequester
  * @param {object} userInput
- * @returns {*}
+ * @param retries
+ * @returns {Promise<*|{error: boolean, message: string}|{error: boolean, message: string}>}
  */
 export async function validateUserInLibrary(
   serviceRequester,
   userInput,
   retries = 0
 ) {
-  let userValidate = {error: true, message: 'unknown_error'};
-  const stopTiming = startTiming();
   const response = await getClient(
     userInput.agency,
     userInput.userId,
@@ -30,13 +28,7 @@ export async function validateUserInLibrary(
     serviceRequester
   );
 
-  const elapsedTimeInMs = stopTiming();
-  log.debug('timing', {
-    service: 'BorChk',
-    function: 'validateUserInLibrary',
-    ms: elapsedTimeInMs
-  });
-  userValidate = extractInfo(response, retries);
+  const userValidate = extractInfo(response, retries);
 
   // Temporary fix: Borchk randomly returns service_unavailable. Retry once
   if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
@@ -65,6 +57,7 @@ export async function validateUserInLibrary(
  *  Anything but ok is returned as {error: false}
  *
  * @param {object} response
+ * @param retries
  * @returns {{error: boolean, message: string}}
  */
 function extractInfo(response, retries = 0) {
