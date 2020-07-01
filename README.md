@@ -60,8 +60,8 @@ The variables are specified at the form `name : internal config object`. Referen
 - `AES_256_SECRET` : `hash.aes256Secret`  
   A secret used for encrypting stuff, needs to be 32 ASCII characters long.
 
-- `BORCHK_URI` : `borchk.uri`  
-  The address of the borchk service
+- `BORCHK_WSDL_URI` : `borchk.uri`  
+  The address of the borchk WSDL
 
 - `CULR_WSDL_URI` : `culr.uri`  
   URL to CULR WSDL
