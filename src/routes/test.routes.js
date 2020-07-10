@@ -484,7 +484,6 @@ borchkMockRouter.post('/', (req, res) => {
   const userPincode = /<borchk:userPincode>(.*?)</.exec(req.body)[1];
   const serviceRequester = /<borchk:serviceRequester>(.*?)</.exec(req.body)[1];
 
-  // const {userId, libraryCode, userPincode, serviceRequester} = req.query;
   let body = mockDataNotFound;
 
   if (serviceRequester === 'bibliotek.dk') {
@@ -518,6 +517,10 @@ borchkMockRouter.post('/', (req, res) => {
     ) {
       body = mockDataOk;
     }
+  }
+
+  if (serviceRequester === 'check') {
+    body = mockDataOk;
   }
 
   res.send(body);
