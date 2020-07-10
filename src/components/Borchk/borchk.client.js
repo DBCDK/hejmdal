@@ -2,10 +2,10 @@
  * @file
  *
  */
+import * as soap from 'soap';
 import {CONFIG} from '../../utils/config.util';
 import {log} from '../../utils/logging.util';
 import startTiming from '../../utils/timing.util';
-import * as soap from 'soap';
 
 let BorcheckClient = null;
 

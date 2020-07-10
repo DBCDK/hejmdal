@@ -66,11 +66,9 @@ function extractInfo(response, retries = 0) {
     message: 'unknown_error'
   };
 
-  if (
-    response &&
-    response.requestStatus
-  ) {
+  if (response && response.requestStatus) {
     const message = response.requestStatus;
+
     switch (message) {
       case 'ok':
         statusResponse.error = false;

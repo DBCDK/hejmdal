@@ -1,7 +1,6 @@
 import {CONFIG} from '../../../utils/config.util';
 import {validateUserInLibrary} from '../borchk.component';
 import {mockContext} from '../../../utils/test.util';
-import './nockFixtures';
 
 describe('Test borchk component', () => {
   // Save original config so it can be restored

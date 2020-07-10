@@ -4,14 +4,6 @@
  */
 
 import {createAccount, init} from '../culr.client';
-import * as soap from 'soap';
-
-jest.mock('soap');
-const culrMock = {
-  on: jest.fn(),
-  createAccountAsync: jest.fn(params => [params])
-};
-soap.createClientAsync.mockResolvedValue(culrMock);
 
 describe('Tests for CULR client. Assert that methods are called with correct params', () => {
   beforeAll(async () => {
