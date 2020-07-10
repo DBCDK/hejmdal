@@ -1,9 +1,12 @@
 /* eslint-disable max-len */
+import {CONFIG} from '../../utils/config.util';
 
 export default `<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:borchk="http://oss.dbc.dk/ns/borchk" xmlns:borchkw="http://oss.dbc.dk/ns/borchk_wsdl" targetNamespace="http://oss.dbc.dk/ns/borchk_wsdl">
 <wsdl:types>
 <xs:schema elementFormDefault="qualified">
-<xs:import schemaLocation="https://borchk.addi.dk/2.6/borchk.xsd" namespace="http://oss.dbc.dk/ns/borchk"/>
+<xs:import schemaLocation="http://localhost:${
+  CONFIG.app.port
+}/test/borchk/borchk.xsd" namespace="http://oss.dbc.dk/ns/borchk"/>
 </xs:schema>
 </wsdl:types>
 <wsdl:message name="borrowerCheckRequest">
@@ -32,7 +35,7 @@ export default `<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
 </wsdl:binding>
 <wsdl:service name="borrowerCheckService">
 <wsdl:port name="borrowerCheckPortType" binding="borchkw:borrowerCheckBinding">
-<soap:address location="http://localhost:3011/test/borchk"/>
+<soap:address location="http://localhost:${CONFIG.app.port}/test/borchk"/>
 </wsdl:port>
 </wsdl:service>
 </wsdl:definitions>`;
