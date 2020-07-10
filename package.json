@@ -4,8 +4,6 @@
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
-    "ost":
-      ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 MOCK_SMAUG=1 jest -t 'Test borchk component'",
     "preinstall": "npx npm-force-resolutions",
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
