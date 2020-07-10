@@ -171,7 +171,7 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
 });
 
 let smaugHealthOk = true;
-smaugMockRouter.get('/config/health', (req, res) => {
+smaugMockRouter.get('/health', (req, res) => {
   res.status(smaugHealthOk ? 200 : 503);
   res.send({ok: smaugHealthOk});
 });
