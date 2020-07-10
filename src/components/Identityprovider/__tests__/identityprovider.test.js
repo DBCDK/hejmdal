@@ -6,7 +6,6 @@ import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
 import {md5} from '../../../utils/hash.utils';
 import {CONFIG} from '../../../utils/config.util';
-import './nockFixtures';
 
 describe('test authenticate method', () => {
   const next = () => {};

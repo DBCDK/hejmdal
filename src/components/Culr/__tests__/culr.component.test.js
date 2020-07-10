@@ -10,7 +10,6 @@ import {
   sortAgencies,
   filterAgencies
 } from '../culr.component';
-import './nockFixtures';
 
 describe('Unittesting methods in culr.component:', () => {
   describe('getCulrAttributes', () => {

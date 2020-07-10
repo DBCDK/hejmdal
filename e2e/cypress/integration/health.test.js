@@ -5,7 +5,7 @@ context('/health', () => {
   });
 
   it('Should return status 200 when services are ok', () => {
-    cy.request({url: '/health', failOnStatusCode: false})
+    cy.request({url: 'test/smaug/health', failOnStatusCode: false})
       .its('status')
       .should('equal', 200);
   });

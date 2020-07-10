@@ -4,10 +4,20 @@
  * such as DDB cms og bibliotek.dk
  */
 
-import {Router} from 'express';
+import express, {Router} from 'express';
+import soap from 'soap';
+
 import {ATTRIBUTES} from '../utils/attributes.util';
 import {getClientByAuth} from '../utils/oauth2.utils';
+
+import xsd from './wsdl/borchk_xsd';
+import wsdl from './wsdl/borchk_wsdl';
+
+var bodyParser = require('body-parser');
+
 const router = Router();
+
+router.use(bodyParser.text({type: 'text/*'}));
 
 /**
  * SERVICE MOCKS
@@ -28,7 +38,9 @@ serviceMockRouter.get('/:service/login', (req, res) => {
   const {service} = req.params;
   const {agency = '733000'} = req.query;
   res.redirect(
-    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${process.env.HOST}/test/service/${service}/callback`
+    `/oauth/authorize?response_type=code&client_id=${service}&agency=${agency}&redirect_uri=${
+      process.env.HOST
+    }/test/service/${service}/callback`
   );
 });
 
@@ -159,7 +171,7 @@ smaugMockRouter.post('/admin/clients/token/:clientId', (req, res) => {
 });
 
 let smaugHealthOk = true;
-smaugMockRouter.get('/config/health', (req, res) => {
+smaugMockRouter.get('/health', (req, res) => {
   res.status(smaugHealthOk ? 200 : 503);
   res.send({ok: smaugHealthOk});
 });
@@ -419,30 +431,66 @@ forsrightsMockRouter.get('/validate', (req, res) => {
  * BORCHK MOCK
  */
 
-const mockDataOk =
-  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"ok"}},"@namespaces":null}';
+const mockDataOk = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
+<SOAP-ENV:Body>
+<borrowerCheckResponse>
+<userId>0102030405</userId>
+<requestStatus>ok</requestStatus>
+</borrowerCheckResponse>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>`;
 
-const mockDataNotFound =
-  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_found"}},"@namespaces":null}';
+const mockDataNotFound = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
+  <SOAP-ENV:Body>
+  <borrowerCheckResponse>
+  <userId>0102030405</userId>
+  <requestStatus>borrower_not_found</requestStatus>
+  </borrowerCheckResponse>
+  </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>`;
 
-const mockDataNotMunicipality =
-  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"borrower_not_in_municipality"}},"@namespaces":null}';
+const mockDataNotMunicipality = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
+  <SOAP-ENV:Body>
+  <borrowerCheckResponse>
+  <userId>0102030405</userId>
+  <requestStatus>borrower_not_in_municipality</requestStatus>
+  </borrowerCheckResponse>
+  </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>`;
 
-const serviceUnavailable =
-  '{"borrowerCheckResponse":{"userId":{"$":"0102030405"},"requestStatus":{"$":"service_unavailable"}},"@namespaces":null}';
+const serviceUnavailable = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
+    <SOAP-ENV:Body>
+    <borrowerCheckResponse>
+    <userId>0102030405</userId>
+    <requestStatus>service_unavailable</requestStatus>
+    </borrowerCheckResponse>
+    </SOAP-ENV:Body>
+    </SOAP-ENV:Envelope>`;
 
 const borchkMockRouter = Router();
 
+borchkMockRouter.get('/borchk.xsd', (req, res) => {
+  res.send(xsd);
+});
+
 // Validate user (forsrights)
 borchkMockRouter.get('/', (req, res) => {
-  const {userId, libraryCode, userPincode, serviceRequester} = req.query;
+  res.send(wsdl);
+});
+
+borchkMockRouter.post('/', (req, res) => {
+  const libraryCode = /<borchk:libraryCode>(.*?)</.exec(req.body)[1];
+  const userId = /<borchk:userId>(.*?)</.exec(req.body)[1];
+  const userPincode = /<borchk:userPincode>(.*?)</.exec(req.body)[1];
+  const serviceRequester = /<borchk:serviceRequester>(.*?)</.exec(req.body)[1];
+
   let body = mockDataNotFound;
 
   if (serviceRequester === 'bibliotek.dk') {
     if (
-      libraryCode === 'DK-710100' ||
-      libraryCode === 'DK-724000' ||
-      (libraryCode === 'DK-733000' && userPincode === '1234') ||
+      libraryCode === '710100' ||
+      libraryCode === '724000' ||
+      (libraryCode === '733000' && userPincode === '1234') ||
       (userId === '0102030410' && userPincode === '1234') ||
       (userId === '0102030411' && userPincode === '1234') ||
       userPincode === '1111'
@@ -450,7 +498,7 @@ borchkMockRouter.get('/', (req, res) => {
       body = mockDataOk;
     }
 
-    if (libraryCode === 'DK-860490') {
+    if (libraryCode === '860490') {
       body = serviceUnavailable;
     }
   }
@@ -458,17 +506,21 @@ borchkMockRouter.get('/', (req, res) => {
   if (serviceRequester === 'filmstriben') {
     if (
       userId === '0102030411' &&
-      libraryCode === 'DK-737000' &&
+      libraryCode === '737000' &&
       userPincode === '1234'
     ) {
       body = mockDataNotMunicipality;
     } else if (
       userId === '0102030410' &&
-      libraryCode === 'DK-737000' &&
+      libraryCode === '737000' &&
       userPincode === '1234'
     ) {
       body = mockDataOk;
     }
+  }
+
+  if (serviceRequester === 'check') {
+    body = mockDataOk;
   }
 
   res.send(body);

@@ -13,7 +13,7 @@ export const CONFIG = {
   borchk: {
     serviceRequesterInMunicipality:
       process.env.BORCHK_SERVICEREQUESTER_MUNICIPALITY,
-    uri: process.env.BORCHK_URI
+    uri: process.env.BORCHK_WSDL_URI
   },
   culr: {
     uri: process.env.CULR_WSDL_URI,
