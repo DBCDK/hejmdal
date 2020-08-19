@@ -93,10 +93,14 @@ export function addClientToListOfClients(req, res, next) {
     });
 
     // Add the users login to the log (for debug use)
-    log.debug('UserLogin: A user logged in to a client', {
-      userId: req.getUser().userId,
-      clientId: req.getState().serviceClient.clientId
-    });
+    log.debug(
+      'UserLogin: A user logged in to a client',
+      {
+        userId: req.getUser().userId,
+        clientId: req.getState().serviceClient.clientId
+      },
+      false
+    );
 
     req.session.clients = uniqBy(clients, 'clientId');
     req.session.save(() => next());
