@@ -91,6 +91,19 @@ export function addClientToListOfClients(req, res, next) {
       redirectUris: client.redirectUris,
       urls: client.urls
     });
+
+    console.log(
+      '######################## ---> log:',
+      req.getUser().userId,
+      req.getState().serviceClient.clientId
+    );
+
+    // Add the users login to the log (for debug use)
+    log.debug('UserLogin: A user logged in to a client', {
+      userId: req.getUser().userId,
+      clientId: req.getState().serviceClient.clientId
+    });
+
     req.session.clients = uniqBy(clients, 'clientId');
     req.session.save(() => next());
   } catch (error) {
@@ -137,7 +150,7 @@ export function createSingleLogoutUrl(originUrl, singleLogoutPath) {
  */
 export function validateRedirectUri(redirect_uri, client) {
   const res =
-    client.redirectUris.filter((uri) => {
+    client.redirectUris.filter(uri => {
       const req = new RegExp(
         `^${uri.replace('.', '\\.').replace(['*'], '.*')}$`
       );
@@ -227,7 +240,7 @@ function shouldUserLogIn(session) {
   }
 
   // Test if user has logged in with idp that matches client.
-  const matchingIdp = session.client.identityProviders.filter((idp) =>
+  const matchingIdp = session.client.identityProviders.filter(idp =>
     session.user.identityProviders.includes(idp)
   );
 
