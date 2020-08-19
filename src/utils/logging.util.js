@@ -40,8 +40,9 @@ function getNumericalLogLevel(logLevel) {
  * @param {string} level log level
  * @param {string} msg message to log
  * @param {object} args map of additional key/values to log
+ * @param {int} cleanArgs (default true) allows log.debug to not remove secrets from args
  */
-function doLog(level, msg, args = {}) {
+function doLog(level, msg, args = {}, cleanArgs = true) {
   const currentNumericalLogLevel = getNumericalLogLevel(getCurrentLogLevel());
   const targetNumericalLogLevel = getNumericalLogLevel(level);
 
@@ -64,10 +65,10 @@ function doLog(level, msg, args = {}) {
     blob.msg = msg;
   }
 
+  const logInfo = cleanArgs ? removeSecrets(args) : args;
+
   /* eslint-disable no-console */
-  console.log(
-    JSON.stringify(Object.assign(blob, removeSecrets(args)), null, PRETTY_PRINT)
-  );
+  console.log(JSON.stringify(Object.assign(blob, logInfo), null, PRETTY_PRINT));
   /* eslint-enable no-console */
 }
 
@@ -81,6 +82,7 @@ function removeSecrets(obj, parent = null) {
   if (!obj || typeof obj !== 'object') {
     return obj;
   }
+
   const cleaned = {};
   Object.keys(obj).forEach(key => {
     if (typeof obj[key] === 'object') {
@@ -126,6 +128,6 @@ export const log = {
   info: (msg, args) => doLog('info', msg, args),
   warn: (msg, args) => doLog('warn', msg, args),
   error: (msg, args) => doLog('error', msg, args),
-  debug: (msg, args) => doLog('debug', msg, args),
+  debug: (msg, args, cleanArgs = true) => doLog('debug', msg, args, cleanArgs),
   trace: (msg, args) => doLog('trace', msg, args)
 };
