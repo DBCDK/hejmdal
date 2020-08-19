@@ -75,4 +75,14 @@ describe('Should remove sensitive info from log', () => {
         .requestStatus.$
     ).toBe('borrower_not_found');
   });
+
+  it('Should NOT hide 4 last numbers from (user) in userLogin', () => {
+    const user = {userId: '1234567890'};
+
+    log.debug('Do NOT Hide the 4 last numbers in CPR', user, false);
+
+    expect(JSON.parse(global.console.log.mock.calls[0][0]).userId).toBe(
+      '1234567890'
+    );
+  });
 });

@@ -92,12 +92,6 @@ export function addClientToListOfClients(req, res, next) {
       urls: client.urls
     });
 
-    console.log(
-      '######################## ---> log:',
-      req.getUser().userId,
-      req.getState().serviceClient.clientId
-    );
-
     // Add the users login to the log (for debug use)
     log.debug('UserLogin: A user logged in to a client', {
       userId: req.getUser().userId,
