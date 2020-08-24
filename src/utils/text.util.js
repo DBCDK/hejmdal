@@ -219,8 +219,6 @@ const helpTexts = {
  * @returns {mixed}
  */
 export function getText(helpNames, placeHolders = false, prefix = '') {
-  console.log('helpNames', helpNames);
-
   let helpObj = false;
   Object.keys(helpTexts).forEach(key => {
     if (helpNames.indexOf(key.replace(prefix, '')) !== -1) {

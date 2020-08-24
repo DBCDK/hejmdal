@@ -14,7 +14,7 @@ window.onDimmerClick = function onDimmerClick() {
 
 window.toggleModal = function toggleModal(id, status = 'toggle') {
   var dimmer = document.getElementById('dimmer');
-  modal = document.getElementById(id);
+  var modal = document.getElementById(id);
 
   // force open modal
   if (status === 'open') {
