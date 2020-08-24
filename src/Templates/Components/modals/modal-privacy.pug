@@ -2,7 +2,7 @@ div(id="privacyModal" class="modal" aria-hidden="true")
   div.modal-header
     button(type="button" onclick='toggleModal("privacyModal")')
     h2.modal-title #{privacyPolicy.title}
-  div.modal-body
+  div(class="modal-body" tabindex="0")
     each section in privacyPolicy.sections
       div.modal-body-section
         if(section.header)

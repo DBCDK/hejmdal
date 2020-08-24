@@ -2,7 +2,7 @@ div(id="userModal" class="modal" aria-hidden="true")
   div.modal-header
     button(type="button" onclick='toggleModal("userModal")')
     h2.modal-title #{newUser.title}
-  div.modal-body
+  div(class="modal-body" tabindex="0")
     each section in newUser.sections
       div.modal-body-section
         if(section.header)

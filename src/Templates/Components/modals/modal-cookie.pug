@@ -2,7 +2,7 @@ div(id="cookieModal" class="modal" aria-hidden="true")
   div.modal-header
     button(type="button" onclick='toggleModal("cookieModal")')
     h2.modal-title #{cookie.title}
-  div(class="modal-body" id="testing" tabindex="0")
+  div(class="modal-body" tabindex="0")
     each section in cookie.sections
       div.modal-body-section
         if(section.header)
