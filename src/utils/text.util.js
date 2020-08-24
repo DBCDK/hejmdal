@@ -49,12 +49,6 @@ const helpTexts = {
         texts: [
           'Bibliotekslogin benytter ikke andre tjenester, der anvender cookies hos brugeren.'
         ]
-      },
-      {
-        header: 'Kontakt',
-        texts: [
-          'Har du spørgsmål vedrørende vores anvendelse af cookies og den måde, som hjemmesiden forvaltes på, er du velkommen til at kontakte Danskernes Digitale Bibliotek (DDB), der er bestiller af login-funktionen på vegne af de danske folkebiblioteker. DDB kan kontaktes på ddb@slks.dk eller på tlf. 33 95 42 00.'
-        ]
       }
     ]
   },
@@ -83,8 +77,8 @@ const helpTexts = {
       {
         header: 'Hvem behandler dine personoplysninger?',
         texts: [
-          'Dine oplysninger behandles af Dansk BiblioteksCenter, DBC, som er leverandør af løsningen til Danskernes Digitale Bibliotek (DDB) på vegne af de danske folkebiblioteker. Det er de danske folkebiblioteker, som er dataansvarlige, og DBC som er databehandlere.',
-          'Danskernes Digitale bibliotek (DDB) kan kontaktes på vegne af de danske folkebiblioteker i forbindelse med spørgsmål til behandlingen (se nedenfor).'
+          'Dine oplysninger behandles af Dansk BiblioteksCenter, DBC på vegne af de danske folkebiblioteker. Det er de danske folkebiblioteker, som er dataansvarlige, og DBC som er databehandlere.',
+          'KOMBIT kan kontaktes på vegne af de danske folkebiblioteker i forbindelse med spørgsmål til behandlingen (se nedenfor).'
         ]
       },
       {
@@ -96,13 +90,13 @@ const helpTexts = {
       {
         header: 'Dine rettigheder',
         texts: [
-          'Det er Folkebibliotekerne i de enkelte kommuner, der er dataansvarlig for behandlingen af dine oplysninger. Du har altid mulighed for at kontakte Danskernes Digitale Bibliotek på vegne af de danske folkebiblioteker, om indsigt i behandlingen af dine personoplysninger. Du kan anmode om berigtigelse eller sletning af dine personoplysninger samt om begrænsning af behandlingen af personoplysningerne. Du kan til enhver tid gøre indsigelse mod folkebiblioteket i din kommunes behandling af dine personoplysninger i forbindelse login-funktionen af grunde, der vedrører din særlige situation.'
+          'Det er Folkebibliotekerne i de enkelte kommuner, der er dataansvarlig for behandlingen af dine oplysninger. Du har altid mulighed for at kontakte KOMBIT på vegne af de danske folkebiblioteker, om indsigt i behandlingen af dine personoplysninger. Du kan anmode om berigtigelse eller sletning af dine personoplysninger samt om begrænsning af behandlingen af personoplysningerne. Du kan til enhver tid gøre indsigelse mod folkebiblioteket i din kommunes behandling af dine personoplysninger i forbindelse login-funktionen af grunde, der vedrører din særlige situation.'
         ]
       },
       {
         header: 'Kontakt om behandling af personoplysninger',
         texts: [
-          'Har du spørgsmål til behandling af dine personoplysninger, kan du henvende dig til Danskernes Digitale Bibliotek (DDB) på ddb@slks.dk eller på tlf. 33 95 42 00.'
+          'Har du spørgsmål til behandling af dine personoplysninger, kan du henvende dig til KOMBIT på bibsys@kombit.dk eller på tlf. 3334 9400.'
         ]
       },
       {
@@ -196,6 +190,17 @@ const helpTexts = {
       }
     ]
   },
+  login_customerService: {
+    title: 'Kontakt kundeservice',
+    sections: [
+      {
+        header: 'Kundeservice',
+        texts: [
+          'Oplever du fejl i forbindelse med login, kan du kontakte kundeservice.dbc.dk'
+        ]
+      }
+    ]
+  },
   default: {
     title: 'Cannot find helptext ',
     sections: []
@@ -214,6 +219,8 @@ const helpTexts = {
  * @returns {mixed}
  */
 export function getText(helpNames, placeHolders = false, prefix = '') {
+  console.log('helpNames', helpNames);
+
   let helpObj = false;
   Object.keys(helpTexts).forEach(key => {
     if (helpNames.indexOf(key.replace(prefix, '')) !== -1) {

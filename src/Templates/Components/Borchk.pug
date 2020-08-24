@@ -25,14 +25,14 @@ div#borchk
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='0')
-        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1")
+        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1" aria-hidden="true")
       span(id='userid-input-text' data-text='')
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
         input(type='password' class='form-control' tabindex='0' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
-        button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");')
+        button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
       span(id='pin-input-text' data-text='')
 
     if error

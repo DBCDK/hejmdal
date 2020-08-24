@@ -1,12 +1,12 @@
-div#userModal.modal
+div(id="userModal" class="modal" aria-hidden="true")
   div.modal-header
     button(type="button" onclick='toggleModal("userModal")')
-    h4.modal-title #{newUser.title}
+    h2.modal-title #{newUser.title}
   div.modal-body
     each section in newUser.sections
       div.modal-body-section
         if(section.header)
-          h5 #{section.header}
+          h3 #{section.header}
         each text in section.texts
           p !{text}
 
