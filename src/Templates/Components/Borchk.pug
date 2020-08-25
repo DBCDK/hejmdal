@@ -8,12 +8,12 @@ div#borchk
     else
 
       div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
-        label(for='libraryname-input') Vælg dit lokale bibliotek
+        - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
+        label(for='libraryname-input-'+rand) Vælg dit lokale bibliotek
         div.input-container
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-          - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='0' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='1' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")

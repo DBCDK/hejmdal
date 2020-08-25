@@ -12,10 +12,10 @@ div(id="userModal" class="modal" aria-hidden="true")
 
     div(id="newUser-dropdown" class="library-group form-group input-container" data-library-types="folk")
       span(class='close-libraries-on-mobile' data-mobile-close)
-      label(for='libraryname-input') Vælg dit lokale bibliotek
+      label(for='modal-libraryname-input') Vælg dit lokale bibliotek
       div.input-container
         span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-        input(type='text' data-cy='libraryname-input' name='libraryName' autocomplete='off' data-input-name value=preselectedName)
+        input(type='text' data-cy='libraryname-input' id='modal-libraryname-input' name='libraryName' autocomplete='off' data-input-name value=preselectedName)
         input(type="hidden" name="agency" aria-hidden='true' value=preselectedId data-input-id)
         button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
         button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
