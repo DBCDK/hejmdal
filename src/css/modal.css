@@ -31,7 +31,7 @@
     padding: 80px 16px 40px 16px;
     transition-duration: 0.3s;
 
-    h4 {
+    h2 {
       font-size: 30px;
       line-height: 34px;
       font-weight: normal;
@@ -55,7 +55,7 @@
       height: 60px;
       padding: 16px;
 
-      h4 {
+      h2 {
         display: block;
         width: calc(100% - 30px);
         text-overflow: ellipsis;
@@ -93,7 +93,7 @@
     .modal-body-section {
       margin-bottom: 30px;
 
-      h5 {
+      h3 {
         font-size: 16px;
         line-height: 19px;
         font-weight: 500;

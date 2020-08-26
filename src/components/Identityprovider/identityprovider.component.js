@@ -96,7 +96,7 @@ export async function authenticate(req, res, next) {
     const error = req.query.error ? req.query.error : null;
     const loginHelpReplacers = setLoginReplacersFromAgency(branch);
     const helpText = getText(
-      state.serviceClient.identityProviders,
+      [...state.serviceClient.identityProviders, 'customerService'],
       loginHelpReplacers,
       'login_'
     );

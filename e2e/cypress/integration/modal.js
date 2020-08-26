@@ -6,7 +6,7 @@ context('Test modals', () => {
     cy.visit(authorize);
     cy.get('[data-cy=helptext-link]').click();
     cy.get('#helpModal').should('be.visible');
-    cy.get('#helpModal h5')
+    cy.get('#helpModal h3')
       .first()
       .should('contain', 'Bibliotek');
 
@@ -23,7 +23,7 @@ context('Test modals', () => {
   it('test that Bibliotek is removed when agency is locked', () => {
     cy.visit(`${authorize}&agency=737000`);
     cy.get('[data-cy=helptext-link]').click();
-    cy.get('#helpModal h5')
+    cy.get('#helpModal h3')
       .first()
       .should('not.contain', 'Bibliotek');
   });

@@ -8,12 +8,12 @@ div#borchk
     else
 
       div(id="borchk-dropdown" class="library-group form-group input-container" data-library-types=agencyTypeFilter)
-        label(for='libraryname-input') Vælg dit lokale bibliotek
+        - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
+        label(for='libraryname-input-'+rand) Vælg dit lokale bibliotek
         div.input-container
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-          - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='0' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='1' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
@@ -25,14 +25,14 @@ div#borchk
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
         input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='0')
-        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1")
+        button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1" aria-hidden="true")
       span(id='userid-input-text' data-text='')
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
         input(type='password' class='form-control' tabindex='0' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
-        button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");')
+        button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
       span(id='pin-input-text' data-text='')
 
     if error

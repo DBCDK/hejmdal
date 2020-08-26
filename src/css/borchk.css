@@ -141,7 +141,7 @@
           background-color: var(--grey-lighten-4);
         }
         li.subject {
-          color: var(--grey-lighten-1);
+          color: var(--grey);
           font-size: 12px;
           padding: 0 22px 0 22px;
 
@@ -154,7 +154,7 @@
   }
 
   span {
-    color: var(--grey-lighten-1);
+    color: var(--grey);
   }
 
   .clear-libraries-on-mobile,
@@ -302,7 +302,7 @@
 
     a {
       font-family: var(--tertiary);
-      color: var(--grey-lighten-1);
+      color: var(--grey);
       font-size: 14px;
       text-decoration: underline;
       cursor: pointer;

@@ -43,12 +43,6 @@ exports[`test showinfo method Should render cookie info page 1`] = `
                 "Bibliotekslogin benytter ikke andre tjenester, der anvender cookies hos brugeren.",
               ],
             },
-            Object {
-              "header": "Kontakt",
-              "texts": Array [
-                "Har du spørgsmål vedrørende vores anvendelse af cookies og den måde, som hjemmesiden forvaltes på, er du velkommen til at kontakte Danskernes Digitale Bibliotek (DDB), der er bestiller af login-funktionen på vegne af de danske folkebiblioteker. DDB kan kontaktes på ddb@slks.dk eller på tlf. 33 95 42 00.",
-              ],
-            },
           ],
           "title": "Cookies, formål og relevans",
         },
