@@ -246,11 +246,6 @@ class LibrarySelector {
     }
 
     if (key === 'TAB' || key === 'ENTER') {
-      console.log(
-        "this.dropdownContainer.classList.contains('visible')",
-        this.dropdownContainer.classList.contains('visible')
-      );
-
       if (this.isOpen && this.dropdownContainer.classList.contains('visible')) {
         e.preventDefault();
         this.select(
