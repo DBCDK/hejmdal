@@ -17,21 +17,21 @@ div#borchk
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
-          div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+          div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
 
     div.form-group
       label(for='userid-input') Cpr- eller lånernummer
       div.input-container
         input(type="text" value="" class="form-control" id="autocomplete-username" name="autocomplete-username" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-        input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='0')
+        input(type='password' class='form-control' id='userid-input' data-cy='userid-input' name='userId' autocomplete='password' tabindex='2')
         button(type='button' id='toggle-userid-input' onclick='toggleFieldVisibility("userid-input");' tabindex="-1" aria-hidden="true")
       span(id='userid-input-text' data-text='')
 
     div.form-group
       label(for='pin-input') Indtast din kode
       div.input-container
-        input(type='password' class='form-control' tabindex='0' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
+        input(type='password' class='form-control' tabindex='3' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
         button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
       span(id='pin-input-text' data-text='')
 
@@ -40,11 +40,11 @@ div#borchk
         include Error
 
     div.action-container
-        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='0') Log ind
+        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='4') Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
-            a(href=lockedBranchRegistrationUrl data-cy='new-user-button') Ny Bruger?
+            a(href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
           else
-            a(onclick='toggleModal("userModal")' data-cy='new-user-button') Ny Bruger?
+            a(onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
 
   script var libraries = !{JSON.stringify(branches)}

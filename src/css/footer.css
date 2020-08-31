@@ -39,6 +39,20 @@
       a {
         text-decoration: underline;
         cursor: pointer;
+
+        &:focus {
+          font-weight: bold;
+          text-decoration: none;
+          color: var(--black-lighten-1);
+          border-bottom: 2px solid black;
+        }
+
+        &:active {
+          font-weight: normal;
+          text-decoration: underline;
+          color: var(--grey);
+          border: none;
+        }
       }
     }
   }

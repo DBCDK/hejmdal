@@ -65,6 +65,7 @@
     #error-actions {
       display: inline;
       margin-left: 5px;
+
       #helptext-link {
         font-size: 12px;
         color: var(--white);

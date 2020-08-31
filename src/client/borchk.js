@@ -15,6 +15,9 @@ class LibrarySelector {
     this.clearButton = this.wrapper.querySelector('[data-clear]');
     this.mobileClearButton = this.wrapper.querySelector('[data-mobile-clear]');
     this.mobileCloseButton = this.wrapper.querySelector('[data-mobile-close]');
+    this.dropdownContainer = document.getElementById(
+      'libraries-dropdown-container'
+    );
     this.librariesDropdownContainer = this.wrapper.querySelector(
       '[data-dropdown-container]'
     );
@@ -26,6 +29,7 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     this.currentlySelectedItem = null;
+
     this.isOpen = false;
     this.filter();
   }
@@ -106,7 +110,7 @@ class LibrarySelector {
     }
     if (query && this.libraries.other.length > 0) {
       var otherLibraries = this.libraries.other.filter(
-        library => library.branchId.indexOf(query) === 0
+        (library) => library.branchId.indexOf(query) === 0
       );
       if (otherLibraries.length) {
         this.appendLibraries('Andet', otherLibraries, ul);
@@ -123,11 +127,12 @@ class LibrarySelector {
       return libraries;
     }
     const lowerCaseQuery = query.toLowerCase();
-    return libraries.filter(library => {
+    return libraries.filter((library) => {
       const lowerCaseLibrary = library.name.toLowerCase();
       const names = libMap[libIndex][library.branchId];
       const hasSome =
-        names && names.some(v => v.toLowerCase().indexOf(lowerCaseQuery) >= 0);
+        names &&
+        names.some((v) => v.toLowerCase().indexOf(lowerCaseQuery) >= 0);
       return (
         hasSome ||
         lowerCaseLibrary.indexOf(lowerCaseQuery) >= 0 ||
@@ -190,13 +195,13 @@ class LibrarySelector {
     this.libraryInput.addEventListener('focus', () => {
       this.open();
     });
-    this.libraryInput.addEventListener('input', e => {
+    this.libraryInput.addEventListener('input', (e) => {
       this.currentSearchValue = e.currentTarget.value;
       this.filter(this.currentSearchValue);
     });
     this.handleKeyEvents = this.handleKeyEvents.bind(this);
     document.addEventListener('keydown', this.handleKeyEvents);
-    document.addEventListener('click', e => {
+    document.addEventListener('click', (e) => {
       if (!this.inputContainer.contains(e.target)) {
         this.close();
       } else if (e.target.entry) {
@@ -205,20 +210,23 @@ class LibrarySelector {
     });
   }
   select(element) {
-    var branchName = (element && element.name) || this.currentSearchValue;
-    var branchId = (element && element.branchId) || this.currentSearchValue;
-    var registrationUrl = (element && element.registrationUrl) || false;
+    if (element) {
+      var branchName = element.name || this.currentSearchValue;
+      var branchId = element.branchId || this.currentSearchValue;
+      var registrationUrl = element.registrationUrl || false;
 
-    this.libraryIdInput.value = branchId;
-    this.libraryInput.value = branchName;
-    this.close();
-    this.setButtonStatus();
-    this.onSelectCallback(registrationUrl);
+      this.libraryIdInput.value = branchId;
+      this.libraryInput.value = branchName;
+      this.close();
+      this.setButtonStatus();
+      this.onSelectCallback(registrationUrl);
+    }
   }
   handleKeyEvents(e) {
     if (!this.isOpen) {
       return;
     }
+
     var keyNames = {
       40: 'DOWN',
       38: 'UP',
@@ -238,10 +246,11 @@ class LibrarySelector {
     }
 
     if (key === 'TAB' || key === 'ENTER') {
-      if (this.isOpen) {
+      if (this.isOpen && this.dropdownContainer.classList.contains('visible')) {
         e.preventDefault();
         this.select(
-          this.currentlyVisibleAgencies[this.currentlySelectedIndex].entry
+          this.currentlyVisibleAgencies[this.currentlySelectedIndex] &&
+            this.currentlyVisibleAgencies[this.currentlySelectedIndex].entry
         );
       }
       this.close();
@@ -280,7 +289,7 @@ class LibrarySelector {
 
 /* eslint-disable no-unused-vars */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Set agencies
   if (document.getElementById('borchk-dropdown')) {
     var agencyDropdown = new LibrarySelector(
@@ -295,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var newUserAgencyDropdown = new LibrarySelector(
       'newUser-dropdown',
       window.libraries || {},
-      registrationUrl => {
+      (registrationUrl) => {
         if (registrationUrl) {
           window.location.href = registrationUrl;
         }
