@@ -1,8 +1,8 @@
 div(id="helpModal" class="modal" aria-hidden="true")
   div.modal-header
-    button(type="button" onclick='toggleModal("helpModal")')
+    button(type="button" tabindex="-1" onclick='toggleModal("helpModal")')
     h2.modal-title #{help.title}
-  div(class="modal-body" tabindex="0")
+  div(class="modal-body" tabindex="-1")
     each section in help.sections
       if(!(lockedAgency && section.header == 'Bibliotek'))
         div.modal-body-section

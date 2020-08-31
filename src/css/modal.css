@@ -191,6 +191,22 @@
         color: var(--black-lighten-1);
         font-family: var(--tertiary);
 
+        &:focus {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin: 10px;
+          border: 1px solid var(--black-lighten-1);
+        }
+
+        &:active {
+          width: 60px;
+          height: 60px;
+          border-radius: none;
+          margin: 0;
+          border: none;
+        }
+
         &::before {
           content: 'Luk';
         }

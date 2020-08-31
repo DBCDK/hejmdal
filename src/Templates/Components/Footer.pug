@@ -5,7 +5,7 @@ div#footer
       if (!info)
         div.links
           span Læs om &#160;
-            a(onclick='toggleModal("privacyModal")' data-cy='privacy-button') vores behandling af dine personoplysninger
+            a(onclick='toggleModal("privacyModal")' tabindex="10" data-cy='privacy-button') vores behandling af dine personoplysninger
 
           span Læs mere om &#160;
-            a(onclick='toggleModal("cookieModal")') vores brug af cookies
+            a(onclick='toggleModal("cookieModal")' tabindex="11") vores brug af cookies
