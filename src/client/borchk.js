@@ -211,9 +211,9 @@ class LibrarySelector {
   }
   select(element) {
     if (element) {
-      var branchName = (element && element.name) || this.currentSearchValue;
-      var branchId = (element && element.branchId) || this.currentSearchValue;
-      var registrationUrl = (element && element.registrationUrl) || false;
+      var branchName = element.name || this.currentSearchValue;
+      var branchId = element.branchId || this.currentSearchValue;
+      var registrationUrl = element.registrationUrl || false;
 
       this.libraryIdInput.value = branchId;
       this.libraryInput.value = branchName;
