@@ -53,7 +53,7 @@ app.set('views', path.join(__dirname, '/Templates'));
 
 const corsOptions = {
   origin: '*',
-  methods: 'GET POST OPTIONS',
+  methods: 'GET, POST, OPTIONS',
   headers: 'Authorization, Origin, X-Requested-With, Content-Type, Accept'
 };
 app.use(cors(corsOptions));
@@ -100,7 +100,7 @@ app.listen(process.env.PORT || 3000);
 
 cacheAgencies(CONFIG.app.env === 'test' ? 'slagelse' : '');
 
-process.on('unhandledRejection', error => {
+process.on('unhandledRejection', (error) => {
   // Will print "unhandledRejection err is not defined"
   log.error('unhandledRejection', {
     errorMessage: error.message,
