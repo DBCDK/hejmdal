@@ -90,7 +90,7 @@
     .libraries-dropdown-container {
       width: calc(100% + 2px);
       background-color: var(--white);
-      border: 1px solid var(--grey-lighten-1);
+      border: 1px solid var(--grey-lighten-4);
       position: absolute;
       overflow: hidden;
       left: -1px;
@@ -210,6 +210,7 @@
 
       .input-container {
         height: 100%;
+        border: 0;
       }
 
       .libraries-dropdown-container {
@@ -241,10 +242,12 @@
 
           .input-container {
             height: auto;
+            border: 1px solid var(--grey-lighten-1);
           }
 
           .libraries-dropdown-container {
             height: 300px;
+            border: 1px solid var(--grey-lighten-1);
 
             ul.libraries-dropdown {
               li {
