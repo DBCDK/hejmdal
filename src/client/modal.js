@@ -18,6 +18,9 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
 
   // force open modal
   if (status === 'open') {
+    // Prevent multiple modals to open (possible by tabbing)
+    closeAllOpenModals();
+
     dimmer.classList.add('visible');
     modal.classList.add('visible');
     modal.removeAttribute('aria-hidden');
@@ -42,7 +45,7 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
   }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   var body = document.getElementsByTagName('body')[0];
   var modals = document.getElementsByClassName('modal');
 
@@ -50,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var modalBody = modals[i].childNodes[1];
 
     // Add onScroll class if modal window is scrolled
-    modalBody.addEventListener('scroll', function() {
+    modalBody.addEventListener('scroll', function () {
       if (this.scrollTop > 0) {
         this.previousSibling.classList.add('onScroll');
       } else {
@@ -59,14 +62,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  body.addEventListener('keyup', function(e) {
+  body.addEventListener('keyup', function (e) {
     // if ESC pressed
     if (e.keyCode === 27) {
-      for (var m = 0; m < modals.length; m++) {
-        if (modals[m].classList.contains('visible')) {
-          window.toggleModal(modals[m].id, 'close');
-        }
+      closeAllOpenModals();
+    }
+
+    // if ENTER pressed
+    if (e.keyCode === 13) {
+      // Get focused element
+      const aciveElement = document.activeElement;
+
+      // If focused element is a modal-trigger - simulate click (to open modal)
+      if (aciveElement.classList.contains('modal-trigger')) {
+        aciveElement.click();
       }
     }
   });
 });
+
+function closeAllOpenModals() {
+  var modals = document.getElementsByClassName('modal');
+
+  for (var m = 0; m < modals.length; m++) {
+    if (modals[m].classList.contains('visible')) {
+      window.toggleModal(modals[m].id, 'close');
+    }
+  }
+}

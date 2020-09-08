@@ -43,8 +43,8 @@ div#borchk
         button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='4') Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
-            a(href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
+            a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
           else
-            a(onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
+            a(class="modal-trigger" onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
 
   script var libraries = !{JSON.stringify(branches)}
