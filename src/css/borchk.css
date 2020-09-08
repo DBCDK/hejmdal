@@ -22,12 +22,13 @@
   }
   label {
     font-family: var(--secondary);
-    font-size: 18px;
+    font-size: 14px;
     color: var(--black-lighten-1);
+    cursor: pointer;
   }
 
   .input-container {
-    margin: 10px 0;
+    margin: 5px 0 10px 0;
     max-width: 486px;
     display: flex;
     flex-wrap: wrap;
@@ -293,6 +294,7 @@
     transition-duration: 0.2s;
     transition-timing-function: ease-out;
     flex-grow: 1;
+    font-size: 14px;
 
     &:hover,
     &:focus {
