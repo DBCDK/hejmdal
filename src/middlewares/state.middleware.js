@@ -134,12 +134,7 @@ function getState() {
  * @returns {Object}
  */
 function setUser(newValues) {
-  const existingIps =
-    (this.session.user && this.session.user.identityProviders) || [];
-  const identityProviders =
-    (!existingIps.includes(newValues.userType) &&
-      existingIps.concat([newValues.userType])) ||
-    existingIps;
+  const identityProviders = [newValues.userType];
   this.session.user = Object.assign({}, this.session.user || {}, newValues, {
     identityProviders
   });
@@ -173,7 +168,7 @@ function hasUser() {
  */
 function resetUser(idp) {
   const identityProviders = this.getUser().identityProviders.filter(
-    identityProvider => identityProvider !== idp
+    (identityProvider) => identityProvider !== idp
   );
   this.session.user = {identityProviders: identityProviders};
 }
