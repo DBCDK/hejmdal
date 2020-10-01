@@ -33,7 +33,8 @@ export const CONFIG = {
     },
     session: {
       divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400 // 31 * 24 * 60 * 60
+      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400, // 31 * 24 * 60 * 60
+      sameSite: process.env.SAME_SITE || ''
     },
     failedLogin: {
       divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
