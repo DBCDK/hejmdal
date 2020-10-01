@@ -80,7 +80,7 @@ export function validateClientIsSet(req, res, next) {
   if (!req.session.client || !req.session.query) {
     res.status(403);
     res.send(
-      'Login cannot called directly. Please authorize through /oauth/authorize. ' +
+      'Login cannot be called directly. Please authorize through /oauth/authorize. ' +
         'For more information on how to implement login through login.bib.dk goto login.bib.dk/example'
     );
   } else {

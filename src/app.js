@@ -68,6 +68,9 @@ app.use(
     secure: CONFIG.app.env === 'production',
     resave: false,
     unset: 'destroy',
+    cookie: {
+      sameSite: CONFIG.session.sameSite || ''
+    },
     store:
       !CONFIG.mock_storage &&
       new KnexSessionStore({
