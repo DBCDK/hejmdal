@@ -51,6 +51,8 @@ app.model = model;
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/Templates'));
 
+app.set('trust proxy', CONFIG.proxy.trust);
+
 const corsOptions = {
   origin: '*',
   methods: 'GET, POST, OPTIONS',
@@ -65,11 +67,12 @@ app.use(
     secret: CONFIG.session.secret,
     maxAge: CONFIG.session.life_time,
     saveUninitialized: false,
-    secure: CONFIG.app.env === 'production',
-    resave: false,
+    resave: CONFIG.session.resave,
+
     unset: 'destroy',
     cookie: {
-      sameSite: CONFIG.session.sameSite || ''
+      secure: CONFIG.session.secure,
+      sameSite: CONFIG.session.sameSite
     },
     store:
       !CONFIG.mock_storage &&

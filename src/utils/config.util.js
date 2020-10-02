@@ -33,8 +33,7 @@ export const CONFIG = {
     },
     session: {
       divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
-      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400, // 31 * 24 * 60 * 60
-      sameSite: process.env.SAME_SITE || ''
+      seconds: Number(process.env.GC_SESSION_SECONDS) || 2678400 // 31 * 24 * 60 * 60
     },
     failedLogin: {
       divisor: Number(process.env.GC_SESSION_DIVISOR) || 1000,
@@ -95,7 +94,10 @@ export const CONFIG = {
   },
   session: {
     life_time: Number(process.env.SESSION_LIFE_TIME),
-    secret: process.env.SESSION_SECRET
+    secret: process.env.SESSION_SECRET,
+    sameSite: process.env.SAME_SITE || '',
+    secure: process.env.SECURE_COOKIE || false,
+    resave: process.env.RESAVE_SESSION || false
   },
   smaug: {
     uri: process.env.SMAUG_URI,
@@ -127,6 +129,9 @@ export const CONFIG = {
   test: {
     host: process.env.TEST_HOST || null,
     token: process.env.TEST_TOKEN || 'asdfg'
+  },
+  proxy: {
+    trust: Number(process.env.TRUST_PROXY) || 0
   }
 };
 
