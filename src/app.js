@@ -7,6 +7,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import path from 'path';
+import {shouldSendSameSiteNone} from 'should-send-same-site-none';
 import session from 'express-session';
 const KnexSessionStore = require('connect-session-knex')(session);
 
@@ -52,6 +53,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '/Templates'));
 
 app.set('trust proxy', CONFIG.proxy.trust);
+app.use(shouldSendSameSiteNone);
 
 const corsOptions = {
   origin: '*',

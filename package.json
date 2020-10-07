@@ -76,6 +76,7 @@
     "passport-oauth2": "^1.5.0",
     "pg": "^7.17.1",
     "pug": "^2.0.3",
+    "should-send-same-site-none": "^2.0.5",
     "soap": "^0.29.0",
     "xml2js": "^0.4.19"
   },
@@ -90,7 +91,7 @@
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-cypress": "^2.2.1",
     "jest": "^24.7.1",
-    "mocha-jenkins-reporter": "0.4.1",
+    "mocha-jenkins-reporter": "^0.4.5",
     "neo-async": "^2.6.0",
     "nodemon": "^1.18.11",
     "npm-check-updates": "^3.1.7",
@@ -103,7 +104,7 @@
     "precss": "^4.0.0",
     "wait-on": "^3.2.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "webpack-cli": "^3.3.12"
   },
   "resolutions": {
     "lodash": "^4.17.14"
