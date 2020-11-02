@@ -22,20 +22,21 @@ export function mockContext(
   const ctx = {
     query: {token, returnurl},
     session: {
-      save: cb => cb(),
-      destroy: cb => cb && cb(),
+      save: (cb) => cb(),
+      destroy: (cb) => cb && cb(),
       client: Object.assign({}, mockData),
       query: {
         state: 'mock_state_value'
       }
     },
+    ips: ['127.0.0.1'],
     render: jest.fn(),
     send: jest.fn(),
     redirect: jest.fn()
   };
   setDefaultState(ctx, ctx, () => {});
   stateMiddleware(ctx, ctx, () => {});
-  Object.keys(overrides).forEach(key => {
+  Object.keys(overrides).forEach((key) => {
     ctx[key] = Object.assign(ctx[key] || {}, overrides[key]);
   });
 
@@ -54,7 +55,7 @@ export function registerStore(store) {
  */
 export function wipeStores() {
   if (CONFIG.app.env === 'test') {
-    stores.forEach(store => {
+    stores.forEach((store) => {
       store.wipeout();
     });
   }
