@@ -110,15 +110,22 @@ export async function saveUser(token, user) {
     function: 'readUser',
     ms: elapsedTimeInMs
   });
-  auditTrace(
-    'login',
-    'adgangsplatformen',
-    user.ips,
-    {login_token: token, client_application: user.client_id},
-    user.userId,
-    {login: {}}
-  );
-
+  try {
+    auditTrace(
+      'login',
+      'adgangsplatformen',
+      user.ips,
+      {login_token: token, client_application: user.client_id},
+      user.userId,
+      {login: {}}
+    );
+  } catch (error) {
+    log.error('auditlog failed', {
+      user,
+      errorMessage: error.message,
+      stack: error.stack
+    });
+  }
   return result;
 }
 

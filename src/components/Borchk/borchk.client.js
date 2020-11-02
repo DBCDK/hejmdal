@@ -37,6 +37,12 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
     method: 'borrowerCheck',
     ms: elapsedTimeInMs
   });
+  log.debug('A request was made to BORCHK', {
+    serviceRequester: serviceRequester,
+    userId: userId,
+    agency: agency,
+    responseString: JSON.stringify(response)
+  });
   return response[0];
 }
 
@@ -50,18 +56,6 @@ export async function init() {
   if (!BorcheckClient) {
     try {
       const client = await soap.createClientAsync(CONFIG.borchk.uri, options);
-      client.on('request', (request) => {
-        log.debug('A request was made to BORCHK', {
-          serviceRequester,
-          userId,
-          libraryCode
-        });
-      });
-      client.on('response', (response) => {
-        log.debug('A response was received from BORCHK', {
-          responseString: response
-        });
-      });
       BorcheckClient = client;
     } catch (error) {
       log.error('Error when creating BORCHK client', {error});
