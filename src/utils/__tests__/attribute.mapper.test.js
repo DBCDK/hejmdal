@@ -6,7 +6,7 @@ describe('Attribute mapper unittest', () => {
   const next = () => {};
 
   const serviceId = 'a799f79-9797as979-4jk44-323332ed34';
-  const user = {};
+  const user = {ips: ['127.0.0.1']};
   const culr = {
     accounts: [
       {

@@ -4,6 +4,7 @@
  * Functions to retrieve attributes in a ticket.
  */
 
+import {auditTrace} from '@dbcdk/dbc-audittrail-logger';
 import PersistentUserStorage from '../../models/User/user.persistent.storage.model';
 import {getUserAttributesFromCulr} from '../Culr/culr.component';
 import {mapCulrResponse} from '../../utils/attribute.mapper.util';
@@ -109,7 +110,22 @@ export async function saveUser(token, user) {
     function: 'readUser',
     ms: elapsedTimeInMs
   });
-
+  try {
+    auditTrace(
+      'login',
+      'adgangsplatformen',
+      user.ips,
+      {login_token: token, client_application: user.client_id},
+      user.userId,
+      {login: {}}
+    );
+  } catch (error) {
+    log.error('auditlog failed', {
+      user,
+      errorMessage: error.message,
+      stack: error.stack
+    });
+  }
   return result;
 }
 

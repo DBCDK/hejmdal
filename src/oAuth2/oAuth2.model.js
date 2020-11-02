@@ -46,7 +46,7 @@ module.exports.saveAuthorizationCode = async (code, client, user) => {
 /*
  * Get authorization code
  */
-module.exports.getAuthorizationCode = async authorizationCode => {
+module.exports.getAuthorizationCode = async (authorizationCode) => {
   const code = await authStorage.read(authorizationCode);
 
   if (!code) {
@@ -62,7 +62,7 @@ module.exports.getAuthorizationCode = async authorizationCode => {
 /*
  * Revoke authorization code
  */
-module.exports.revokeAuthorizationCode = async params => {
+module.exports.revokeAuthorizationCode = async (params) => {
   authStorage.delete(params.authorizationCode);
   return params;
 };
@@ -70,7 +70,7 @@ module.exports.revokeAuthorizationCode = async params => {
 /*
  * Get access token.
  */
-module.exports.getAccessToken = async bearerToken => {
+module.exports.getAccessToken = async (bearerToken) => {
   if (mockTokens.has(bearerToken)) {
     return mockTokens.get(bearerToken);
   }
@@ -93,7 +93,7 @@ module.exports.getAccessToken = async bearerToken => {
 /**
  * Get client.
  */
-module.exports.getClient = async clientId => {
+module.exports.getClient = async (clientId) => {
   if (clientId === 'hejmdal') {
     return extractClientInfo(mockData);
   }
@@ -108,7 +108,7 @@ module.exports.getClient = async clientId => {
 /**
  * Save token.
  */
-module.exports.saveToken = async function(token, client, user) {
+module.exports.saveToken = async function (token, client, user) {
   try {
     const params = {clientId: client.clientId};
     if (user.agency) {
@@ -134,7 +134,7 @@ module.exports.saveToken = async function(token, client, user) {
 /**
  * Revoke client token
  */
-module.exports.revokeToken = async function(token) {
+module.exports.revokeToken = async function (token) {
   try {
     return await revokeClientToken(token);
   } catch (error) {
@@ -145,13 +145,14 @@ module.exports.revokeToken = async function(token) {
 /*
  * Get user.
  */
-module.exports.getUser = async function(user) {
+module.exports.getUser = async function (user) {
   try {
-    const {username, password, agency, client_id: clientId} = user;
+    const {username, password, agency, client_id: clientId, ips} = user;
     // User and tokens a fetched from auth.dbc.dk.
     // Therefore we are both validating the user and getting an autherized token in the same step.
     // If user is authorized we add the token object to the user, so we can reuse it in the saveToken method
-    const params = {username, password, agency, clientId};
+    const params = {username, password, agency, clientId, ips};
+    console.log('IPS', ips);
     const smaugToken = await getTokenForUser(params);
     user.smaugToken = smaugToken;
     // user object requires an userId property

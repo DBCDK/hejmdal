@@ -131,7 +131,7 @@ export const CONFIG = {
     token: process.env.TEST_TOKEN || 'asdfg'
   },
   proxy: {
-    trust: Number(process.env.TRUST_PROXY) || 0
+    trust: !!(Number(process.env.TRUST_PROXY) || 0)
   }
 };
 

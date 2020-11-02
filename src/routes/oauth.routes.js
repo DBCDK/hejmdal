@@ -172,6 +172,7 @@ router.post('/token', (req, res, next) => {
       username,
       agency,
       client_id: client_id || headerCredentials.client_id,
+      ips: (req.ips.length && req.ips) || [req.ip],
       password
     };
   }

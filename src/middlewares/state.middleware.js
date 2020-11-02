@@ -44,6 +44,7 @@ export async function setDefaultState(req, res, next) {
   };
   req.session.loginToProfile = !!req.query.loginToProfile;
   req.session.user = req.session.user || {};
+  req.session.user.ips = (req.ips.length && req.ips) || [req.ip];
   req.session.save(() => {
     return next();
   });

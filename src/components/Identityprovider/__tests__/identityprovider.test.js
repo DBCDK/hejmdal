@@ -70,9 +70,7 @@ describe('test identityProviderCallback method', () => {
   it('Should add unilogin user to context', async () => {
     ctx.params.type = 'unilogin';
     const user = 'valid_user_id';
-    const timestamp = moment()
-      .utc()
-      .format('YYYYMMDDHHmmss');
+    const timestamp = moment().utc().format('YYYYMMDDHHmmss');
     const auth = md5(timestamp + CONFIG.unilogin.secret + user);
     ctx.query = {
       auth: auth,
@@ -84,7 +82,8 @@ describe('test identityProviderCallback method', () => {
       userId: 'valid_user_id',
       uniloginId: 'valid_user_id',
       userType: 'unilogin',
-      identityProviders: ['unilogin']
+      identityProviders: ['unilogin'],
+      ips: ['127.0.0.1']
     };
 
     await identityProviderCallback(ctx, ctx, next);
@@ -99,7 +98,8 @@ describe('test identityProviderCallback method', () => {
       agency: '790900',
       cpr: '0102031111',
       userType: 'nemlogin',
-      identityProviders: ['nemlogin']
+      identityProviders: ['nemlogin'],
+      ips: ['127.0.0.1']
     };
     await identityProviderCallback(ctx, ctx, next);
     expect(ctx.getUser()).toEqual(expected);
@@ -119,6 +119,7 @@ describe('test identityProviderCallback method', () => {
       agency: '710100',
       pincode: 'testPincode',
       identityProviders: ['borchk'],
+      ips: ['127.0.0.1'],
       userValidated: true
     };
     await identityProviderCallback(ctx, ctx, next);
