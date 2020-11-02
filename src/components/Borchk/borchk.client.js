@@ -50,10 +50,14 @@ export async function init() {
   if (!BorcheckClient) {
     try {
       const client = await soap.createClientAsync(CONFIG.borchk.uri, options);
-      client.on('request', request => {
-        log.debug('A request was made to BORCHK', {requestString: request});
+      client.on('request', (request) => {
+        log.debug('A request was made to BORCHK', {
+          serviceRequester,
+          userId,
+          libraryCode
+        });
       });
-      client.on('response', response => {
+      client.on('response', (response) => {
         log.debug('A response was received from BORCHK', {
           responseString: response
         });
