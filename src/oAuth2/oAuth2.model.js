@@ -124,7 +124,7 @@ module.exports.saveToken = async function (token, client, user) {
       client: client.clientId,
       user: user.userId
     };
-    await saveUser(smaugToken.access_token, user);
+    await saveUser(smaugToken.access_token, user, client.clientId);
     return access_token;
   } catch (error) {
     log.error('Could not save token', {error});

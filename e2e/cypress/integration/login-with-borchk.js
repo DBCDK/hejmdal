@@ -4,20 +4,16 @@ context('Login flow', () => {
       Cypress.config().baseUrl
     }/example&presel=${agencyId}`;
 
-  it('should login throught oauth authorization grant', () => {
+  it.only('should login throught oauth authorization grant', () => {
     cy.log('Setup client using example endpoint');
     cy.visit('example');
     cy.get('h3')
       .first('h3')
       .should('contain', 'Example client for login.bib.dk');
 
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
+    cy.get('#input-login-client').clear().type('hejmdal');
 
-    cy.get('#input-preselected-library')
-      .clear()
-      .type('733000');
+    cy.get('#input-preselected-library').clear().type('733000');
     cy.get('#input-locked-library').clear();
     cy.get('#login-button').click();
 
@@ -59,13 +55,9 @@ context('Login flow', () => {
   });
   it('Should trim user input', () => {
     cy.visit('/example');
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
+    cy.get('#input-login-client').clear().type('hejmdal');
 
-    cy.get('#input-preselected-library')
-      .clear()
-      .type('733000');
+    cy.get('#input-preselected-library').clear().type('733000');
     cy.get('#input-locked-library').clear();
     cy.get('#login-button').click();
     cy.get('#userid-input').type(' 87654321');
@@ -94,11 +86,8 @@ context('Login flow', () => {
       url:
         '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
       failOnStatusCode: false
-    }).then(res =>
-      cy
-        .wrap(res)
-        .its('body.error')
-        .should('equal', 'invalid_client')
+    }).then((res) =>
+      cy.wrap(res).its('body.error').should('equal', 'invalid_client')
     );
   });
 
@@ -115,9 +104,7 @@ context('Login flow', () => {
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
 
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
+    cy.get('#input-login-client').clear().type('hejmdal');
 
     cy.get('#get-ticket-button').click();
     cy.get('#get-userinfo-button').click();
@@ -144,9 +131,7 @@ context('Login flow', () => {
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
 
-    cy.get('#input-login-client')
-      .clear()
-      .type('hejmdal');
+    cy.get('#input-login-client').clear().type('hejmdal');
 
     cy.get('#get-ticket-button').click();
     cy.get('#get-userinfo-button').click();

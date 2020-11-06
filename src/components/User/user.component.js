@@ -99,7 +99,7 @@ export async function readUser(token) {
  * @param token
  * @param {Object} user
  */
-export async function saveUser(token, user) {
+export async function saveUser(token, user, clientId) {
   const stopTiming = startTiming();
   const hashedToken = createHash(token);
   const result = await storage.update(hashedToken, user);
@@ -115,9 +115,14 @@ export async function saveUser(token, user) {
       'login',
       'adgangsplatformen',
       user.ips,
-      {login_token: token, client_application: user.client_id},
+      {login_token: token},
       user.userId,
-      {login: {}}
+      {
+        client_application: clientId,
+        user_id: user.userId,
+        group: user.agency,
+        idp: user.identityProviders[0]
+      }
     );
   } catch (error) {
     log.error('auditlog failed', {
