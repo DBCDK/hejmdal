@@ -15,7 +15,7 @@ import {
 import {
   getListOfAgenciesForFrontend,
   getAgency
-} from '../../utils/agencies.util';
+} from '../../utils/vipCore.util';
 import {validateNetpunktUser} from '../Forsrights/forsrights.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';

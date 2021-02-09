@@ -3,16 +3,16 @@ import {CONFIG} from '../../../utils/config.util';
 import {
   libraryListFromName,
   libraryListFromPosition
-} from '../openAgency.client';
+} from '../vipCore.client';
 
-describe('Test openAgency component', () => {
-  const _SAVE_CONFIG = CONFIG.mock_externals.openAgency;
+describe('Test vipCore component', () => {
+  const _SAVE_CONFIG = CONFIG.mock_externals.vipCore;
   beforeEach(() => {
-    CONFIG.mock_externals.openAgency = true;
+    CONFIG.mock_externals.vipCore = true;
   });
 
   afterEach(() => {
-    CONFIG.mock_externals.openAgency = _SAVE_CONFIG;
+    CONFIG.mock_externals.vipCore = _SAVE_CONFIG;
   });
 
   it('Lookup a library from name', async () => {
@@ -24,11 +24,11 @@ describe('Test openAgency component', () => {
         branchName: 'Horsens Bibliotek',
         branchShortName: 'Horsens Bibliotek',
         city: 'Horsens',
-        address: 'Tobaksgården 12Postbox 521',
+        address: 'Tobaksgården 12\r\nPostbox 521',
         type: 'Folkebibliotek',
         branchWebsiteUrl: 'https://horsensbibliotek.dk',
-        registrationFormUrl: '',
-        registrationFormUrlText: '',
+        registrationFormUrl: 'https://horsensbibliotek.dk/registration',
+        registrationFormUrlText: 'Opret biblioteksbruger',
         branchEmail: 'bibliotek@horsens.dk',
         distance: '',
         municipalityNo: '615'
@@ -45,7 +45,7 @@ describe('Test openAgency component', () => {
         branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
-        branchEmail: undefined
+        branchEmail: ''
       },
       {
         agencyId: '874540',
@@ -59,7 +59,7 @@ describe('Test openAgency component', () => {
         branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
-        branchEmail: undefined
+        branchEmail: ''
       },
       {
         agencyId: '861340',
@@ -73,7 +73,7 @@ describe('Test openAgency component', () => {
         branchWebsiteUrl: '',
         registrationFormUrl: '',
         registrationFormUrlText: '',
-        branchEmail: undefined
+        branchEmail: ''
       }
     ];
 
@@ -87,14 +87,14 @@ describe('Test openAgency component', () => {
         branchId: '715100',
         agencyName: 'Ballerup',
         branchName: 'Ballerup Bibliotek',
-        branchShortName: '',
-        city: '',
-        address: 'Hovedbiblioteket Banegårdspladsen 1',
+        branchShortName: 'Ballerup Bibliotek',
+        city: 'Ballerup',
+        address: 'Banegårdspladsen 1',
         type: 'Folkebibliotek',
-        branchWebsiteUrl: '',
-        registrationFormUrl: '',
-        registrationFormUrlText: '',
-        branchEmail: '',
+        branchWebsiteUrl: 'https://bib.ballerup.dk',
+        registrationFormUrl: 'https://bib.ballerup.dk/registration',
+        registrationFormUrlText: 'Opret dig som låner med NemID',
+        branchEmail: 'ballerup-bibliotek@balk.dk',
         distance: '1237',
         municipalityNo: '151'
       },
@@ -103,14 +103,14 @@ describe('Test openAgency component', () => {
         branchId: '724000',
         agencyName: 'Egedal',
         branchName: 'Smørum Bibliotek',
-        branchShortName: '',
-        city: '',
+        branchShortName: 'Smørum Bibliotek',
+        city: 'Smørum',
         address: 'Flodvej 68 Smørumnedre',
         type: 'Folkebibliotek',
-        branchWebsiteUrl: '',
-        registrationFormUrl: '',
-        registrationFormUrlText: '',
-        branchEmail: '',
+        branchWebsiteUrl: 'http://www.egedalbibliotekerne.dk',
+        registrationFormUrl: 'https://egedalbibliotekerne.dk/registration',
+        registrationFormUrlText: 'Opret biblioteksbruger',
+        branchEmail: 'smorum.bibliotek@egekom.dk',
         distance: '2905',
         municipalityNo: '240'
       }

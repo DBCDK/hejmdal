@@ -65,15 +65,15 @@ export const CONFIG = {
     forsrights: process.env.MOCK_FORSRIGHTS === '1',
     culr: process.env.MOCK_CULR === '1',
     nemlogin: process.env.MOCK_NEMLOGIN === '1',
-    openAgency: process.env.MOCK_OPENAGENCY === '1',
+    vipCore: process.env.MOCK_VIPCORE === '1',
     smaug: process.env.MOCK_SMAUG === '1',
     unilogin: process.env.MOCK_UNILOGIN === '1',
     wayf: process.env.MOCK_WAYF === '1'
   },
   mock_storage: process.env.MOCK_STORAGE === '1',
-  openAgency: {
-    uri: process.env.OPENAGENCY_URI,
-    life_time: Number(process.env.AGENCY_LIFE_TIME) || 3600 // 60*60
+  vipCore: {
+    uri: process.env.VIPCORE_URI,
+    life_time: Number(process.env.VIPCORE_LIFE_TIME) || 3600 // 60*60
   },
   postgres: {
     client: 'postgresql',

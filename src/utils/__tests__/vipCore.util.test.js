@@ -7,7 +7,7 @@ import {
   getListOfAgenciesForFrontend,
   getAgencyName,
   mockSetAgencyList
-} from '../agencies.util.js';
+} from '../vipCore.util.js';
 
 const mockAgencyList = [
   {
