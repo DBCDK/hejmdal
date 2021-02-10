@@ -33,7 +33,7 @@ import {getAgencyByCpr} from '../Culr/culr.component';
  * @param {function} next
  * @returns {*}
  */
-export async function authenticate(req, res, next) {
+export async function authenticate(req, res, next) { // eslint-disable-line complexity
   const state = req.getState();
 
   try {

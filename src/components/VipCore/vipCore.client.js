@@ -141,7 +141,7 @@ function parseFindLibraryResponse(response) {
  */
 function getAgencyField(buffer, field) {
   if (buffer[field]) {
-    return !Array.isArray(buffer[field]) ? buffer[field]
+    return !Array.isArray(buffer[field]) ? buffer[field]                         // eslint-disable-line no-nested-ternary
       : buffer[field][0].value ? buffer[field][0].value : buffer[field][0];
   }
 
