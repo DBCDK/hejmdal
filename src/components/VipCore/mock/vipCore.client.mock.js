@@ -35,8 +35,6 @@ const mockFindLibrary = {
 };
 
 export default function getMockClient(mock = 'notFound') {
-  console.log('mock: ' + mock);
-  console.log(mockFindLibrary[mock]);
   return {
     statusCode: 200,
     body: mockFindLibrary[mock]
