@@ -7,7 +7,7 @@ context('New user links', () => {
     cy.visit(`${authorize}&agency=733000`);
     cy.get('[data-cy=new-user-button]')
       .should('have.attr', 'href')
-      .and('include', 'http://www.slagelsebib.dk');
+      .and('include', 'https://www.slagelsebib.dk');
   });
   it('Should open modal', () => {
     cy.visit(`${authorize}`);
