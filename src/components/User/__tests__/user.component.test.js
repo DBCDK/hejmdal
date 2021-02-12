@@ -36,7 +36,7 @@ describe('test store and get user', () => {
         cpr: '0102031111',
         forsrights: [
           {
-            agencyId: undefined,
+            agencyId: undefined,  // eslint-disable-line no-undefined
             rights: {}
           }
         ],
