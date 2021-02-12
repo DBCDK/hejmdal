@@ -34,12 +34,6 @@ describe('test store and get user', () => {
         birthDate: '0102',
         birthYear: '1903',
         cpr: '0102031111',
-        forsrights: [
-          {
-            agencyId: undefined,  // eslint-disable-line no-undefined
-            rights: {}
-          }
-        ],
         gender: 'm',
         municipality: '909',
         municipalityAgencyId: '790900',
