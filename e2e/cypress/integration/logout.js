@@ -16,7 +16,7 @@ context('Logout', () => {
 
   it('should logout with known token', () => {
     cy.visit(`${authorize}`);
-    cy.get('h1').should('not.contain', 'Log ind');
+    cy.get('button').should('not.contain', 'Log ind');
     cy.visit('/logout?access_token=hejmdal-access-token');
     cy.get('#returnUrl').should('have.text', 'Tilbage til Test Service');
     cy.visit(`${authorize}`);

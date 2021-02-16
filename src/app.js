@@ -18,7 +18,7 @@ import initPassport from './oAuth2/passport';
 import {setHeaders} from './middlewares/headers.middleware';
 import {loggerMiddleware} from './middlewares/logger.middleware';
 import errorMiddleware from './middlewares/error.middleware';
-import {cacheAgencies} from './utils/agencies.util';
+import {cacheAgencies} from './utils/vipCore.util';
 
 // Utils
 import {CONFIG} from './utils/config.util';

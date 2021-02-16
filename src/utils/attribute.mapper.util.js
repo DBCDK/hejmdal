@@ -43,6 +43,8 @@ export default async function mapAttributesToTicket(req, res, next) {
  * @param {object} culr The CULR reponse object
  * @param {object} attributes The attributes object defined in Smaug
  * @param {object} user data returned by the idp
+ * @param clientId
+ * @param accessToken
  * @see ATTRIBUTES
  * @returns {Promise<{}>}
  */
@@ -85,7 +87,7 @@ export async function mapCulrResponse(
   const fields = Object.keys(attributes);
 
   await Promise.all(
-    fields.map(async field => {
+    fields.map(async field => { // eslint-disable-line complexity
       // eslint-disable-line complexity
       try {
         switch (field) {

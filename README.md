@@ -161,8 +161,8 @@ The variables are specified at the form `name : internal config object`. Referen
 - `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
   set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
 
-- `MOCK_OPENAGENCY`: `mock_externals.openAgency`  
-  Set to `1` (`MOCK_OPENAGENCY=1`) to mock openAgency and use a predefined response
+- `MOCK_VIPCORE`: `mock_externals.vipCore`  
+  Set to `1` (`MOCK_VIPCORE=1`) to mock vipCore and use a predefined response
 
 - `MOCK_SMAUG` : `mock_externals.smaug`  
   set to `1` (`MOCK_SMAUG=1`) to mock Smaug and use a predefined response
@@ -176,11 +176,11 @@ The variables are specified at the form `name : internal config object`. Referen
 - `NODE_ENV` : `app.env`  
   When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
 
-- `OPENAGENCY_URI` : `openAgency.uri`  
-  The address to the openAgency service
+- `VIPCORE_URI` : `vipCore.uri`  
+  The address to the vipCore service
 
-- `OPENAGENCY_LIFE_TIME` : `openAgency.life_time`  
-  Milliseconds before invalidating openagency cache. Default to 3600000 (1 hour)
+- `VIPCORE_LIFE_TIME` : `vipCore.life_time`  
+  Milliseconds before invalidating vipCore cache. Default to 3600000 (1 hour)
 
 - `PORT` : `app.port`  
   Specifies the port to expose the application. Default: `3010`

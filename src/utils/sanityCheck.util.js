@@ -7,7 +7,7 @@ import User from '../models/db_models/user.model';
 import * as Borchk from '../components/Borchk/borchk.client';
 import * as Culr from '../components/Culr/culr.client';
 import * as Smaug from '../components/Smaug/smaug.client';
-import * as OpenAgency from '../components/OpenAgency/openAgency.client';
+import * as VipCore from '../components/VipCore/vipCore.client';
 
 import {log} from './logging.util';
 import startTiming from './timing.util';
@@ -18,7 +18,7 @@ export default async function sanityCheck() {
     wrap(checkBorchk, 'borchk'),
     wrap(checkCulr, 'culr'),
     wrap(checkSmaug, 'smaug'),
-    wrap(checkOpenAgency, 'openAgency')
+    wrap(checkVipCore(), 'vipCore')
   ]);
 }
 
@@ -96,8 +96,8 @@ async function checkSmaug() {
 }
 
 /**
- * Check if OpenAgency webservice is responding
+ * Check if VipCore webservice is responding
  */
-async function checkOpenAgency() {
-  return OpenAgency.libraryListFromName('test');
+async function checkVipCore() {
+  return VipCore.libraryListFromName('test');
 }

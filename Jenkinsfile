@@ -6,7 +6,7 @@ def imageLabel=BUILD_NUMBER
 
 pipeline {
     agent {
-        label 'devel9-head'
+        label 'devel10-head'
     }
     environment {
 		IMAGE_NAME = "${imageName}:${imageLabel}"

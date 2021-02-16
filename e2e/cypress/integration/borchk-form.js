@@ -175,7 +175,7 @@ context('Borchk form', () => {
   });
 
   it('Should show test agency by agencyID', () => {
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('900');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('790');
     cy.get('#borchk-dropdown .agency').should('have.length', 1);
     cy.get('#borchk-dropdown .agency')
       .first()
@@ -197,7 +197,7 @@ context('Borchk form', () => {
       '733000{enter}'
     );
     cy.get('#borchk-submit').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]-text').should(
+    cy.get('#borchk-dropdown [data-cy=libraryname-input-text]').should(
       'not.contain',
       'Du skal vælge et bibliotek'
     );
@@ -205,7 +205,7 @@ context('Borchk form', () => {
     cy.get('#userid-input').type('12345678{enter}');
     cy.get('#userid-input-text').should(
       'not.contain',
-      'Du skal vælge et bibliotek'
+      'Du skal angive'
     );
 
     // show error when pin is less than 4 figures

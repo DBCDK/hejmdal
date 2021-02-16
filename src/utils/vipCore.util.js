@@ -3,7 +3,7 @@
  * Methods for dealing with agencies
  */
 import 'locale-compare-polyfill';
-import {libraryListFromName} from '../components/OpenAgency/openAgency.client';
+import {libraryListFromName} from '../components/VipCore/vipCore.client';
 import {CONFIG} from './config.util';
 
 /**
@@ -20,7 +20,7 @@ let agencyRenewTime = Number.MAX_SAFE_INTEGER;
 export async function cacheAgencies(name = '') {
   agencyList = await libraryListFromName(name);
   if (agencyList.length) {
-    agencyRenewTime = new Date().getTime() + CONFIG.openAgency.life_time;
+    agencyRenewTime = new Date().getTime() + CONFIG.vipCore.life_time;
   }
 }
 

@@ -3,8 +3,8 @@
  *
  */
 import {CONFIG} from '../../utils/config.util';
-import {OpenAgencyError} from './openAgency.errors';
-import getMockClient from './mock/openAgency.client.mock';
+import {VipCoreError} from './vipCore.errors';
+import getMockClient from './mock/vipCore.client.mock';
 import {promiseRequest} from '../../utils/request.util';
 import {municipalityName} from '../../utils/municipality.util';
 import {log} from '../../utils/logging.util';
@@ -14,37 +14,39 @@ import {log} from '../../utils/logging.util';
  *
  * @param text
  * @returns {Array}
- * @throws {OpenAgencyError}
+ * @throws {VipCoreError}
  */
 export async function libraryListFromName(text) {
   let response;
 
   // for test and development
-  if (CONFIG.mock_externals.openAgency) {
+  if (CONFIG.mock_externals.vipCore) {
     response = getMockClient(text);
   } else {
-    response = await promiseRequest('get', {
-      uri: CONFIG.openAgency.uri,
-      qs: {
+    response = await promiseRequest('post', {
+      url: CONFIG.vipCore.uri + '/findlibrary/',
+      body: {
+        pickupAllowed: 'true',
         anyField: text,
-        sort: 'agencyName'
-      }
+        sort: ['agencyName']
+      },
+      json: true
     });
   }
 
   if (response.statusCode === 200) {
-    const body = JSON.parse(response.body);
-    if (body.findLibraryResponse && body.findLibraryResponse.error) {
-      const error = body.findLibraryResponse.error.$;
-      log.error('Error while retrieving result from OpenAgency', {
+    const body = response.body;
+    if (body.error) {
+      const error = body.error;
+      log.error('Error while retrieving result from VipCore', {
         error: error
       });
     }
 
-    return parseFindLibraryResponse(JSON.parse(response.body));
+    return parseFindLibraryResponse(response.body);
   }
 
-  throw new OpenAgencyError(response.statusMessage);
+  throw new VipCoreError(response.statusMessage);
 }
 
 export async function libraryListFromPosition(
@@ -54,25 +56,27 @@ export async function libraryListFromPosition(
 ) {
   let response;
   // for test and development
-  if (CONFIG.mock_externals.openAgency) {
+  if (CONFIG.mock_externals.vipCore) {
     response = getMockClient(latitude + '-' + longitude);
   } else {
-    response = await promiseRequest('get', {
-      uri: CONFIG.openAgency.uri,
-      qs: {
+    response = await promiseRequest('post', {
+      url: CONFIG.vipCore.uri + '/findlibrary/',
+      body: {
+        pickupAllowed: 'true',
         latitude: latitude,
         longitude: longitude,
         distance: distance,
-        sort: 'distance'
-      }
+        sort: ['distance']
+      },
+      json: true
     });
   }
 
   if (response.statusCode === 200) {
-    return parseFindLibraryResponse(JSON.parse(response.body));
+    return parseFindLibraryResponse(response.body);
   }
 
-  throw new OpenAgencyError(response.statusMessage);
+  throw new VipCoreError(response.statusMessage);
 }
 
 /**
@@ -83,12 +87,9 @@ export async function libraryListFromPosition(
  */
 function parseFindLibraryResponse(response) {
   const libraryList = [];
-  if (
-    response.findLibraryResponse &&
-    Array.isArray(response.findLibraryResponse.pickupAgency)
-  ) {
+  if (response && Array.isArray(response.pickupAgency)) {
     const agencies = [];
-    response.findLibraryResponse.pickupAgency.forEach(agency => {
+    response.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
       const branchType = getAgencyField(agency, 'branchType');
 
@@ -132,7 +133,7 @@ function parseFindLibraryResponse(response) {
 }
 
 /**
- * Get (first) field from BadgerFish json format.    // http://badgerfish.ning.com/
+ * Get (first) field
  *
  * @param buffer
  * @param field
@@ -140,7 +141,8 @@ function parseFindLibraryResponse(response) {
  */
 function getAgencyField(buffer, field) {
   if (buffer[field]) {
-    return Array.isArray(buffer[field]) ? buffer[field][0].$ : buffer[field].$;
+    return !Array.isArray(buffer[field]) ? buffer[field]                         // eslint-disable-line no-nested-ternary
+      : buffer[field][0].value ? buffer[field][0].value : buffer[field][0];
   }
 
   return '';

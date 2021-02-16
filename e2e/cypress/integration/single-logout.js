@@ -9,7 +9,7 @@ context('Single Logout', () => {
   });
   it('should not show returnlink or undefined on default page', () => {
     cy.visit('/logout?singlelogout=true');
-    cy.get('.stateWrapper').should('not.contain', 'undefined');
+    cy.get('body').should('not.contain', 'undefined');
   });
   it('should login to 5 test services and add iframe to DOM', () => {
     cy.loginOnTestService('hejmdal-1');

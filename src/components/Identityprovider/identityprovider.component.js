@@ -15,7 +15,7 @@ import {
 import {
   getListOfAgenciesForFrontend,
   getAgency
-} from '../../utils/agencies.util';
+} from '../../utils/vipCore.util';
 import {validateNetpunktUser} from '../Forsrights/forsrights.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
@@ -33,7 +33,7 @@ import {getAgencyByCpr} from '../Culr/culr.component';
  * @param {function} next
  * @returns {*}
  */
-export async function authenticate(req, res, next) {
+export async function authenticate(req, res, next) { // eslint-disable-line complexity
   const state = req.getState();
 
   try {
