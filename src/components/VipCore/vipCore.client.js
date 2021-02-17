@@ -43,7 +43,8 @@ export async function libraryListFromName(text) {
       });
     }
 
-    return parseFindLibraryResponse(response.body);
+    const checkLibraries = await getBorrowercheckLibraries();
+    return parseFindLibraryResponse(response.body, checkLibraries);
   }
 
   throw new VipCoreError(response.statusMessage);
@@ -73,7 +74,40 @@ export async function libraryListFromPosition(
   }
 
   if (response.statusCode === 200) {
-    return parseFindLibraryResponse(response.body);
+    const checkLibraries = await getBorrowercheckLibraries();
+    return parseFindLibraryResponse(response.body, checkLibraries);
+  }
+
+  throw new VipCoreError(response.statusMessage);
+}
+
+/** return an array with agencies that support borrowerCheck from login.bib.dk
+ *
+ * @returns {Array}
+ */
+async function getBorrowercheckLibraries() {
+  if (CONFIG.mock_externals.vipCore) {
+    return [];
+  }
+    let response;
+    response = await promiseRequest('post', {
+      url: CONFIG.vipCore.uri + '/borrowerchecklist/',
+      body: {
+        serviceRequester: 'login.bib.dk',
+        borrowerCheckAllowed: 'true',
+        trackingId: 'login.bib.dk'
+      },
+      json: true
+    });
+
+  if (response.statusCode === 200) {
+    if (response.body && Array.isArray(response.body.borrowerCheckLibrary)) {
+      const checkLibraries = [];
+      response.body.borrowerCheckLibrary.forEach(agency => {
+        checkLibraries.push(agency.isil.toLowerCase().replace('dk-', ''));
+      });
+      return checkLibraries;
+    }
   }
 
   throw new VipCoreError(response.statusMessage);
@@ -83,9 +117,10 @@ export async function libraryListFromPosition(
  * Parse findLibrary repsonse and extract the few data needed
  *
  * @param response
+ * @param checkLibraries
  * @returns {Array}
  */
-function parseFindLibraryResponse(response) {
+function parseFindLibraryResponse(response, checkLibraries) {
   const libraryList = [];
   if (response && Array.isArray(response.pickupAgency)) {
     const agencies = [];
@@ -97,6 +132,10 @@ function parseFindLibraryResponse(response) {
         return;
       }
 
+      if (!CONFIG.mock_externals.vipCore && !checkLibraries.includes(branchId)) {
+        console.log(branchId + ' does not support borrowerCheck for login.bib.dk.');
+        return;
+      }
       const item = {
         agencyId: getAgencyField(agency, 'agencyId'),
         branchId: branchId,
