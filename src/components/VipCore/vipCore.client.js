@@ -104,7 +104,9 @@ async function getBorrowercheckLibraries() {
     if (response.body && Array.isArray(response.body.borrowerCheckLibrary)) {
       const checkLibraries = [];
       response.body.borrowerCheckLibrary.forEach(agency => {
-        checkLibraries.push(agency.isil.toLowerCase().replace('dk-', ''));
+        if (agency.isil) {
+          checkLibraries.push(agency.isil.toLowerCase().replace('dk-', ''));
+        }
       });
       return checkLibraries;
     }
@@ -121,6 +123,7 @@ async function getBorrowercheckLibraries() {
  * @returns {Array}
  */
 function parseFindLibraryResponse(response, checkLibraries) {
+  const noBorrowercheckSupport = [];
   const libraryList = [];
   if (response && Array.isArray(response.pickupAgency)) {
     const agencies = [];
@@ -133,7 +136,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
       }
 
       if (!CONFIG.mock_externals.vipCore && !checkLibraries.includes(branchId)) {
-        console.log(branchId + ' does not support borrowerCheck for login.bib.dk.');
+        noBorrowercheckSupport.push(branchId);
         return;
       }
       const item = {
@@ -166,6 +169,9 @@ function parseFindLibraryResponse(response, checkLibraries) {
       libraryList.push(item);
       agencies.push(branchId);
     });
+    if (noBorrowercheckSupport.length) {
+      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk.');
+    }
   }
 
   return libraryList;
