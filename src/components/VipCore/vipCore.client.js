@@ -26,8 +26,7 @@ export async function libraryListFromName(text) {
     response = await promiseRequest('post', {
       url: CONFIG.vipCore.uri + '/findlibrary/',
       body: {
-        pickupAllowed: 'true',
-        anyField: text,
+        anyField: text ? text : '?',
         sort: ['agencyName']
       },
       json: true
