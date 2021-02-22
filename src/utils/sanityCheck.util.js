@@ -18,7 +18,7 @@ export default async function sanityCheck() {
     wrap(checkBorchk, 'borchk'),
     wrap(checkCulr, 'culr'),
     wrap(checkSmaug, 'smaug'),
-    wrap(checkVipCore(), 'vipCore')
+    wrap(checkVipCore, 'vipCore')
   ]);
 }
 
