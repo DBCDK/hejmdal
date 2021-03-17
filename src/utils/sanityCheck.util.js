@@ -69,7 +69,7 @@ function checkDatabase() {
  * Check if Borchk webservice is responding
  */
 async function checkBorchk() {
-  const response = await Borchk.getClient('check', 'check', 'check', 'check');
+  const response = await Borchk.getClient('111111', '1111111111', '1111', 'check');
   if (!response || !response.userId) {
     throw Error('No valid response from borchk');
   }
