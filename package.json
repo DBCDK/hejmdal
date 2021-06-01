@@ -76,7 +76,7 @@
     "passport": "^0.4.0",
     "passport-oauth2": "^1.5.0",
     "pg": "^7.17.1",
-    "pug": "^2.0.3",
+    "pug": "^3.0.1",
     "should-send-same-site-none": "^2.0.5",
     "soap": "^0.29.0",
     "xml2js": "^0.4.19"
