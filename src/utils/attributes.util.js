@@ -54,6 +54,7 @@ export const ATTRIBUTES = {
   },
   netpunktAgency: {},
   forsrights: {},
+  dbcidp: {},
   municipalityAgencyId: {},
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'

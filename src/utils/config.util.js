@@ -119,6 +119,9 @@ export const CONFIG = {
   forsrights: {
     forsrightsUri: process.env.FORSRIGHTS_URI
   },
+  dbcidp: {
+    dbcidpUri: process.env.DBCIDP_URI
+  },
   gatewayf: {
     uri: process.env.GATEWAYF_URI,
     idp: {

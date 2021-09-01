@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "preinstall": "npx npm-force-resolutions",
+    "dev:thl": ". ./env.thl && npm run serve",
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
     "dev:test": "npm run build:dev & . ./env.test && npm run serve",
