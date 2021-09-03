@@ -51,8 +51,8 @@ export async function fetchIdpRights(agencyId, params) {
  * @return {array}
  */
 export async function getIdpAgencyRights(accessToken, agencies) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authorize"
-  const body = {token: accessToken, userIdAut: 'netpunkt'} // TODO: this will have to change at some point
+  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authorize";
+  const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: this will have to change at some point
   const promises = agencies.map(agency => {
     const requestParams = {
       url: idpUri,
@@ -65,7 +65,6 @@ export async function getIdpAgencyRights(accessToken, agencies) {
     return fetchIdpRights(agency, requestParams);
   });
   const result = await Promise.all(promises);
-  console.log("THL42; result: " + JSON.stringify(result));
   return result.length === 0 ? {} : result;
 }
 
@@ -79,7 +78,7 @@ export async function getIdpAgencyRights(accessToken, agencies) {
  * @return {boolean}
  */
 export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authenticate"
+  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authenticate";
   const body = {userIdAut, groupIdAut, passwordAut};
 
   const params = {
