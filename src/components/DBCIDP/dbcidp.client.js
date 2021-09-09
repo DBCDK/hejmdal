@@ -58,7 +58,7 @@ export async function fetchIdpRights(agencyId, params) {
  * @return {array}
  */
 export async function getIdpAgencyRights(accessToken, agencies) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authorize";
+  const idpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
   const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: userIdAut should configurable
   const promises = agencies.map(agency => {
     const requestParams = {
