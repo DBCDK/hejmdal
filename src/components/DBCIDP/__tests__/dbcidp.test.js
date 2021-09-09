@@ -10,7 +10,7 @@ describe('Test DBCIDP', () => {
     CONFIG.mock_externals.dbcidp = _SAVE_CONFIG;
   });
 
-  it('DBCIDP with no rights', async () => {
+  it('DBCIDP with no rights (agency not found, wrong password, etc.)', async () => {
     const response = await fetchIdpRights('default');
     expect(response).toEqual({});
   });
