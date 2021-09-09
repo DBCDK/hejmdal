@@ -4,6 +4,7 @@
  */
 
 import {CONFIG} from '../../utils/config.util';
+import getMockClient from './mock/dbcidp.client.mock';
 import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 
@@ -14,7 +15,7 @@ import {log} from '../../utils/logging.util';
  * @return {object}
  *
  * Params example:
-  *   {
+ *   {
  *     url: CONFIG.dbcidp.dbcidpUri,
  *     method: 'POST',
  *     headers: {
@@ -25,7 +26,12 @@ import {log} from '../../utils/logging.util';
  */
 export async function fetchIdpRights(agencyId, params) {
   try {
-    const resp = await promiseRequest('post', params);
+    let resp;
+    if (CONFIG.mock_externals.dbcidp) {
+      resp = getMockClient(agencyId);
+    } else {
+      resp = await promiseRequest('post', params);
+    }
     if (resp.statusCode !== 200) {
       return {};
     }

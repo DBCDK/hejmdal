@@ -68,7 +68,8 @@ export const CONFIG = {
     vipCore: process.env.MOCK_VIPCORE === '1',
     smaug: process.env.MOCK_SMAUG === '1',
     unilogin: process.env.MOCK_UNILOGIN === '1',
-    wayf: process.env.MOCK_WAYF === '1'
+    wayf: process.env.MOCK_WAYF === '1',
+    dbcidp: process.env.MOCK_DBCIDP === '1'
   },
   mock_storage: process.env.MOCK_STORAGE === '1',
   vipCore: {

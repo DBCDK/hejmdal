@@ -95,6 +95,7 @@ describe('Test Smaug component', () => {
           description: '3 cifret kommunenummer'
         },
         netpunktAgency: {},
+        dbcidp: {},
         forsrights: {},
         municipalityAgencyId: {},
         uniloginId: {
