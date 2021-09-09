@@ -11,6 +11,7 @@ import {log} from '../../utils/logging.util';
 /**
  * Function to retrieve agencyId rights from forsrights service
  *
+ * @param agencyId agencyId this request if made for
  * @param {object} params
  * @return {object}
  *
@@ -58,7 +59,7 @@ export async function fetchIdpRights(agencyId, params) {
  */
 export async function getIdpAgencyRights(accessToken, agencies) {
   const idpUri = CONFIG.dbcidp.dbcidpUri + "/authorize";
-  const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: this will have to change at some point
+  const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: userIdAut should configurable
   const promises = agencies.map(agency => {
     const requestParams = {
       url: idpUri,
@@ -72,39 +73,4 @@ export async function getIdpAgencyRights(accessToken, agencies) {
   });
   const result = await Promise.all(promises);
   return result.length === 0 ? {} : result;
-}
-
-/**
- * Function to validate if a 'netpunkt-triple-login' is valid
- * The validation is done against the idp service.
- *
- * @param userIdAut
- * @param groupIdAut
- * @param passwordAut
- * @return {boolean}
- */
-export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + "/authenticate";
-  const body = {userIdAut, groupIdAut, passwordAut};
-
-  const params = {
-    url: idpUri,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  };
-
-  try {
-    const response = await promiseRequest('post', params);
-    const parsedBody = JSON.parse(response.body);
-    return parsedBody.authenticated;
-  } catch (error) {
-    log.error('Error validating netpunkt-triple-user', {
-      error: error.message,
-      stack: error.stack
-    });
-    return false;
-  }
 }
