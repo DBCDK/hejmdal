@@ -22,6 +22,8 @@ static/*.css
 # ENV #
 # ==========
 *.env
+env.thl
+env.fvs
 
 # ==========
 # SELENIUM #
