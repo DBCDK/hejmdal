@@ -15,7 +15,7 @@ services:
   e2e:
     image: docker.dbc.dk/cypress:latest
     volumes:
-      - './e2e:/app/e2e'
+      - './e2e:/app/e2e:rw'
     depends_on:
       - web
     # note: inside e2e container, the network allows accessing
