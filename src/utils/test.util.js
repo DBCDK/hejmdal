@@ -51,7 +51,7 @@ export function registerStore(store) {
 
 /**
  * For test purpose only!
- * Request alle memory stores to be wiped.
+ * Request all memory stores to be wiped.
  */
 export function wipeStores() {
   if (CONFIG.app.env === 'test') {

@@ -60,6 +60,37 @@ describe('Test Logout component', () => {
       'http://localhost:3011/example/?message=logout'
     );
   });
+
+  it('should redirect to returnurl with single query parameter', async () => {
+    mockData.logoutScreen = 'skip';
+    ctx.session.state.redirect_uri = 'http://localhost:3011/example/?q=hest';
+    await logout(ctx, ctx, () => {});
+    expect(ctx.redirect).toBeCalledWith(
+      'http://localhost:3011/example/?q=hest&message=logout'
+    );
+  });
+
+  // This test is not really representative of what happens in a real browser.
+  // The browser will cut off anything after ?q=hest so in a real browser environment
+  // the expected answer would be: http://localhost:3011/example/?q=hest&message=logout
+  it('should redirect to returnurl with multiple non-url encoded query parameters', async () => {
+    mockData.logoutScreen = 'skip';
+    ctx.session.state.redirect_uri = 'http://localhost:3011/example/?q=hest&qp1=val1&qp2=val2';
+    await logout(ctx, ctx, () => {});
+    expect(ctx.redirect).toBeCalledWith(
+      'http://localhost:3011/example/?q=hest&qp1=val1&qp2=val2&message=logout'
+    );
+  });
+
+  it('should redirect to returnurl with multiple url encoded query parameters', async () => {
+    mockData.logoutScreen = 'skip';
+    ctx.session.state.redirect_uri = 'http://localhost:3011/example/?q%3Dhest%26qp1%3Dval1%26qp2%3Dval2';
+    await logout(ctx, ctx, () => {});
+    expect(ctx.redirect).toBeCalledWith(
+      'http://localhost:3011/example/?q=hest&qp1=val1&qp2=val2&message=logout'
+    );
+  });
+
   it('should redirect to returnurl with close browser message', async () => {
     ctx.session.user.identityProviders = ['unilogin'];
     ctx.session.state.redirect_uri = 'http://localhost:3011/example/';

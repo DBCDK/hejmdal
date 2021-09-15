@@ -104,11 +104,12 @@ export function logout(req, res, next) {
 
     req.session.destroy(() => {
       if (redirect_uri) {
+        const decodedUri = decodeURIComponent(redirect_uri);
         res.redirect(
-          redirect_uri +
-            (redirect_uri.indexOf('?') ? '?' : '&') +
-            'message=' +
-            getLogoutInfoCode(identityProviders)
+          decodedUri +
+          (decodedUri.indexOf('?') > 0 ? '&' : '?') +
+          'message=' +
+          getLogoutInfoCode(identityProviders)
         );
       } else {
         res.render('Logout', {
@@ -130,7 +131,6 @@ export function logout(req, res, next) {
  * @param {Response} res
  * @param {function} next
  */
-
 export function singleLogout(req, res, next) {
   const {clients = [], state = {}} = req.session;
   let {serviceClient, redirect_uri} = state;
@@ -146,8 +146,9 @@ export function singleLogout(req, res, next) {
   try {
     const {identityProviders} = req.getUser() || {};
     if (redirect_uri) {
-      redirect_uri = `${redirect_uri}${
-        redirect_uri.indexOf('?') ? '?' : '&'
+      const decodedUri = decodeURIComponent(redirect_uri);
+      redirect_uri = `${decodedUri}${
+        decodedUri.indexOf('?') > 0 ? '&' : '?'
       }message=${getLogoutInfoCode(identityProviders)}`;
     }
     const link = (serviceClient && buildReturnUrl(state)) || null;
