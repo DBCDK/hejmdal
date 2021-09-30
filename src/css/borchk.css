@@ -96,7 +96,7 @@
       overflow: hidden;
       left: -1px;
       z-index: 1;
-      height: calc(100% - 80px);
+      height: calc(100% - 240px);
       box-shadow: var(--shadow);
 
       transition-duration: 0.2s;
