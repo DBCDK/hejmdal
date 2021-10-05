@@ -16,6 +16,7 @@ services:
 
   e2e:
     image: docker.dbc.dk/cypress:latest
+    ipc: host
     volumes:
       - './e2e:/app/e2e:rw'
     depends_on:
