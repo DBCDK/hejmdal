@@ -96,7 +96,7 @@
       overflow: hidden;
       left: -1px;
       z-index: 1;
-      height: calc(100% - 500px);
+      height: 300px;
       box-shadow: var(--shadow);
 
       transition-duration: 0.2s;
@@ -116,7 +116,7 @@
       ul.libraries-dropdown {
         height: 100%;
         overflow-y: auto;
-        padding: 22px 0 22px 0;
+        padding: 22px 0 100px 0;
 
         &::-webkit-scrollbar-track {
           background-color: var(--grey-lighten-4);
