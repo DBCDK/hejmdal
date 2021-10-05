@@ -121,7 +121,7 @@ export async function saveUser(token, user, clientId) {
         client_application: clientId,
         user_id: user.userId,
         group: user.agency,
-        idp: user.hasOwnProperty("identityProviders") ? user.identityProviders[0] : "password_grant"
+        idp: user.hasOwnProperty('identityProviders') ? user.identityProviders[0] : 'password_grant'
       }
     );
   } catch (error) {
