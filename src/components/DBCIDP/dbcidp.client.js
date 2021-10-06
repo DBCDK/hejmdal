@@ -74,3 +74,36 @@ export async function getIdpAgencyRights(accessToken, agencies) {
   const result = await Promise.all(promises);
   return result.length === 0 ? {} : result;
 }
+
+/**
+ * Function to authenticate a user (netpunkt-triple) against DBCIDP
+ *
+ * @param userIdAut userIdAut, f.ex. 'netpunkt'
+ * @param groupIdAut groupIdAut, f.ex. '716700'
+ * @param passwordAut passwordAut, password for login
+ * @returns {Promise<boolean|*>}
+ */
+export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
+  const idpUri = CONFIG.dbcidp.dbcidpUri + '/authenticate';
+  const body = {userIdAut, passwordAut, agencyId: groupIdAut};
+
+  const params = {
+    url: idpUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  try {
+    const response = await promiseRequest('post', params);
+    const parsedBody = JSON.parse(response.body);
+    return parsedBody.authenticated;
+  } catch (error) {
+    log.error('Error validating netpunkt-triple-user', {
+      error: error.message,
+      stack: error.stack
+    });
+    return false;
+  }
+}
