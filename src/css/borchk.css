@@ -342,11 +342,6 @@
 }
 
 @media (min-width: 486px) {
-  ul.libraries-dropdown {
-    overflow-y: scroll;
-    padding: 22px 0 170px;
-    -webkit-overflow-scrolling: touch;
-  }
   #newUser-dropdown .input-container,
   #borchk-dropdown .input-container {
     max-width: 100%;
@@ -357,6 +352,14 @@
   #newUser-dropdown .input-container,
   #borchk-dropdown .input-container {
     max-width: 486px;
+  }
+}
+
+@media (max-width: 428px) {
+  ul.libraries-dropdown {
+    overflow-y: scroll;
+    padding: 22px 0 170px 0;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
