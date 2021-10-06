@@ -100,7 +100,7 @@ export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
     const parsedBody = JSON.parse(response.body);
     return parsedBody.authenticated;
   } catch (error) {
-    log.error('Error validating netpunkt-triple-user', {
+    log.error('Error validating DBCIDP access profile', {
       error: error.message,
       stack: error.stack
     });
