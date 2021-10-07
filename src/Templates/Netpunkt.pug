@@ -9,7 +9,7 @@ block append content
           h1 Netpunkt Login
 
         div#netpunkt
-          form(action=identityProviders.netpunkt.action autocomplete='off' method='post' id='netpunkt-login-form' onsubmit='netpunktSubmit(event)')
+          form(action=idpAction autocomplete='off' method='post' id='netpunkt-login-form' onsubmit='netpunktSubmit(event)')
 
             div.form-group
               label(for='group-input') Biblioteksnummer

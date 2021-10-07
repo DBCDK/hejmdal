@@ -20,7 +20,7 @@
     "lint:checkstyle": "eslint ./src -o report.xml -f checkstyle",
     "ncu:check": "ncu",
     "serve": "nodemon --exec node --no-stdin src/main.js --ignore ./static/example --ignore ./e2e",
-    "serve:debug": "nodemon $NODE_DEBUG_OPTION --debug --exec node --no-stdin src/main.js --ignore ./static/example",
+    "serve:debug": "nodemon $NODE_DEBUG_OPTION --inspect --exec node --no-stdin src/main.js --ignore ./static/example",
     "test": ". ./env.test && MOCK_STORAGE=1 MOCK_CULR=1 MOCK_SMAUG=1 jest",
     "test:watch": "npm run test -- --watch",
     "test:cy": "npm run start:test & wait-on http://localhost:3011 && npm run cy:run",

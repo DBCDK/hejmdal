@@ -17,6 +17,7 @@ import {
   getAgency
 } from '../../utils/vipCore.util';
 import {validateNetpunktUser} from '../Forsrights/forsrights.client';
+import {validateIdpUser} from '../DBCIDP/dbcidp.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
@@ -64,7 +65,8 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
     if (
       state.serviceClient.identityProviders.length === 1 &&
       state.serviceClient.identityProviders[0] !== 'borchk' &&
-      state.serviceClient.identityProviders[0] !== 'netpunkt'
+      state.serviceClient.identityProviders[0] !== 'netpunkt' &&
+      state.serviceClient.identityProviders[0] !== 'dbcidp'
     ) {
       res.redirect(
         identityProviders[state.serviceClient.identityProviders[0]].link
@@ -105,13 +107,14 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       ip => ip
     ).length;
 
-    if (state.serviceClient.identityProviders.includes('netpunkt')) {
+    if (state.serviceClient.identityProviders.includes('netpunkt') || state.serviceClient.identityProviders.includes('dbcidp')) {
       res.render('Netpunkt', {
         retries: req.query.retries,
         error: error,
         returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
         serviceClient: state.serviceClient.name,
         identityProviders,
+        idpAction: state.serviceClient.identityProviders.includes('netpunkt') ? identityProviders.netpunkt.action : identityProviders.dbcidp.action,
         hideFooter: true,
         loginToProfile: !!req.session.loginToProfil
       });
@@ -222,6 +225,41 @@ export async function borchkCallback(req, res) {
 }
 
 /**
+ * Parses the callback parameters for dbcidp. Parameters from form comes as post
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+export async function dbcidpCallback(req, res) {
+  const formData = req.fakeNetpunktPost || req.body;
+  const trimmedGroupId = formData.groupId.toLowerCase().replace('dk-', '');
+  const validated = {error: true, message: 'unknown_error'};
+
+  const userId = formData.userId;
+  const groupId = trimmedGroupId;
+  const password = formData.password;
+
+  if (userId && groupId && password) {
+    const isValid = await validateIdpUser(userId, groupId, password);
+    if (isValid) {
+      const user = {
+        userId: userId,
+        userType: 'dbcidp',
+        agency: groupId,
+        password: password,
+        userValidated: true
+      };
+      return req.setUser(user);
+    }
+  } else {
+    validated.message = 'fieldValidationErrors';
+  }
+  identityProviderValidationFailed(req, res, validated, groupId);
+  return false;
+}
+
+/**
  * Parses the callback parameters for netpunkt. Parameters from form comes as post
  *
  * @param req
@@ -254,14 +292,11 @@ export async function netpunktCallback(req, res) {
       // Set user session
       return req.setUser(user);
     }
-
     validated.message = 'fimis';
   } else {
     validated.message = 'fieldValidationErrors';
   }
-
   identityProviderValidationFailed(req, res, validated, groupId);
-
   return false;
 }
 
@@ -339,11 +374,14 @@ export async function identityProviderCallback(req, res) {
       case 'borchk':
         await borchkCallback(req, res);
         break;
-      case 'netpunkt':
-        await netpunktCallback(req, res);
+      case 'dbcidp':
+        await dbcidpCallback(req, res);
         break;
       case 'nemlogin':
         await nemloginCallback(req);
+        break;
+      case 'netpunkt':
+        await netpunktCallback(req, res);
         break;
       case 'unilogin':
         await uniloginCallback(req);
@@ -411,6 +449,7 @@ function getIdentityProviders(state) {
   const identityProviders = state.serviceClient.identityProviders;
   let providers = {
     borchk: null,
+    dbcidp: null,
     netpunkt: null,
     unilogin: null,
     nemlogin: null,
@@ -420,6 +459,13 @@ function getIdentityProviders(state) {
   if (identityProviders.includes('borchk')) {
     providers.borchk = {
       action: `/login/identityProviderCallback/borchk/${stateHash}`,
+      abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
+    };
+  }
+
+  if (identityProviders.includes('dbcidp')) {
+    providers.dbcidp = {
+      action: `/login/identityProviderCallback/dbcidp/${stateHash}`,
       abortAction: buildReturnUrl(state, {error: 'LoginCancelled'})
     };
   }
