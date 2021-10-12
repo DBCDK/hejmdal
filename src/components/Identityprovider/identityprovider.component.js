@@ -252,6 +252,7 @@ export async function dbcidpCallback(req, res) {
       };
       return req.setUser(user);
     }
+    validated.message = 'fimis';
   } else {
     validated.message = 'fieldValidationErrors';
   }
