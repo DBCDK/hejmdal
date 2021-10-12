@@ -358,7 +358,7 @@
 @media (max-width: 428px) {
   ul.libraries-dropdown {
     overflow-y: scroll !important;
-    padding: 22px 0 170px 0 !important;
+    padding: 22px 0 200px 0 !important;
     -webkit-overflow-scrolling: touch;
   }
 }
