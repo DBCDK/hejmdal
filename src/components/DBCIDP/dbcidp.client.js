@@ -42,7 +42,7 @@ export async function fetchIdpRights(agencyId, params) {
     }
     return {agencyId, rights: response.rights};
   } catch (error) {
-    log.error(`Error retrieving agency idp rights for ${agencyId}`, {
+    log.error(`Error retrieving agency DBCIDP rights for ${agencyId}`, {
       error: error.message,
       stack: error.stack
     });
