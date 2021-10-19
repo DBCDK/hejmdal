@@ -51,27 +51,24 @@ export async function fetchIdpRights(agencyId, params) {
 }
 
 /**
- * Function to retrieve (MULTIPLE) agency rights from forsrights service
+ * Function to retrieve agency rights from DBCIDP service
  *
  * @param {string} accessToken
- * @param {array} agencies
+ * @param {object} user information
  * @return {array}
  */
-export async function getIdpAgencyRights(accessToken, agencies) {
+export async function getIdpAgencyRights(accessToken, user) {
   const idpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
-  const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: userIdAut should configurable
-  const promises = agencies.map(agency => {
-    const requestParams = {
-      url: idpUri,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    return fetchIdpRights(agency, requestParams);
-  });
-  const result = await Promise.all(promises);
+  const body = {token: accessToken, userIdAut: user.userId};
+  const requestParams = {
+    url: idpUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  const result = fetchIdpRights(user.agency, requestParams);
   return result.length === 0 ? {} : result;
 }
 
