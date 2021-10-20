@@ -68,8 +68,8 @@ export async function getDbcidpAgencyRights(accessToken, user) {
     },
     body: JSON.stringify(body)
   };
-  const result = fetchDbcidpRights(user.agency, requestParams);
-  return result.length === 0 ? {} : result;
+  const result = await fetchDbcidpRights(user.agency, requestParams);
+  return result.length === 0 ? {} : [result];
 }
 
 /**
