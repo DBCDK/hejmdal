@@ -1,4 +1,4 @@
-import {fetchIdpRights} from '../dbcidp.client';
+import {fetchDbcidpRights} from '../dbcidp.client';
 import {CONFIG} from '../../../utils/config.util';
 
 describe('Test DBCIDP', () => {
@@ -11,12 +11,12 @@ describe('Test DBCIDP', () => {
   });
 
   it('DBCIDP with no rights (agency not found, wrong password, etc.)', async () => {
-    const response = await fetchIdpRights('default');
+    const response = await fetchDbcidpRights('default');
     expect(response).toEqual({});
   });
 
   it('DBCIDP with rights (790900)', async () => {
-    const response = await fetchIdpRights('790900');
+    const response = await fetchDbcidpRights('790900');
     const expected = {
       agencyId: '790900', rights: [
         {productName: 'INFOMEDIA', name: 'READ', description: 'Is allowed to read from INFORMEDIA'},

@@ -25,7 +25,7 @@ import {log} from '../../utils/logging.util';
  *     body: {token: accessToken, userIdAut: 'netpunkt'}
  *   }
  */
-export async function fetchIdpRights(agencyId, params) {
+export async function fetchDbcidpRights(agencyId, params) {
   try {
     let resp;
     if (CONFIG.mock_externals.dbcidp) {
@@ -42,7 +42,7 @@ export async function fetchIdpRights(agencyId, params) {
     }
     return {agencyId, rights: response.rights};
   } catch (error) {
-    log.error(`Error retrieving agency idp rights for ${agencyId}`, {
+    log.error(`Error retrieving agency DBCIDP rights for ${agencyId}`, {
       error: error.message,
       stack: error.stack
     });
@@ -51,28 +51,25 @@ export async function fetchIdpRights(agencyId, params) {
 }
 
 /**
- * Function to retrieve (MULTIPLE) agency rights from forsrights service
+ * Function to retrieve agency rights from DBCIDP service
  *
  * @param {string} accessToken
- * @param {array} agencies
+ * @param {object} user information
  * @return {array}
  */
-export async function getIdpAgencyRights(accessToken, agencies) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
-  const body = {token: accessToken, userIdAut: 'netpunkt'}; // TODO: userIdAut should configurable
-  const promises = agencies.map(agency => {
-    const requestParams = {
-      url: idpUri,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(body)
-    };
-    return fetchIdpRights(agency, requestParams);
-  });
-  const result = await Promise.all(promises);
-  return result.length === 0 ? {} : result;
+export async function getDbcidpAgencyRights(accessToken, user) {
+  const dbcidpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
+  const body = {token: accessToken, userIdAut: user.userId};
+  const requestParams = {
+    url: dbcidpUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  const result = await fetchDbcidpRights(user.agency, requestParams);
+  return result.length === 0 ? {} : [result];
 }
 
 /**
