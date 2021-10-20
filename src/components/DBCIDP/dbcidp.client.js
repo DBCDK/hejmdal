@@ -25,7 +25,7 @@ import {log} from '../../utils/logging.util';
  *     body: {token: accessToken, userIdAut: 'netpunkt'}
  *   }
  */
-export async function fetchIdpRights(agencyId, params) {
+export async function fetchDbcidpRights(agencyId, params) {
   try {
     let resp;
     if (CONFIG.mock_externals.dbcidp) {
@@ -57,18 +57,18 @@ export async function fetchIdpRights(agencyId, params) {
  * @param {object} user information
  * @return {array}
  */
-export async function getIdpAgencyRights(accessToken, user) {
-  const idpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
+export async function getDbcidpAgencyRights(accessToken, user) {
+  const dbcidpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
   const body = {token: accessToken, userIdAut: user.userId};
   const requestParams = {
-    url: idpUri,
+    url: dbcidpUri,
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   };
-  const result = fetchIdpRights(user.agency, requestParams);
+  const result = fetchDbcidpRights(user.agency, requestParams);
   return result.length === 0 ? {} : result;
 }
 

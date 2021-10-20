@@ -9,7 +9,7 @@ import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
 import {getAgencyRights} from '../components/Forsrights/forsrights.client.js';
-import {getIdpAgencyRights} from '../components/DBCIDP/dbcidp.client';
+import {getDbcidpAgencyRights} from '../components/DBCIDP/dbcidp.client';
 
 /**
  * Attribute mapper
@@ -141,7 +141,7 @@ export async function mapCulrResponse(
             ]);
             break;
           case 'dbcidp':
-            mapped.dbcidp = await getIdpAgencyRights(accessToken, user);
+            mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
             break;
           default:
             log.warn('Cannot map attribute: ' + field);
