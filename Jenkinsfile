@@ -68,7 +68,7 @@ pipeline {
 			      }
 			      steps {
 				        dir("deploy") {
-					          git(url: "gitlab@gitlab.dbc.dk:frontend/hejmdal-configuration.git", credentialsId: "gitlab-svi", branch: "staging")
+					          git(url: "gitlab@gitlab.dbc.dk:frontend/hejmdal-configuration.git", credentialsId: "gitlab-isworker", branch: "staging")
 					          sh """#!/usr/bin/env bash
 						            set -xe
 						            rm -rf auto-committer-env
