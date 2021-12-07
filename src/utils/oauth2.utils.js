@@ -73,6 +73,8 @@ export function clearClientOnSession(req, res, next) {
  *
  * @export
  * @param {object} req
+ * @param res
+ * @param next
  */
 export function addClientToListOfClients(req, res, next) {
   try {
@@ -150,7 +152,7 @@ export function validateRedirectUri(redirect_uri, client) {
   const res =
     client.redirectUris.filter(uri => {
       const req = new RegExp(
-        `^${uri.replace('.', '\\.').replace(['*'], '.*')}$`
+        `^${uri.replace(/\./g, '\\.').replace(/\*/g, '.*')}$`, 'g'
       );
       return redirect_uri.match(req);
     }).length > 0;
