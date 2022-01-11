@@ -14,8 +14,7 @@ import {sortBy} from 'lodash';
  * Retrieval of user identity/identities from CULR webservice
  *
  * @param {Object} user
- * @param {string} agencyId
- * @return {{}}
+ * @returns {Promise<{}>}
  */
 export async function getUserAttributesFromCulr(user = {}) {
   const {userId, agency: agencyId = null} = user;
@@ -138,11 +137,11 @@ export async function getMunicipalityId(user) {
 /**
  * Find municipality Number and Municipality Agency
  *
- * We can only get municipality if user has logged in through library in municipality.
+ * We can only get municipality if user has logged in through borchk or is found in CULR
  *
- * @param {{MunicipalityNo: String|undefined}} culrResponse
- * @param {{agency: String}} user
- * @returns {{municipalityAgencyId, String|null, municipalityNumber:String|null}}
+ * @param {Object} culrResponse
+ * @param {Object} user
+ * @returns {Promise<{}>}
  */
 export async function getMunicipalityInformation(culrResponse, user) {
   let response = {};
@@ -171,10 +170,17 @@ export async function getMunicipalityInformation(culrResponse, user) {
       } else {
         response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
       }
-    } else if (user.agency) {
-      response.municipalityAgencyId = user.agency;
-      if (user.agency.startsWith('7')) {
-        response.municipalityNumber = user.agency.slice(1, 4);
+    }
+    else {
+      // Municipality not found in borchk or culr
+      // Need a hack for 700400: 'Sydslesvig', 911116: 'Býarbókasavnið', 911130: 'Nunatta Atuagaateqarfia',
+      // to give them a municipality agency, and for Sydslesvig a municipality number
+      const municipalityHack = ['700400', '911116', '911130'];
+      if (municipalityHack.includes(user.agency)) {
+        response.municipalityAgencyId = user.agency;
+        if (user.agency.startsWith('7')) {
+          response.municipalityNumber = user.agency.slice(1, 4);
+        }
       }
     }
     return response;
@@ -265,7 +271,7 @@ export function shouldCreateAccount(library, user, response) {
 /**
  * Retrieves a 'best-match' user agency if none municipalityAgency is set
  *
- * @param {String} CPR
+ * @param {String} cpr
  * @returns {string} agency
  */
 
@@ -338,7 +344,7 @@ export function filterAgencies(agencies) {
  * agency with type of CPR is. 2. sort priority
  *
  * @param {Array} agencies
- * @param {String} municipalityNumber
+ * @param {String} municipalityNo
  * @returns {Array}
  */
 

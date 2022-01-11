@@ -169,7 +169,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
       agencies.push(branchId);
     });
     if (noBorrowercheckSupport.length) {
-      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk.');
+      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk.'); // eslint-disable-line no-console
     }
   }
 
