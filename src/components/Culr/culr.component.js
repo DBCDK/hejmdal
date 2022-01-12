@@ -176,7 +176,6 @@ export async function getMunicipalityInformation(culrResponse, user) {
       // Need a hack for 100450: 'Test', 700400: 'Sydslesvig', 911116: 'Býarbókasavnið', 911130: 'Nunatta Atuagaateqarfia',
       // to give them a municipality agency, and for Sydslesvig a municipality number
       const municipalityHack = CONFIG.municipalityHack.replace(/[^\d]+/g, ' ').trim().split(' ');
-      console.log(municipalityHack);
       if (municipalityHack.includes(user.agency)) {
         response.municipalityAgencyId = user.agency;
         if (user.agency.startsWith('7')) {
