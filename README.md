@@ -173,6 +173,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `MOCK_WAYF` : `mock_externals.wayf`  
   set to `1` (`MOCK_WAYF=1`) to mock WAYF and use a predefined response
 
+- `MUNICIPALITY_AGENCY_HACK` : `municipalityHack`  
+  List of space separated agencies where municipality is blindly taken, defaults to "100450 700400 911116 911130"
+
 - `NODE_ENV` : `app.env`  
   When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
 
