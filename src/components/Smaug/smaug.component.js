@@ -62,6 +62,8 @@ export function extractClientInfo(client) {
     clientSecret: client.app.clientSecret,
     requireConsent: !!client.requireConsent,
     logoColor: client.logoColor ? client.logoColor : '#252525',
+    title: client.layoutTitle ? client.layoutTitle : 'Netpunkt Login',
+    buttonColor: client.layoutBtnBgColor ? client.layoutBtnBgColor : '#e56312',
     singleLogoutPath: client.singleLogoutPath,
     proxy: client.proxy || false
   };

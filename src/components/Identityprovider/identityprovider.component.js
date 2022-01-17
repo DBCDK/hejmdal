@@ -115,6 +115,9 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         serviceClient: state.serviceClient.name,
         identityProviders,
         idpAction: state.serviceClient.identityProviders.includes('netpunkt') ? identityProviders.netpunkt.action : identityProviders.dbcidp.action,
+        title: state.serviceClient.title,
+        buttonColor: "this.style.backgroundColor='" + state.serviceClient.buttonColor + "'",
+        defaultUser: state.serviceClient.identityProviders.includes('netpunkt') ? 'netpunkt' : '',
         hideFooter: true,
         loginToProfile: !!req.session.loginToProfil
       });
