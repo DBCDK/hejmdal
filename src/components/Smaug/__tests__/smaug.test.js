@@ -58,12 +58,12 @@ describe('Test Smaug component', () => {
   it('should return client with valid client_id', async () => {
     const clientinfo = await smaug.getClientInfoByClientId('hejmdal');
     expect(clientinfo).toEqual({
-      clientId: 'hejmdal',
-      clientSecret: 'hejmdal_secret',
       grants: ['authorization_code', 'password', 'cas'],
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,
+      singleLogoutPath: undefined,
+      title: "Netpunkt Login",
       logoColor: '#252525',
       redirectUris: [
         'http://localhost:3011/*',
@@ -71,7 +71,14 @@ describe('Test Smaug component', () => {
         'http://localhost:3011/cas/callback'
       ],
       logoutScreen: 'include',
-      borchkServiceName: 'bibliotek.dk',
+      borchkServiceName: "bibliotek.dk",
+      buttonColor: "#252525",
+      buttonHoverColor: "#e56312",
+      buttonTxtColor: "#ffffff",
+      buttonTxtHoverColor: "#ffffff",
+      clientId: "hejmdal",
+      clientSecret: "hejmdal_secret",
+      defaultUser: "netpunkt",
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
         birthDate: {
