@@ -17,13 +17,4 @@
       width: 100%;
     }
   }
-
-  .action-container {
-    button {
-      &:hover,
-      &:focus {
-        background-color: var(--netpunkt);
-      }
-    }
-  }
 }

@@ -62,6 +62,12 @@ export function extractClientInfo(client) {
     clientSecret: client.app.clientSecret,
     requireConsent: !!client.requireConsent,
     logoColor: client.logoColor ? client.logoColor : '#252525',
+    defaultUser: client.display && client.display.defaultUser !== undefined ? client.display.defaultUser : "netpunkt",
+    title: client.display && client.display.title ? client.display.title : 'Netpunkt Login',
+    buttonColor: client.display && client.display.buttonColor ? client.display.buttonColor : '#252525',
+    buttonHoverColor: client.display && client.display.buttonHoverColor ? client.display.buttonHoverColor : '#e56312',
+    buttonTxtColor: client.display && client.display.buttonTxtColor ? client.display.buttonTxtColor : '#ffffff',
+    buttonTxtHoverColor: client.display && client.display.buttonTxtHoverColor ? client.display.buttonTxtHoverColor : '#ffffff',
     singleLogoutPath: client.singleLogoutPath,
     proxy: client.proxy || false
   };
