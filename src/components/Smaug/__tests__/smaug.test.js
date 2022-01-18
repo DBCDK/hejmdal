@@ -62,8 +62,7 @@ describe('Test Smaug component', () => {
       name: 'Test Service',
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,
-      singleLogoutPath: undefined,
-      title: "Netpunkt Login",
+      title: 'Netpunkt Login',
       logoColor: '#252525',
       redirectUris: [
         'http://localhost:3011/*',
@@ -71,14 +70,14 @@ describe('Test Smaug component', () => {
         'http://localhost:3011/cas/callback'
       ],
       logoutScreen: 'include',
-      borchkServiceName: "bibliotek.dk",
-      buttonColor: "#252525",
-      buttonHoverColor: "#e56312",
-      buttonTxtColor: "#ffffff",
-      buttonTxtHoverColor: "#ffffff",
-      clientId: "hejmdal",
-      clientSecret: "hejmdal_secret",
-      defaultUser: "netpunkt",
+      borchkServiceName: 'bibliotek.dk',
+      buttonColor: '#252525',
+      buttonHoverColor: '#e56312',
+      buttonTxtColor: '#ffffff',
+      buttonTxtHoverColor: '#ffffff',
+      clientId: 'hejmdal',
+      clientSecret: 'hejmdal_secret',
+      defaultUser: 'netpunkt',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
         birthDate: {

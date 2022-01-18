@@ -44,7 +44,8 @@ export async function getClientInfoByToken(token) {
  * @param client
  * @returns {{id: String, identityProviders: Array, attributes: Array}}
  */
-export function extractClientInfo(client) {
+/* eslint-disable complexity */
+export function extractClientInfo(client) { // eslint-disable-line
   if (!client || !client.app || !client.app.clientId) {
     throw new Error('Invalid Client', client);
   }
@@ -62,7 +63,7 @@ export function extractClientInfo(client) {
     clientSecret: client.app.clientSecret,
     requireConsent: !!client.requireConsent,
     logoColor: client.logoColor ? client.logoColor : '#252525',
-    defaultUser: client.display && client.display.defaultUser !== undefined ? client.display.defaultUser : "netpunkt",
+    defaultUser: client.display && typeof client.display.defaultUser !== 'undefined' ? client.display.defaultUser : 'netpunkt',
     title: client.display && client.display.title ? client.display.title : 'Netpunkt Login',
     buttonColor: client.display && client.display.buttonColor ? client.display.buttonColor : '#252525',
     buttonHoverColor: client.display && client.display.buttonHoverColor ? client.display.buttonHoverColor : '#e56312',
@@ -78,6 +79,7 @@ export function extractClientInfo(client) {
 
   return serviceClient;
 }
+/* eslint-enable complexity */
 
 export function getTokenForUser({
   clientId,
