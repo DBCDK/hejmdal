@@ -175,8 +175,8 @@ export async function getMunicipalityInformation(culrResponse, user) {
       // Municipality not found in borchk or culr
       // Need a hack for 100450: 'Test', 700400: 'Sydslesvig', 911116: 'Býarbókasavnið', 911130: 'Nunatta Atuagaateqarfia',
       // to give them a municipality agency, and for Sydslesvig a municipality number
-      /* HEJMDAL-685 HEJMDAL-691 Revert correct municipality handling until policies are decided
       const municipalityHack = CONFIG.municipalityHack.replace(/[^\d]+/g, ' ').trim().split(' ');
+      /* HEJMDAL-685 HEJMDAL-691 Revert correct municipality handling until policies are decided
       if (municipalityHack.includes(user.agency)) {
        */
       if (user.agency) {
