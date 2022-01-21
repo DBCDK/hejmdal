@@ -51,6 +51,14 @@ The following is a full list of possible configuration options
       "description": "oAuth2 autentificeret token, der kan bruges til kalde openplatform.dbc.dk som autentificeret bruger"
     }
   },
+  "display": {
+    "title": "Titel på siden, defaulter til 'Netpunkt login'",
+    "defaultUser": "Prechoosen user, defaults to 'netpunkt'",
+    "buttonColor": "Login button color, defaults to #252525",
+    "buttonTxtColor": "Login button color, defaults #ffffff",
+    "buttonHoverColor": "Login button hover color, defaults to #e56312",
+    "buttonTxtHoverColor": "Login button hover text color, defaults to #ffffff"
+  },
   "redirectUris": [],
   "singleLogoutPath": "/single-logout"
 }
@@ -87,3 +95,7 @@ Defines the list of attributes that _can_ be returned to the client service trou
 * `birthYear`: Extracted from CPR-number if possible
 * `gender`: Extracted from CPR-number if possible
 * `authenticatedToken`: oAuth2 authenticated token, can be used for requests to openplatform.dbc.dk as an authenticated user"
+
+## display
+
+Defines the layout of the DBC-IDP login form. If no custom display is used, the login page displayed will be identical to the one used for Netpunkt.  
