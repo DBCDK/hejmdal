@@ -35,7 +35,7 @@ export async function getUserAttributesFromCulr(user = {}) {
   if (shouldCreateAccount(agencyId, user, response)) {
     // It should not have been possible for a user to have authenticated through borchk,
     // and not to exist in CULR. Therefore a warning is logged.
-    log.warn('Borck user not in culr', {userId, agencyId});
+    log.warn('Borck user not in culr', {userId: userId, agency: agencyId});
 
     try {
       const createUserResponse = await createUser(user, agencyId);
@@ -46,8 +46,8 @@ export async function getUserAttributesFromCulr(user = {}) {
       responseCode = newAccount.responseCode;
     } catch (error) {
       log.error('Could not create User in CULR', {
-        userId,
-        agencyId,
+        userId: userId,
+        agency: agencyId,
         errorMessage: error.message,
         stack: error.stack
       });
@@ -180,6 +180,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
       if (municipalityHack.includes(user.agency)) {
        */
       if (user.agency) {
+        log.warn('municipality fallback', {agency: user.agency});
         response.municipalityAgencyId = user.agency;
         if (user.agency.startsWith('7')) {
           response.municipalityNumber = user.agency.slice(1, 4);

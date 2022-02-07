@@ -93,12 +93,12 @@ function removeSecrets(obj, parent = null) {
     } else if (['cpr', 'userId', 'userIdValue', '$'].includes(key)) {
       if (key === '$') {
         if (parent === 'userId') {
-          cleaned[key] = obj[key].substring(0, 6);
+          cleaned[key] = obj[key].substring(0, 4);
         } else {
           cleaned[key] = obj[key];
         }
       } else {
-        cleaned[key] = obj[key].substring(0, 6);
+        cleaned[key] = obj[key].substring(0, 4);
       }
     } else {
       cleaned[key] = obj[key];

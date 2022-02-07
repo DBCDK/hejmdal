@@ -41,7 +41,7 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
     serviceRequester: serviceRequester,
     userId: userId,
     agency: agency,
-    responseString: JSON.stringify(response)
+    responseString: JSON.stringify(response).replace(new RegExp(userId, 'g'), '**********')
   });
   return response[0];
 }
