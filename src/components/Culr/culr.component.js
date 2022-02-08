@@ -154,6 +154,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
       if (borchkMunicipalityNo) {
         response.municipalityAgencyId = user.agency;
         response.municipalityNumber = borchkMunicipalityNo;
+        log.info('municipality info. borchk: ', response);
         return response;
       }
     }
@@ -170,6 +171,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
       } else {
         response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
       }
+      log.info('municipality info. culr: ', response);
     }
     else {
       // Municipality not found in borchk or culr
@@ -180,11 +182,11 @@ export async function getMunicipalityInformation(culrResponse, user) {
       if (municipalityHack.includes(user.agency)) {
        */
       if (user.agency) {
-        log.warn('municipality fallback', {agency: user.agency});
         response.municipalityAgencyId = user.agency;
         if (user.agency.startsWith('7')) {
           response.municipalityNumber = user.agency.slice(1, 4);
         }
+        log.info('municipality info. fallback: ', response);
       }
     }
     return response;
