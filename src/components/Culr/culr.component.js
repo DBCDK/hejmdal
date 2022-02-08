@@ -35,7 +35,7 @@ export async function getUserAttributesFromCulr(user = {}) {
   if (shouldCreateAccount(agencyId, user, response)) {
     // It should not have been possible for a user to have authenticated through borchk,
     // and not to exist in CULR. Therefore a warning is logged.
-    log.warn('Borck user not in culr', {userId, agencyId});
+    log.warn('Borck user not in culr', {userId: userId, agency: agencyId});
 
     try {
       const createUserResponse = await createUser(user, agencyId);
@@ -46,8 +46,8 @@ export async function getUserAttributesFromCulr(user = {}) {
       responseCode = newAccount.responseCode;
     } catch (error) {
       log.error('Could not create User in CULR', {
-        userId,
-        agencyId,
+        userId: userId,
+        agency: agencyId,
         errorMessage: error.message,
         stack: error.stack
       });
@@ -154,6 +154,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
       if (borchkMunicipalityNo) {
         response.municipalityAgencyId = user.agency;
         response.municipalityNumber = borchkMunicipalityNo;
+        log.info('municipality info. borchk: ', response);
         return response;
       }
     }
@@ -170,6 +171,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
       } else {
         response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
       }
+      log.info('municipality info. culr: ', response);
     }
     else {
       // Municipality not found in borchk or culr
@@ -184,6 +186,7 @@ export async function getMunicipalityInformation(culrResponse, user) {
         if (user.agency.startsWith('7')) {
           response.municipalityNumber = user.agency.slice(1, 4);
         }
+        log.info('municipality info. fallback: ', response);
       }
     }
     return response;

@@ -8,6 +8,7 @@ import startTiming from '../../utils/timing.util';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
 let CulrClient = null;
+let secret = 'soFarNothing';
 const CULR_AUTH_CREDENTIALS = {
   userIdAut: CONFIG.culr.userIdAut,
   groupIdAut: CONFIG.culr.groupIdAut,
@@ -35,6 +36,7 @@ export async function getAccountsByGlobalId({userIdValue}) {
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
+  secret = userIdValue;
   const response = (await CulrClient.getAccountsByGlobalIdAsync(params))[0];
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
@@ -66,6 +68,7 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
+  secret = userIdValue;
   const response = (await CulrClient.getAccountsByLocalIdAsync(params))[0];
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
@@ -104,6 +107,7 @@ export async function createAccount({
   if (!CulrClient) {
     await init();
   }
+  secret = userIdValue;
   const response = (await CulrClient.createAccountAsync(params))[0];
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
@@ -133,11 +137,11 @@ export async function init(mock = CONFIG.mock_externals.culr) {
     try {
       const client = await soap.createClientAsync(CONFIG.culr.uri, options);
       client.on('request', request => {
-        log.debug('A request was made to CULR', {requestString: request});
+        log.debug('A request was made to CULR', {requestString: request.replace(new RegExp(secret, 'g'), '**********')});
       });
       client.on('response', response => {
         log.debug('A response was received from CULR', {
-          responseString: response
+          responseString: response.replace(new RegExp(secret, 'g'), '**********')
         });
       });
       CulrClient = client;
