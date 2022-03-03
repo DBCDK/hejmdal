@@ -415,7 +415,7 @@ export async function identityProviderCallback(req, res) {
     if (req.session.hasOwnProperty('query')) {
       return res.redirect(
         `/oauth/authorize/?${Object.entries(req.session.query)
-          .map(([key, value]) => `${key}=${value}`)
+          .map(([key, value]) => key + '=' + encodeURIComponent(value))
           .join('&')}`
       );
     }
