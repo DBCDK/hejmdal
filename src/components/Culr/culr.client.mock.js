@@ -6,13 +6,13 @@
 const defaultLibraies = [
   {
     provider: '790900',
-    userIdType: 'CPR',
-    userIdValue: '0102031111'
+    uidType: 'CPR',
+    uidValue: '0102031111'
   },
   {
     provider: '100800',
-    userIdType: 'LOCAL-1',
-    userIdValue: '456456'
+    uidType: 'LOCAL-1',
+    uidValue: '456456'
   }
 ];
 
@@ -29,8 +29,8 @@ function initMock() {
     Account: [
       {
         provider: '790900',
-        userIdType: 'CPR',
-        userIdValue: '0101011234'
+        uidType: 'CPR',
+        uidValue: '0101011234'
       }
     ]
   });
@@ -39,13 +39,13 @@ function initMock() {
     Account: [
       {
         provider: '737000',
-        userIdType: 'CPR',
-        userIdValue: '0102030410'
+        uidType: 'CPR',
+        uidValue: '0102030410'
       },
       {
         provider: '732900',
-        userIdType: 'CPR',
-        userIdValue: '0102030410'
+        uidType: 'CPR',
+        uidValue: '0102030410'
       }
     ],
     MunicipalityNo: '329'
@@ -55,13 +55,13 @@ function initMock() {
     Account: [
       {
         provider: '737000',
-        userIdType: 'CPR',
-        userIdValue: '0102030411'
+        uidType: 'CPR',
+        uidValue: '0102030411'
       },
       {
         provider: '732900',
-        userIdType: 'CPR',
-        userIdValue: '0102030411'
+        uidType: 'CPR',
+        uidValue: '0102030411'
       }
     ],
     MunicipalityNo: '329'
@@ -83,14 +83,14 @@ initMock();
 
 export const CulrMockClient = {
   /**
-   * getAccountsByGlobalId mock. If the value of params.userCredentials.userIdValue matches '1234567890' a OK200 response will be
+   * getAccountsByGlobalId mock. If the value of params.userCredentials.uidValue matches '1234567890' a OK200 response will be
    * returned. Otherwise is a ACCOUNT_DOES_NOT_EXIST response is returned.
    *
    * @param {object} params
    * @param {function} cb
    */
   getAccountsByGlobalIdAsync: params => {
-    const userId = params.userCredentials.userIdValue;
+    const userId = params.userCredentials.uidValue;
     if (globalAccounts.has(userId)) {
       return Promise.resolve([OK200(globalAccounts.get(userId), userId)]);
     }
@@ -131,8 +131,8 @@ export const CulrMockClient = {
 
     account.Account.push({
       provider: agencyId,
-      userIdType: userCredentials.userIdType,
-      userIdValue: userCredentials.userIdValue
+      uidType: userCredentials.userIdType,
+      uidValue: userCredentials.userIdValue
     });
 
     if (municipalityNo) {

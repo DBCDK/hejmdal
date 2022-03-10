@@ -79,7 +79,7 @@ async function checkBorchk() {
  * Check if CULR webservice is responding
  */
 async function checkCulr() {
-  const response = await Culr.getAccountsByGlobalId({userIdValue: 'test'});
+  const response = await Culr.getAccountsByGlobalId({uidValue: 'test'});
   if (!response.result) {
     throw Error('No valid response from borchk', response);
   }

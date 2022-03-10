@@ -94,7 +94,7 @@ async function getUserAccount(user) {
 
   try {
     response = await culr.getAccountsByGlobalId({
-      userIdValue: userId,
+      uidValue: userId,
       agencyId
     });
     responseCode = response && response.result.responseStatus.responseCode;
@@ -288,7 +288,7 @@ export async function getAgencyByCpr(cpr) {
 
   // Fetching user
   const response = await culr.getAccountsByGlobalId({
-    userIdValue: cpr
+    uidValue: cpr
   });
 
   // Fetch user result
@@ -357,6 +357,6 @@ export function filterAgencies(agencies) {
 export function sortAgencies(agencies, municipalityNo) {
   return sortBy(agencies, [
     o => (o.provider.includes(municipalityNo) ? -1 : +1),
-    'userIdType'
+    'uidType'
   ]);
 }
