@@ -18,18 +18,20 @@ function filterForsrightsResponse(forsrights) {
   // Map every agency in response
   return forsrights.map(a => {
     const a_rights = {};
-    const agencyId = a.agencyId;
-    // Map every service in agency
-    if (Array.isArray(a.rights)) {
-      a.rights.forEach(s => {
-        const name = s.name.$;
-        // Map every rights in service + sort ascending
-        const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
-        // Set new servicename in object
-        a_rights[name] = s_rights;
-      });
+    if (a.agencyId) {
+      // Map every service in agency
+      if (Array.isArray(a.rights)) {
+        a.rights.forEach(s => {
+          const name = s.name.$;
+          // Map every rights in service + sort ascending
+          const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
+          // Set new servicename in object
+          a_rights[name] = s_rights;
+        });
+      }
+      return {agencyId: a.agencyId, rights: a_rights};
     }
-    return {agencyId, rights: a_rights};
+    return {};
   });
 }
 
