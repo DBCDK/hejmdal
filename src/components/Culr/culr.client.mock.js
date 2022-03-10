@@ -72,8 +72,8 @@ function initMock() {
     Account: [
       {
         provider: '733000',
-        uidType: 'LOCAL',
-        uidValue: '87654321'
+        userIdType: 'LOCAL',
+        userIdValue: '87654321'
       }
     ],
     MunicipalityNo: '909'
@@ -104,35 +104,35 @@ export const CulrMockClient = {
     return Promise.resolve([ACCOUNT_DOES_NOT_EXIST()]);
   },
   createAccountAsync: ({userCredentials, agencyId, municipalityNo = null}) => {
-    const userExistGlobal = globalAccounts.has(userCredentials.uidValue);
-    const userExistLocal = localAccounts.has(userCredentials.uidValue);
-    const uidType = userCredentials.uidType;
+    const userExistGlobal = globalAccounts.has(userCredentials.userIdValue);
+    const userExistLocal = localAccounts.has(userCredentials.userIdValue);
+    const userIdType = userCredentials.userIdType;
     let account = {Account: []};
 
-    // If uidType is local (no CPR)
-    if (uidType === 'LOCAL') {
+    // If userIdType is local (no CPR)
+    if (userIdType === 'LOCAL') {
       if (userExistLocal) {
-        account = localAccounts.get(userCredentials.uidValue);
+        account = localAccounts.get(userCredentials.userIdValue);
       } else {
-        localAccounts.set(userCredentials.uidValue, {Account: []});
-        account = localAccounts.get(userCredentials.uidValue);
+        localAccounts.set(userCredentials.userIdValue, {Account: []});
+        account = localAccounts.get(userCredentials.userIdValue);
       }
     }
 
-    // If uidType is CPR
-    if (uidType === 'CPR') {
+    // If userIdType is CPR
+    if (userIdType === 'CPR') {
       if (userExistGlobal) {
-        account = globalAccounts.get(userCredentials.uidValue);
+        account = globalAccounts.get(userCredentials.userIdValue);
       } else {
-        globalAccounts.set(userCredentials.uidValue, {Account: []});
-        account = globalAccounts.get(userCredentials.uidValue);
+        globalAccounts.set(userCredentials.userIdValue, {Account: []});
+        account = globalAccounts.get(userCredentials.userIdValue);
       }
     }
 
     account.Account.push({
       provider: agencyId,
-      uidType: userCredentials.uidType,
-      uidValue: userCredentials.uidValue
+      uidType: userCredentials.userIdType,
+      uidValue: userCredentials.userIdValue
     });
 
     if (municipalityNo) {
@@ -140,13 +140,13 @@ export const CulrMockClient = {
     }
 
     // Add to localAccounts, if user DO NOT have CPR
-    if (uidType === 'LOCAL') {
-      localAccounts.set(userCredentials.uidValue, account);
+    if (userIdType === 'LOCAL') {
+      localAccounts.set(userCredentials.userIdValue, account);
     }
 
     // Add to globalAccounts, if user have CPR
-    if (uidType === 'GLOBAL') {
-      globalAccounts.set(userCredentials.uidValue, account);
+    if (userIdType === 'GLOBAL') {
+      globalAccounts.set(userCredentials.userIdValue, account);
     }
 
     return Promise.resolve([CREATE_ACCOUNT()]);
