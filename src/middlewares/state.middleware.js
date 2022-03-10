@@ -1,5 +1,6 @@
 import {createHash} from '../utils/hash.utils';
 import {get} from 'lodash';
+import {setTrackingId} from '../utils/logging.util';
 /**
  * @file
  * Add methods for handling the state object
@@ -45,6 +46,7 @@ export async function setDefaultState(req, res, next) {
   req.session.loginToProfile = !!req.query.loginToProfile;
   req.session.user = req.session.user || {};
   req.session.user.ips = (req.ips.length && req.ips) || [req.ip];
+  setTrackingId(req.session.state.stateHash);
   req.session.save(() => {
     return next();
   });

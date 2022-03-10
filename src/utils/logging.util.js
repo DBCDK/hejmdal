@@ -6,6 +6,16 @@ import {CONFIG} from './config.util';
 
 const PRETTY_PRINT = CONFIG.log.pretty ? 2 : null; // eslint-disable-line no-process-env
 
+var trackingId = null;
+
+export function setTrackingId(id) {
+  trackingId = id;
+}
+
+export function getTrackingId() {
+  return trackingId;
+}
+
 /**
  * @returns current log level
  */
@@ -52,6 +62,7 @@ function doLog(level, msg, args = {}, cleanArgs = true) {
 
   var blob = {
     '@timestamp': new Date().toISOString(),
+    trackingId: trackingId,
     '@version': 1,
     app: 'hejmdal',
     version: version,
@@ -75,9 +86,9 @@ function doLog(level, msg, args = {}, cleanArgs = true) {
 /**
  * Remove user identifications from log object
  * @param obj
+ * @param parent
  * @returns {{}}
  */
-
 function removeSecrets(obj, parent = null) {
   if (!obj || typeof obj !== 'object') {
     return obj;
