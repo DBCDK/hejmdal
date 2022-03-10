@@ -97,12 +97,10 @@ function removeSecrets(obj, parent = null) {
         } else {
           cleaned[key] = obj[key];
         }
+      } else if (typeof obj[key] === 'undefined') {
+        cleaned[key] = obj[key];
       } else {
-        if (obj[key] !== undefined) {
-          cleaned[key] = obj[key].substring(0, 4);
-        } else {
-          cleaned[key] = obj[key];
-        }
+        cleaned[key] = obj[key].substring(0, 4);
       }
     } else {
       cleaned[key] = obj[key];
