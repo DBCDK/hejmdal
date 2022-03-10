@@ -19,10 +19,10 @@ const CULR_CREATE_AUTH_CREDENTIALS = CONFIG.culr.createAuth;
 /**
  * Invokes the getAccountsByGlobalId CULR method
  *
- * @param userIdValue CPR of the given user
+ * @param uidValue CPR of the given user
  * @return {Promise}
  */
-export async function getAccountsByGlobalId({userIdValue}) {
+export async function getAccountsByGlobalId({uidValue}) {
   const stopTiming = startTiming();
 
   if (!CulrClient) {
@@ -30,13 +30,13 @@ export async function getAccountsByGlobalId({userIdValue}) {
   }
   const params = {
     userCredentials: {
-      userIdType: 'CPR',
-      userIdValue: userIdValue
+      uidType: 'CPR',
+      uidValue: uidValue
     },
     authCredentials: CULR_AUTH_CREDENTIALS
   };
 
-  secret = userIdValue;
+  secret = uidValue;
   const response = (await CulrClient.getAccountsByGlobalIdAsync(params))[0];
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
@@ -50,7 +50,7 @@ export async function getAccountsByGlobalId({userIdValue}) {
 /**
  * Invokes the getAccountsByLocalId CULR method
  *
- * @param userIdValue
+ * @param uidValue
  * @param agencyId
  * @returns {Promise}
  */

@@ -63,21 +63,21 @@ export async function mapCulrResponse(
 
   if (culr.accounts && Array.isArray(culr.accounts)) {
     culr.accounts.forEach(account => {
-      if (account.userIdType === 'CPR' && !cpr) {
-        cpr = account.userIdValue;
+      if (account.uidType === 'CPR' && !cpr) {
+        cpr = account.uidValue;
       }
 
       agencies.push({
         agencyId: account.provider,
-        userId: account.userIdValue,
-        userIdType: account.userIdType
+        userId: account.uidValue,
+        uidType: account.uidType
       });
     });
   } else if (cpr && user.agency) {
     agencies.push({
       agencyId: user.agency,
       userId: cpr,
-      userIdType: 'CPR'
+      uidType: 'CPR'
     });
   }
 

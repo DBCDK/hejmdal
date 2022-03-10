@@ -90,7 +90,7 @@ function removeSecrets(obj, parent = null) {
       cleaned[key] = removeSecrets(obj[key], parent);
     } else if (['userPincode', 'pincode', 'pinCode'].includes(key)) {
       cleaned[key] = '****';
-    } else if (['cpr', 'userId', 'userIdValue', '$'].includes(key)) {
+    } else if (['cpr', 'userId', 'userIdValue', 'uidValue', '$'].includes(key)) {
       if (key === '$') {
         if (parent === 'userId') {
           cleaned[key] = obj[key].substring(0, 4);
@@ -98,7 +98,11 @@ function removeSecrets(obj, parent = null) {
           cleaned[key] = obj[key];
         }
       } else {
-        cleaned[key] = obj[key].substring(0, 4);
+        if (obj[key] !== undefined) {
+          cleaned[key] = obj[key].substring(0, 4);
+        } else {
+          cleaned[key] = obj[key];
+        }
       }
     } else {
       cleaned[key] = obj[key];

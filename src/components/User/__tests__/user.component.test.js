@@ -23,12 +23,12 @@ describe('test store and get user', () => {
           {
             agencyId: '790900',
             userId: '0102031111',
-            userIdType: 'CPR'
+            uidType: 'CPR'
           },
           {
             agencyId: '100800',
             userId: '456456',
-            userIdType: 'LOCAL-1'
+            uidType: 'LOCAL-1'
           }
         ],
         birthDate: '0102',

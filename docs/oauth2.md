@@ -127,12 +127,12 @@ Returns a map of attributes. Which attributes that a returned depends on the cli
       {
         "agencyId": "710100",
         "userId": "0101701234",
-        "userIdType": "CPR"
+        "uidType": "CPR"
       },
       {
         "agencyId": "714700",
         "userId": "12345678",
-        "userIdType": "LOCAL"
+        "uidType": "LOCAL"
       }
     ]
   }
@@ -148,12 +148,12 @@ Returns a map of attributes. Which attributes that a returned depends on the cli
         {
           "agencyId": "710100",
           "userId": "0101701234",
-          "userIdType": "CPR"
+          "uidType": "CPR"
         },
         {
           "agencyId": "714700",
           "userId": "12345678",
-          "userIdType": "LOCAL"
+          "uidType": "LOCAL"
         }
       ]
   ```
