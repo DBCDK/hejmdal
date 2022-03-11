@@ -6,7 +6,13 @@ import {CONFIG} from './config.util';
 
 const PRETTY_PRINT = CONFIG.log.pretty ? 2 : null; // eslint-disable-line no-process-env
 
-var trackingId = null;
+/**
+ * All loglines include trackingId in order to group loglines to individual requests
+ * Currently the sessions state hash is used as trackingId
+ *
+ * @type {null|string}
+ */
+var trackingId = 'aa';
 
 export function setTrackingId(id) {
   trackingId = id;
