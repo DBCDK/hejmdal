@@ -69,15 +69,15 @@ export async function mapCulrResponse(
 
       agencies.push({
         agencyId: account.provider,
-        userId: account.uidValue,
-        uidType: account.uidType
+        userId: account.userIdValue,
+        userIdType: account.userIdType
       });
     });
   } else if (cpr && user.agency) {
     agencies.push({
       agencyId: user.agency,
       userId: cpr,
-      uidType: 'CPR'
+      userIdType: 'CPR'
     });
   }
 
