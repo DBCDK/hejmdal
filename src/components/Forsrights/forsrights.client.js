@@ -5,7 +5,6 @@
 
 import {CONFIG} from '../../utils/config.util';
 import {promiseRequest} from '../../utils/request.util';
-import {getToken} from '../Smaug/smaug.client.js';
 import {log} from '../../utils/logging.util';
 import _ from 'lodash';
 
@@ -19,16 +18,20 @@ function filterForsrightsResponse(forsrights) {
   // Map every agency in response
   return forsrights.map(a => {
     const a_rights = {};
-    const agencyId = a.agencyId;
-    // Map every service in agency
-    a.rights.forEach(s => {
-      const name = s.name.$;
-      // Map every rights in service + sort ascending
-      const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
-      // Set new servicename in object
-      a_rights[name] = s_rights;
-    });
-    return {agencyId, rights: a_rights};
+    if (a.agencyId) {
+      // Map every service in agency
+      if (Array.isArray(a.rights)) {
+        a.rights.forEach(s => {
+          const name = s.name.$;
+          // Map every rights in service + sort ascending
+          const s_rights = s.right.map(r => r.$).sort((an, bn) => an - bn);
+          // Set new servicename in object
+          a_rights[name] = s_rights;
+        });
+      }
+      return {agencyId: a.agencyId, rights: a_rights};
+    }
+    return {};
   });
 }
 
@@ -59,7 +62,7 @@ export async function fetchRights(params) {
     const resp = await promiseRequest('get', params);
     const parsedBody = JSON.parse(resp.body);
 
-    const rights = _.get(parsedBody, 'forsRightsResponse.ressource', {});
+    const rights = _.get(parsedBody, 'forsRightsResponse.ressource', []);
 
     return {agencyId, rights};
   } catch (error) {
@@ -67,7 +70,7 @@ export async function fetchRights(params) {
       error: error.message,
       stack: error.stack
     });
-    return {agencyId, rights: {}};
+    return {agencyId, rights: []};
   }
 }
 

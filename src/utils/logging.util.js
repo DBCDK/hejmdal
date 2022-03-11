@@ -7,6 +7,22 @@ import {CONFIG} from './config.util';
 const PRETTY_PRINT = CONFIG.log.pretty ? 2 : null; // eslint-disable-line no-process-env
 
 /**
+ * All loglines include trackingId in order to group loglines to individual requests
+ * Currently the sessions state hash is used as trackingId
+ *
+ * @type {null|string}
+ */
+var trackingId = 'aa';
+
+export function setTrackingId(id) {
+  trackingId = id;
+}
+
+export function getTrackingId() {
+  return trackingId;
+}
+
+/**
  * @returns current log level
  */
 export function getCurrentLogLevel() {
@@ -52,6 +68,7 @@ function doLog(level, msg, args = {}, cleanArgs = true) {
 
   var blob = {
     '@timestamp': new Date().toISOString(),
+    trackingId: trackingId,
     '@version': 1,
     app: 'hejmdal',
     version: version,
@@ -75,9 +92,9 @@ function doLog(level, msg, args = {}, cleanArgs = true) {
 /**
  * Remove user identifications from log object
  * @param obj
+ * @param parent
  * @returns {{}}
  */
-
 function removeSecrets(obj, parent = null) {
   if (!obj || typeof obj !== 'object') {
     return obj;
