@@ -41,12 +41,12 @@ context('Create Account flow', () => {
         {
           agencyId: '790900',
           userId: '0101011234',
-          uidType: 'CPR'
+          userIdType: 'CPR'
         },
         {
           agencyId: '733000',
           userId: '0101011234',
-          uidType: 'CPR'
+          userIdType: 'CPR'
         }
       ]);
     });
@@ -89,7 +89,7 @@ context('Create Account flow', () => {
         {
           agencyId: '911116',
           userId: '9999998',
-          uidType: 'LOCAL'
+          userIdType: 'LOCAL'
         }
       ]);
     });

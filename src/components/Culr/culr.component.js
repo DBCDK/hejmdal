@@ -357,6 +357,6 @@ export function filterAgencies(agencies) {
 export function sortAgencies(agencies, municipalityNo) {
   return sortBy(agencies, [
     o => (o.provider.includes(municipalityNo) ? -1 : +1),
-    'uidType'
+    'userIdType'
   ]);
 }

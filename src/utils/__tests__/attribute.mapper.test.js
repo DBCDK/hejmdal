@@ -11,13 +11,13 @@ describe('Attribute mapper unittest', () => {
     accounts: [
       {
         provider: '000111',
-        uidType: 'CPR',
-        uidValue: '0102456789'
+        userIdType: 'CPR',
+        userIdValue: '0102456789'
       },
       {
         provider: '111222',
-        uidType: 'LOCAL-1',
-        uidValue: '222333'
+        userIdType: 'LOCAL-1',
+        userIdValue: '222333'
       }
     ],
     municipalityNumber: '333',
@@ -61,8 +61,8 @@ describe('Attribute mapper unittest', () => {
       gender: 'm',
       cpr: '0102456789',
       agencies: [
-        {agencyId: '000111', userId: '0102456789', uidType: 'CPR'},
-        {agencyId: '111222', userId: '222333', uidType: 'LOCAL-1'}
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
       uniqueId: 'guid-0102456789',
       municipality: '333',
@@ -77,7 +77,7 @@ describe('Attribute mapper unittest', () => {
   it('map to correct milenium in birthYear', async () => {
     const ctx = mockContext();
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102030788'}]},
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102030788'}]},
       serviceClient: {
         attributes: {birthYear: {}}
       }
@@ -86,25 +86,25 @@ describe('Attribute mapper unittest', () => {
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1903'});
 
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102364788'}]}
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2036'});
 
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102374788'}]}
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1937'});
 
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102575788'}]}
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2057'});
 
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102585788'}]}
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1858'});
@@ -113,7 +113,7 @@ describe('Attribute mapper unittest', () => {
   it('map gender', async () => {
     const ctx = mockContext();
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102036788'}]},
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
       serviceClient: {
         attributes: {gender: {}}
       },
@@ -128,7 +128,7 @@ describe('Attribute mapper unittest', () => {
   it('map invalid cpr', async () => {
     const ctx = mockContext();
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0123456789'}]},
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0123456789'}]},
       serviceClient: {
         attributes: {birthDate: {}, birthYear: {}, gender: {}, cpr: {}}
       },
@@ -156,8 +156,8 @@ describe('Attribute mapper unittest', () => {
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
-        {agencyId: '000111', userId: '0102456789', uidType: 'CPR'},
-        {agencyId: '111222', userId: '222333', uidType: 'LOCAL-1'}
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ]
     });
   });
@@ -178,8 +178,8 @@ describe('Attribute mapper unittest', () => {
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
       agencies: [
-        {agencyId: '000111', userId: '0102456789', uidType: 'CPR'},
-        {agencyId: '111222', userId: '222333', uidType: 'LOCAL-1'}
+        {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
+        {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
       municipality: null
     });
@@ -189,7 +189,7 @@ describe('Attribute mapper unittest', () => {
     log.warn = jest.fn();
     const ctx = mockContext();
     ctx.setState({
-      culr: {accounts: [{uidType: 'CPR', uidValue: '0102036788'}]},
+      culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102036788'}]},
       serviceClient: {
         attributes: {notThere: {}}
       },

@@ -63,8 +63,8 @@ export async function mapCulrResponse(
 
   if (culr.accounts && Array.isArray(culr.accounts)) {
     culr.accounts.forEach(account => {
-      if (account.uidType === 'CPR' && !cpr) {
-        cpr = account.uidValue;
+      if (account.userIdType === 'CPR' && !cpr) {
+        cpr = account.userIdValue;
       }
 
       agencies.push({

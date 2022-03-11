@@ -29,13 +29,13 @@ describe('Unittesting methods in culr.component:', () => {
         accounts: [
           {
             provider: '790900',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           },
           {
             provider: '100800',
-            uidType: 'LOCAL-1',
-            uidValue: '456456'
+            userIdType: 'LOCAL-1',
+            userIdValue: '456456'
           }
         ],
         municipalityNumber: '909',
@@ -174,18 +174,18 @@ describe('Unittesting methods in culr.component:', () => {
         const Account = [
           {
             provider: '732900',
-            uidType: 'LOCAL',
-            uidValue: '0102031111'
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
           },
           {
             provider: '732900',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           },
           {
             provider: '737000',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           }
         ];
 
@@ -193,8 +193,8 @@ describe('Unittesting methods in culr.component:', () => {
 
         expect(result[0]).toEqual({
           provider: '732900',
-          uidType: 'CPR',
-          uidValue: '0102031111'
+          userIdType: 'CPR',
+          userIdValue: '0102031111'
         });
       });
 
@@ -203,18 +203,18 @@ describe('Unittesting methods in culr.component:', () => {
         const Account = [
           {
             provider: '737000',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           },
           {
             provider: '732900',
-            uidType: 'LOCAL',
-            uidValue: '0102031111'
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
           },
           {
             provider: '737000',
-            uidType: 'LOCAL',
-            uidValue: '0102031111'
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
           }
         ];
 
@@ -222,8 +222,8 @@ describe('Unittesting methods in culr.component:', () => {
 
         expect(result[0]).toEqual({
           provider: '732900',
-          uidType: 'LOCAL',
-          uidValue: '0102031111'
+          userIdType: 'LOCAL',
+          userIdValue: '0102031111'
         });
       });
 
@@ -231,18 +231,18 @@ describe('Unittesting methods in culr.component:', () => {
         const Account = [
           {
             provider: '737000',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           },
           {
             provider: '732900',
-            uidType: 'LOCAL',
-            uidValue: '0102031111'
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
           },
           {
             provider: '190110',
-            uidType: 'LOCAL',
-            uidValue: 'some-value'
+            userIdType: 'LOCAL',
+            userIdValue: 'some-value'
           }
         ];
 
@@ -251,13 +251,13 @@ describe('Unittesting methods in culr.component:', () => {
         expect(result).toEqual([
           {
             provider: '737000',
-            uidType: 'CPR',
-            uidValue: '0102031111'
+            userIdType: 'CPR',
+            userIdValue: '0102031111'
           },
           {
             provider: '732900',
-            uidType: 'LOCAL',
-            uidValue: '0102031111'
+            userIdType: 'LOCAL',
+            userIdValue: '0102031111'
           }
         ]);
       });
