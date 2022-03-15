@@ -7,7 +7,7 @@ import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
-import {municipalityName} from '../../utils/municipality.util';
+import {populateCulr} from '../../utils/populateCulr.util';
 import {sortBy} from 'lodash';
 
 /**
@@ -250,7 +250,7 @@ async function createUser(user, agencyId) {
  * @returns
  */
 export function shouldCreateAccount(library, user, response) {
-  if (!library || !municipalityName[library]) {
+  if (!library || !populateCulr[library]) {
     return false;
   }
 
