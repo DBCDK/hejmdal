@@ -101,6 +101,11 @@ router.post('/introspection', async (req, res) => {
               : 'anonymous'
           };
 
+          // populate req.session with client information for logger middleware
+          // client.app.clientId      contains clientId for the access_token used
+          // information.app.clientId contains clientId for authorization client CLIENT_ID:CLIENT_SECRET
+          req.session.client = {clientId: information.app.clientId};
+
           // Get client metadata
           let metaObj = {};
           if (informationObj.clientId) {
