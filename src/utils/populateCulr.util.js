@@ -5,5 +5,6 @@
  */
 
 export const populateCulr = {
-  100400: 'DBC test'
+  100400: 'DBC dummy',
+  790900: 'DBC test'
 };
