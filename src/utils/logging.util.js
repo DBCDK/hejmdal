@@ -12,7 +12,7 @@ const PRETTY_PRINT = CONFIG.log.pretty ? 2 : null; // eslint-disable-line no-pro
  *
  * @type {null|string}
  */
-var trackingId = 'aa';
+var trackingId = 'notSet';
 
 export function setTrackingId(id) {
   trackingId = id;
