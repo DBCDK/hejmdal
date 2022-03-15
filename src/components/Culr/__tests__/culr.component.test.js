@@ -126,7 +126,7 @@ describe('Unittesting methods in culr.component:', () => {
     };
     const ACCOUNT_EXISTS = {
       result: {
-        Account: [{provider: '710100'}],
+        Account: [{provider: '100400'}],
         responseStatus: {responseCode: 'OK200'}
       }
     };
@@ -138,7 +138,7 @@ describe('Unittesting methods in culr.component:', () => {
     });
     it('should return true if library is not on municipalityName list and using borchk', async () => {
       const result = await shouldCreateAccount(
-        '710100',
+        '100400',
         BORCHK_USER,
         ACCOUNT_DOES_NOT_EXIST
       );
@@ -146,7 +146,7 @@ describe('Unittesting methods in culr.component:', () => {
     });
     it('should return false if NOT using borchk', async () => {
       const result = await shouldCreateAccount(
-        '710100',
+        '100400',
         NEMID_USER,
         ACCOUNT_DOES_NOT_EXIST
       );
@@ -154,7 +154,7 @@ describe('Unittesting methods in culr.component:', () => {
     });
     it('should return false if account exists', async () => {
       const result = await shouldCreateAccount(
-        '710100',
+        '100400',
         BORCHK_USER,
         ACCOUNT_EXISTS
       );
@@ -162,7 +162,7 @@ describe('Unittesting methods in culr.component:', () => {
     });
     it('should return true if account does not exists', async () => {
       const result = await shouldCreateAccount(
-        '911130',
+        '790900',
         BORCHK_USER,
         ACCOUNT_EXISTS
       );

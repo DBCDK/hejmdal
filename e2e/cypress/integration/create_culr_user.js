@@ -27,7 +27,7 @@ context('Create Account flow', () => {
   });
 
   it('should add library to user in culr', () => {
-    cy.visit(authorize(733000));
+    cy.visit(authorize(100400));
     cy.get('#userid-input').type('0101011234');
     cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
@@ -44,7 +44,7 @@ context('Create Account flow', () => {
           userIdType: 'CPR'
         },
         {
-          agencyId: '733000',
+          agencyId: '100400',
           userId: '0101011234',
           userIdType: 'CPR'
         }
@@ -61,7 +61,7 @@ context('Create Account flow', () => {
 
     cy.get('#borchk-dropdown [data-cy=libraryname-input]')
       .clear()
-      .type('sla{enter}');
+      .type('100400{enter}');
     cy.get('#userid-input').type('9999999');
     cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
@@ -74,8 +74,8 @@ context('Create Account flow', () => {
     });
   });
 
-  it('should create user from Thorshavn in culr with userId', () => {
-    cy.visit(authorize(911116));
+  it('should create user from DBC test in culr with userId', () => {
+    cy.visit(authorize(790900));
     cy.get('#userid-input').type('9999998');
     cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
@@ -87,7 +87,7 @@ context('Create Account flow', () => {
       expect(token).to.have.property('attributes');
       expect(token.attributes.agencies).to.deep.equal([
         {
-          agencyId: '911116',
+          agencyId: '790900',
           userId: '9999998',
           userIdType: 'LOCAL'
         }
