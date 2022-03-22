@@ -13,9 +13,10 @@ let agencyList = [];
 let uiBranchList = {};
 let agencyRenewTime = Number.MAX_SAFE_INTEGER;
 
-/**
+/** Fetch and refresh list of agencies supporting borchk
  *
- * @return {Array}
+ * @param name
+ * @returns {Promise<void>}
  */
 export async function cacheAgencies(name = '') {
   agencyList = await libraryListFromName(name);
@@ -26,7 +27,8 @@ export async function cacheAgencies(name = '') {
 
 /**
  *
- * @return {Array}
+ * @param filterParam
+ * @returns {Promise<{}|*>}
  */
 export async function getListOfAgenciesForFrontend(filterParam = null) {
   await setUiList();
@@ -41,7 +43,7 @@ export async function getListOfAgenciesForFrontend(filterParam = null) {
  * Return the name of the agency if found in agencyList
  *
  * @param agencyId
- * @returns {*}
+ * @returns {Promise<string>}
  */
 export async function getAgencyName(agencyId) {
   await setAgencyList();
@@ -58,6 +60,11 @@ export async function getAgencyName(agencyId) {
   return name;
 }
 
+/**
+ *
+ * @param agencyId
+ * @returns {Promise<{}>}
+ */
 export async function getAgency(agencyId) {
   await setAgencyList();
 
@@ -73,8 +80,9 @@ export async function getAgency(agencyId) {
   return ret;
 }
 
-/**
- * agencyList setter
+/** agencyList setter
+ *
+ * @returns {Promise<void>}
  */
 async function setAgencyList() {
   if (!agencyList || !agencyList.length || (new Date().getTime() > agencyRenewTime)) {
@@ -82,13 +90,14 @@ async function setAgencyList() {
   }
 }
 
-/**
- * uiBranchList setter
+/** uiBranchList setter
+ *
+ * @returns {Promise<void>}
  */
 async function setUiList() {
   await setAgencyList();
 
-  if (!uiBranchList.folk || !uiBranchList.folk.length) {
+  if (agencyList.length || !uiBranchList.folk || !uiBranchList.folk.length) {
     uiBranchList = {
       folk: [],
       forsk: [],
@@ -112,6 +121,11 @@ async function setUiList() {
   }
 }
 
+/**
+ *
+ * @param branch
+ * @returns {string}
+ */
 function getType(branch) {
   if (branch.type === 'Forskningsbibliotek') {
     return 'forsk';
