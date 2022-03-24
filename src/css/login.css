@@ -77,10 +77,8 @@
         @media (min-width: 335px) {
           #external-providers-btn-container {
             justify-content: space-around;
-            flex-direction: row;
             a {
               align-self: center;
-              margin-bottom: 0;
 
               span {
                 margin: 0;
@@ -98,8 +96,10 @@
 
         @media (min-width: 486px) {
           #external-providers-btn-container {
+            flex-direction: row;
             a {
-              padding: 12px 30px;
+              margin-bottom: 0;
+              padding: 12px 18px;
             }
           }
         }
