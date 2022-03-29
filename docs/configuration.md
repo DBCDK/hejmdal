@@ -52,13 +52,14 @@ The following is a full list of possible configuration options
     }
   },
   "display": {
-    "title": "Titel på siden, defaulter til 'Netpunkt login'",
-    "defaultUser": "Prechoosen user, defaults to 'netpunkt'",
-    "buttonColor": "Login button color, defaults to #252525",
-    "buttonTxtColor": "Login button color, defaults #ffffff",
-    "buttonHoverColor": "Login button hover color, defaults to #e56312",
-    "buttonTxtHoverColor": "Login button hover text color, defaults to #ffffff"
+    "title": "Titel på siden, default 'Netpunkt login'",
+    "defaultUser": "Prechoosen user, default 'netpunkt'",
+    "buttonColor": "Login button color, default #252525",
+    "buttonTxtColor": "Login button color, default #ffffff",
+    "buttonHoverColor": "Login button hover color, default #e56312",
+    "buttonTxtHoverColor": "Login button hover text color, default #ffffff"
   },
+  "logoColor": "Color of hejmdal logo, default #252525",
   "redirectUris": [],
   "singleLogoutPath": "/single-logout"
 }
