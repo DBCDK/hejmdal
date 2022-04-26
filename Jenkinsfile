@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     ansiColor("xterm") {
-                        sh "docker pull docker.dbc.dk/cypress:latest"
+                        sh "docker pull docker-dbc.artifacts.dbccloud.dk/cypress:latest"
                         sh "docker-compose build"
                         sh "IMAGE=${IMAGE_NAME} docker-compose run --rm e2e"
                     }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
-                        docker.withRegistry('https://docker-ux.dbc.dk', 'docker') {
+                        docker.withRegistry('https://docker-frontend.artifacts.dbccloud.dk', 'docker') {
                             app.push()
                             app.push("latest")
                         }
@@ -59,7 +59,7 @@ pipeline {
 			      agent {
 				        docker {
 					          label 'devel9-head'
-					          image "docker-io.dbc.dk/python3-build-image"
+					          image "docker-metascrum.artifacts.dbccloud.dk/python3-build-image"
 					          alwaysPull true
 				        }
 			      }
