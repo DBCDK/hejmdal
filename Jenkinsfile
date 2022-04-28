@@ -47,7 +47,7 @@ pipeline {
             steps {
                 script {
                     if (currentBuild.resultIsBetterOrEqualTo('SUCCESS')) {
-                        docker.withRegistry('https://docker-frontend.artifacts.dbccloud.dk', 'docker') {
+                        docker.withRegistry('https://docker-fbiscrum.artifacts.dbccloud.dk', 'docker') {
                             app.push()
                             app.push("latest")
                         }
