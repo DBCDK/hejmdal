@@ -136,9 +136,7 @@ export async function mapCulrResponse(
             mapped.netpunktAgency = user.agency || null;
             break;
           case 'forsrights':
-            mapped.forsrights = await getAgencyRights(accessToken, [
-              user.agency
-            ]);
+            mapped.forsrights = await getAgencyRights(accessToken, user);
             break;
           case 'dbcidp':
             mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
