@@ -19,10 +19,10 @@ export async function getAgencyRights(accessToken, user) {
 
   const fakeFors = [];
   dbcidp.forEach((agency) => {
-    const fors = { agencyId: agency.agencyId, rights: {} };
+    const fors = {agencyId: agency.agencyId, rights: {}};
     agency.rights.forEach((product) => {
       fors.rights[product.productName.toLowerCase()] = ['500', '501'];
-    })
+    });
     fakeFors.push(fors);
   });
 
