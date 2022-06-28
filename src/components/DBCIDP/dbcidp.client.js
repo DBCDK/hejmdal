@@ -81,6 +81,9 @@ export async function getDbcidpAgencyRights(accessToken, user) {
  * @returns {Promise<boolean|*>}
  */
 export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
+  if (CONFIG.mock_externals.dbcidp && (userIdAut === 'valid-user') && groupIdAut && passwordAut) {
+    return true;
+  }
   const idpUri = CONFIG.dbcidp.dbcidpUri + '/authenticate';
   const body = {userIdAut, passwordAut, agencyId: groupIdAut};
 
