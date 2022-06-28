@@ -19,7 +19,7 @@ describe('Test DBCIDP', () => {
     const response = await fetchDbcidpRights('790900');
     const expected = {
       agencyId: '790900', rights: [
-        {productName: 'INFOMEDIA', name: 'READ', description: 'Is allowed to read from INFORMEDIA'},
+        {productName: 'INFOMEDIA', name: 'READ', description: 'Is allowed to read from INFOMEDIA'},
         {productName: 'ARTICLEFIRST', name: 'READ', description: 'Is allowed to read from ArticleFirst'},
         {productName: 'BOB', name: 'READ', description: 'Is allowed to read from BOB'},
         {productName: 'WORLDCAT', name: 'READ', description: 'Is allowed to read from WorldCat'},
