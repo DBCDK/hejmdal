@@ -3,49 +3,8 @@
  * Client for communicating with the forsrights service
  */
 
-import {promiseRequest} from '../../utils/request.util';
 import {getDbcidpAgencyRights, validateIdpUser} from '../DBCIDP/dbcidp.client';
 import {log} from '../../utils/logging.util';
-import _ from 'lodash';
-
-/**
- * Function to retrieve agency rights from forsrights service
- *
- * @param {object} params
- * @return {object}
- *
- * Params example:
- *
- *   {
- *     uri: requestUrl,
- *     qs: {
- *     action: 'forsRights',
- *       outputType: 'json',
- *       accessToken,
- *       agency
- *     }
- *   }
- *
- */
-
-export async function fetchRights(params) {
-  const agencyId = params.qs.agency;
-
-  try {
-    const resp = await promiseRequest('get', params);
-    const parsedBody = JSON.parse(resp.body);
-
-    const rights = _.get(parsedBody, 'forsRightsResponse.ressource', []);
-
-    return {agencyId, rights};
-  } catch (error) {
-    log.error(`Error retrieving agency forsrights for ${agencyId}`, {
-      error: error.message,
-      stack: error.stack
-    });
-    return {agencyId, rights: []};
-  }
-}
 
 /**
  * Function to retrieve (MULTIPLE) agency rights from forsrights service
@@ -54,8 +13,8 @@ export async function fetchRights(params) {
  * @param {object} user information
  * @return {array}
  */
-
 export async function getAgencyRights(accessToken, user) {
+  log.info('FORS getAgencyRights', {user: user});
   const dbcidp = await getDbcidpAgencyRights(accessToken, user);
 
   const fakeFors = [];
@@ -79,7 +38,7 @@ export async function getAgencyRights(accessToken, user) {
  * @param passwordAut
  * @return {boolean}
  */
-
 export async function validateNetpunktUser(userIdAut, groupIdAut, passwordAut) {
+  log.info('FORS validateNetpunktUser', {user: {userIdAut: userIdAut, groupIdAut: groupIdAut}});
   return await validateIdpUser(userIdAut, groupIdAut, passwordAut);
 }
