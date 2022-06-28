@@ -35,7 +35,6 @@ describe('test store and get user', () => {
         birthYear: '1903',
         cpr: '0102031111',
         dbcidp: [{}],
-        forsrights: [{}],
         gender: 'm',
         municipality: '909',
         municipalityAgencyId: '790900',
