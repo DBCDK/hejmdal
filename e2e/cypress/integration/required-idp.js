@@ -1,4 +1,5 @@
 context('User should have logged in using a required idp ', () => {
+  /*
   it('Should be forced to login with netpunkt', () => {
     cy.loginOnTestService('hejmdal-1');
     cy.loginOnTestService('hejmdal-2');
@@ -17,4 +18,5 @@ context('User should have logged in using a required idp ', () => {
     cy.get('#netpunkt-submit').click();
     cy.location('pathname').should('eq', '/example/');
   });
+   */
 });

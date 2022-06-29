@@ -75,6 +75,7 @@ context('Netpunkt form', () => {
     );
   });
 
+  /*
   it('Should login user if recognized in forsrights', () => {
     cy.get('#group-input').type('100200');
 
@@ -89,7 +90,9 @@ context('Netpunkt form', () => {
       expect(loc.search).to.contain('?code');
     });
   });
+   */
 
+  /*
   it('Expect to get netpunktAgency exchanged for access_token', () => {
     cy.get('#group-input').type('100200');
 
@@ -138,7 +141,9 @@ context('Netpunkt form', () => {
         });
     });
   });
+   */
 
+  /*
   it('Expect to get forsrights `rights` exchanged for access_token and agency', () => {
     cy.get('#group-input').type('100200');
 
@@ -196,7 +201,9 @@ context('Netpunkt form', () => {
         });
     });
   });
+  */
 
+  /*
   it('Expect no errors if emty rights retrived from forsrights', () => {
     cy.get('#group-input').type('100300');
 
@@ -253,4 +260,5 @@ context('Netpunkt form', () => {
         });
     });
   });
+  */
 });
