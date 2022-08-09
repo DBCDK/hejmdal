@@ -281,8 +281,6 @@ export async function netpunktCallback(req, res) {
   const password = formData.password;
 
   if (userId && groupId && password) {
-    // validate user (forsrights)
-
     const isValid = await validateIdpUser(userId, groupId, password);
 
     if (isValid) {

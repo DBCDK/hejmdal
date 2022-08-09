@@ -87,8 +87,8 @@ export async function getDbcidpAgencyRightsAsFors(accessToken, user) {
     if (agency.agencyId) {
       const fors = {agencyId: agency.agencyId, rights: {}};
       if (agency.rights && Array.isArray(agency.rights)) {
-        agency.rights.forEach((product) => {
-          fors.rights[product.productName.toLowerCase()] = ['500', '501'];
+        agency.rights.forEach((right) => {
+          fors.rights[right.productName.toLowerCase()] = ['500', '501'];
         });
       }
       result.push(fors);
