@@ -8,8 +8,7 @@
 import {log} from './logging.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
-import {getAgencyRights} from '../components/Forsrights/forsrights.client.js';
-import {getDbcidpAgencyRights} from '../components/DBCIDP/dbcidp.client';
+import {getDbcidpAgencyRights, getDbcidpAgencyRightsAsFors} from '../components/DBCIDP/dbcidp.client';
 
 /**
  * Attribute mapper
@@ -136,7 +135,7 @@ export async function mapCulrResponse(
             mapped.netpunktAgency = user.agency || null;
             break;
           case 'forsrights':
-            mapped.forsrights = await getAgencyRights(accessToken, user);
+            mapped.forsrights = await getDbcidpAgencyRightsAsFors(accessToken, user);
             break;
           case 'dbcidp':
             mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);

@@ -73,6 +73,32 @@ export async function getDbcidpAgencyRights(accessToken, user) {
 }
 
 /**
+ * Function to retrieve agency rights from DBCIDP service and return result as FORS structure to help older clients
+ *
+ * @param {string} accessToken
+ * @param {object} user information
+ * @return {array}
+ */
+export async function getDbcidpAgencyRightsAsFors(accessToken, user) {
+  const dbcidp = await getDbcidpAgencyRights(accessToken, user);
+  log.info('map DBCIDP to FORS');
+  const result = [];
+  dbcidp.forEach((agency) => {
+    if (agency.agencyId) {
+      const fors = {agencyId: agency.agencyId, rights: {}};
+      if (agency.rights && Array.isArray(agency.rights)) {
+        agency.rights.forEach((product) => {
+          fors.rights[product.productName.toLowerCase()] = ['500', '501'];
+        });
+      }
+      result.push(fors);
+    }
+  });
+
+  return result;
+}
+
+/**
  * Function to authenticate a user (netpunkt-triple) against DBCIDP
  *
  * @param userIdAut userIdAut, f.ex. 'netpunkt'
