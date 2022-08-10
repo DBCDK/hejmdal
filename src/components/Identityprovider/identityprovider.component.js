@@ -16,7 +16,6 @@ import {
   getListOfAgenciesForFrontend,
   getAgency
 } from '../../utils/vipCore.util';
-import {validateNetpunktUser} from '../Forsrights/forsrights.client';
 import {validateIdpUser} from '../DBCIDP/dbcidp.client';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
@@ -282,9 +281,7 @@ export async function netpunktCallback(req, res) {
   const password = formData.password;
 
   if (userId && groupId && password) {
-    // validate user (forsrights)
-
-    const isValid = await validateNetpunktUser(userId, groupId, password);
+    const isValid = await validateIdpUser(userId, groupId, password);
 
     if (isValid) {
       const user = {
