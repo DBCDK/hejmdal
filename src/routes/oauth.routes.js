@@ -173,9 +173,10 @@ router.post('/token', (req, res, next) => {
     const headerCredentials = getClientFromHeader(
       req.headers.authorization || ''
     );
+    const normalizedAgency = agency.toLowerCase().replace('dk-', '');  // HEJMDAL-729
     req.body.username = {
       username,
-      agency,
+      normalizedAgency,
       client_id: client_id || headerCredentials.client_id,
       ips: (req.ips.length && req.ips) || [req.ip],
       password
