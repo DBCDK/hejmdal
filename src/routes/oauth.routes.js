@@ -173,7 +173,7 @@ router.post('/token', (req, res, next) => {
     const headerCredentials = getClientFromHeader(
       req.headers.authorization || ''
     );
-    const normalizedAgency = agency.toLowerCase().replace('dk-', '');  // HEJMDAL-729
+    const normalizedAgency = agency ? agency.toLowerCase().replace('dk-', '') : agency;  // HEJMDAL-729
     req.body.username = {
       username,
       normalizedAgency,
