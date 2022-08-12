@@ -62,7 +62,7 @@ export async function getAccountsByLocalId({userIdValue, agencyId}) {
   }
   const params = {
     userCredentials: {
-      agencyId: agencyId,
+      agencyId: normalizeAgencyId(agencyId),
       userIdValue: userIdValue
     },
     authCredentials: CULR_AUTH_CREDENTIALS
@@ -155,4 +155,14 @@ export async function init(mock = CONFIG.mock_externals.culr) {
 
 function setMockClient() {
   CulrClient = require('./culr.client.mock').CulrMockClient;
+}
+
+/**
+ * Remove all but digits from parameter
+ *
+ * @param {string} $agencyId
+ * @returns {*|string}
+ */
+function normalizeAgencyId($agencyId) {
+  return agencyId ? agencyId.replace(/[\D]/g, '') : agencyId;
 }
