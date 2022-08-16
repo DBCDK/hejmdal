@@ -160,9 +160,9 @@ function setMockClient() {
 /**
  * Remove all but digits from parameter
  *
- * @param {string} $agencyId
+ * @param {string} agencyId
  * @returns {*|string}
  */
-function normalizeAgencyId($agencyId) {
+function normalizeAgencyId(agencyId) {
   return agencyId ? agencyId.replace(/[\D]/g, '') : agencyId;
 }
