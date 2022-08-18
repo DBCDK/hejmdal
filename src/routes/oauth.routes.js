@@ -174,7 +174,7 @@ router.post('/token', (req, res, next) => {
     const headerCredentials = getClientFromHeader(
       req.headers.authorization || ''
     );
-    if (typeof agency === "undefined") {
+    if (typeof agency === 'undefined') {
       const parts = username.split('@');
       if (Object.keys(parts).length === 2 && parts[1].match(/^\d{6}$/)) {
         username = parts[0];
