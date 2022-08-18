@@ -160,6 +160,7 @@ router.post('/introspection', async (req, res) => {
  * - redirect_uri=REDIRECT_URI - Must be identical to the redirect URI provided in the original link
  * - client_id=CLIENT_ID - The client ID you received when you first created the application
  * - client_secret=CLIENT_SECRET - Since this request is made from server-side code, the secret is included
+ * - username, agency in separate parameters or combined in username as user@agency
  * Response:
  * { "access_token":"RsT5OjbzRn430zqMLgV3Ia", "expires_in":3600 }
  * or
@@ -167,12 +168,19 @@ router.post('/introspection', async (req, res) => {
  *
  */
 router.post('/token', (req, res, next) => {
-  const {grant_type, agency, username, password, client_id} = req.body;
+  let {grant_type, agency, username, password, client_id} = req.body;
   if (grant_type === 'password') {
     // With password grant we support both client credentials in header or body.
     const headerCredentials = getClientFromHeader(
       req.headers.authorization || ''
     );
+    if (typeof agency === "undefined") {
+      const parts = username.split('@');
+      if (Object.keys(parts).length === 2 && parts[1].match(/^\d{6}$/)) {
+        username = parts[0];
+        agency = parts[1];
+      }
+    }
     req.body.username = {
       username,
       agency,
