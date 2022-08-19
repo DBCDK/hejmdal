@@ -1,10 +1,7 @@
 import {getClientInfoByClientId} from '../components/Smaug/smaug.component';
 import {uniqBy} from 'lodash';
 
-import {
-  getClientByToken,
-  getTokenByAuth
-} from '../components/Smaug/smaug.client';
+import {getClientByToken} from '../components/Smaug/smaug.client';
 import {log} from './logging.util';
 
 /**
@@ -79,7 +76,7 @@ export function clearClientOnSession(req, res, next) {
 export function addClientToListOfClients(req, res, next) {
   try {
     const {clients = [], client = {}, query} = req.session;
-    if (client.proxy) {
+    if (client && client.proxy) {
       // A client setup as a proxy should not be registered as a client the user is logged in through
       return;
     }
