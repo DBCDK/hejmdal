@@ -27,7 +27,7 @@ export async function validateUserInLibrary(
     serviceRequester
   );
 
-  const userValidate = extractInfo(response, retries, userInput, 'Agency: ' + userInput.agency + ' serviceRequester: ' + serviceRequester);
+  const userValidate = extractInfo(response, retries, 'Agency: ' + userInput.agency + ' serviceRequester: ' + serviceRequester);
 
   // Temporary fix: Borchk randomly returns service_unavailable. Retry once
   if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
