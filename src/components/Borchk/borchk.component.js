@@ -6,7 +6,6 @@
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
-import {CONFIG} from '../../utils/config.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -28,7 +27,7 @@ export async function validateUserInLibrary(
     serviceRequester
   );
 
-  const userValidate = extractInfo(response, retries);
+  const userValidate = extractInfo(response, retries, 'Agency: ' + userInput.agency + ' serviceRequester: ' + serviceRequester);
 
   // Temporary fix: Borchk randomly returns service_unavailable. Retry once
   if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
@@ -58,9 +57,10 @@ export async function validateUserInLibrary(
  *
  * @param {object} response
  * @param retries
+ * @param {string} requesterInfo
  * @returns {{error: boolean, message: string}}
  */
-function extractInfo(response, retries = 0) {
+function extractInfo(response, retries = 0, requesterInfo) {
   let statusResponse = {
     error: true,
     message: 'unknown_error'
@@ -75,26 +75,26 @@ function extractInfo(response, retries = 0) {
         statusResponse.message = 'OK';
         break;
       case 'service_not_licensed':
-        log.error('Invalid borchk request. Service not licensed', {
+        log.error('Invalid borchk request. Service not licensed. ' + requesterInfo, {
           response: response
         });
         statusResponse.message = ERRORS[message];
         break;
       case 'service_unavailable':
-        log.error('Borchk service is unavailable', {
+        log.error('Borchk service is unavailable' + requesterInfo, {
           response: response,
           retries
         });
         statusResponse.message = ERRORS[message];
         break;
       case 'library_not_found':
-        log.warn('Borchk: The requested library was not found', {
+        log.warn('Borchk: The requested library was not found. ' + requesterInfo, {
           response: response
         });
         statusResponse.message = ERRORS[message];
         break;
       case 'borrowercheck_not_allowed':
-        log.warn('Borchk: Borrowercheck is no allowed', {
+        log.warn('Borchk: Borrowercheck is no allowed. ' + requesterInfo, {
           response: response
         });
         statusResponse.message = ERRORS[message];
@@ -108,7 +108,7 @@ function extractInfo(response, retries = 0) {
         statusResponse.message = ERRORS[message];
         break;
       case 'municipality_check_not_supported_by_library':
-        log.debug('Borchk: Municipality check not supported by library', {
+        log.debug('Borchk: Municipality check not supported by library. ' + requesterInfo, {
           response: response
         });
         statusResponse.message = ERRORS[message];
@@ -118,11 +118,11 @@ function extractInfo(response, retries = 0) {
         statusResponse.message = ERRORS[message];
         break;
       case 'error_in_request':
-        log.error('Invalid borchk request', {response: response});
+        log.error('Invalid borchk request. ' + requesterInfo, {response: response});
         statusResponse.message = ERRORS[message];
         break;
       default:
-        log.error('Unknown borchk library', {response: response});
+        log.error('Unknown borchk library. ' + requesterInfo, {response: response});
         break;
     }
   } else {
