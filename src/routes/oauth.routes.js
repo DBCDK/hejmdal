@@ -176,7 +176,7 @@ router.post('/token', (req, res, next) => {
     );
     if (typeof agency === 'undefined') {
       const parts = username.split('@');
-      if (Object.keys(parts).length === 2 && parts[1].match(/^\d{6}$/)) {
+      if (Object.keys(parts).length === 2 && parts[0] && parts[1].match(/^\d{6}$/)) {
         username = parts[0];
         agency = parts[1];
       }
