@@ -76,7 +76,7 @@ export function clearClientOnSession(req, res, next) {
 export function addClientToListOfClients(req, res, next) {
   try {
     const {clients = [], client = {}, query} = req.session;
-    if (client && client.proxy) {
+    if (client.proxy) {
       // A client setup as a proxy should not be registered as a client the user is logged in through
       return;
     }
