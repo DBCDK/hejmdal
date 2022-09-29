@@ -7,6 +7,7 @@
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
     "dev:test": "npm run build:dev & . ./env.test && npm run serve",
+    "dev:fvs": "npm run build:dev & . ./env.fvs && npm run serve",
     "build:dev": "npm run build:css:dev & npm run build:js:dev",
     "build:prod": "npm run build:css:prod && npm run build:js:prod",
     "build:css:dev": "rm -f static/css/* && postcss src/css/styles.css --dir static/css --watch --map --use postcss-import precss autoprefixer cssnano postcss-inline-svg postcss-custom-properties",
@@ -82,7 +83,7 @@
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
-    "autoprefixer": "^9.5.1",
+    "autoprefixer": "^9.8.6",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^26.1.0",
@@ -97,7 +98,7 @@
     "nodemon": "^1.18.11",
     "npm-check-updates": "^16.3.3",
     "npm-run-all": "^4.1.5",
-    "postcss-cli": "^6.1.2",
+    "postcss-cli": "^7.1.2",
     "postcss-custom-properties": "^8.0.10",
     "postcss-import": "^12.0.1",
     "postcss-inline-svg": "^3.1.1",
