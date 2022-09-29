@@ -1,6 +1,6 @@
 {
   "name": "hejmdal",
-  "version": "0.10.0",
+  "version": "1.0.1",
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
@@ -46,7 +46,7 @@
   },
   "homepage": "https://github.com/DBCDK/hejmdal#readme",
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=14.0.0"
   },
   "targets": {
     "ie": "11"
@@ -69,10 +69,10 @@
     "express-session": "^1.17.2",
     "knex": "^0.95.11",
     "locale-compare-polyfill": "0.0.2",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "nock": "^10.0.6",
-    "objection": "^2.2.16",
+    "objection": "^3.0.1",
     "passport": "^0.4.0",
     "passport-oauth2": "^1.5.0",
     "pg": "^8.7.1",
