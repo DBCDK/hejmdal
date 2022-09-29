@@ -4,7 +4,6 @@
   "description": "Adgangsplatform...",
   "main": "src/main.js",
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
     "dev:test": "npm run build:dev & . ./env.test && npm run serve",
@@ -107,8 +106,5 @@
     "wait-on": "^3.2.0",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.12"
-  },
-  "resolutions": {
-    "lodash": "^4.17.14"
   }
 }
