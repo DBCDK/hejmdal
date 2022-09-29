@@ -1,4 +1,4 @@
-ARG NODE_BASEIMAGE=docker-dbc.artifacts.dbccloud.dk/dbc-node:latest
+ARG NODE_BASEIMAGE=docker-dbc.artifacts.dbccloud.dk/dbc-node:old-202235
 # ---- Base Node ----
 FROM  $NODE_BASEIMAGE AS build
 # set working directory
@@ -7,7 +7,7 @@ WORKDIR /home/node/app
 COPY . .
 
 # install node packages
-RUN npm set progress=false && npm config set depth 0 && \
+RUN npm config list && npm set progress=false && npm config set depth 0 && \
   npm ci --only=production && \
   mkdir prod_build && \
   cp -R node_modules prod_build/node_modules && \
