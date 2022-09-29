@@ -79,7 +79,7 @@
     "pg": "^8.8.0",
     "pug": "^3.0.2",
     "should-send-same-site-none": "^2.0.5",
-    "soap": "^0.45.0",
+    "soap": "^0.40.0",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
