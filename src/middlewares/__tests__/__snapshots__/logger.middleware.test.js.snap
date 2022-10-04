@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`LoggerMiddleware tests Should invoke next and make call to log.error 1`] = `
-Array [
+[
   "parsing of request failed",
-  Object {
+  {
     "error": [TypeError: Cannot read property 'baseUrl' of null],
     "req": null,
   },
@@ -12,30 +12,30 @@ Array [
 
 exports[`LoggerMiddleware tests Should invoke next and make call to log.info 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       "page request",
-      Object {
+      {
         "baseUrl": "url/path",
         "clientId": "",
-        "requestObject": Object {
+        "requestObject": {
           "header": "header",
           "method": "method",
           "params": undefined,
           "query": undefined,
         },
-        "responseObject": Object {
+        "responseObject": {
           "message": undefined,
           "status": undefined,
         },
-        "timings": Object {
+        "timings": {
           "ms": 42,
         },
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },
