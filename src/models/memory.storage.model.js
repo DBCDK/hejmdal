@@ -60,13 +60,12 @@ export default class MemoryStorage {
    * Find objects from store where key begins with given prefix
    *
    * @param {string} objectKeyPrefix
-   * @param {string} extra
    * @returns {boolean}
    */
   async find(objectKeyPrefix) {
     const entries = [];
     for (var key in this.storage) {
-      if (this.storage.hasOwnProperty(key)) {
+      if (this.storage.hasOwnProperty(key)) {  // eslint-disable-line no-prototype-builtins
         const value = this.storage[key];
         entries.push([key, value]);
       }

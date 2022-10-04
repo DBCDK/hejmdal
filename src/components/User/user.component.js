@@ -98,6 +98,8 @@ export async function readUser(token) {
  *
  * @param token
  * @param {Object} user
+ * @param clientId
+ * @returns {Promise<*>}
  */
 export async function saveUser(token, user, clientId) {
   const stopTiming = startTiming();
@@ -121,7 +123,7 @@ export async function saveUser(token, user, clientId) {
         client_application: clientId,
         user_id: user.userId,
         group: user.agency,
-        idp: user.hasOwnProperty('identityProviders') ? user.identityProviders[0] : 'password_grant'
+        idp: user.hasOwnProperty('identityProviders') ? user.identityProviders[0] : 'password_grant'  // eslint-disable-line no-prototype-builtins
       }
     );
   } catch (error) {

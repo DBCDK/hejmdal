@@ -409,7 +409,7 @@ export async function identityProviderCallback(req, res) {
     return; // Something went wrong, and redirect is initiated.
   }
   req.session.save(() => {
-    if (req.session.hasOwnProperty('query')) {
+    if (req.session.hasOwnProperty('query')) {  // eslint-disable-line no-prototype-builtins
       return res.redirect(
         `/oauth/authorize/?${Object.entries(req.session.query)
           .map(([key, value]) => key + '=' + encodeURIComponent(value))
