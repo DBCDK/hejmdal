@@ -2,44 +2,44 @@
 
 exports[`test showinfo method Should render cookie info page 1`] = `
 [MockFunction] {
-  "calls": Array [
-    Array [
+  "calls": [
+    [
       "Info",
-      Object {
+      {
         "info": true,
-        "textObj": Object {
-          "sections": Array [
-            Object {
-              "texts": Array [
+        "textObj": {
+          "sections": [
+            {
+              "texts": [
                 "Vi benytter cookies til at gemme information om dine logins.",
               ],
             },
-            Object {
+            {
               "header": "Valgte biblioteker",
-              "texts": Array [
+              "texts": [
                 "Vi gemmer information om, hvilke biblioteker, der har været brugt ved login på denne computer, telefon, tablet osv. Det gør vi for at kunne tilbyde dig en liste over tidligere benyttede biblioteker, når du efterfølgende logger ind. Dermed kan vi give dig mulighed for et hurtigere login.",
               ],
             },
-            Object {
+            {
               "header": "Login",
-              "texts": Array [
+              "texts": [
                 "Vi gemmer information om, at du er logget ind og hvilket bibliotek, du er logget ind ved, således at du ikke skal logge ind mere end én gang. Denne information fjernes, når du enten logger ud eller lukker browseren.",
               ],
             },
-            Object {
+            {
               "header": "Slå cookies fra i browseren ",
-              "texts": Array [
+              "texts": [
                 "Bibliotekslogin virker ikke uden cookies. Du kan have ændret indstillingerne i din browser, så du ikke accepterer cookies. I så fald vil du få en fejlside, når du forsøger at benytte Bibliotekslogin.",
               ],
             },
-            Object {
-              "texts": Array [
+            {
+              "texts": [
                 "Alle browsere tillader, at du sletter dine cookies. Hvis du gør det, mens du er logget ind, kan du derfor også opleve fejl på siden.",
               ],
             },
-            Object {
+            {
               "header": "Cookies hos andre hjemmesider",
-              "texts": Array [
+              "texts": [
                 "Bibliotekslogin benytter ikke andre tjenester, der anvender cookies hos brugeren.",
               ],
             },
@@ -49,8 +49,8 @@ exports[`test showinfo method Should render cookie info page 1`] = `
       },
     ],
   ],
-  "results": Array [
-    Object {
+  "results": [
+    {
       "type": "return",
       "value": undefined,
     },

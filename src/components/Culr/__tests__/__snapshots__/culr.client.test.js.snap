@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Tests for CULR client. Assert that methods are called with correct params createAccount should call createAccount with correct params 1`] = `
-Object {
+{
   "agencyId": "1234",
-  "authCredentials": Object {
+  "authCredentials": {
     "groupIdAut": "12345",
     "passwordAut": "password",
     "userIdAut": "test_create",
   },
   "municipalityNo": "101",
-  "userCredentials": Object {
+  "userCredentials": {
     "userIdType": "CPR",
     "userIdValue": "user",
   },
@@ -17,14 +17,14 @@ Object {
 `;
 
 exports[`Tests for CULR client. Assert that methods are called with correct params createAccount should call createAccount without municipalityNo 1`] = `
-Object {
+{
   "agencyId": "1234",
-  "authCredentials": Object {
+  "authCredentials": {
     "groupIdAut": "12345",
     "passwordAut": "password",
     "userIdAut": "test_create",
   },
-  "userCredentials": Object {
+  "userCredentials": {
     "userIdType": "CPR",
     "userIdValue": "user",
   },
