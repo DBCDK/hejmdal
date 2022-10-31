@@ -6,7 +6,7 @@ jest.mock('soap');
 const borchkMock = {
   on: jest.fn(),
   createAccountAsync: jest.fn(params => [params]),
-  borrowerCheckAsync: jest.fn(params => {
+  borrowerCheckComplexAsync: jest.fn(params => {
     if (
       _.isEqual(params, {
         serviceRequester: 'login.bib.dk',
@@ -16,6 +16,17 @@ const borchkMock = {
       })
     ) {
       return [{requestStatus: 'ok'}];
+    }
+
+    if (
+      _.isEqual(params, {
+        serviceRequester: 'login.bib.dk',
+        libraryCode: '790900',
+        userId: '0102032222',
+        userPincode: '1234'
+      })
+    ) {
+      return [{requestStatus: 'ok', userPrivilege:[], blocked: false, municipalityNumber: 101}];
     }
 
     // ....

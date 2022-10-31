@@ -63,7 +63,9 @@ export async function validateUserInLibrary(
 function extractInfo(response, retries = 0, requesterInfo) {
   let statusResponse = {
     error: true,
-    message: 'unknown_error'
+    message: 'unknown_error',
+    blocked: false,
+    userPrivilege: {}
   };
 
   if (response && response.requestStatus) {
@@ -73,6 +75,9 @@ function extractInfo(response, retries = 0, requesterInfo) {
       case 'ok':
         statusResponse.error = false;
         statusResponse.message = 'OK';
+        statusResponse.blocked = response.blocked;
+        statusResponse.municipalityNumber = response.municipalityNumber;
+        statusResponse.userPrivilege = response.userPrivilege;
         break;
       case 'service_not_licensed':
         log.error('Invalid borchk request. Service not licensed. ' + requesterInfo, {

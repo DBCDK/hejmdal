@@ -30,11 +30,11 @@ export async function getClient(agency, userId, pinCode, serviceRequester) {
     userId: userId,
     userPincode: pinCode
   };
-  const response = await BorcheckClient.borrowerCheckAsync(params);
+  const response = await BorcheckClient.borrowerCheckComplexAsync(params);
   const elapsedTimeInMs = stopTiming();
   log.debug('timing', {
     service: 'Borchk',
-    method: 'borrowerCheck',
+    method: 'borrowerCheckComplex',
     ms: elapsedTimeInMs
   });
   log.debug('A request was made to BORCHK', {
