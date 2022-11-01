@@ -133,9 +133,6 @@ context('Borchk form', () => {
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
     cy.get('#userid-input').should('have.attr', 'type', 'text');
-    cy.get('#toggle-userid-input').click();
-    cy.get('#userid-input').should('have.attr', 'type', 'tel');
-    cy.get('#userid-input').should('have.value', '12345678');
   });
   it('Should switch type on password input field', () => {
     cy.get('#pin-input').type('1234');
