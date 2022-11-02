@@ -149,7 +149,7 @@ export async function getBorchkInfo(user) {
  * @returns {Promise<{}>}
  */
 export async function getUserInfoFromBorchk(culrResponse, user) {
-  let response = {blocked: false, userPrivilege: []};
+  let response = {};
 
   try {
     // check if user lives in municipality
