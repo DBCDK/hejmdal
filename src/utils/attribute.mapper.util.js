@@ -60,6 +60,8 @@ export async function mapCulrResponse(
   let agencies = [];
   let fromCpr = {};
 
+  log.debug('mapCulrResponse', culr);
+
   if (culr.accounts && Array.isArray(culr.accounts)) {
     culr.accounts.forEach(account => {
       if (account.userIdType === 'CPR' && !cpr) {
@@ -102,6 +104,12 @@ export async function mapCulrResponse(
           case 'agencies':
           case 'libraries':
             mapped.agencies = agencies;
+            break;
+          case 'blocked':
+            mapped.blocked = culr.blocked;
+            break;
+          case 'userPrivilege':
+            mapped.userPrivilege = culr.userPrivilege;
             break;
           case 'municipality':
             mapped.municipality = culr.municipalityNumber || null;

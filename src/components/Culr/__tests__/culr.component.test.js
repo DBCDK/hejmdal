@@ -6,7 +6,7 @@
 import {
   shouldCreateAccount,
   getUserAttributesFromCulr,
-  getMunicipalityInformation,
+  getUserInfoFromBorchk,
   sortAgencies,
   filterAgencies
 } from '../culr.component';
@@ -53,7 +53,7 @@ describe('Unittesting methods in culr.component:', () => {
   });
   describe('getMunicipalityInformation', () => {
     it('should NOT return municipalityNo from CULR if not length === 3', async () => {
-      const result = await getMunicipalityInformation(
+      const result = await getUserInfoFromBorchk(
         {MunicipalityNo: '?'},
         {
           userId: '0102031111',
@@ -63,13 +63,15 @@ describe('Unittesting methods in culr.component:', () => {
       );
 
       expect(result).toEqual({
+        blocked: null,
         municipalityAgencyId: '790900',
-        municipalityNumber: '909'
+        municipalityNumber: '909',
+        userPrivilege: []
       });
     });
 
     it('should NOT generate municipalityAgencyId from municipalityNo if agency does NOT start with 7', async () => {
-      const result = await getMunicipalityInformation(
+      const result = await getUserInfoFromBorchk(
         {MunicipalityNo: '123'},
         {
           userId: '0102031111',
@@ -78,13 +80,15 @@ describe('Unittesting methods in culr.component:', () => {
         }
       );
       expect(result).toEqual({
+        blocked: null,
         municipalityAgencyId: '911130',
-        municipalityNumber: '123'
+        municipalityNumber: '123',
+        userPrivilege: []
       });
     });
 
-    it('should return municipalityAgencyId even without MunicipalityNo', async () => {
-      const result = await getMunicipalityInformation(
+    it('should not return municipalityAgencyId or municipalityNumber', async () => {
+      const result = await getUserInfoFromBorchk(
         {},
         {
           userId: '0102031111',
@@ -93,12 +97,28 @@ describe('Unittesting methods in culr.component:', () => {
         }
       );
       expect(result).toEqual({
-        municipalityAgencyId: '710100',
-        municipalityNumber: '101'
+        blocked: null,
+        userPrivilege: []
+      });
+    });
+    it('should return municipalityAgencyId and municipalityNumber', async () => {
+      const result = await getUserInfoFromBorchk(
+        {},
+        {
+          userId: '0102032222',
+          pincode: '1234',
+          agency: '790900'
+        }
+      );
+      expect(result).toEqual({
+        municipalityAgencyId: '790900',
+        municipalityNumber: '909',
+        blocked: null,
+        userPrivilege: []
       });
     });
     it('should return municipalityAgencyId from non municipality libraries', async () => {
-      const result = await getMunicipalityInformation(
+      const result = await getUserInfoFromBorchk(
         {},
         {
           userId: '0102031111',
@@ -107,11 +127,13 @@ describe('Unittesting methods in culr.component:', () => {
         }
       );
       expect(result).toEqual({
-        municipalityAgencyId: '911116'
+        blocked: null,
+        municipalityAgencyId: '911116',
+        userPrivilege: []
       });
     });
     it('should NOT return municipalityAgencyId if no user.agency', async () => {
-      const result = await getMunicipalityInformation(
+      const result = await getUserInfoFromBorchk(
         {},
         {
           userId: '0102031111'

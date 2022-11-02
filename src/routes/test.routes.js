@@ -433,39 +433,64 @@ forsrightsMockRouter.get('/validate', (req, res) => {
 
 const mockDataOk = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
 <SOAP-ENV:Body>
-<borrowerCheckResponse>
+<borrowerCheckComplexResponse>
 <userId>0102030405</userId>
 <requestStatus>ok</requestStatus>
-</borrowerCheckResponse>
+</borrowerCheckComplexResponse>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>`;
 
 const mockDataNotFound = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
   <SOAP-ENV:Body>
-  <borrowerCheckResponse>
+  <borrowerCheckComplexResponse>
   <userId>0102030405</userId>
   <requestStatus>borrower_not_found</requestStatus>
-  </borrowerCheckResponse>
+  </borrowerCheckComplexResponse>
   </SOAP-ENV:Body>
   </SOAP-ENV:Envelope>`;
 
 const mockDataNotMunicipality = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
   <SOAP-ENV:Body>
-  <borrowerCheckResponse>
+  <borrowerCheckComplexResponse>
   <userId>0102030405</userId>
   <requestStatus>borrower_not_in_municipality</requestStatus>
-  </borrowerCheckResponse>
+  </borrowerCheckComplexResponse>
   </SOAP-ENV:Body>
   </SOAP-ENV:Envelope>`;
 
 const serviceUnavailable = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://oss.dbc.dk/ns/borchk">
     <SOAP-ENV:Body>
-    <borrowerCheckResponse>
+    <borrowerCheckComplexResponse>
     <userId>0102030405</userId>
     <requestStatus>service_unavailable</requestStatus>
-    </borrowerCheckResponse>
+    </borrowerCheckComplexResponse>
     </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>`;
+
+const mockDataUserPrivilege = `<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <borrowerCheckComplexResponse xmlns="http://oss.dbc.dk/ns/borchk">
+         <userId>A1234567890</userId>
+         <requestStatus>ok</requestStatus>
+         <userPrivilege>BOERNETILBUD</userPrivilege>
+         <userPrivilege>BIBLIOTEKET_KOMMER</userPrivilege>
+         <userPrivilege>AELDRETILBUD</userPrivilege>
+         <municipalityNumber>615</municipalityNumber>
+         <blocked>false</blocked>
+      </borrowerCheckComplexResponse>
+   </S:Body>
+</S:Envelope>`;
+
+const mockDataBlocked = `<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <borrowerCheckComplexResponse xmlns="http://oss.dbc.dk/ns/borchk">
+         <userId>0102033692</userId>
+         <requestStatus>ok</requestStatus>
+         <municipalityNumber>400</municipalityNumber>
+         <blocked>true</blocked>
+      </borrowerCheckComplexResponse>
+   </S:Body>
+</S:Envelope>`;
 
 const borchkMockRouter = Router();
 
@@ -517,6 +542,14 @@ borchkMockRouter.post('/', (req, res) => {
     ) {
       body = mockDataOk;
     }
+  }
+
+  if (userId === 'A1234567890') {
+    body = mockDataUserPrivilege;
+  }
+
+  if (userId === '0102033692') {
+    body = mockDataBlocked;
   }
 
   if (serviceRequester === 'check') {

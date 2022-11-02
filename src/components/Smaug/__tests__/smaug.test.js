@@ -103,6 +103,10 @@ describe('Test Smaug component', () => {
         netpunktAgency: {},
         dbcidp: {},
         forsrights: {},
+        blocked: {},
+        userPrivilege: {},
+        singleLogoutPath: undefined,  // eslint-disable-line no-undefined
+
         municipalityAgencyId: {},
         uniloginId: {
           name: 'UNI-login brugernavn',

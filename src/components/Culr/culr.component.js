@@ -1,6 +1,6 @@
 /**
  * @file
- * CULR compoennt handles all interaction bewteen the containing application and CULR
+ * CULR compoennt handles all interaction between the containing application and CULR
  */
 
 import * as culr from './culr.client';
@@ -57,9 +57,13 @@ export async function getUserAttributesFromCulr(user = {}) {
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
     const {
+      blocked,
+      userPrivilege,
       municipalityNumber,
       municipalityAgencyId
-    } = await getMunicipalityInformation(response.result, user);
+    } = await getUserInfoFromBorchk(response.result, user);
+    attributes.blocked = blocked;
+    attributes.userPrivilege = userPrivilege;
     attributes.municipalityNumber = municipalityNumber;
     attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
@@ -68,9 +72,13 @@ export async function getUserAttributesFromCulr(user = {}) {
 
   // Quick fix for Býarbókasavnið. TODO: clean up.
   const {
+    blocked,
+    userPrivilege,
     municipalityNumber,
     municipalityAgencyId
-  } = await getMunicipalityInformation({}, user);
+  } = await getUserInfoFromBorchk({}, user);
+  attributes.blocked = blocked;
+  attributes.userPrivilege = userPrivilege;
   attributes.municipalityNumber = municipalityNumber;
   attributes.municipalityAgencyId = municipalityAgencyId;
 
@@ -123,15 +131,12 @@ async function getUserAccount(user) {
  * @param {*} user
  * @returns {string|null}
  */
-export async function getMunicipalityId(user) {
+export async function getBorchkInfo(user) {
   const result = await validateUserInLibrary(
     CONFIG.borchk.serviceRequesterInMunicipality,
     user
   );
-  if (!result.error && user.agency.startsWith('7')) {
-    return user.agency.slice(1, 4);
-  }
-  return null;
+  return result.error ? null : result;
 }
 
 /**
@@ -143,17 +148,19 @@ export async function getMunicipalityId(user) {
  * @param {Object} user
  * @returns {Promise<{}>}
  */
-export async function getMunicipalityInformation(culrResponse, user) {
+export async function getUserInfoFromBorchk(culrResponse, user) {
   let response = {};
 
   try {
     // check if user lives in municipality
     if (user.agency && user.userId && user.pincode) {
-      const borchkMunicipalityNo = await getMunicipalityId(user);
+      const borchkInfo = await getBorchkInfo(user);
+      response.blocked = borchkInfo.blocked || null;
+      response.userPrivilege = borchkInfo.userPrivilege || null;
       // If user lives in municipality - Use borchk informations
-      if (borchkMunicipalityNo) {
+      if (borchkInfo.municipalityNumber) {
         response.municipalityAgencyId = user.agency;
-        response.municipalityNumber = borchkMunicipalityNo;
+        response.municipalityNumber = borchkInfo.municipalityNumber;
         log.info('municipality info. borchk: ', response);
         return response;
       }
@@ -219,11 +226,12 @@ async function createUser(user, agencyId) {
 
   // Check if user has logged in on municipality
   // Create user on CULR.
+  const borchkInfo = await getBorchkInfo(user);
   const response = await culr.createAccount({
     userIdType,
     userIdValue,
     agencyId,
-    municipalityNo: await getMunicipalityId(user)
+    municipalityNo: borchkInfo.municipalityNumber
   });
 
   const responseCode = response && response.return.responseStatus.responseCode;
