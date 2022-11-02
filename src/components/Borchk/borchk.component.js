@@ -75,9 +75,9 @@ function extractInfo(response, retries = 0, requesterInfo) {
       case 'ok':
         statusResponse.error = false;
         statusResponse.message = 'OK';
-        statusResponse.blocked = response.blocked;
+        statusResponse.blocked = response.blocked || false;
         statusResponse.municipalityNumber = response.municipalityNumber;
-        statusResponse.userPrivilege = response.userPrivilege;
+        statusResponse.userPrivilege = response.userPrivilege || [];
         break;
       case 'service_not_licensed':
         log.error('Invalid borchk request. Service not licensed. ' + requesterInfo, {

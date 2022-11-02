@@ -66,7 +66,7 @@ describe('Unittesting methods in culr.component:', () => {
         blocked: null,
         municipalityAgencyId: '790900',
         municipalityNumber: '909',
-        userPrivilege: null
+        userPrivilege: []
       });
     });
 
@@ -83,7 +83,7 @@ describe('Unittesting methods in culr.component:', () => {
         blocked: null,
         municipalityAgencyId: '911130',
         municipalityNumber: '123',
-        userPrivilege: null
+        userPrivilege: []
       });
     });
 
@@ -98,7 +98,7 @@ describe('Unittesting methods in culr.component:', () => {
       );
       expect(result).toEqual({
         blocked: null,
-        userPrivilege: null
+        userPrivilege: []
       });
     });
     it('should return municipalityAgencyId and municipalityNumber', async () => {
@@ -114,7 +114,7 @@ describe('Unittesting methods in culr.component:', () => {
         municipalityAgencyId: '790900',
         municipalityNumber: '909',
         blocked: null,
-        userPrivilege: null
+        userPrivilege: []
       });
     });
     it('should return municipalityAgencyId from non municipality libraries', async () => {
@@ -129,7 +129,7 @@ describe('Unittesting methods in culr.component:', () => {
       expect(result).toEqual({
         blocked: null,
         municipalityAgencyId: '911116',
-        userPrivilege: null
+        userPrivilege: []
       });
     });
     it('should NOT return municipalityAgencyId if no user.agency', async () => {
