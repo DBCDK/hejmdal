@@ -105,7 +105,8 @@ describe('Test Smaug component', () => {
         forsrights: {},
         blocked: {},
         userPrivilege: {},
-        singleLogoutPath: undefined,
+        singleLogoutPath: undefined,  // eslint-disable-line no-undefined
+
         municipalityAgencyId: {},
         uniloginId: {
           name: 'UNI-login brugernavn',

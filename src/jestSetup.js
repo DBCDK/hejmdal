@@ -26,7 +26,7 @@ const borchkMock = {
         userPincode: '1234'
       })
     ) {
-      return [{requestStatus: 'ok', userPrivilege:[], blocked: false, municipalityNumber: 101}];
+      return [{requestStatus: 'ok', userPrivilege: [], blocked: false, municipalityNumber: 101}];
     }
 
     // ....
