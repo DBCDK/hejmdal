@@ -36,7 +36,6 @@ context('Login flow', () => {
     cy.hash('userinfo');
     cy.log('Get user info');
     cy.get('#get-userinfo-button').click();
-    /** include again later
     cy.get('[data-bind="userinfo"]').invoke('text', (err, text) => {
       const token = JSON.parse(text);
       expect(token).to.have.property('attributes');
@@ -53,7 +52,6 @@ context('Login flow', () => {
 
     cy.visit(authorize());
     cy.location('pathname').should('eq', '/login');
- */
   });
 
   it('Should trim user input', () => {

@@ -49,6 +49,14 @@ The following is a full list of possible configuration options
     "authenticatedToken": {
       "name": "Autentificeret Token",
       "description": "oAuth2 autentificeret token, der kan bruges til kalde openplatform.dbc.dk som autentificeret bruger"
+    },
+    "blocked": {
+      "name": "Spærret bruger",
+      "description": "boolean. true hvis brugeren er spærret"
+    },
+    "userPrivilege": {
+      "name": "Bruger roller",
+      "description": "Liste af roller som en bruger har på login biblioteket"
     }
   },
   "display": {
@@ -96,6 +104,8 @@ Defines the list of attributes that _can_ be returned to the client service trou
 * `birthYear`: Extracted from CPR-number if possible
 * `gender`: Extracted from CPR-number if possible
 * `authenticatedToken`: oAuth2 authenticated token, can be used for requests to openplatform.dbc.dk as an authenticated user"
+* `blocked`: Boolean. True if user is blocked at the login library
+* `userPrivilege`: Array of userPrivileges from the login library
 
 ## display
 

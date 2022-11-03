@@ -149,20 +149,22 @@ export async function getBorchkInfo(user) {
  * @returns {Promise<{}>}
  */
 export async function getUserInfoFromBorchk(culrResponse, user) {
-  let response = {};
+  let response = {blocked: false, userPrivilege: []};
 
   try {
     // check if user lives in municipality
     if (user.agency && user.userId && user.pincode) {
       const borchkInfo = await getBorchkInfo(user);
-      response.blocked = borchkInfo.blocked || null;
-      response.userPrivilege = borchkInfo.userPrivilege || null;
-      // If user lives in municipality - Use borchk informations
-      if (borchkInfo.municipalityNumber) {
-        response.municipalityAgencyId = user.agency;
-        response.municipalityNumber = borchkInfo.municipalityNumber;
-        log.info('municipality info. borchk: ', response);
-        return response;
+      if (borchkInfo) {
+        response.blocked = borchkInfo.blocked || null;
+        response.userPrivilege = borchkInfo.userPrivilege || null;
+        // If user lives in municipality - Use borchk informations
+        if (borchkInfo.municipalityNumber) {
+          response.municipalityAgencyId = user.agency;
+          response.municipalityNumber = borchkInfo.municipalityNumber;
+          log.info('municipality info. borchk: ', response);
+          return response;
+        }
       }
     }
 
