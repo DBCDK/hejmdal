@@ -36,9 +36,7 @@ context('Borchk form', () => {
   it('Select library in dropdown', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
     // Select first library in list with click
-    cy.get('.agency:visible')
-      .first()
-      .click();
+    cy.get('.agency:visible').first().click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Slagelse'
@@ -62,9 +60,7 @@ context('Borchk form', () => {
   it('Select "Arhus" by "Århus"', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('Årh');
     // Select first library in list with click
-    cy.get('.agency:visible')
-      .first()
-      .click();
+    cy.get('.agency:visible').first().click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Aarhus'
@@ -76,9 +72,7 @@ context('Borchk form', () => {
       'Det Kongelige Bibliotek'
     );
     // Select first library in list with click
-    cy.get('.agency:visible')
-      .first()
-      .click();
+    cy.get('.agency:visible').first().click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Det Kgl. Bibliotek'
@@ -138,10 +132,7 @@ context('Borchk form', () => {
 
   it('Should switch type on userid input field', () => {
     cy.get('#userid-input').type('12345678');
-    cy.get('#userid-input').should('have.attr', 'type', 'password');
-    cy.get('#toggle-userid-input').click();
-    cy.get('#userid-input').should('have.attr', 'type', 'tel');
-    cy.get('#userid-input').should('have.value', '12345678');
+    cy.get('#userid-input').should('have.attr', 'type', 'text');
   });
   it('Should switch type on password input field', () => {
     cy.get('#pin-input').type('1234');
@@ -203,10 +194,7 @@ context('Borchk form', () => {
     );
     // remove validation error from username
     cy.get('#userid-input').type('12345678{enter}');
-    cy.get('#userid-input-text').should(
-      'not.contain',
-      'Du skal angive'
-    );
+    cy.get('#userid-input-text').should('not.contain', 'Du skal angive');
 
     // show error when pin is less than 4 figures
     cy.get('#userid-input').clear();
@@ -225,9 +213,7 @@ context('Borchk form', () => {
     );
   });
   it('Should block user', () => {
-    const uid = Math.random()
-      .toString(10)
-      .slice(-10);
+    const uid = Math.random().toString(10).slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
       'sl{downarrow}{downarrow}{downarrow}{enter}'
@@ -271,9 +257,7 @@ context('Borchk form', () => {
     cy.get('#error-body').should('contain', 'Login blokeret');
   });
   it('Should clear user when succesfull login', () => {
-    const uid = Math.random()
-      .toString(10)
-      .slice(-10);
+    const uid = Math.random().toString(10).slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
       'sl{downarrow}{enter}'
