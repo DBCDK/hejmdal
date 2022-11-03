@@ -38,8 +38,10 @@ describe('Unittesting methods in culr.component:', () => {
             userIdValue: '456456'
           }
         ],
+        blocked: false,
         municipalityNumber: '909',
         municipalityAgencyId: '790900',
+        userPrivilege: [],
         culrId: 'guid-0102031111'
       });
     });

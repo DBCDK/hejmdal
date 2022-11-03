@@ -62,26 +62,22 @@ export async function getUserAttributesFromCulr(user = {}) {
       municipalityNumber,
       municipalityAgencyId
     } = await getUserInfoFromBorchk(response.result, user);
-    attributes.blocked = blocked;
-    attributes.userPrivilege = userPrivilege;
+    attributes.blocked = blocked || false;
+    attributes.userPrivilege = userPrivilege || [];
     attributes.municipalityNumber = municipalityNumber;
     attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
     return attributes;
   }
 
-  // Quick fix for Býarbókasavnið. TODO: clean up.
-  const {
-    blocked,
-    userPrivilege,
-    municipalityNumber,
-    municipalityAgencyId
-  } = await getUserInfoFromBorchk({}, user);
-  attributes.blocked = blocked;
-  attributes.userPrivilege = userPrivilege;
-  attributes.municipalityNumber = municipalityNumber;
-  attributes.municipalityAgencyId = municipalityAgencyId;
-
+// Quick fix for Býarbókasavnið. TODO: clean up.
+  const userInfo = await getUserInfoFromBorchk({}, user);
+  if (userInfo && Object.keys(userInfo).length > 0) {
+    attributes.blocked = userInfo.blocked || false;
+    attributes.userPrivilege = userInfo.userPrivilege || [];
+    attributes.municipalityNumber = userInfo.municipalityNumber;
+    attributes.municipalityAgencyId = userInfo.municipalityAgencyId;
+  }
   return attributes;
 }
 
@@ -149,7 +145,7 @@ export async function getBorchkInfo(user) {
  * @returns {Promise<{}>}
  */
 export async function getUserInfoFromBorchk(culrResponse, user) {
-  let response = {blocked: false, userPrivilege: []};
+  let response = {};
 
   try {
     // check if user lives in municipality

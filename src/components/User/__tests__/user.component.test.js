@@ -33,6 +33,7 @@ describe('test store and get user', () => {
         ],
         birthDate: '0102',
         birthYear: '1903',
+        blocked: false,
         cpr: '0102031111',
         dbcidp: [{}],
         forsrights: [],
@@ -44,6 +45,7 @@ describe('test store and get user', () => {
         uniqueId: 'guid-0102031111',
         uniLoginInstitutions: [],
         userId: '0102031111',
+        userPrivilege: [],
         wayfId: null
       }
     });

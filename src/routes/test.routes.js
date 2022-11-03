@@ -4,8 +4,7 @@
  * such as DDB cms og bibliotek.dk
  */
 
-import express, {Router} from 'express';
-import soap from 'soap';
+import {Router} from 'express';
 
 import {ATTRIBUTES} from '../utils/attributes.util';
 import {getClientByAuth} from '../utils/oauth2.utils';
@@ -401,7 +400,7 @@ const forsrightsMockRouter = Router();
 
 // Validate user (forsrights)
 forsrightsMockRouter.get('/validate', (req, res) => {
-  const {action, userIdAut, groupIdAut, passwordAut, agency} = req.query;
+  const {userIdAut, groupIdAut, passwordAut, agency} = req.query;
   const response = {forsRightsResponse: {error: null, ressource: []}};
 
   if (agency === '100200') {
@@ -410,7 +409,6 @@ forsrightsMockRouter.get('/validate', (req, res) => {
   }
 
   if (agency === '100300') {
-    const mock = createForsrightsResponse();
     return res.send(JSON.stringify(response));
   }
 
@@ -436,6 +434,7 @@ const mockDataOk = `<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.or
 <borrowerCheckComplexResponse>
 <userId>0102030405</userId>
 <requestStatus>ok</requestStatus>
+<municipalityNumber>615</municipalityNumber>
 </borrowerCheckComplexResponse>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>`;
@@ -542,6 +541,11 @@ borchkMockRouter.post('/', (req, res) => {
     ) {
       body = mockDataOk;
     }
+  }
+
+  // culr test cases need positive borchk
+  if (['9999998', '9999999', '0101011234'].includes(userId)) {
+    body = mockDataOk;
   }
 
   if (userId === 'A1234567890') {
