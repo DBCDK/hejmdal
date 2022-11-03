@@ -54,7 +54,10 @@ export const ATTRIBUTES = {
   },
   netpunktAgency: {},
   forsrights: {},
-  dbcidp: {},
+  dbcidp: {
+      "name": "valgt IDP",
+      "description": "Navn på den IDP der er logget ind med"
+  },
   blocked: {},
   userPrivilege: {},
   idpUsed: {},

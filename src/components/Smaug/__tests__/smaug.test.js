@@ -101,7 +101,10 @@ describe('Test Smaug component', () => {
           description: '3 cifret kommunenummer'
         },
         netpunktAgency: {},
-        dbcidp: {},
+        dbcidp: {
+          "name": "valgt IDP",
+          "description": "Navn på den IDP der er logget ind med"
+        },
         forsrights: {},
         blocked: {},
         userPrivilege: {},
@@ -129,7 +132,8 @@ describe('Test Smaug component', () => {
         },
         uniLoginInstitutions: {
           name: 'List of unilogin institutions a user is connected to'
-        }
+        },
+        idpUsed: {}
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,
