@@ -6,7 +6,6 @@ context('Create Account flow', () => {
 
  it('should create user in culr', () => {
     cy.visit('/example');
-   /** include again later
     cy.get('#input-login-client')
       .clear()
       .type('hejmdal');
@@ -25,10 +24,8 @@ context('Create Account flow', () => {
       expect(token).to.have.property('attributes');
       expect(token.attributes).to.have.property('uniqueId');
     });
-    */
   });
 
-/** include again later
   it('should add library to user in culr', () => {
     cy.visit(authorize(100400));
     cy.get('#userid-input').type('0101011234');
@@ -54,9 +51,7 @@ context('Create Account flow', () => {
       ]);
     });
   });
- */
 
- /** include again later
   it('should create user in culr with userId', () => {
     cy.visit('/example');
     cy.get('#input-login-client')
@@ -78,9 +73,7 @@ context('Create Account flow', () => {
       expect(token.attributes).to.have.property('uniqueId');
     });
   });
- */
 
-/** include again later
  it('should create user from DBC test in culr with userId', () => {
     cy.visit(authorize(790900));
     cy.get('#userid-input').type('9999998');
@@ -101,5 +94,4 @@ context('Create Account flow', () => {
       ]);
     });
   });
- */
 });

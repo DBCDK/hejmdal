@@ -63,9 +63,7 @@ export async function validateUserInLibrary(
 function extractInfo(response, retries = 0, requesterInfo) {
   let statusResponse = {
     error: true,
-    message: 'unknown_error',
-    blocked: false,
-    userPrivilege: {}
+    message: 'unknown_error'
   };
 
   if (response && response.requestStatus) {

@@ -62,26 +62,22 @@ export async function getUserAttributesFromCulr(user = {}) {
       municipalityNumber,
       municipalityAgencyId
     } = await getUserInfoFromBorchk(response.result, user);
-    attributes.blocked = blocked;
-    attributes.userPrivilege = userPrivilege;
+    attributes.blocked = blocked || false;
+    attributes.userPrivilege = userPrivilege || [];
     attributes.municipalityNumber = municipalityNumber;
     attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
     return attributes;
   }
 
-  // Quick fix for Býarbókasavnið. TODO: clean up.
-  const {
-    blocked,
-    userPrivilege,
-    municipalityNumber,
-    municipalityAgencyId
-  } = await getUserInfoFromBorchk({}, user);
-  attributes.blocked = blocked;
-  attributes.userPrivilege = userPrivilege;
-  attributes.municipalityNumber = municipalityNumber;
-  attributes.municipalityAgencyId = municipalityAgencyId;
-
+// Quick fix for Býarbókasavnið. TODO: clean up.
+  const userInfo = await getUserInfoFromBorchk({}, user);
+  if (userInfo && Object.keys(userInfo).length > 0) {
+    attributes.blocked = userInfo.blocked || false;
+    attributes.userPrivilege = userInfo.userPrivilege || [];
+    attributes.municipalityNumber = userInfo.municipalityNumber;
+    attributes.municipalityAgencyId = userInfo.municipalityAgencyId;
+  }
   return attributes;
 }
 
@@ -155,14 +151,16 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
     // check if user lives in municipality
     if (user.agency && user.userId && user.pincode) {
       const borchkInfo = await getBorchkInfo(user);
-      response.blocked = borchkInfo.blocked || null;
-      response.userPrivilege = borchkInfo.userPrivilege || null;
-      // If user lives in municipality - Use borchk informations
-      if (borchkInfo.municipalityNumber) {
-        response.municipalityAgencyId = user.agency;
-        response.municipalityNumber = borchkInfo.municipalityNumber;
-        log.info('municipality info. borchk: ', response);
-        return response;
+      if (borchkInfo) {
+        response.blocked = borchkInfo.blocked || null;
+        response.userPrivilege = borchkInfo.userPrivilege || null;
+        // If user lives in municipality - Use borchk informations
+        if (borchkInfo.municipalityNumber) {
+          response.municipalityAgencyId = user.agency;
+          response.municipalityNumber = borchkInfo.municipalityNumber;
+          log.info('municipality info. borchk: ', response);
+          return response;
+        }
       }
     }
 
