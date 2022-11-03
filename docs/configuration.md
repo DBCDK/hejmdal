@@ -57,6 +57,10 @@ The following is a full list of possible configuration options
     "userPrivilege": {
       "name": "Bruger roller",
       "description": "Liste af roller som en bruger har på login biblioteket"
+    },
+    "idpUsed": {
+      "name": "valgt IDP",
+      "description": "Navn på den IDP der er logget ind med"
     }
   },
   "display": {
@@ -106,6 +110,8 @@ Defines the list of attributes that _can_ be returned to the client service trou
 * `authenticatedToken`: oAuth2 authenticated token, can be used for requests to openplatform.dbc.dk as an authenticated user"
 * `blocked`: Boolean. True if user is blocked at the login library
 * `userPrivilege`: Array of userPrivileges from the login library
+* `idpUsed`: Name of idp used ('borchk', 'dbcidp', 'netpunkt', 'unilogin', 'nemlogin', 'wayf')
+  )
 
 ## display
 

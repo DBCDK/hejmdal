@@ -57,6 +57,7 @@ export const ATTRIBUTES = {
   dbcidp: {},
   blocked: {},
   userPrivilege: {},
+  idpUsed: {},
   municipalityAgencyId: {},
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'

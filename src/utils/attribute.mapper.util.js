@@ -148,6 +148,9 @@ export async function mapCulrResponse(
           case 'dbcidp':
             mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
             break;
+          case 'idpUsed':
+            mapped.idpUsed = user.userType;
+            break;
           default:
             log.warn('Cannot map attribute: ' + field);
             break;
