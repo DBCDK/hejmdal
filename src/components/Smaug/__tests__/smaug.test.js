@@ -102,7 +102,7 @@ describe('Test Smaug component', () => {
         },
         netpunktAgency: {},
         dbcidp: {
-          name: 'valgt IDP',
+          name: 'Valgt IDP',
           description: 'Navn på den IDP der er logget ind med'
         },
         forsrights: {},
