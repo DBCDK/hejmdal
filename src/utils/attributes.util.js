@@ -54,9 +54,13 @@ export const ATTRIBUTES = {
   },
   netpunktAgency: {},
   forsrights: {},
-  dbcidp: {},
+  dbcidp: {
+      name: 'Valgt IDP',
+      description: 'Navn på den IDP der er logget ind med'
+  },
   blocked: {},
   userPrivilege: {},
+  idpUsed: {},
   municipalityAgencyId: {},
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
