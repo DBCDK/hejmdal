@@ -11,13 +11,15 @@ context('New user links', () => {
   });
   it('Should open modal', () => {
     cy.visit(`${authorize}`);
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{enter}');
     cy.get('[data-cy=new-user-button]').click();
     cy.get('#newUser-dropdown').should('exist');
     cy.get(
       '#newUser-dropdown > .input-container > [data-cy=libraryname-input]'
     ).type('sla');
-    cy.get('.agency:visible')
-      .first()
-      .should('contain', 'Slagelse');
+    cy.get('.agency:visible').first().should('contain', 'Slagelse');
   });
 });

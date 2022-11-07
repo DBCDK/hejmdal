@@ -18,6 +18,10 @@ context('Login flow', () => {
     cy.get('#login-button').click();
 
     cy.log('Login user via borchk');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
 
@@ -84,8 +88,7 @@ context('Login flow', () => {
 
   it('should not login with wrong redirect_uri', () => {
     cy.request({
-      url:
-        '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
+      url: '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
       failOnStatusCode: false
     }).then((res) =>
       cy.wrap(res).its('body.error').should('equal', 'invalid_client')
