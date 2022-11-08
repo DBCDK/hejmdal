@@ -222,7 +222,6 @@ context('Borchk form', () => {
   });
   it('Should block user', () => {
     const uid = Math.random().toString(10).slice(-10);
-
     for (var i = 2; i; i--) {
       cy.get('#borchk-dropdown [data-cy=libraryname-input]')
         .focus()
