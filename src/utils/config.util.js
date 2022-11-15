@@ -133,7 +133,8 @@ export const CONFIG = {
   proxy: {
     trust: !!(Number(process.env.TRUST_PROXY) || 0)
   },
-  municipalityHack: process.env.MUNICIPALITY_AGENCY_HACK || '100450 790900'
+  municipalityHack: process.env.MUNICIPALITY_AGENCY_HACK || '100450 790900',
+  removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || ''
 };
 
 /**
