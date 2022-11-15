@@ -25,6 +25,10 @@ export const ATTRIBUTES = {
     name: 'Køn',
     description: 'Brugerens køn, m (for male) eller f (for female)'
   },
+  allLibraries: {
+    name: 'Biblioteker',
+    description: 'En liste over de biblioteker som kender brugeren inklusiv interne biblioteker'
+  },
   libraries: {
     name: 'Biblioteker',
     description: 'En liste over de biblioteker som kender brugeren'
