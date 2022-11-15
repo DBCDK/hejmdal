@@ -177,7 +177,7 @@ The variables are specified at the form `name : internal config object`. Referen
   List of space separated agencies where municipality is blindly taken, defaults to "100450 790900"
 
 - `REMOVE_ATTRIBUTE_AGENCIES` : `removeAttributeAgencies`  
-  List of space separated agencies which is only returned is allLibraries is used, defaults to ""
+  List of space separated agencies which is only returned if allLibraries is used, defaults to ""
 
 - `NODE_ENV` : `app.env`  
   When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
