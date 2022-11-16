@@ -4,7 +4,7 @@ context('Login flow', () => {
       Cypress.config().baseUrl
     }/example&presel=${agencyId}`;
 
-  it.only('should login throught oauth authorization grant', () => {
+  it('should login throught oauth authorization grant', () => {
     cy.log('Setup client using example endpoint');
     cy.visit('example');
     cy.get('h3')
@@ -18,6 +18,10 @@ context('Login flow', () => {
     cy.get('#login-button').click();
 
     cy.log('Login user via borchk');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
 
@@ -61,6 +65,11 @@ context('Login flow', () => {
     cy.get('#input-preselected-library').clear().type('733000');
     cy.get('#input-locked-library').clear();
     cy.get('#login-button').click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('733000{downarrow}{downarrow}{enter}');
+
     cy.get('#userid-input').type(' 87654321');
     cy.get('#pin-input').type('1234');
 
@@ -76,6 +85,10 @@ context('Login flow', () => {
 
   it('carries through state parameter', () => {
     cy.visit(`${authorize()}&state=test-state-string%2F%2F`);
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
@@ -84,8 +97,7 @@ context('Login flow', () => {
 
   it('should not login with wrong redirect_uri', () => {
     cy.request({
-      url:
-        '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
+      url: '/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=https://wrong.host/example',
       failOnStatusCode: false
     }).then((res) =>
       cy.wrap(res).its('body.error').should('equal', 'invalid_client')
@@ -100,7 +112,10 @@ context('Login flow', () => {
     const userId = '0102030411';
 
     cy.visit(authorize(`7${municipalityLoaner}00`));
-
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
@@ -124,11 +139,13 @@ context('Login flow', () => {
     const municipalityWork = 615;
     const municipalityAgency = 761500;
 
-    // userId home municipality is 329 (Culr);
     const userId = '0102030410';
 
-    cy.visit(authorize(`7${municipalityWork}00`));
-
+    cy.visit(authorize(`${municipalityAgency}`));
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('737000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();

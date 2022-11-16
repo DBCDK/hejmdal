@@ -41,20 +41,25 @@ context('Borchk form', () => {
       'have.value',
       'Slagelse'
     );
-    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').should(
-      'be.visible'
+
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'not.be.visible'
     );
-    // Clear selection
-    cy.get('#borchk-dropdown [data-cy=clear-libraries-btn]').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should('be.empty');
+
+    cy.get('[data-cy=userid-input]').should('be.visible');
+  });
+
+  it('Selects library dropdown via keys', () => {
     // Select using keys
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sl');
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{downarrow}');
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('{enter}');
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{enter}');
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
       'have.value',
       'Slagelse'
     );
+    cy.get('[data-cy=userid-input]').should('be.visible');
   });
 
   it('Select "Arhus" by "Århus"', () => {
@@ -130,11 +135,14 @@ context('Borchk form', () => {
     );
   });
 
-  it('Should switch type on userid input field', () => {
-    cy.get('#userid-input').type('12345678');
-    cy.get('#userid-input').should('have.attr', 'type', 'text');
-  });
   it('Should switch type on password input field', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    // Select first library in list with click
+    cy.get('.agency:visible').first().click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Slagelse'
+    );
     cy.get('#pin-input').type('1234');
     cy.get('#pin-input').should('have.attr', 'type', 'password');
     cy.get('#toggle-pin-input').click();
@@ -174,24 +182,24 @@ context('Borchk form', () => {
   });
 
   it('Should validate forms', () => {
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type('sla');
+    // Select first library in list with click
+    cy.get('.agency:visible').first().click();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]').should(
+      'have.value',
+      'Slagelse'
+    );
     // Assert validation errors
     cy.get('#borchk-submit').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input-text]').should(
-      'contain',
-      'Du skal vælge et bibliotek'
-    );
+    // cy.get('#borchk-dropdown [data-cy=libraryname-input-text]').should(
+    //   'contain',
+    //   'Du skal vælge et bibliotek'
+    // );
     cy.get('#userid-input-text').should('contain', 'Du skal angive');
     cy.get('#pin-input-text').should('contain', 'Du skal angive');
 
-    // remove validation error from library name
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      '733000{enter}'
-    );
     cy.get('#borchk-submit').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input-text]').should(
-      'not.contain',
-      'Du skal vælge et bibliotek'
-    );
+
     // remove validation error from username
     cy.get('#userid-input').type('12345678{enter}');
     cy.get('#userid-input-text').should('not.contain', 'Du skal angive');
@@ -214,18 +222,22 @@ context('Borchk form', () => {
   });
   it('Should block user', () => {
     const uid = Math.random().toString(10).slice(-10);
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{downarrow}{downarrow}{enter}'
-    );
     for (var i = 2; i; i--) {
+      cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+        .focus()
+        .clear()
+        .type('sl{downarrow}{downarrow}{enter}');
       cy.get('#userid-input').type(uid);
-      cy.get('#pin-input').type('1234{enter}');
+      cy.get('[data-cy=pin-input]').type('1234{enter}');
       cy.get('#error-body').should(
         'contain',
         'Du har ' + i + ' forsøg tilbage'
       );
     }
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
     cy.get('#error-header').should(
@@ -243,6 +255,10 @@ context('Borchk form', () => {
     cy.get('#error-body').should('contain', 'Login blokeret');
     cy.wait(5000);
     cy.reload();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{downarrow}{enter}');
     cy.get('#error-header').should(
       'not.contain',
       'For mange fejlede forsøg på login'
@@ -258,11 +274,12 @@ context('Borchk form', () => {
   });
   it('Should clear user when succesfull login', () => {
     const uid = Math.random().toString(10).slice(-10);
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{enter}'
-    );
+
     for (var i = 2; i > 1; i--) {
+      cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+        .focus()
+        .clear()
+        .type('sl{downarrow}{enter}');
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1233{enter}');
       cy.get('#error-body').should(
@@ -270,14 +287,19 @@ context('Borchk form', () => {
         'Du har ' + i + ' forsøg tilbage'
       );
     }
+    cy.reload();
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{enter}');
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1234{enter}');
     cy.get('#logout button').click();
     cy.visit(authorize);
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').focus();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
-      'sl{downarrow}{enter}'
-    );
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .focus()
+      .clear()
+      .type('sl{downarrow}{enter}');
     cy.get('#userid-input').type(uid);
     cy.get('#pin-input').type('1233{enter}');
     cy.get('#error-body').should('contain', 'Du har 2 forsøg tilbage');
