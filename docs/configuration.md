@@ -22,10 +22,6 @@ The following is a full list of possible configuration options
       "name": "Biblioteker",
       "description": "En liste over de biblioteker som kender brugeren"
     },
-    "allLibraries": {
-      "name": "Biblioteker",
-      "description": "En liste over de biblioteker som kender brugeren inklusiv interne biblioteker"
-    },
     "uniloginId": {
       "name": "CPR-nummer",
       "description": "Brugerens CPR-nummer"

@@ -6,12 +6,9 @@
  */
 
 import {log} from './logging.util';
-import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
 import {getDbcidpAgencyRights, getDbcidpAgencyRightsAsFors} from '../components/DBCIDP/dbcidp.client';
-
-const removeAttributeAgencies = CONFIG.removeAttributeAgencies;
 
 /**
  * Attribute mapper
@@ -104,18 +101,9 @@ export async function mapCulrResponse(
           case 'cpr':
             mapped.cpr = cpr;
             break;
-          case 'allAgencies':
-          case 'allLibraries':
-            mapped.agencies = agencies;
-            break;
           case 'agencies':
           case 'libraries':
-            mapped.agencies = [];
-            agencies.forEach((agency) => {
-              if (!removeAttributeAgencies.includes(agency.agencyId)) {
-                mapped.agencies.push(agency);
-              }
-            });
+            mapped.agencies = agencies;
             break;
           case 'blocked':
             mapped.blocked = culr.blocked;

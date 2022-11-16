@@ -123,10 +123,6 @@ describe('Test Smaug component', () => {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
         },
-        allLibraries: {
-          name: 'Biblioteker',
-          description: 'En liste over de biblioteker som kender brugeren inklusiv interne biblioteker'
-        },
         authenticatedToken: {
           skipConsent: true
         },
