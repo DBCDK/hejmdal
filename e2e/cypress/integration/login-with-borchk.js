@@ -121,7 +121,7 @@ context('Login flow', () => {
   });
 
   it('Should return work-municipality for librarians working outside their home-municipality', () => {
-    const municipalityWork = 370;
+    const municipalityWork = 615;
     const municipalityAgency = 761500;
 
     // userId home municipality is 329 (Culr);
