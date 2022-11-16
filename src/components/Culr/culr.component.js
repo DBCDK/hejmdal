@@ -156,7 +156,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
         response.userPrivilege = borchkInfo.userPrivilege || null;
         // If user lives in municipality - Use borchk informations
         if (borchkInfo.municipalityNumber) {
-          response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
+          response.municipalityAgencyId = user.agency;
           response.municipalityNumber = borchkInfo.municipalityNumber;
           log.info('municipality info. borchk: ', response);
           return response;
