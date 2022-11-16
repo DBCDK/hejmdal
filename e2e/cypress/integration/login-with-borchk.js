@@ -122,6 +122,7 @@ context('Login flow', () => {
 
   it('Should return work-municipality for librarians working outside their home-municipality', () => {
     const municipalityWork = 370;
+    const municipalityAgency = 761500;
 
     // userId home municipality is 329 (Culr);
     const userId = '0102030410';
@@ -142,7 +143,7 @@ context('Login flow', () => {
       expect(userinfo.attributes.userId).to.equal(userId);
       expect(userinfo.attributes.municipality).to.equal(`${municipalityWork}`);
       expect(userinfo.attributes.municipalityAgencyId).to.equal(
-        `7${municipalityWork}00`
+        `${municipalityAgency}`
       );
     });
   });
