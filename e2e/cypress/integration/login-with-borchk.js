@@ -136,8 +136,9 @@ context('Login flow', () => {
   });
 
   it('Should return work-municipality for librarians working outside their home-municipality', () => {
-    const municipalityWork = 370;
+    const municipalityWork = 615;
     const municipalityAgency = 761500;
+
     const userId = '0102030410';
 
     cy.visit(authorize(`${municipalityAgency}`));
