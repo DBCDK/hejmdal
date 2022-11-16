@@ -4,7 +4,7 @@ context('Login flow', () => {
       Cypress.config().baseUrl
     }/example&presel=${agencyId}`;
 
-  it('should login throught oauth authorization grant', () => {
+  it.only('should login throught oauth authorization grant', () => {
     cy.log('Setup client using example endpoint');
     cy.visit('example');
     cy.get('h3')
@@ -65,11 +65,6 @@ context('Login flow', () => {
     cy.get('#input-preselected-library').clear().type('733000');
     cy.get('#input-locked-library').clear();
     cy.get('#login-button').click();
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('733000{downarrow}{downarrow}{enter}');
-
     cy.get('#userid-input').type(' 87654321');
     cy.get('#pin-input').type('1234');
 
@@ -85,10 +80,6 @@ context('Login flow', () => {
 
   it('carries through state parameter', () => {
     cy.visit(`${authorize()}&state=test-state-string%2F%2F`);
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
@@ -112,10 +103,7 @@ context('Login flow', () => {
     const userId = '0102030411';
 
     cy.visit(authorize(`7${municipalityLoaner}00`));
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('733000{downarrow}{downarrow}{enter}');
+
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
@@ -136,16 +124,13 @@ context('Login flow', () => {
   });
 
   it('Should return work-municipality for librarians working outside their home-municipality', () => {
-    const municipalityWork = 615;
-    const municipalityAgency = 737000;
+    const municipalityWork = 370;
+
     // userId home municipality is 329 (Culr);
     const userId = '0102030410';
 
-    cy.visit(authorize(`${municipalityAgency}`));
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('737000{downarrow}{downarrow}{enter}');
+    cy.visit(authorize(`7${municipalityWork}00`));
+
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();
@@ -160,7 +145,7 @@ context('Login flow', () => {
       expect(userinfo.attributes.userId).to.equal(userId);
       expect(userinfo.attributes.municipality).to.equal(`${municipalityWork}`);
       expect(userinfo.attributes.municipalityAgencyId).to.equal(
-        `${municipalityAgency}`
+        `7${municipalityWork}00`
       );
     });
   });
