@@ -10,6 +10,24 @@
   fill: black;
 }
 
+.hide {
+  display: none !important;
+}
+
+.chosenLibLable {
+  margin-top: 1rem;
+  display: inline-flex;
+}
+
+.chosenLib {
+  font-size: larger;
+}
+
+
+.id-pin-group {
+  display: none;
+}
+
 .form-group {
   margin: 20px 0 0 0;
   position: relative;
@@ -20,6 +38,7 @@
     display: block;
     width: 100%;
   }
+
   label {
     font-family: var(--secondary);
     font-size: 14px;
@@ -60,11 +79,11 @@
       color: var(--grey);
     }
 
-    input[type='password'] ~ button {
+    input[type='password']~button {
       background: svg-inline(--eyeclosed) no-repeat center;
     }
 
-    input[type='tel'] ~ button {
+    input[type='tel']~button {
       background: svg-inline(--eyeopen) no-repeat center;
     }
 
@@ -76,13 +95,16 @@
       &.caret {
         background: svg-inline(--caret) no-repeat center;
       }
+
       &.close {
         background: svg-inline(--close-small) no-repeat center;
         background-size: 10px;
       }
+
       &.eye-closed {
         background: svg-inline(--eyeclosed) no-repeat center;
       }
+
       &.eye-open {
         background: svg-inline(--eyeopen) no-repeat center;
       }
@@ -142,9 +164,11 @@
             background-color: var(--grey-lighten-4);
           }
         }
+
         li.selected {
           background-color: var(--grey-lighten-4);
         }
+
         li.subject {
           color: var(--grey);
           font-size: 12px;
@@ -255,6 +279,7 @@
                 padding: 5px 22px 5px 22px;
                 font-size: 16px;
               }
+
               li.subject {
                 font-size: 10px;
               }
@@ -301,6 +326,7 @@
       background-color: var(--success);
     }
   }
+
   .other-actions {
     display: flex;
     flex-direction: column;
@@ -342,6 +368,7 @@
 }
 
 @media (min-width: 486px) {
+
   #newUser-dropdown .input-container,
   #borchk-dropdown .input-container {
     max-width: 100%;
@@ -349,6 +376,7 @@
 }
 
 @media (min-width: 800px) {
+
   #newUser-dropdown .input-container,
   #borchk-dropdown .input-container {
     max-width: 486px;
@@ -361,8 +389,4 @@
     padding: 22px 0 200px 0 !important;
     -webkit-overflow-scrolling: touch;
   }
-}
-
-.hide {
-  display: none !important;
 }
