@@ -31,6 +31,7 @@ describe('test store and get user', () => {
             userIdType: 'LOCAL-1'
           }
         ],
+        agencyRights: [],
         birthDate: '0102',
         birthYear: '1903',
         blocked: false,

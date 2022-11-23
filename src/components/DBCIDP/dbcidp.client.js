@@ -50,6 +50,55 @@ export async function fetchDbcidpRights(agencyId, params) {
   }
 }
 
+/** Fetch the list of agencies who has license for a given product
+ *
+ * @param productName
+ * @param params
+ * @returns {Promise<{}|any>}
+ */
+export async function fetchSubscribersByProduct(productName, params) {
+  try {
+    let resp;
+    if (CONFIG.mock_externals.dbcidp) {
+      resp = getMockClient(productName);
+    } else {
+      resp = await promiseRequest('get', params);
+    }
+    if (resp.statusCode === 200) {
+      return JSON.parse(resp.body);
+    }
+  } catch (error) {
+    log.error(`Error retrieving subscribers in DBCIDP for ${productName}`, {
+      error: error.message,
+      stack: error.stack
+    });
+  }
+  return {};
+}
+
+/** Return true if a given agency har license for a given product
+ *
+ * @param agencyId
+ * @param productName
+ * @returns {Promise<boolean>}
+ */
+export async function checkAgencyForProduct(agencyId, productName) {
+  const requestParams = {
+    url: CONFIG.dbcidp.dbcidpUri + '/queries/subscribersbyproductname/' + productName,
+    headers: {'Content-Type': 'application/json'}
+  };
+  let found = false;
+  const result = await fetchSubscribersByProduct(productName, requestParams);
+  if (result && result.organisations && result.organisations.length) {
+    result.organisations.forEach(lib => {
+      if (lib.agencyId === agencyId) {
+        found = true;
+      }
+    });
+  }
+  return found;
+}
+
 /**
  * Function to retrieve agency rights from DBCIDP service
  *

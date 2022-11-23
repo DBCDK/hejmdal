@@ -4,7 +4,7 @@
  * Describe the attributes supported by hejmdal.
  *
  * Each service specified in Smaug, can ask for one or more of these attributes.
- * The values of the attributes are fetched from CULR and/or the IDP
+ * The values of the attributes are fetched from CULR and DBCIDP and/or the chosen IDP
  *
  */
 
@@ -66,6 +66,10 @@ export const ATTRIBUTES = {
   userPrivilege: {},
   idpUsed: {},
   municipalityAgencyId: {},
+  agencyRights: {
+    name: 'produkter i DBCIDP',
+    description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
+  },
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
   }
