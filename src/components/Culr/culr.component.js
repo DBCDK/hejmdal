@@ -148,14 +148,15 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
   let response = {};
 
   try {
-    // check if user lives in municipality
+    // Check for user municipality
     if (user.agency && user.userId && user.pincode) {
       const borchkInfo = await getBorchkInfo(user);
       if (borchkInfo) {
         response.blocked = borchkInfo.blocked || null;
         response.userPrivilege = borchkInfo.userPrivilege || null;
-        // If user lives in municipality - Use borchk informations
         if (borchkInfo.municipalityNumber) {
+          // Set municipalityAgency from municipalityNumber since this can be different than the login agency
+          // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
           response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
           response.municipalityNumber = borchkInfo.municipalityNumber;
           log.info('municipality info. borchk: ', response);

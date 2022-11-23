@@ -65,7 +65,8 @@ The following is a full list of possible configuration options
     "idpUsed": {
       "name": "Valgt IDP",
       "description": "Navn på den IDP der er logget ind med"
-    }
+    },
+    "agencyRights": ["List af produkter som tjekkes mod DBCIDP"]
   },
   "display": {
     "title": "Titel på siden, default 'Netpunkt login'",

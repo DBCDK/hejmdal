@@ -9,7 +9,7 @@ import {log} from './logging.util';
 import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
-import {getDbcidpAgencyRights, getDbcidpAgencyRightsAsFors} from '../components/DBCIDP/dbcidp.client';
+import {getDbcidpAgencyRights, getDbcidpAgencyRightsAsFors, checkAgencyForProduct} from '../components/DBCIDP/dbcidp.client';
 
 const removeAttributeAgencies = CONFIG.removeAttributeAgencies;
 
@@ -159,6 +159,15 @@ export async function mapCulrResponse(
             break;
           case 'dbcidp':
             mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
+            break;
+          case 'agencyRights':
+            mapped.agencyRights = [];
+            if (attributes[field].length) {
+              for (const product of attributes[field]) {
+                let help = await checkAgencyForProduct(user.agency, product);
+                mapped.agencyRights.push({[product]: help});
+              }
+            }
             break;
           case 'idpUsed':
             mapped.idpUsed = user.userType;
