@@ -1,4 +1,4 @@
-import {fetchDbcidpRights} from '../dbcidp.client';
+import {fetchDbcidpRights, fetchSubscribersByProduct, checkAgencyForProduct} from '../dbcidp.client';
 import {CONFIG} from '../../../utils/config.util';
 
 describe('Test DBCIDP', () => {
@@ -33,5 +33,47 @@ describe('Test DBCIDP', () => {
       ]
     };
     expect(response).toEqual(expected);
+  });
+
+  it('Fetch list of subscribers for filmstriben', async () => {
+    const response = await fetchSubscribersByProduct('filmstriben');
+    const expected = {
+      organisations: [
+      {
+        id: 1630,
+        modified: '2021-06-28T12:52:44.313+02:00',
+        created: '2021-06-28T12:52:44.313+02:00',
+        url: 'http://idpservice.iscrum-prod.svc.cloud.dbc.dk/api/v1/organisation/1630/',
+        version: 1,
+        agencyId: '710100',
+        agencyName: 'Hovedbiblioteket, Krystalgade'
+      },
+      {
+        id: 1602,
+        modified: '2021-06-28T12:52:43.861+02:00',
+        created: '2021-06-28T12:52:43.861+02:00',
+        url: 'http://idpservice.iscrum-prod.svc.cloud.dbc.dk/api/v1/organisation/1602/',
+        version: 1,
+        agencyId: '715100',
+        agencyName: 'Ballerup Bibliotek'
+      }
+    ]
+    };
+    expect(response).toEqual(expected);
+  });
+
+  it('Should find product for library', async () => {
+    const response = await checkAgencyForProduct('710100', 'filmstriben');
+    expect(response).toBeTruthy();
+  });
+
+  it('Should not find product for library', async () => {
+    const response = await checkAgencyForProduct('790900', 'filmstriben');
+    expect(response).toBeFalsy();
+  });
+
+  it('Should not find product for library', async () => {
+    const response = await checkAgencyForProduct('710100', 'noProduct');
+    expect(response).toBeFalsy();
   });
 });

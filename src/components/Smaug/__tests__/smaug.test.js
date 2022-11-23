@@ -123,6 +123,10 @@ describe('Test Smaug component', () => {
           name: 'WAYF id',
           description: 'Brugerens identifikation hos WAYF'
         },
+        agencyRights: {
+          name: 'produkter i DBCIDP',
+          description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
+        },
         allLibraries: {
           name: 'Biblioteker',
           description: 'En liste over de biblioteker som kender brugeren inklusiv interne biblioteker'
