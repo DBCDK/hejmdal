@@ -163,10 +163,10 @@ export async function mapCulrResponse(
           case 'agencyRights':
             mapped.agencyRights = [];
             if (attributes[field].length) {
-              for (const product of attributes[field]) {
-                let help = await checkAgencyForProduct(user.agency, product);
-                mapped.agencyRights.push({[product]: help});
-              }
+              await Promise.all(attributes[field].map(async (product) => {
+                const hasProduct = await checkAgencyForProduct(user.agency, product);
+                mapped.agencyRights.push({[product]: hasProduct});
+              }));
             }
             break;
           case 'idpUsed':
