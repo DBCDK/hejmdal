@@ -154,7 +154,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       if (borchkInfo) {
         response.blocked = borchkInfo.blocked || null;
         response.userPrivilege = borchkInfo.userPrivilege || null;
-        if (borchkInfo.municipalityNumber) {
+        if (borchkInfo.municipalityNumber && borchkInfo.municipalityNumber.match(/^[1-9][0-9]{2}$/)) {
           // Set municipalityAgency from municipalityNumber since this can be different than the login agency
           // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
           response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
