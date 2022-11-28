@@ -5,9 +5,6 @@ script.
     if(errorBoxIsShowing){
       document.getElementById("borchk-dropdown").style.display="none"
       document.getElementById("borchk-id-pin").style.display="block"
-      document.getElementById('chosenLib').innerHTML = document.querySelector(
-        '[data-js-id=libraryname-input]'
-      ).value;
     }
   })
   
@@ -60,10 +57,7 @@ div#borchk
     if lockedAgency  
       script. 
         document.getElementById('borchk-id-pin').style.display = 'block';
-        let lockedAgencyStr = !{JSON.stringify(lockedAgency)}
-        if (lockedAgencyStr){
-          document.getElementById('chosenLib').innerHTML = lockedAgencyStr
-        }
+        let lockedAgencyStr = !{JSON.stringify(lockedAgency)} 
 
     if error
       div#error-container
@@ -75,8 +69,5 @@ div#borchk
       if(params==="userSelected=true"){
         document.getElementById("borchk-dropdown").style.display="none"
         document.getElementById("borchk-id-pin").style.display="block"
-        document.getElementById('chosenLib').innerHTML = document.querySelector(
-        '[data-js-id=libraryname-input]'
-        ).value;
       }
   script var libraries = !{JSON.stringify(branches)}
