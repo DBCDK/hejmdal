@@ -161,13 +161,10 @@ export async function mapCulrResponse(
             mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
             break;
           case 'agencyRights':
-            mapped.agencyRights = [];
-            if (attributes[field].length) {
-              await Promise.all(attributes[field].map(async (product) => {
-                const hasProduct = await checkAgencyForProduct(user.agency, product);
-                mapped.agencyRights.push({[product]: hasProduct});
-              }));
-            }
+            mapped.agencyRights = await getAgencyProduct(attributes[field], user.agency);
+            break;
+          case 'municipalityAgencyRights':
+            mapped.municipalityAgencyRights = await getAgencyProduct(attributes[field], culr.municipalityAgencyId);
             break;
           case 'idpUsed':
             mapped.idpUsed = user.userType;
@@ -186,4 +183,22 @@ export async function mapCulrResponse(
   );
 
   return mapped;
+}
+
+/**
+ *
+ * @param products
+ * @param agency
+ * @returns {Promise<*[]>}
+ */
+async function getAgencyProduct(products, agency) {
+  const res = [];
+  if (products.length && agency) {
+    await Promise.all(products.map(async (product) => {
+      const hasProduct = await checkAgencyForProduct(agency, product);
+      res.push({[product]: hasProduct});
+    }));
+
+  }
+  return res;
 }

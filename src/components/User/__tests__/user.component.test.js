@@ -32,6 +32,7 @@ describe('test store and get user', () => {
           }
         ],
         agencyRights: [],
+        municipalityAgencyRights: [],
         birthDate: '0102',
         birthYear: '1903',
         blocked: false,

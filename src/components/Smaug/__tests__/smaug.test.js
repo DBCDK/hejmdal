@@ -127,6 +127,10 @@ describe('Test Smaug component', () => {
           name: 'produkter i DBCIDP',
           description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
         },
+        municipalityAgencyRights: {
+          name: 'produkter i DBCIDP',
+          description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for hjemhørs agency'
+        },
         allLibraries: {
           name: 'Biblioteker',
           description: 'En liste over de biblioteker som kender brugeren inklusiv interne biblioteker'

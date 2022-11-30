@@ -66,6 +66,10 @@ export const ATTRIBUTES = {
   userPrivilege: {},
   idpUsed: {},
   municipalityAgencyId: {},
+  municipalityAgencyRights: {
+    name: 'produkter i DBCIDP',
+    description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for hjemhørs agency'
+  },
   agencyRights: {
     name: 'produkter i DBCIDP',
     description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
