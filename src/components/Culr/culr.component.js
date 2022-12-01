@@ -154,13 +154,15 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       if (borchkInfo) {
         response.blocked = borchkInfo.blocked || null;
         response.userPrivilege = borchkInfo.userPrivilege || null;
-        if (borchkInfo.municipalityNumber && borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
-          // Set municipalityAgency from municipalityNumber since this can be different than the login agency
-          // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
-          response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
+        if (borchkInfo.municipalityNumber) {
           response.municipalityNumber = borchkInfo.municipalityNumber;
-          log.info('municipality info. borchk: ', response);
-          return response;
+          if (borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
+            // Set municipalityAgency from municipalityNumber since this can be different than the login agency
+            // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
+            response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
+            log.info('municipality info. borchk: ', response);
+            return response;
+          }
         }
       }
     }
