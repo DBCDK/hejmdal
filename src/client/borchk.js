@@ -299,6 +299,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('borchk-id-pin').style.display = 'block';
         document.getElementById('userid-input').focus();
         document.getElementById('borchk-dropdown').style.display = 'none';
+        document.getElementById('chosenLib').innerHTML = document.querySelector(
+          '[data-js-id=libraryname-input]'
+        ).value;
       }
     );
   }

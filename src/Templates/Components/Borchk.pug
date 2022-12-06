@@ -22,7 +22,7 @@ div#borchk
         div.input-container
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='1' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='5' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
@@ -31,23 +31,32 @@ div#borchk
     
 
     div(id="borchk-id-pin" class="id-pin-group")
-      div.form-group
+      if !lockedAgency
+        div.chosenLibLink
+          p#chosenLib.chosenLib  
+            div.resetLib 
+                a(href= preselectedId ? '/login?presel='+preselectedId : '/login' tabindex="10") skift bibliotek
+      else
+        div.chosenLibLink(style='display:none') 
+          p#chosenLib.chosenLib 
+
+      div(class="form-group top-input")
         label(for='userid-input') Cpr- eller lånernummer
         div.input-container
-          input(type="text" value="" class="form-control"  id="autocomplete-username" name="autocomplete-username"  aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="username")
-          input(type='text' class='form-control ' id='userid-input' data-cy='userid-input' name='userId' autocomplete='off' tabindex='2')
+          // N.B. autocomplete="username" assures that the userId field is stored and retrieved in the user's password manager's "username" field 
+          input(type='text' value="" class='form-control ' id='userid-input' data-cy='userid-input' name='userId' autocomplete='username' tabindex='3')
         span(id='userid-input-text' data-text='')
 
       div.form-group
         label(for='pin-input') Indtast din kode
         div.input-container
-          input(type='password' class='form-control' tabindex='3' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
+          input(type='password' class='form-control' tabindex='4' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
           button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
         span(id='pin-input-text' data-text='')
 
 
       div.action-container
-        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='4') Log ind
+        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='5') Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
             a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
@@ -57,7 +66,10 @@ div#borchk
     if lockedAgency  
       script. 
         document.getElementById('borchk-id-pin').style.display = 'block';
-        let lockedAgencyStr = !{JSON.stringify(lockedAgency)} 
+        let lockedAgencyStr = !{JSON.stringify(lockedAgency)}
+        if (lockedAgencyStr){
+          document.getElementById('chosenLib').innerHTML = lockedAgencyStr
+        }
 
     if error
       div#error-container
@@ -69,5 +81,6 @@ div#borchk
       if(params==="userSelected=true"){
         document.getElementById("borchk-dropdown").style.display="none"
         document.getElementById("borchk-id-pin").style.display="block"
-      }
+        document.getElementById('chosenLib').innerHTML = document.querySelector('[data-js-id=libraryname-input]').value;
+        }
   script var libraries = !{JSON.stringify(branches)}
