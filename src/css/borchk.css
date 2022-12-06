@@ -14,18 +14,32 @@
   display: none !important;
 }
 
-.chosenLibLable {
-  margin-top: 1rem;
+.chosenLibLink {
   display: inline-flex;
+  margin-top: 1.25rem;
+  margin-bottom: none;
 }
 
 .chosenLib {
-  font-size: larger;
+  margin-right: 1rem;
+  font-weight: bold;
 }
 
+.resetLib {
+  text-decoration: underline !important;
+  cursor: pointer;
+}
+
+.resetLib a:focus {
+  outline: 3px solid #FBFBFB;
+}
 
 .id-pin-group {
   display: none;
+}
+
+.form-group.top-input {
+  margin: 2rem 0 0 0;
 }
 
 .form-group {
@@ -299,6 +313,10 @@
 @media (min-width: 335px) {
   .form-group {
     margin: 40px 0 0 0;
+  }
+
+  .form-group.top-input {
+    margin: 2rem 0 0 0 !important;
   }
 }
 
