@@ -10,6 +10,10 @@ import {CONFIG} from '../../utils/config.util';
 import {populateCulr} from '../../utils/populateCulr.util';
 import {sortBy} from 'lodash';
 
+const municipalityTab = Object.fromEntries(
+  CONFIG.municipalityAgencyTab.replace(/[ ,]+/g, ' ').trim().split(' ').map(s => s.split(':'))
+);
+
 /**
  * Retrieval of user identity/identities from CULR webservice
  *
@@ -159,7 +163,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
           if (borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
             // Set municipalityAgency from municipalityNumber since this can be different than the login agency
             // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
-            response.municipalityAgencyId = `7${borchkInfo.municipalityNumber}00`;
+            response.municipalityAgencyId = setMunicipalityAgency(borchkInfo.municipalityNumber);
             log.info('municipality info. borchk: ', response);
             return response;
           }
@@ -172,12 +176,10 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       culrResponse.MunicipalityNo.length === 3
     ) {
       response.municipalityNumber = culrResponse.MunicipalityNo;
-      if (user.agency) {
-        response.municipalityAgencyId = user.agency.startsWith('7')
-          ? `7${culrResponse.MunicipalityNo}00`
-          : user.agency;
+      if (user.agency && !user.agency.startsWith('7')) {
+        response.municipalityAgencyId = user.agency;
       } else {
-        response.municipalityAgencyId = `7${culrResponse.MunicipalityNo}00`;
+        response.municipalityAgencyId = setMunicipalityAgency(culrResponse.MunicipalityNo);
       }
       log.info('municipality info. culr: ', response);
     }
@@ -204,6 +206,14 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
   }
 }
 
+/** return the agencyId corresponding to a given municipality number
+ *
+ * @param municipality
+ * @returns {any|string}
+ */
+function setMunicipalityAgency(municipality) {
+  return municipalityTab[municipality] || `7${municipality}00`;
+}
 /**
  * Create user on CULR.
  *
