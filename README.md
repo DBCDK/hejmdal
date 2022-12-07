@@ -176,6 +176,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `MUNICIPALITY_AGENCY_HACK` : `municipalityHack`  
   List of space separated agencies where municipality is blindly taken, defaults to "100450 790900"
 
+- `MUNICIPALITY_TO_AGENCY_TAB` : `municipalityAgencyTab`  
+  List of space separated municipaltyNumber:agencyNumber (like "563:756100 100:710000") where municipalityAgencyId is set different than normal, defaults to ""
+
 - `REMOVE_ATTRIBUTE_AGENCIES` : `removeAttributeAgencies`  
   List of space separated agencies which is only returned if allLibraries is used, defaults to ""
 
