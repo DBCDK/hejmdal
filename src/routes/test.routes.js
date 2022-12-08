@@ -505,7 +505,8 @@ borchkMockRouter.get('/', (req, res) => {
 borchkMockRouter.post('/', (req, res) => {
   const libraryCode = /<borchk:libraryCode>(.*?)</.exec(req.body)[1];
   const userId = /<borchk:userId>(.*?)</.exec(req.body)[1];
-  const userPincode = /<borchk:userPincode>(.*?)</.exec(req.body)[1];
+  const pincodeOrNot = /<borchk:userPincode>(.*?)</.exec(req.body);
+  const userPincode = pincodeOrNot ? pincodeOrNot[1] : '';
   const serviceRequester = /<borchk:serviceRequester>(.*?)</.exec(req.body)[1];
 
   let body = mockDataNotFound;

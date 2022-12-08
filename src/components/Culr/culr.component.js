@@ -153,7 +153,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
 
   try {
     // Check for user municipality
-    if (user.agency && user.userId && user.pincode) {
+    if (user.agency && user.userId && (user.pincode || user.smaugToken)) {
       const borchkInfo = await getBorchkInfo(user);
       if (borchkInfo) {
         response.blocked = borchkInfo.blocked || null;
