@@ -153,7 +153,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
 
   try {
     // Check for user municipality
-    if (user.agency && user.userId && (user.pincode || user.smaugToken)) {
+    if (user.agency && user.userId && user.pincode) {
       const borchkInfo = await getBorchkInfo(user);
       if (borchkInfo) {
         response.blocked = borchkInfo.blocked || null;
@@ -171,12 +171,10 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       }
     }
 
-    if (
-      culrResponse.MunicipalityNo &&
-      culrResponse.MunicipalityNo.length === 3
-    ) {
+    if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length < 4) {
       response.municipalityNumber = culrResponse.MunicipalityNo;
       if (user.agency && !user.agency.startsWith('7')) {
+        log.debug('Ignore CULR info when setting municipalityAgencyId', user.agency, culrResponse.MunicipalityNo);
         response.municipalityAgencyId = user.agency;
       } else {
         response.municipalityAgencyId = setMunicipalityAgency(culrResponse.MunicipalityNo);
@@ -192,7 +190,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       if (municipalityHack.includes(user.agency)) {
         response.municipalityAgencyId = user.agency;
         if (user.agency.startsWith('7')) {
-          response.municipalityNumber = user.agency.slice(1, 4);
+          response.municipalityNumber = user.agency.slice(1, 4).replace(/^[0]+/, '');
         }
         log.info('municipality info. fallback: ', response);
       }
@@ -208,11 +206,11 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
 
 /** return the agencyId corresponding to a given municipality number
  *
- * @param municipality
- * @returns {any|string}
+ * @param municipality {string}
+ * @returns {string|null}
  */
 function setMunicipalityAgency(municipality) {
-  return municipalityTab[municipality] || `7${municipality}00`;
+  return municipalityTab[municipality] ?? (municipality.length === 3 ? `7${municipality}00` : null);
 }
 /**
  * Create user on CULR.
