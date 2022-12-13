@@ -181,12 +181,14 @@ router.post('/token', (req, res, next) => {
         agency = parts[1];
       }
     }
+    const pincode = password;  // borchk needs this as pincode
     req.body.username = {
       username,
       agency,
       client_id: client_id || headerCredentials.client_id,
       ips: (req.ips.length && req.ips) || [req.ip],
-      password
+      password,
+      pincode
     };
   }
   req.app.oauth.token()(req, res, next);
