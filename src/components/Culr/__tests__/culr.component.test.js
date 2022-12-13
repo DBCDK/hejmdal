@@ -56,18 +56,71 @@ describe('Unittesting methods in culr.component:', () => {
   describe('getMunicipalityInformation', () => {
     it('should NOT return municipalityNo from CULR if not length === 3', async () => {
       const result = await getUserInfoFromBorchk(
-        {MunicipalityNo: '?'},
+        {MunicipalityNo: '1110'},
         {
           userId: '0102031111',
-          agency: '790900',
+          agency: '911116',
           pincode: '1111'
         }
       );
 
       expect(result).toEqual({
         blocked: null,
-        municipalityAgencyId: '790900',
-        municipalityNumber: '909',
+        municipalityAgencyId: '911116',
+        userPrivilege: []
+      });
+    });
+
+    it('should keep non danish municipality without setting agency', async () => {
+      const result = await getUserInfoFromBorchk(
+        {MunicipalityNo: '5'},
+        {
+          userId: '0102031111',
+          agency: '700400',
+          pincode: '1111'
+        }
+      );
+
+      expect(result).toEqual({
+        blocked: null,
+        municipalityAgencyId: null,
+        municipalityNumber: '5',
+        userPrivilege: []
+      });
+    });
+
+    it('should keep non danish municipality and set agency from MUNICIPALITY_TO_AGENCY_TAB', async () => {
+      const result = await getUserInfoFromBorchk(
+        {MunicipalityNo: '4'},
+        {
+          userId: '0102031111',
+          agency: '700401',
+          pincode: '1111'
+        }
+      );
+
+      expect(result).toEqual({
+        blocked: null,
+        municipalityAgencyId: '700400',
+        municipalityNumber: '4',
+        userPrivilege: []
+      });
+    });
+
+    it('should set agency to 756100 from agency 563', async () => {
+      const result = await getUserInfoFromBorchk(
+        {MunicipalityNo: '563'},
+        {
+          userId: '0102031111',
+          agency: '700400',
+          pincode: '1111'
+        }
+      );
+
+      expect(result).toEqual({
+        blocked: null,
+        municipalityAgencyId: '756100',
+        municipalityNumber: '563',
         userPrivilege: []
       });
     });
