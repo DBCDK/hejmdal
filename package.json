@@ -68,7 +68,7 @@
     "express": "~4.18.2",
     "express-oauth-server": "^2.0.0",
     "express-session": "^1.17.3",
-    "knex": "^2.3.0",
+    "knex": "^2.4.0",
     "locale-compare-polyfill": "0.0.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
