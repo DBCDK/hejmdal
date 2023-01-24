@@ -3,6 +3,7 @@
  *
  */
 import {log} from '../../utils/logging.util';
+import {looksLikeAUserId} from '../../utils/userId.util';
 import {isValidCpr} from '../../utils/cpr.util';
 import {
   getUniloginURL,
@@ -214,6 +215,9 @@ export async function borchkCallback(req, res) {
     validated.message = 'tmul';
     blockClientUntilTime(res, blockToTime);
   } else {
+    if (validated.message === 'bonfd' && !looksLikeAUserId(userId)) {
+      validated.message = 'bonui';
+    }
     identityProviderValidationFailed(
       req,
       res,
