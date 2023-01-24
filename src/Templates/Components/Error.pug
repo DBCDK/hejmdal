@@ -16,6 +16,11 @@ div#error-body
       p Det valgte bibliotek tillader ikke login. Prøv at logge ind via et andet bibliotek.
     when 'bonfd'
       p Biblioteket kan ikke genkende brugeren med de indtastede oplysninger. Tjek at alle felter er udfyldt korrekt og prøv igen.
+    when 'bonui'
+      p Biblioteket kan ikke genkende brugeren med de indtastede oplysninger. 
+      p Det indtastede cpr- eller lånernummer ser umiddelbart forkert ud - har du indtastet biblioteksnavn i feltet?
+      br
+      p Tjek at alle felter er udfyldt korrekt og prøv igen.
     when 'bnimu'
       p Det ser ud til, at du ikke bor i kommunen for det valgte bibliotek. Du er derfor ikke logget ind. Prøv at logge ind via biblioteket i den kommune, hvor du bor.
     when 'bcnsl'
@@ -38,6 +43,7 @@ div#error-body
     // Helptext
     include Helptext.container.pug
 
-  if retries && error === 'bonfd'
+  if retries && (error === 'bonfd' || error === 'bonui')
     div
+      br
       p Du har #{retries} forsøg tilbage
