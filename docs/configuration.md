@@ -66,8 +66,18 @@ The following is a full list of possible configuration options
       "name": "Valgt IDP",
       "description": "Navn på den IDP der er logget ind med"
     },
-    "agencyRights": ["Liste af produkter som tjekkes mod DBCIDP mod login biblioteker"],
-    "municipaltyAgencyRights": ["Liste af produkter som tjekkes mod DBCIDP mod hjemhørsbiblioteket"]
+    "agencyRights": ["Liste af produkter som tjekkes i DBCIDP for login biblioteket"],
+    "municipaltyAgencyRights": ["Liste af produkter som tjekkes i DBCIDP mod hjemhørsbiblioteket"],
+    "dbcidp": ["Produktrettigheder for det aktuelle agency"],
+    "dbcidpUniqueId": {
+      "name": "dbcidp unique id",
+      "description": "Brugerens unique id i dbcidp"
+    },
+    "dbcidpUserInfo": {
+      "name": "Bruger data fra dbcidp",
+      "description": "name, contactMail og contactPhone i dbcidp"
+    },
+    "dbcidpRoles": ["Liste a brugerens roller (egenskaber) i dbcidp"]
   },
   "display": {
     "title": "Titel på siden, default 'Netpunkt login'",
@@ -117,6 +127,12 @@ Defines the list of attributes that _can_ be returned to the client service trou
 * `blocked`: Boolean. True if user is blocked at the login library
 * `userPrivilege`: Array of userPrivileges from the login library
 * `idpUsed`: Name of idp used ('borchk', 'dbcidp', 'netpunkt', 'unilogin', 'nemlogin', 'wayf')
+* `agencyRights`: Client selected list of rights (from DBCIDP) for the login agency
+* `municipalityAgencyRights`: Client selected list of rights (from DBCIDP) for the users municipality agency
+* `dbcidp`: List of rights from DBCIDP when used as idp
+* `dbcidpUniqueId`: Anonymized identity of the uder in DBCIDP
+* `dbcidpUserInfo`: name, contactMail and contactPhone for a user logged in via DBCIDP
+* `dbcidpRoles`: List of roles for a user logged in via DBCIDP
   )
 
 ## display
