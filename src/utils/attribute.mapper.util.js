@@ -93,8 +93,7 @@ export async function mapCulrResponse(
   const fields = Object.keys(attributes);
 
   await Promise.all(
-    fields.map(async field => { // eslint-disable-line complexity
-      // eslint-disable-line complexity
+    fields.map(async field => {  // eslint-disable-line complexity
       try {
         if (['dbcidp', 'dbcidpUniqueId', 'dbcidpUserInfo', 'dbcidpRoles'].includes(field)) {
           if (!dbcidpAuthorize) {

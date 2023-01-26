@@ -118,8 +118,8 @@ describe('Test Smaug component', () => {
           description: 'user info in dbcidp, name, email and phone'
         },
         forsrights: {
-          name: "FORS-like Rights for agency",
-          description: "FORS-like produktrettigheder for det aktuelle agency",
+          name: 'FORS-like Rights for agency',
+          description: 'FORS-like produktrettigheder for det aktuelle agency'
         },
         blocked: {},
         userPrivilege: {},

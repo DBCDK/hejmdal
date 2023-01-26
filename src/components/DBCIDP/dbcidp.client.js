@@ -91,6 +91,18 @@ export async function checkAgencyForProduct(agencyId, productName) {
 }
 
 /**
+ * Function to retrieve agency rights from DBCIDP service
+ *
+ * @param {string} accessToken
+ * @param {object} user information
+ * @return {array}
+ */
+export async function getDbcidpAgencyRights(accessToken, user) {
+  const dbcidpAuth = await fetchDbcidpAuthorize(accessToken, user);
+  return dbcidpAuth.length === 0 ? {} : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
+}
+
+/**
  * Function to retrieve agency rights from DBCIDP service and return result as FORS structure to help older clients
  *
  * @param {string} accessToken
@@ -141,8 +153,6 @@ export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
   };
   try {
     const response = await promiseRequest('post', params);
-    console.log('authenticate status', response.statusCode);
-    console.log('authenticate', response.body);
     const parsedBody = JSON.parse(response.body);
     return parsedBody.authenticated;
   } catch (error) {
