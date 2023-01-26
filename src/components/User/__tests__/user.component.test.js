@@ -13,6 +13,7 @@ describe('test store and get user', () => {
   };
 
   const next = () => {};
+  let notSet;
 
   it('should fetch the user', async () => {
     ctx.json = jest.fn();
@@ -37,7 +38,16 @@ describe('test store and get user', () => {
         birthYear: '1903',
         blocked: false,
         cpr: '0102031111',
-        dbcidp: [{}],
+        dbcidp: [
+          {
+            agencyId: notSet,
+            rights: {}
+          }
+        ],
+        dbcidpRoles: notSet,
+        dbcidpUniqueId: notSet,
+        dbcidpUserInfo: notSet,
+        idpUsed: notSet,
         forsrights: [],
         gender: 'm',
         municipality: '909',

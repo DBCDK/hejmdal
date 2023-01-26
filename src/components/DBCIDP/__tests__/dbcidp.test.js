@@ -1,4 +1,4 @@
-import {fetchDbcidpRights, fetchSubscribersByProduct, checkAgencyForProduct} from '../dbcidp.client';
+import {fetchSubscribersByProduct, checkAgencyForProduct, fetchDbcidpAuthorize} from '../dbcidp.client';
 import {CONFIG} from '../../../utils/config.util';
 
 describe('Test DBCIDP', () => {
@@ -11,14 +11,24 @@ describe('Test DBCIDP', () => {
   });
 
   it('DBCIDP with no rights (agency not found, wrong password, etc.)', async () => {
-    const response = await fetchDbcidpRights('default');
-    expect(response).toEqual({});
+    const response = await fetchDbcidpAuthorize('', {agency: 'default'});
+    expect(response).toEqual({authenticated: false});
   });
 
   it('DBCIDP with rights (790900)', async () => {
-    const response = await fetchDbcidpRights('790900');
+    const response = await fetchDbcidpAuthorize('', {agency: '790900'});
     const expected = {
-      agencyId: '790900', rights: [
+      agencyId: '790900',
+      authenticated: true,
+      guid: 'some-guid',
+      identity: 'idt1234',
+      roles: ['biblioteksadmin', 'biblioteksansat', 'NETPUNKT'],
+      userInfo: {
+        contactMail: 'usersname@dbc.dk',
+        contactPhone: '42424242',
+        name: 'User S Name'
+      },
+      rights: [
         {productName: 'INFOMEDIA', name: 'READ', description: 'Is allowed to read from INFOMEDIA'},
         {productName: 'ARTICLEFIRST', name: 'READ', description: 'Is allowed to read from ArticleFirst'},
         {productName: 'BOB', name: 'READ', description: 'Is allowed to read from BOB'},
