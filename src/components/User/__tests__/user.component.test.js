@@ -48,6 +48,7 @@ describe('test store and get user', () => {
         dbcidpUniqueId: notSet,
         dbcidpUserInfo: notSet,
         idpUsed: notSet,
+        forsrights: [],
         gender: 'm',
         municipality: '909',
         municipalityAgencyId: '790900',
