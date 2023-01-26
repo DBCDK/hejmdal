@@ -200,10 +200,6 @@ export async function mapCulrResponse(
   return mapped;
 }
 
-async function getDbcidp() {
-  // mapped.iidp = await fetchDbcidpAuthorize(accessToken, user);
-
-}
 /**
  *
  * @param products
