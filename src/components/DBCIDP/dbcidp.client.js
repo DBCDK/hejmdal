@@ -41,20 +41,6 @@ export async function fetchDbcidpAuthorize(accessToken, user) {
   return {};
 }
 
-var minuteCache = [];
-function getCached(key) {
-  let timeWindow = Date.now() - 60000;
-  if (minuteCache[key] && minuteCache[key].time < timeWindow) {
-    return minuteCache[key].data;
-  }
-  minuteCache.forEach((item, idx) => {
-    console.log(minuteCache[idx]);
-  });
-}
-function cacheABit(key, data) {
-  minuteCache[key] = {time: Date.now(), data: data};
-}
-
 /** Fetch the list of agencies who has license for a given product
  *
  * @param productName
@@ -102,18 +88,6 @@ export async function checkAgencyForProduct(agencyId, productName) {
     });
   }
   return found;
-}
-
-/**
- * Function to retrieve agency rights from DBCIDP service
- *
- * @param {string} accessToken
- * @param {object} user information
- * @return {array}
- */
-export async function getDbcidpAgencyRights(accessToken, user) {
-  const dbcidpAuth = await fetchDbcidpAuthorize(accessToken, user);
-  return dbcidpAuth.length === 0 ? {} : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
 }
 
 /**
