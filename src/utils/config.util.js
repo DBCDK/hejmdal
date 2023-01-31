@@ -137,7 +137,7 @@ export const CONFIG = {
   removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || ''
 };
 
-// validateConfig(CONFIG);
+validateConfig(CONFIG);
 
 /**
  * Recursive function that validates that all params in the above CONFIG object is set.
