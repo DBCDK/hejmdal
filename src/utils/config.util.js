@@ -11,7 +11,7 @@ export const CONFIG = {
     host: process.env.HOST
   },
   borchk: {
-    serviceRequester: process.env.BORCHK_SERVICEREQUESTER,
+    serviceRequester: process.env.BORCHK_SERVICEREQUESTER || 'login.bib.dk',
     uri: process.env.BORCHK_WSDL_URI
   },
   culr: {
@@ -137,7 +137,7 @@ export const CONFIG = {
   removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || ''
 };
 
-// validateConfig(CONFIG);
+validateConfig(CONFIG);
 
 /**
  * Recursive function that validates that all params in the above CONFIG object is set.
