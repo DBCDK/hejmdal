@@ -11,7 +11,7 @@ export const CONFIG = {
     host: process.env.HOST
   },
   borchk: {
-    serviceRequester: process.env.BORCHK_SERVICEREQUESTER,
+    serviceRequester: process.env.BORCHK_SERVICEREQUESTER || 'login.bib.dk',
     uri: process.env.BORCHK_WSDL_URI
   },
   culr: {
