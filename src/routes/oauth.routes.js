@@ -205,6 +205,8 @@ function getClientFromHeader(authorization) {
     return {};
   }
   const [type, b64auth = ''] = authorization.split(' ');
+  // Buffer() should be avoided due to security compliancy issues, use Buffer.from instead. Need testing
+  // const [client_id, client_secret] = Buffer.from(b64auth, 'base64')
   const [client_id, client_secret] = new Buffer(b64auth, 'base64')
     .toString()
     .split(':');

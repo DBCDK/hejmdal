@@ -9,7 +9,7 @@ import {log} from './logging.util';
 import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
-import {getDbcidpAgencyRights, getDbcidpAgencyRightsAsFors, checkAgencyForProduct} from '../components/DBCIDP/dbcidp.client';
+import {fetchDbcidpAuthorize, getDbcidpAgencyRightsAsFors, checkAgencyForProduct} from '../components/DBCIDP/dbcidp.client';
 
 const removeAttributeAgencies = CONFIG.removeAttributeAgencies;
 
@@ -62,6 +62,7 @@ export async function mapCulrResponse(
   let cpr = user.cpr || null;
   let agencies = [];
   let fromCpr = {};
+  let dbcidpAuthorize;
 
   log.debug('mapCulrResponse', culr);
 
@@ -92,9 +93,13 @@ export async function mapCulrResponse(
   const fields = Object.keys(attributes);
 
   await Promise.all(
-    fields.map(async field => { // eslint-disable-line complexity
-      // eslint-disable-line complexity
+    fields.map(async field => {  // eslint-disable-line complexity
       try {
+        if (['dbcidp', 'dbcidpUniqueId', 'dbcidpUserInfo', 'dbcidpRoles'].includes(field)) {
+          if (!dbcidpAuthorize) {
+            dbcidpAuthorize = await fetchDbcidpAuthorize(accessToken, user);
+          }
+        }
         switch (field) {
           case 'birthDate':
           case 'birthYear':
@@ -158,7 +163,16 @@ export async function mapCulrResponse(
             mapped.forsrights = await getDbcidpAgencyRightsAsFors(accessToken, user);
             break;
           case 'dbcidp':
-            mapped.dbcidp = await getDbcidpAgencyRights(accessToken, user);
+            mapped.dbcidp = [{agencyId: user.agency, rights: dbcidpAuthorize.rights || {}}];
+            break;
+          case 'dbcidpUniqueId':
+            mapped.dbcidpUniqueId = dbcidpAuthorize.guid;
+            break;
+          case 'dbcidpUserInfo':
+            mapped.dbcidpUserInfo = dbcidpAuthorize.userInfo;
+            break;
+          case 'dbcidpRoles':
+            mapped.dbcidpRoles = dbcidpAuthorize.roles;
             break;
           case 'agencyRights':
             mapped.agencyRights = await getAgencyProduct(attributes[field], user.agency);

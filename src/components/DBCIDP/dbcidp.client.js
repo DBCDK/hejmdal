@@ -9,45 +9,36 @@ import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 
 /**
- * Function to retrieve agencyId rights from forsrights service
+ * Function to retrieve rights and attributes from dbcidp for a given user
  *
- * @param agencyId agencyId this request if made for
- * @param {object} params
- * @return {object}
- *
- * Params example:
- *   {
- *     url: CONFIG.dbcidp.dbcidpUri,
- *     method: 'POST',
- *     headers: {
- *       'Content-Type': 'application/json'
- *     },
- *     body: {token: accessToken, userIdAut: 'netpunkt'}
- *   }
+ * @param accessToken {string}
+ * @param user {agency: 123456, userId: 'someUser'}
+ * @returns {Promise<{}>}
  */
-export async function fetchDbcidpRights(agencyId, params) {
+export async function fetchDbcidpAuthorize(accessToken, user) {
   try {
     let resp;
     if (CONFIG.mock_externals.dbcidp) {
-      resp = getMockClient(agencyId);
+      resp = getMockClient(user.agency);
     } else {
+      const params = {
+        url: CONFIG.dbcidp.dbcidpUri + '/v2/authorize',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({token: accessToken, userIdAut: user.userId})
+      };
       resp = await promiseRequest('post', params);
     }
     if (resp.statusCode !== 200) {
       return {};
     }
-    const response = JSON.parse(resp.body);
-    if (response.authenticated === false) {
-      return {};
-    }
-    return {agencyId, rights: response.rights};
+    return JSON.parse(resp.body);
   } catch (error) {
-    log.error(`Error retrieving agency DBCIDP rights for ${agencyId}`, {
+    log.error(`Error retrieving DBCIDP authorization for ${user.userId} @ ${user.agency}`, {
       error: error.message,
       stack: error.stack
     });
-    return {};
   }
+  return {};
 }
 
 /** Fetch the list of agencies who has license for a given product
@@ -84,7 +75,7 @@ export async function fetchSubscribersByProduct(productName, params) {
  */
 export async function checkAgencyForProduct(agencyId, productName) {
   const requestParams = {
-    url: CONFIG.dbcidp.dbcidpUri + '/queries/subscribersbyproductname/' + productName,
+    url: CONFIG.dbcidp.dbcidpUri + '/v1/queries/subscribersbyproductname/' + productName,
     headers: {'Content-Type': 'application/json'}
   };
   let found = false;
@@ -107,18 +98,8 @@ export async function checkAgencyForProduct(agencyId, productName) {
  * @return {array}
  */
 export async function getDbcidpAgencyRights(accessToken, user) {
-  const dbcidpUri = CONFIG.dbcidp.dbcidpUri + '/authorize';
-  const body = {token: accessToken, userIdAut: user.userId};
-  const requestParams = {
-    url: dbcidpUri,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  };
-  const result = await fetchDbcidpRights(user.agency, requestParams);
-  return result.length === 0 ? {} : [result];
+  const dbcidpAuth = await fetchDbcidpAuthorize(accessToken, user);
+  return dbcidpAuth.length === 0 ? {} : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
 }
 
 /**
@@ -159,7 +140,7 @@ export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
   if (CONFIG.mock_externals.dbcidp && (userIdAut === 'valid-user') && groupIdAut && passwordAut) {
     return true;
   }
-  const idpUri = CONFIG.dbcidp.dbcidpUri + '/authenticate';
+  const idpUri = CONFIG.dbcidp.dbcidpUri + '/v1/authenticate';
   const body = {userIdAut, passwordAut, agencyId: groupIdAut};
 
   const params = {

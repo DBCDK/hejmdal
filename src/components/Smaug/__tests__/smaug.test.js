@@ -102,10 +102,25 @@ describe('Test Smaug component', () => {
         },
         netpunktAgency: {},
         dbcidp: {
-          name: 'Valgt IDP',
-          description: 'Navn på den IDP der er logget ind med'
+          name: 'Rights for agency',
+          description: 'Produktrettigheder for det aktuelle agency'
         },
-        forsrights: {},
+        dbcidpUniqueId: {
+          name: 'dbcidp unique id',
+          description: 'unique id for user in dbcidp'
+        },
+        dbcidpRoles: {
+          name: 'dbcidp user roles',
+          description: 'user roles in dbcidp'
+        },
+        dbcidpUserInfo: {
+          name: 'dbcidp user info',
+          description: 'user info in dbcidp, name, email and phone'
+        },
+        forsrights: {
+          name: 'FORS-like Rights for agency',
+          description: 'FORS-like produktrettigheder for det aktuelle agency'
+        },
         blocked: {},
         userPrivilege: {},
         singleLogoutPath: undefined,  // eslint-disable-line no-undefined
@@ -145,7 +160,10 @@ describe('Test Smaug component', () => {
         uniLoginInstitutions: {
           name: 'List of unilogin institutions a user is connected to'
         },
-        idpUsed: {}
+        idpUsed: {
+          name: 'Valgt IDP',
+          description: 'Navn på den IDP der er logget ind med'
+        }
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,

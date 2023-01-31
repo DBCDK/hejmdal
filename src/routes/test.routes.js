@@ -502,7 +502,7 @@ borchkMockRouter.get('/', (req, res) => {
   res.send(wsdl);
 });
 
-borchkMockRouter.post('/', (req, res) => {
+borchkMockRouter.post('/', (req, res) => {  // eslint-disable-line complexity
   const libraryCode = /<borchk:libraryCode>(.*?)</.exec(req.body)[1];
   const userId = /<borchk:userId>(.*?)</.exec(req.body)[1];
   const pincodeOrNot = /<borchk:userPincode>(.*?)</.exec(req.body);

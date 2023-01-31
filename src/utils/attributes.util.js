@@ -57,14 +57,32 @@ export const ATTRIBUTES = {
     skipConsent: true
   },
   netpunktAgency: {},
-  forsrights: {},
+  forsrights: {
+    name: 'FORS-like Rights for agency',
+    description: 'FORS-like produktrettigheder for det aktuelle agency'
+  },
   dbcidp: {
-      name: 'Valgt IDP',
-      description: 'Navn på den IDP der er logget ind med'
+    name: 'Rights for agency',
+    description: 'Produktrettigheder for det aktuelle agency'
+  },
+  dbcidpUniqueId: {
+    name: 'dbcidp unique id',
+    description: 'unique id for user in dbcidp'
+  },
+  dbcidpUserInfo: {
+    name: 'dbcidp user info',
+    description: 'user info in dbcidp, name, email and phone'
+  },
+  dbcidpRoles: {
+    name: 'dbcidp user roles',
+    description: 'user roles in dbcidp'
   },
   blocked: {},
   userPrivilege: {},
-  idpUsed: {},
+  idpUsed: {
+    name: 'Valgt IDP',
+    description: 'Navn på den IDP der er logget ind med'
+  },
   municipalityAgencyId: {},
   municipalityAgencyRights: {
     name: 'produkter i DBCIDP',
