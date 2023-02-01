@@ -11,8 +11,7 @@ export const CONFIG = {
     host: process.env.HOST
   },
   borchk: {
-    serviceRequesterInMunicipality:
-      process.env.BORCHK_SERVICEREQUESTER_MUNICIPALITY,
+    serviceRequester: process.env.BORCHK_SERVICEREQUESTER,
     uri: process.env.BORCHK_WSDL_URI
   },
   culr: {
@@ -138,8 +137,11 @@ export const CONFIG = {
   removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || ''
 };
 
+// 2DO figure out why cypress tests fail when included
+// validateConfig(CONFIG);
+
 /**
- * Recursive functon that validates that all params in the above CONFIG object is set.
+ * Recursive function that validates that all params in the above CONFIG object is set.
  * Number are validated to be non-NaN numbers.
  *
  * @param {Object} config
@@ -152,7 +154,7 @@ export function validateConfig(config = CONFIG, k = '') {
     } else {
       /* eslint-disable no-undefined */
       if (config[key] === undefined) {
-        /* eslint-enableno-undefined */
+        /* eslint-enable no-undefined */
 
         /* eslint-disable max-len */
         throw Error(

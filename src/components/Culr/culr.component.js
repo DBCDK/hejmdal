@@ -133,7 +133,7 @@ async function getUserAccount(user) {
  */
 export async function getBorchkInfo(user) {
   const result = await validateUserInLibrary(
-    CONFIG.borchk.serviceRequesterInMunicipality,
+    CONFIG.borchk.serviceRequester,
     user
   );
   return result.error ? null : result;

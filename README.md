@@ -60,6 +60,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `AES_256_SECRET` : `hash.aes256Secret`  
   A secret used for encrypting stuff, needs to be 32 ASCII characters long.
 
+- `BORCHK_SERVICEREQUESTER` : `borchk.serviceRequester`  
+  The serviceRequester for borchk when fetching userinfo. Defaults to login.bib.dk
+
 - `BORCHK_WSDL_URI` : `borchk.uri`  
   The address of the borchk WSDL
 
@@ -77,6 +80,24 @@ The variables are specified at the form `name : internal config object`. Referen
 
 - `CULR_PROFILE_NAME` : `culr.profileName`  
   CULR profile name
+
+- `FL_IP_MAXFAIL` : `failedLogin.ip.maxFails`  
+  Number of continous failed logins from the same ip-adress. Defaults to 100
+
+- `FL_IP_BLOCK_SECONDS` : `failedLogin.ip.blockSeconds`  
+  Number of seconds an ip-adresse will be blocked. Defaults to 1200
+
+- `FL_IP_RESET_SECONDS` : `failedLogin.ip.resetSeconds`  
+  Number of seconds a failed ip login is kept. Defaults to 86400
+
+- `FL_USER_MAXFAIL` : `failedLogin.userId.maxFails`  
+  Number of continous failed logins using the same userId. Defaults to 3
+
+- `FL_USER_BLOCK_SECONDS` : `failedLogin.userId.blockSeconds`  
+  Number of seconds an userId will be blocked. Defaults to 1200
+
+- `FL_USER_RESET_SECONDS` : `failedLogin.userId.resetSeconds`  
+  Number of seconds a failed userId login is kept. Defaults to 86400
 
 - `GATEWAYF_URI` : `gatewayf.uri`  
   The address of the gatewayf service
@@ -98,24 +119,6 @@ The variables are specified at the form `name : internal config object`. Referen
 
 - `GC_FAILEDLOGIN_SECONDS` : `garbageCollect.failedlogin.seconds`  
   Number of seconds a failedlogins has lived in order to be a garbage collected. Defaults to 36000 (10 hour)
-
-- `FL_IP_MAXFAIL` : `failedLogin.ip.maxFails`  
-  Number of continous failed logins from the same ip-adress. Defaults to 100
-
-- `FL_IP_BLOCK_SECONDS` : `failedLogin.ip.blockSeconds`  
-  Number of seconds an ip-adresse will be blocked. Defaults to 1200
-
-- `FL_IP_RESET_SECONDS` : `failedLogin.ip.resetSeconds`  
-  Number of seconds a failed ip login is kept. Defaults to 86400
-
-- `FL_USER_MAXFAIL` : `failedLogin.userId.maxFails`  
-  Number of continous failed logins using the same userId. Defaults to 3
-
-- `FL_USER_BLOCK_SECONDS` : `failedLogin.userId.blockSeconds`  
-  Number of seconds an userId will be blocked. Defaults to 1200
-
-- `FL_USER_RESET_SECONDS` : `failedLogin.userId.resetSeconds`  
-  Number of seconds a failed userId login is kept. Defaults to 86400
 
 - `HASH_SHARED` : `hash.shared`  
   Hash salt secret. Generally used to generate and check hash keys
@@ -185,12 +188,6 @@ The variables are specified at the form `name : internal config object`. Referen
 - `NODE_ENV` : `app.env`  
   When run in production the `NODE_ENV` should be set to `production`: `NODE_ENV=production`
 
-- `VIPCORE_URI` : `vipCore.uri`  
-  The address to the vipCore service
-
-- `VIPCORE_LIFE_TIME` : `vipCore.life_time`  
-  Milliseconds before invalidating vipCore cache. Default to 3600000 (1 hour)
-
 - `PORT` : `app.port`  
   Specifies the port to expose the application. Default: `3010`
 
@@ -230,6 +227,12 @@ The variables are specified at the form `name : internal config object`. Referen
 - `UNI_LOGIN_MAX_TICKET_AGE` : `unilogin.maxTicketAge`  
   Max age of the ticket returned from UNI-Login upon successful authetication.  
   UNI-Loing recommends this value to be set to 60 seconds which is default in Hejmdal.
+
+- `VIPCORE_URI` : `vipCore.uri`  
+  The address to the vipCore service
+
+- `VIPCORE_LIFE_TIME` : `vipCore.life_time`  
+  Milliseconds before invalidating vipCore cache. Default to 3600000 (1 hour)
 
 # Dokumentation
 

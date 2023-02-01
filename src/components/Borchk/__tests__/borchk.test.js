@@ -34,7 +34,7 @@ describe('Test borchk component', () => {
     const response = await validateUserInLibrary('login.bib.dk', user);
     expect(response.error).toBe(false);
     expect(response.message).toEqual('OK');
-    expect(response.municipalityNumber).toEqual(101);
+    expect(response.municipalityNumber).toEqual('909');
     expect(response.blocked).toEqual(false);
     expect(response.userPrivilege).toEqual([]);
   });
