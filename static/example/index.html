@@ -12,8 +12,8 @@
     width: 100%;
   }
 
-  .bold {
-    font-weight: 600;
+  input.radio {
+    width: auto;
   }
 
   #example {
@@ -151,6 +151,16 @@
         </select>
         <p class="description">Defines types of libraries that can be selected by the user, if library is not
           predefined</p>
+      </div>
+      <div class="input-pair">
+        <label class="radio" for="input-enforce-login-off">SSO login</label>
+        <input class="radio" checked name="enforce-login" id="input-enforce-login-off" type="radio" value="0" data-bind="forceLogin"
+               oninput="onChange({key: 'forceLogin', val: 0})" />
+        &nbsp;
+        <label class="radio" for="input-enforce-login-on">Ignore SSO login</label>
+        <input class="radio" name="enforce-login" id="input-enforce-login-on" type="radio" value="1" data-bind="forceLogin"
+               oninput="onChange({key: 'forceLogin', val: 1})" />
+        <p class="description">Set 'Ignore SSO login', to force the user to login (again)</p>
       </div>
       <div class="input-pair">
         <label>Generated Authorization redirect url</label>

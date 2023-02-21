@@ -201,7 +201,8 @@ export function isUserLoggedIn(req, res, next) {
     agency: req.query.agency,
     presel: req.query.presel,
     agencytype: req.query.agencytype,
-    idp: req.query.idp
+    idp: req.query.idp,
+    force_login: req.query.force_login || ''
   };
   if (shouldUserLogIn(req.session)) {
     req.session.save(() => {
@@ -233,6 +234,11 @@ function shouldUserLogIn(session) {
     session.query.idp &&
     !session.user.identityProviders.includes(session.query.idp)
   ) {
+    return true;
+  }
+
+  if (session.query.force_login) {
+    session.query.force_login = '';
     return true;
   }
 
