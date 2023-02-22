@@ -16,6 +16,7 @@ const defaultState = {
   presel: '',
   agency: '',
   agencyType: null,
+  forceLogin: '0',
   idp: '',
   state: '',
   loginUrl: ''
@@ -114,6 +115,7 @@ function getAuthUrl({
   presel,
   agency,
   agencyType,
+  forceLogin,
   idp,
   state
 }) {
@@ -130,6 +132,10 @@ function getAuthUrl({
 
   if (agencyType) {
     url += `&agencytype=${agencyType}`;
+  }
+
+  if (forceLogin) {
+    url += `&force_login=${forceLogin}`;
   }
 
   if (idp) {
@@ -217,11 +223,13 @@ function setState() {
       hejmdal.userinfo = null;
       hejmdal.code = queryObj.code;
       hejmdal.state = queryObj.state || '';
+      hejmdal.forceLogin = queryObj.forceLogin || 0;
     }
   } else {
     hejmdal.initialized = true;
     hejmdal.code = false;
     hejmdal.state = '';
+    hejmdal.forceLogin = 0;
   }
 
   setState();

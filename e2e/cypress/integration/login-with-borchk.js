@@ -1,6 +1,6 @@
 context('Login flow', () => {
-  const authorize = (agencyId = 733000) =>
-    `/oauth/authorize?response_type=code&client_id=hejmdal&redirect_uri=${
+  const authorize = (agencyId = 733000, force_login = '') =>
+    `/oauth/authorize?response_type=code&client_id=hejmdal&force_login=${force_login}&redirect_uri=${
       Cypress.config().baseUrl
     }/example&presel=${agencyId}`;
 
@@ -45,6 +45,11 @@ context('Login flow', () => {
       expect(token).to.have.property('attributes');
       expect(token.attributes).to.have.property('uniqueId');
     });
+
+    cy.log('Check force login works');
+    cy.visit(authorize('', 1));
+    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
+      .should('exist');
 
     cy.log('Check single signon works');
     cy.visit(authorize());
