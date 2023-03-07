@@ -1,5 +1,6 @@
 #!groovy​
 
+def DEPLOY_REPO = 'frontend/hejmdal-configuration'
 def app
 def imageName="hejmdal"
 def imageLabel=BUILD_NUMBER
@@ -58,8 +59,8 @@ pipeline {
         stage("Update staging version number") {
 			      agent {
 				        docker {
-					          label 'devel9-head'
-					          image "docker-metascrum.artifacts.dbccloud.dk/python3-build-image"
+				            label "devel10"
+                    image "docker-dbc.artifacts.dbccloud.dk/build-env:latest"
 					          alwaysPull true
 				        }
 			      }
@@ -67,18 +68,9 @@ pipeline {
 				      branch "master"
 			      }
 			      steps {
-				        dir("deploy") {
-					          git(url: "gitlab@gitlab.dbc.dk:frontend/hejmdal-configuration.git", credentialsId: "gitlab-isworker", branch: "staging")
-					          sh """#!/usr/bin/env bash
-						            set -xe
-						            rm -rf auto-committer-env
-					            	python3 -m venv auto-committer-env
-					            	source auto-committer-env/bin/activate
-					            	pip install -U pip
-					            	pip install git+https://github.com/DBCDK/kube-deployment-auto-committer#egg=deployversioner
-					            	set-new-version configuration.yaml ${env.GITLAB_PRIVATE_TOKEN} 170 ${env.DOCKER_TAG} -b staging
+					          sh """
+					            	set-new-version configuration.yaml ${env.GITLAB_PRIVATE_TOKEN} ${DEPLOY_REPO} ${env.DOCKER_TAG} -b staging
 					            """
-				        }
 			      }
         }
     }
