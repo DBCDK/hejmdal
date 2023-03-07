@@ -224,6 +224,11 @@ function shouldUserLogIn(session) {
     return false;
   }
 
+  if (session.query.force_login) {
+    session.query.force_login = '';
+    return true;
+  }
+
   // If user is not set, they should log in.
   if (!session.user || !session.user.userId) {
     return true;
@@ -234,11 +239,6 @@ function shouldUserLogIn(session) {
     session.query.idp &&
     !session.user.identityProviders.includes(session.query.idp)
   ) {
-    return true;
-  }
-
-  if (session.query.force_login) {
-    session.query.force_login = '';
     return true;
   }
 
