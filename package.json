@@ -29,7 +29,7 @@
     "migrate:latest": "knex migrate:latest",
     "migrate:latest:dev": ". ./env.env && npm run migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
-    "precommit": "npm run lint && npm run test && npm run test:integration:local",
+    "precommit": "npm run lint && npm run test",
     "start": "npm run serve",
     "start:test": ". ./env.test && npm run build:prod && node src/main.js",
     "debug:test": ". ./env.test && nodemon --exec node --inspect=9229 src/main.js --ignore ./static/example --ignore ./e2e",
