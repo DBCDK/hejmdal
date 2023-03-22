@@ -45,10 +45,6 @@ To test in a CI environment, like Jenkins, the environment variable `JUNIT_REPOR
 Note then `npm run test` sets `LOG_LEVEL=OFF` to disable logging during the tests.  
 See [mocha-jenkins-reporter](https://www.npmjs.com/package/mocha-jenkins-reporter)
 
-### Integration tests
-
-Integration tests run with [selenium](http://docs.seleniumhq.org/) are located in selenium/tests and are run with `npm run test:integration`. The tests use [saucelabs](https://saucelabs.com/) and require that the environment variable `SAUCE_USERNAME` og `SAUCE_ACCESS_KEY` are set.
-
 ## Logging
 
 Logging use `stdout` and the levels specified in [environment variables](https://github.com/DBCDK/hejmdal#environment-variables) below.
@@ -240,4 +236,5 @@ The variables are specified at the form `name : internal config object`. Referen
 - [Documentation of single logout](docs/single-logout.md)
 - [Documentation of CAS integration](docs/cas.md)
 - [Documentation of client configuration options](docs/configuration.md)
+- [Documentation for new clients](docs/new-client.md)
 - [Example klient](https://login.bib.dk/example)
