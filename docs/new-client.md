@@ -23,9 +23,13 @@ Derudover kan flg parametre sættes:
 
 En liste over alle parametre kan ses [her](docs/configuration.md)
 
-## Et eksempel
+## Eksempel
 
-[bibliotek.dk](https://bibliotek.dk) benytter bibliotekslogin til autorisation af brugere.
+[bibliotek.dk](https://bibliotek.dk) benytter bibliotekslogin til autorisation af brugere og er i adgangsplatformen sat til at kunne benytte bibliotekslogin samt MitID/NemID. Adgangsplatformen kaldes uden forudvalgt bibliotek, sp brugeren skal selv vælge et bibliotek, hvis bibliotekslogin vælges.
+
+Et vilkårligt folkebibliotek benytter en opsætning i adgangsplatformen, som er tæt på det samme, blot forudvælger de deres eget bibliotek.
+
+Eksempelklienten, kan bruges til at teste de forskellige muligheder der er for at forudvælge enkelte parametre, samt kan bruges til at se hvilke kald der skal foretages for at gennemføre et login, samt hvilke paramtere der returneres efter endt login.
 
 
 
