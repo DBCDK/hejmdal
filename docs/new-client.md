@@ -21,7 +21,7 @@ Derudover kan flg parametre sættes:
 
 
 
-En liste over alle parametre kan ses [her](docs/configuration.md)
+En liste over alle parametre kan ses [her](configuration.md)
 
 ## Eksempel
 
