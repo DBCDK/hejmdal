@@ -18,10 +18,6 @@ context('Login flow', () => {
     cy.get('#login-button').click();
 
     cy.log('Login user via borchk');
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type('87654321');
     cy.get('#pin-input').type('1234');
 
@@ -67,7 +63,7 @@ context('Login flow', () => {
     cy.visit('/example');
     cy.get('#input-login-client').clear().type('hejmdal');
 
-    cy.get('#input-preselected-library').clear().type('733000');
+    cy.get('#input-preselected-library').clear().type('no-preselected');
     cy.get('#input-locked-library').clear();
     cy.get('#login-button').click();
     cy.get('#borchk-dropdown [data-cy=libraryname-input]')
@@ -89,7 +85,7 @@ context('Login flow', () => {
   });
 
   it('carries through state parameter', () => {
-    cy.visit(`${authorize()}&state=test-state-string%2F%2F`);
+    cy.visit(`${authorize('no-preselect')}&state=test-state-string%2F%2F`);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]')
       .focus()
       .clear()
@@ -117,10 +113,6 @@ context('Login flow', () => {
     const userId = '0102030411';
 
     cy.visit(authorize(`7${municipalityLoaner}00`));
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('733000{downarrow}{downarrow}{enter}');
     cy.get('#userid-input').type(userId);
     cy.get('#pin-input').type('1234');
     cy.get('#borchk-submit').click();

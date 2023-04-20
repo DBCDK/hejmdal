@@ -74,11 +74,12 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       return;
     }
 
+    const stickyAgency = req.cookies ? req.cookies.stickyAgency : null;
     let preselectedName = null;
     let preselectedId = null;
-    if (req.query.presel || req.session.query.presel) {
+    if (req.query.presel || req.session.query.presel || stickyAgency) {
       const preselectedLibrary = await getAgency(
-        req.query.presel || req.session.query.presel
+        req.query.presel || req.session.query.presel || stickyAgency.replace(/[^\d]/g, '')
       );
       preselectedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
@@ -138,6 +139,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         preselectedId: preselectedId,
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
+        selectAgency: req.query.selectAgency,
         lockedBranchRegistrationUrl,
         help: helpText,
         newUser: getText(['newUser']),
@@ -198,6 +200,10 @@ export async function borchkCallback(req, res) {
       pincode: formData.pincode,
       userValidated: true
     };
+    if (formData.setStickyAgency) {
+      const decadeInMs = 315360000000; // 1000*60*60*24*365*10 - close to 10 years
+      res.cookie('stickyAgency', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
+    }
     req.session.rememberMe = formData.rememberMe;
     req.setUser(user);
     return true;
