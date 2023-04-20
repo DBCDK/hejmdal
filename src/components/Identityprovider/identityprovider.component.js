@@ -74,12 +74,12 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       return;
     }
 
-    const stickyLibrary = req.cookies ? req.cookies.stickyLibrary : null;
+    const stickyAgency = req.cookies ? req.cookies.stickyAgency : null;
     let preselectedName = null;
     let preselectedId = null;
-    if (req.query.presel || req.session.query.presel || stickyLibrary) {
+    if (req.query.presel || req.session.query.presel || stickyAgency) {
       const preselectedLibrary = await getAgency(
-        req.query.presel || req.session.query.presel || stickyLibrary
+        req.query.presel || req.session.query.presel || stickyAgency.replace(/[^\d]/g, '')
       );
       preselectedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
@@ -139,6 +139,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         preselectedId: preselectedId,
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
+        selectAgency: req.query.selectAgency,
         lockedBranchRegistrationUrl,
         help: helpText,
         newUser: getText(['newUser']),
@@ -199,9 +200,9 @@ export async function borchkCallback(req, res) {
       pincode: formData.pincode,
       userValidated: true
     };
-    if (formData.setStickyLibrary) {
+    if (formData.setStickyAgency) {
       const decadeInMs = 315360000000; // 1000*60*60*24*365*10 - close to 10 years
-      res.cookie('stickyLibrary', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
+      res.cookie('stickyAgency', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
     }
     req.session.rememberMe = formData.rememberMe;
     req.setUser(user);

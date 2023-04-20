@@ -30,7 +30,7 @@ div#borchk
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
         label(for='sticky-library' class='sticky-library') Husk biblioteksvalg
         div.sticky-library
-          input(type='checkbox' name='setStickyLibrary')
+          input(type='checkbox' name='setStickyAgency')
 
 
     div(id="borchk-id-pin" class="id-pin-group")
@@ -38,7 +38,7 @@ div#borchk
         div.chosenLibLink
           p#chosenLib.chosenLib
             div.resetLib
-                a(href= preselectedId ? '/login?presel='+preselectedId : '/login' tabindex="10") skift bibliotek
+                a(href= preselectedId ? '/login?presel='+preselectedId+'&selectAgency=1' : '/login' tabindex="10") skift bibliotek
       else
         div.chosenLibLink(style='display:none')
           p#chosenLib.chosenLib
@@ -65,6 +65,12 @@ div#borchk
             a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
           else
             a(class="modal-trigger" onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
+
+    if preselectedId && !selectAgency
+      script.
+        document.getElementById("borchk-dropdown").style.display="none"
+        document.getElementById("borchk-id-pin").style.display="block"
+        document.getElementById('chosenLib').innerHTML = document.querySelector('[data-js-id=libraryname-input]').value;
 
     if lockedAgency
       script.
