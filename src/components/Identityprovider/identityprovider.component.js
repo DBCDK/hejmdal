@@ -74,11 +74,12 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       return;
     }
 
+    const stickyLibrary = req.cookies ? req.cookies.stickyLibrary : null;
     let preselectedName = null;
     let preselectedId = null;
-    if (req.query.presel || req.session.query.presel || req.cookies.stickyLibrary) {
+    if (req.query.presel || req.session.query.presel || stickyLibrary) {
       const preselectedLibrary = await getAgency(
-        req.query.presel || req.session.query.presel || req.cookies.stickyLibrary
+        req.query.presel || req.session.query.presel || stickyLibrary
       );
       preselectedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
