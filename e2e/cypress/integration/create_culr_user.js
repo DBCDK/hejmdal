@@ -26,10 +26,6 @@ context('Create Account flow', () => {
 
   it('should add library to user in culr', () => {
     cy.visit(authorize(100400));
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('100400{downarrow}{enter}');
     cy.get('#userid-input').type('0101011234');
     cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
@@ -76,10 +72,6 @@ context('Create Account flow', () => {
 
   it('should create user from DBC test in culr with userId', () => {
     cy.visit(authorize(790900));
-    cy.get('#borchk-dropdown [data-cy=libraryname-input]')
-      .focus()
-      .clear()
-      .type('790900{downarrow}{enter}');
     cy.get('#userid-input').type('9999998');
     cy.get('#pin-input').type('1111');
     cy.get('#borchk-submit').click();
