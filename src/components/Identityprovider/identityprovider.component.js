@@ -76,9 +76,9 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 
     let preselectedName = null;
     let preselectedId = null;
-    if (req.query.presel || req.session.query.presel) {
+    if (req.query.presel || req.session.query.presel || req.cookies.stickyLibrary) {
       const preselectedLibrary = await getAgency(
-        req.query.presel || req.session.query.presel
+        req.query.presel || req.session.query.presel || req.cookies.stickyLibrary
       );
       preselectedName = preselectedLibrary.agencyName;
       preselectedId = preselectedLibrary.branchId;
@@ -198,6 +198,9 @@ export async function borchkCallback(req, res) {
       pincode: formData.pincode,
       userValidated: true
     };
+    if (formData.setStickyLibrary) {
+      res.cookie('stickyLibrary', formData.agency, { expires: new Date(Date.now() + 900000), httpOnly: true });
+    }
     req.session.rememberMe = formData.rememberMe;
     req.setUser(user);
     return true;

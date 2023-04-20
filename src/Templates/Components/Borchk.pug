@@ -1,13 +1,13 @@
 
 script.
-  document.addEventListener('DOMContentLoaded', function () { 
+  document.addEventListener('DOMContentLoaded', function () {
     let errorBoxIsShowing=(document.getElementById("error-container") !== null)
     if(errorBoxIsShowing){
       document.getElementById("borchk-dropdown").style.display="none"
       document.getElementById("borchk-id-pin").style.display="block"
     }
   })
-  
+
 div#borchk
   form(action=identityProviders.borchk.action autocomplete='off' method='post' id='borchk-login-form' onsubmit='loginSubmit(event)')
 
@@ -15,7 +15,7 @@ div#borchk
       div.input-container
         input(type="hidden" value=lockedAgency name="agency" id="libraryid-input" aria-hidden='true' )
         input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName data-js-id="libraryname-input")
-    else 
+    else
       div(id="borchk-dropdown" class="library-group form-group input-container " data-library-types=agencyTypeFilter)
         - var rand = Math.random(); // Add random number to id to prevent chrome autocomplete
         label(for='libraryname-input-'+rand) Vælg dit lokale bibliotek
@@ -28,22 +28,25 @@ div#borchk
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
           div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
-    
+        label(for='sticky-library' class='sticky-library') Husk biblioteksvalg
+        div.sticky-library
+          input(type='checkbox' name='setStickyLibrary')
+
 
     div(id="borchk-id-pin" class="id-pin-group")
       if !lockedAgency
         div.chosenLibLink
-          p#chosenLib.chosenLib  
-            div.resetLib 
+          p#chosenLib.chosenLib
+            div.resetLib
                 a(href= preselectedId ? '/login?presel='+preselectedId : '/login' tabindex="10") skift bibliotek
       else
-        div.chosenLibLink(style='display:none') 
-          p#chosenLib.chosenLib 
+        div.chosenLibLink(style='display:none')
+          p#chosenLib.chosenLib
 
       div(class="form-group top-input")
         label(for='userid-input') Cpr- eller lånernummer
         div.input-container
-          // N.B. autocomplete="username" assures that the userId field is stored and retrieved in the user's password manager's "username" field 
+          // N.B. autocomplete="username" assures that the userId field is stored and retrieved in the user's password manager's "username" field
           input(type='text' value="" class='form-control ' id='userid-input' data-cy='userid-input' name='userId' autocomplete='username' tabindex='3')
         span(id='userid-input-text' data-text='')
 
@@ -63,11 +66,11 @@ div#borchk
           else
             a(class="modal-trigger" onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
 
-    if lockedAgency  
-      script. 
+    if lockedAgency
+      script.
         document.getElementById('borchk-id-pin').style.display = 'block';
         let lockedAgencyStr = !{JSON.stringify(lockedAgency)}
-        if (lockedAgencyStr){
+        if (lockedAgencyStr) {
           document.getElementById('chosenLib').innerHTML = lockedAgencyStr
         }
 
