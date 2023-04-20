@@ -200,7 +200,7 @@ export async function borchkCallback(req, res) {
     };
     if (formData.setStickyLibrary) {
       const decadeInMs = 315360000000; // 1000*60*60*24*365*10 - close to 10 years
-      res.cookie('stickyLibrary', formData.agency, { expires: new Date(Date.now() + decadeInMs), httpOnly: true });
+      res.cookie('stickyLibrary', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
     }
     req.session.rememberMe = formData.rememberMe;
     req.setUser(user);
