@@ -21,18 +21,17 @@ export default async function sanityCheck(level = 'all') {
   if (level === 'ready') {
     return await Promise.all([
       wrap(checkDatabase, 'db'),
-      wrap(checkSmaug, 'smaug'),
+      wrap(checkSmaug, 'smaug')
     ]);
   }
-  else {
-    return await Promise.all([
-      wrap(checkDatabase, 'db'),
-      wrap(checkBorchk, 'borchk'),
-      wrap(checkCulr, 'culr'),
-      wrap(checkSmaug, 'smaug'),
-      wrap(checkVipCore, 'vipCore')
-    ]);
-  }
+
+  return await Promise.all([
+    wrap(checkDatabase, 'db'),
+    wrap(checkBorchk, 'borchk'),
+    wrap(checkCulr, 'culr'),
+    wrap(checkSmaug, 'smaug'),
+    wrap(checkVipCore, 'vipCore')
+  ]);
 }
 
 /**
