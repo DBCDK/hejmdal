@@ -12,14 +12,27 @@ import * as VipCore from '../components/VipCore/vipCore.client';
 import {log} from './logging.util';
 import startTiming from './timing.util';
 
-export default async function sanityCheck() {
-  return await Promise.all([
-    wrap(checkDatabase, 'db'),
-    wrap(checkBorchk, 'borchk'),
-    wrap(checkCulr, 'culr'),
-    wrap(checkSmaug, 'smaug'),
-    wrap(checkVipCore, 'vipCore')
-  ]);
+/** Performs sanity check on dependencies. For the readiness probe, only db and smaug is critical
+ *
+ * @param level
+ * @returns {Promise<[{ms: number, name: string, state: string}]|{name: string}[]>}
+ */
+export default async function sanityCheck(level = 'all') {
+  if (level === 'ready') {
+    return await Promise.all([
+      wrap(checkDatabase, 'db'),
+      wrap(checkSmaug, 'smaug'),
+    ]);
+  }
+  else {
+    return await Promise.all([
+      wrap(checkDatabase, 'db'),
+      wrap(checkBorchk, 'borchk'),
+      wrap(checkCulr, 'culr'),
+      wrap(checkSmaug, 'smaug'),
+      wrap(checkVipCore, 'vipCore')
+    ]);
+  }
 }
 
 /**

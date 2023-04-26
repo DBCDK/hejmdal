@@ -14,7 +14,7 @@ import {log} from '../utils/logging.util';
 router.get('/', renderFrontPage);
 
 router.get('/health', async (req, res) => {
-  const health = await sanityCheck();
+  const health = await sanityCheck(req.query.level ?? 'all');
   let status = 200;
   if (health.filter(e => e.state === 'fail').length) {
     status = 503;
