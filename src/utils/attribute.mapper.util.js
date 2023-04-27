@@ -126,7 +126,7 @@ export async function mapCulrResponse(
             mapped.blocked = culr.blocked;
             break;
           case 'userPrivilege':
-            mapped.userPrivilege = culr.userPrivilege;
+            mapped.userPrivilege = [].concat(culr.userPrivilege ?? []);  // force array
             break;
           case 'municipality':
             mapped.municipality = culr.municipalityNumber || null;
