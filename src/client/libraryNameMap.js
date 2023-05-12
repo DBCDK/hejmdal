@@ -10,7 +10,8 @@ export const libMap = {
     716900: ['Høje-Tåstrup'],
     717300: ['Lyngby-Tårbæk', 'Lyngby-Taarbaek', 'Lyngby-Tårbaek'],
     718500: ['Taarnby'],
-    911116: ['Tórshavn', 'Torshavn', 'Thorshavn']
+    911116: ['Tórshavn', 'Torshavn', 'Thorshavn'],
+    911130: ['Kalaallit Nunaat', 'Kalaallit', 'Nunaat']
   },
   forsk: {
     820050: ['Ålborg Universitetsbibliotek'],
