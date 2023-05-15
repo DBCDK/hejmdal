@@ -162,7 +162,7 @@ context('Borchk form', () => {
     cy.get('#borchk-dropdown .agency').should('have.length', 6);
     cy.get('#borchk-dropdown .agency').should(
       'contain.text',
-      'BýarbókasavniðNunatta AtuagaateqarfiaNæstvedRingstedSlagelseAarhus'
+      'BýarbókasavniðKalaallit NunaatNæstvedRingstedSlagelseAarhus'
     );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
