@@ -11,7 +11,7 @@ export const libMap = {
     717300: ['Lyngby-Tårbæk', 'Lyngby-Taarbaek', 'Lyngby-Tårbaek'],
     718500: ['Taarnby'],
     911116: ['Tórshavn', 'Torshavn', 'Thorshavn'],
-    911130: ['Kalaallit Nunaat', 'Kalaallit', 'Nunaat']
+    911130: ['Nunatta Atuagaateqarfia','Nunatta', 'Atuagaateqarfia']
   },
   forsk: {
     820050: ['Ålborg Universitetsbibliotek'],
