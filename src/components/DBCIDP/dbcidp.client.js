@@ -33,10 +33,13 @@ export async function fetchDbcidpAuthorize(accessToken, user) {
     }
     return JSON.parse(resp.body);
   } catch (error) {
-    log.error(`Error retrieving DBCIDP authorization for ${user.userId} @ ${user.agency}`, {
-      error: error.message,
-      stack: error.stack
-    });
+    log.error(
+      `Error retrieving DBCIDP authorization for ${user.userId} @ ${user.agency}`,
+      {
+        error: error.message,
+        stack: error.stack
+      }
+    );
   }
   return {};
 }
@@ -75,13 +78,16 @@ export async function fetchSubscribersByProduct(productName, params) {
  */
 export async function checkAgencyForProduct(agencyId, productName) {
   const requestParams = {
-    url: CONFIG.dbcidp.dbcidpUri + '/v1/queries/subscribersbyproductname/' + productName,
+    url:
+      CONFIG.dbcidp.dbcidpUri +
+      '/v1/queries/subscribersbyproductname/' +
+      productName,
     headers: {'Content-Type': 'application/json'}
   };
   let found = false;
   const result = await fetchSubscribersByProduct(productName, requestParams);
   if (result && result.organisations && result.organisations.length) {
-    result.organisations.forEach(lib => {
+    result.organisations.forEach((lib) => {
       if (lib.agencyId === agencyId) {
         found = true;
       }
@@ -99,7 +105,9 @@ export async function checkAgencyForProduct(agencyId, productName) {
  */
 export async function getDbcidpAgencyRights(accessToken, user) {
   const dbcidpAuth = await fetchDbcidpAuthorize(accessToken, user);
-  return dbcidpAuth.length === 0 ? {} : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
+  return dbcidpAuth.length === 0
+    ? {}
+    : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
 }
 
 /**
@@ -137,7 +145,12 @@ export async function getDbcidpAgencyRightsAsFors(accessToken, user) {
  * @returns {Promise<boolean|*>}
  */
 export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
-  if (CONFIG.mock_externals.dbcidp && (userIdAut === 'valid-user') && groupIdAut && passwordAut) {
+  if (
+    CONFIG.mock_externals.dbcidp &&
+    userIdAut === 'valid-user' &&
+    groupIdAut &&
+    passwordAut
+  ) {
     return true;
   }
   const idpUri = CONFIG.dbcidp.dbcidpUri + '/v1/authenticate';
@@ -157,6 +170,37 @@ export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
     return parsedBody.authenticated;
   } catch (error) {
     log.error('Error validating DBCIDP access profile', {
+      error: error.message,
+      stack: error.stack
+    });
+    return false;
+  }
+}
+
+/**
+ * Function to sending a request for a new password
+ *
+ * @param identity identity, f.ex. 'netpunkt'
+ * @param agencyId agencyId, f.ex. '716700'
+ *
+ * @returns {Promise<boolean|*>}
+ */
+export async function requestNewPassword({identity, agencyId}) {
+  const idpNewPasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/newpassword';
+  const body = {identity, agencyId};
+  const params = {
+    url: idpNewPasswordUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  try {
+    const response = await promiseRequest('post', params);
+    return JSON.parse(response.body);
+  } catch (error) {
+    log.error('Error creating new password on DBCIDP', {
       error: error.message,
       stack: error.stack
     });

@@ -1,8 +1,16 @@
 extends Main
 
+block append body
+  body
+    include Components/modals/modal-forgot
+    
 block append content
   div(id="login" class=hideFooter ? "vertical-aligned" : "")
     div.content-container
+      div#message-container.message-container
+        div.close-button X
+        div#response-message
+        
       div.top
         span(id='logo')
           include ./Components/logo
@@ -38,3 +46,22 @@ block append content
 
             div.action-container
               button(type='submit' id='netpunkt-submit' data-cy='netpunkt-submit' tabindex='0' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Log ind
+              div.other-actionsa(class="modal-trigger forgotPw-link" onclick='toggleModal("forgotModal")' tabindex='5' ) Jeg har glemt mit adgangskode
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        var closeButton = document.querySelector('.close-button');
+        if(closeButton) {
+          closeButton.addEventListener('click', function(e) {
+            var messageContainerElement = document.getElementById('message-container');
+            messageContainerElement.style.display = 'none';
+          });
+        }
+      });
+
+
+
+
+
+
+
