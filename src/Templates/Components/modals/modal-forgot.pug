@@ -12,24 +12,19 @@ script.
       });
       
       agencyIdInput.addEventListener('input', function (e) {
-        let value = e.target.value;
-        // Trim to 6 characters
-        value = value.substring(0, 6);
-        e.target.value = value;
+        // Pad with zeros if necessary
+        e.target.value = e.target.value.substring(0, 6);
 
         // Clear any custom validity message
         e.target.setCustomValidity("");
       });
 
       agencyIdInput.addEventListener('blur', function (e) {
-        let value = e.target.value;
         // Pad with zeros if necessary
-        value = value.padStart(6, '0');
-        e.target.value = value;
+        e.target.value = e.target.value.padStart(6, '0');
       });
     }
      
-    
     if (identityInput) {
       identityInput.addEventListener('input', function(e) {
         e.target.setCustomValidity("");
@@ -74,9 +69,6 @@ script.
     });
   });
     
-    
-
-
 div(id="forgotModal" class="modal forgotPw" aria-hidden="true")
   div.forgotPw-header 
     button(type="button" tabindex="-1" onclick='toggleModal("forgotModal")')
