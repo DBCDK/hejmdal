@@ -253,8 +253,9 @@
 }
 
 .forgotPw {
-  height: 65%;
-  min-height: 475px;
+  max-height: 600px;
+  min-height: 510px;
+  max-width: 700px;
   min-width: 600px;
 }
 
@@ -277,5 +278,9 @@
 }
 
 .forgotPw-body {
-  padding: 5rem 0 0 4rem;
+  padding: 5% 10% 15% 8%;
+}
+
+.forgotpw-note {
+  margin-top: 1rem;
 }
