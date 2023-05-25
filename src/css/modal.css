@@ -64,7 +64,7 @@
       }
     }
 
-    &.onScroll ~ .modal-body {
+    &.onScroll~.modal-body {
       padding: 50px 16px 100px 16px;
       height: calc(100% - 60px);
     }
@@ -123,10 +123,11 @@
         padding: 16px 100px;
       }
 
-      &.onScroll ~ .modal-body {
+      &.onScroll~.modal-body {
         padding: 60px 100px;
       }
     }
+
     .modal-body {
       padding: 0px 100px;
     }
@@ -156,6 +157,7 @@
       pointer-events: auto;
     }
   }
+
   .modal {
     width: 60vw;
     height: 60vh;
@@ -182,7 +184,7 @@
         padding: 16px 50px;
       }
 
-      &.onScroll ~ .modal-body {
+      &.onScroll~.modal-body {
         padding: 60px 50px 0 50px;
       }
 
@@ -212,6 +214,7 @@
         }
       }
     }
+
     .modal-body {
       padding: 0px 50px;
     }
@@ -238,7 +241,7 @@
         padding: 16px 100px;
       }
 
-      &.onScroll ~ .modal-body {
+      &.onScroll~.modal-body {
         padding: 60px 100px 0 100px;
       }
     }
@@ -247,4 +250,32 @@
       padding: 0px 100px;
     }
   }
+}
+
+.forgotPw {
+  height: 65%;
+  min-height: 475px;
+  min-width: 600px;
+}
+
+.forgotPw-link {
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.forgotPw-header>button {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  background: svg-inline(--close-large) no-repeat center;
+  background-size: 15px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border: none !important;
+}
+
+.forgotPw-body {
+  padding: 5rem 0 0 4rem;
 }

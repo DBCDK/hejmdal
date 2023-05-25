@@ -46,3 +46,18 @@ svg {
 .text-inValid {
   color: var(--error) !important;
 }
+
+.message-container {
+  position: relative;
+  padding: 20px;
+  border: 1px solid #000;
+  margin-bottom: 20px;
+  display: none;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+}
