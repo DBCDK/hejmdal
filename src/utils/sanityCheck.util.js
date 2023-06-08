@@ -32,7 +32,7 @@ export default async function sanityCheck(level = 'all') {
     wrap(checkCulr, 'culr'),
     wrap(checkSmaug, 'smaug'),
     wrap(checkVipCore, 'vipCore'),
-    wrap(checkDbcIdp, 'dbcIdp'),
+    wrap(checkDbcIdp, 'dbcIdp')
   ]);
 }
 
