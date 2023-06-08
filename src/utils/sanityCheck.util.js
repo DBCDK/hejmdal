@@ -117,7 +117,7 @@ async function checkVipCore() {
 }
 
 /**
- * Check if SMAUG webservice is responding
+ * Check if DbcIdp webservice is responding
  */
 async function checkDbcIdp() {
   const client = await DbcIdp.health();
