@@ -8,6 +8,7 @@ import * as Borchk from '../components/Borchk/borchk.client';
 import * as Culr from '../components/Culr/culr.client';
 import * as Smaug from '../components/Smaug/smaug.client';
 import * as VipCore from '../components/VipCore/vipCore.client';
+import * as DbcIdp from '../components/DBCIDP/dbcidp.client';
 
 import {log} from './logging.util';
 import startTiming from './timing.util';
@@ -30,7 +31,8 @@ export default async function sanityCheck(level = 'all') {
     wrap(checkBorchk, 'borchk'),
     wrap(checkCulr, 'culr'),
     wrap(checkSmaug, 'smaug'),
-    wrap(checkVipCore, 'vipCore')
+    wrap(checkVipCore, 'vipCore'),
+    wrap(checkDbcIdp, 'dbcIdp')
   ]);
 }
 
@@ -112,4 +114,14 @@ async function checkSmaug() {
  */
 async function checkVipCore() {
   return VipCore.libraryListFromName('test');
+}
+
+/**
+ * Check if DbcIdp webservice is responding
+ */
+async function checkDbcIdp() {
+  const client = await DbcIdp.health();
+  if (client.statusCode !== 200) {
+    throw Error('DbcIdp is not responding');
+  }
 }

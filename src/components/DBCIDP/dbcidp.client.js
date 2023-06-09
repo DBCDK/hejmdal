@@ -207,3 +207,14 @@ export async function requestNewPassword({identity, agencyId}) {
     return false;
   }
 }
+
+/**
+ * Check if DbcIdp webservice is up.
+ *
+ * @returns {Promise}
+ */
+export async function health() {
+  return await promiseRequest('get', {
+    uri: CONFIG.dbcidp.dbcidpUri.replace('api', '/health')
+  });
+}
