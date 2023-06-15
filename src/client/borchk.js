@@ -10,11 +10,16 @@ class LibrarySelector {
     this.wrapper = document.getElementById(selectorId);
     this.inputContainer = this.wrapper.querySelector('.input-container');
     this.libraryInput = this.wrapper.querySelector('[data-input-name]');
+    this.libraryInput.setAttribute('lang', 'da');
     this.libraryIdInput = this.wrapper.querySelector('[data-input-id]');
     this.toggleButton = this.wrapper.querySelector('[data-toggle]');
+    this.toggleButton.setAttribute('aria-label', 'toggle');
     this.clearButton = this.wrapper.querySelector('[data-clear]');
+    this.clearButton.setAttribute('aria-label', 'ryd');
     this.mobileClearButton = this.wrapper.querySelector('[data-mobile-clear]');
+    this.mobileClearButton.setAttribute('aria-label', 'ryd');
     this.mobileCloseButton = this.wrapper.querySelector('[data-mobile-close]');
+    this.mobileCloseButton.setAttribute('aria-label', 'luk');
     this.dropdownContainer = document.getElementById(
       'libraries-dropdown-container'
     );
@@ -144,6 +149,10 @@ class LibrarySelector {
     if (label && this.types.length > 1) {
       ul.appendChild(this.createLabel(label));
     }
+    ul.setAttribute('role', 'listbox');
+    // Set the tabindex to allow the ul to be focused
+    ul.setAttribute('tabindex', '0');
+
     for (let i = 0; i < libraries.length; i++) {
       var library = libraries[i];
       var li = this.createEntry(library);
@@ -162,7 +171,11 @@ class LibrarySelector {
     var li = document.createElement('li');
     li.innerHTML = entry.name;
     li.entry = entry;
+    li.id = entry.name; // unique id
     li.classList.add('agency');
+    li.setAttribute('role', 'option');
+    // Initially set aria-selected to false
+    li.setAttribute('aria-selected', 'false');
     return li;
   }
 
@@ -202,7 +215,10 @@ class LibrarySelector {
     this.handleKeyEvents = this.handleKeyEvents.bind(this);
     document.addEventListener('keydown', this.handleKeyEvents);
     document.addEventListener('click', (e) => {
-      if (!this.inputContainer.contains(e.target)) {
+      if (
+        !this.inputContainer.contains(e.target) &&
+        e.target !== this.toggleButton
+      ) {
         this.close();
       } else if (e.target.entry) {
         this.select(e.target.entry);
@@ -279,11 +295,21 @@ class LibrarySelector {
     this.highlightSelected(this.currentlySelectedIndex);
   }
   highlightSelected(index) {
+    this.currentlyVisibleAgencies.forEach((agency) => {
+      agency.setAttribute('aria-selected', 'false');
+    });
+
     if (this.currentlyVisibleAgencies[index]) {
       this.currentlySelectedItem = this.currentlyVisibleAgencies[index];
       this.currentlySelectedItem.classList.add('selected');
+      this.currentlySelectedItem.setAttribute('aria-selected', 'true');
       this.currentlySelectedItem.scrollIntoView(false);
     }
+    // this tells voiceover to read this name when focused
+    this.libraryInput.setAttribute(
+      'aria-activedescendant',
+      this.currentlySelectedItem.id
+    );
   }
 }
 

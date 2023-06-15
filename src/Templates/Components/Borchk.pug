@@ -13,7 +13,7 @@ div#borchk
 
     if lockedAgency
       div.input-container
-        input(type="hidden" value=lockedAgency name="agency" id="libraryid-input" aria-hidden='true' )
+        input(type="hidden" value=lockedAgency name="agency" id="libraryid-input"  )
         input(type='hidden' id='libraryname-input' name='libraryName' value=lockedAgencyName data-js-id="libraryname-input")
     else
       div(id="borchk-dropdown" class="library-group form-group input-container " data-library-types=agencyTypeFilter)
@@ -26,7 +26,7 @@ div#borchk
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
           button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
           button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
-          div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+          div(id="libraries-dropdown-container" class='libraries-dropdown-container' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
         label(for='sticky-library' class='sticky-library') Husk biblioteksvalg
         div.sticky-library
@@ -54,7 +54,7 @@ div#borchk
         label(for='pin-input') Indtast din kode
         div.input-container
           input(type='password' class='form-control' tabindex='4' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
-          button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
+          button(type='button' id='toggle-pin-input' tabindex="5" onclick='toggleFieldVisibility("pin-input");' aria-hidden="false" aria-label="toggle kodeord")
         span(id='pin-input-text' data-text='')
 
 
