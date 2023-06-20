@@ -306,10 +306,12 @@ class LibrarySelector {
       this.currentlySelectedItem.scrollIntoView(false);
     }
     // this tells voiceover to read this name when focused
-    this.libraryInput.setAttribute(
-      'aria-activedescendant',
-      this.currentlySelectedItem.id
-    );
+    if (this.currentlySelectedItem) {
+      this.libraryInput.setAttribute(
+        'aria-activedescendant',
+        this.currentlySelectedItem.id
+      );
+    }
   }
 }
 
