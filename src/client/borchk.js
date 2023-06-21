@@ -305,13 +305,11 @@ class LibrarySelector {
       this.currentlySelectedItem.setAttribute('aria-selected', 'true');
       this.currentlySelectedItem.scrollIntoView(false);
     }
-    // this tells voiceover to read this name when focused
-    if (this.currentlySelectedItem) {
-      this.libraryInput.setAttribute(
-        'aria-activedescendant',
-        this.currentlySelectedItem.id
-      );
-    }
+
+    this.libraryInput.setAttribute(
+      'aria-activedescendant',
+      this.currentlySelectedItem.id
+    );
   }
 }
 
