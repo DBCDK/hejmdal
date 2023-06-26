@@ -93,7 +93,7 @@ describe('Test vipCore component', () => {
         type: 'Folkebibliotek',
         branchWebsiteUrl: 'https://bib.ballerup.dk',
         registrationFormUrl: 'https://bib.ballerup.dk/registration',
-        registrationFormUrlText: 'Opret dig som låner med NemID',
+        registrationFormUrlText: 'Opret dig som låner med MitID',
         branchEmail: 'ballerup-bibliotek@balk.dk',
         distance: '1237',
         municipalityNo: '151'

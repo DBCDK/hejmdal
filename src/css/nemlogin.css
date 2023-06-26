@@ -1,10 +1,10 @@
-@svg-load nemlogin url(svg/services/MitID-NemID.svg) {
+@svg-load nemlogin url(svg/services/MitID.svg) {
   fill: black;
 }
 
 .nemlogin-img {
   display: block;
   background: svg-inline(nemlogin) no-repeat center;
-  width: 225px;
+  width: 125px;
   height: 23px;
 }

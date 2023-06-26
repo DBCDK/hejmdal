@@ -123,7 +123,7 @@ const helpTexts = {
       {
         header: '',
         texts: [
-          'Du kan oprette dig online som bruger på dit lokale bibliotek med NemID. Vælg dit lokale bibliotek for at komme direkte til siden for brugeroprettelse.'
+          'Du kan oprette dig online som bruger på dit lokale bibliotek med MitID. Vælg dit lokale bibliotek for at komme direkte til siden for brugeroprettelse.'
         ]
       }
     ]
@@ -146,18 +146,18 @@ const helpTexts = {
       {
         header: 'Pinkode',
         texts: [
-          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner. Alternativt kan du logge ind på dit lokale folkebibliotek med NemID og oprette en ny pinkode under brugerprofil.'
+          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner. Alternativt kan du logge ind på dit lokale folkebibliotek med MitID og oprette en ny pinkode under brugerprofil.'
         ]
       }
     ]
   },
   login_nemlogin: {
-    title: 'Hjælp til login med NemID',
+    title: 'Hjælp til login med MitID',
     sections: [
       {
-        header: 'NemID',
+        header: 'MitID',
         texts: [
-          'Vælg NemID, hvis du vil logge ind ved hjælp af NemID med brug af dit nøglekort. Du vil blive viderestillet til NemID. Når du er logget ind der, bliver du stillet tilbage til den side, du var ved at logge ind på.'
+          'Vælg MitID, hvis du vil logge ind ved hjælp af MitID med brug af dit nøglekort. Du vil blive viderestillet til MitID. Når du er logget ind der, bliver du stillet tilbage til den side, du var ved at logge ind på.'
         ]
       }
     ]

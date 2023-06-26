@@ -208,7 +208,7 @@ describe('Unittesting methods in culr.component:', () => {
       }
     };
     const BORCHK_USER = {identityProviders: ['borchk']};
-    const NEMID_USER = {identityProviders: ['nemlogin']};
+    const MITID_USER = {identityProviders: ['nemlogin']};
     it('should return false if library is not on municipalityName list', async () => {
       const result = await shouldCreateAccount('999999');
       expect(result).toEqual(false);
@@ -224,7 +224,7 @@ describe('Unittesting methods in culr.component:', () => {
     it('should return false if NOT using borchk', async () => {
       const result = await shouldCreateAccount(
         '100400',
-        NEMID_USER,
+        MITID_USER,
         ACCOUNT_DOES_NOT_EXIST
       );
       expect(result).toEqual(false);
