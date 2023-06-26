@@ -95,7 +95,7 @@ async function checkBorchk() {
 async function checkCulr() {
   const response = await Culr.getAccountsByGlobalId({uidValue: 'test'});
   if (!response.result) {
-    throw Error('No valid response from borchk', response);
+    throw Error('No valid response from culr', response);
   }
 }
 
