@@ -15,6 +15,7 @@
   transition-timing-function: ease-out;
   box-shadow: -2px 0 3px rgba(0, 0, 0, 0.07);
   opacity: 1;
+  overflow: scroll;
 
   /* animation props */
   transition-duration: 0.2s;
@@ -262,7 +263,7 @@
 
 .forgotPw {
   max-height: 600px;
-  min-height: 510px;
+  min-height: 95vh;
   max-width: 700px;
 }
 

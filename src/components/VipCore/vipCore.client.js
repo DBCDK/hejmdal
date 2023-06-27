@@ -130,7 +130,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
       const branchId = getAgencyField(agency, 'branchId');
       const branchType = getAgencyField(agency, 'branchType');
 
-      if (agencies.includes(branchId) || branchType !== 'H') {
+      if (agencies.includes(branchId) || (!['H', 'P'].includes(branchType))) {
         return;
       }
 
