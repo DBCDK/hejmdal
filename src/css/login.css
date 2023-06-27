@@ -1,6 +1,7 @@
 #login {
   .content-container {
     padding-top: 30px;
+    padding-bottom: 30px;
     .top {
       h1 {
         color: var(--black-lighten-1);
@@ -109,6 +110,7 @@
   @media (min-width: 486px) {
     .content-container {
       padding-top: 40px;
+      padding-bottom: 40px;
     }
   }
 
@@ -119,12 +121,12 @@
     transform: translate(0, 0);
   }
 
-  @media (min-width: 500px) {
+  @media (min-width: 800px) {
     &.vertical-aligned {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -65%);
+      position: relative;
+      top: auto;
+      left: auto;
+      transform: translate(0, 0);
     }
   }
 }
