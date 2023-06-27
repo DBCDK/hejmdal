@@ -263,8 +263,8 @@
 
 .forgotPw {
   max-height: 600px;
-  max-width: 700px;
   min-height: 95vh;
+  max-width: 700px;
 }
 
 .forgotPw-link {
