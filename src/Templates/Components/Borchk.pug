@@ -22,11 +22,11 @@ div#borchk
         div.input-container
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='5' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='4' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
-          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="-1")
-          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
-          div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="4")
+          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="5")
+          div(id="libraries-dropdown-container" class='libraries-dropdown-container' data-dropdown-container data-cy="dropdown-container")
         span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
         label(for='sticky-library' class='sticky-library') Husk biblioteksvalg
         div.sticky-library
@@ -53,8 +53,8 @@ div#borchk
       div.form-group
         label(for='pin-input') Indtast din kode
         div.input-container
-          input(type='password' class='form-control' tabindex='4' id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
-          button(type='button' id='toggle-pin-input' tabindex="-1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
+          input(type='password' class='form-control' tabindex="4" id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
+          button(type='button' id='toggle-pin-input' tabindex="5" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
         span(id='pin-input-text' data-text='')
 
 

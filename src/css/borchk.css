@@ -62,6 +62,7 @@
 
   .sticky-library {
     display: inline;
+
     input[type='checkbox'] {
       display: inline;
       margin-left: 1rem;
@@ -317,6 +318,10 @@
       }
     }
   }
+}
+
+.input-container button:focus {
+  outline: 1px solid var(--black-lighten-1);
 }
 
 @media (min-width: 335px) {
