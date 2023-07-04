@@ -19,12 +19,10 @@ class LibrarySelector {
     this.mobileClearButton.setAttribute('aria-label', 'ryd');
     this.mobileCloseButton = this.wrapper.querySelector('[data-mobile-close]');
     this.mobileCloseButton.setAttribute('aria-label', 'luk');
-    this.dropdownContainer = document.getElementById(
-      'libraries-dropdown-container'
-    );
     this.librariesDropdownContainer = this.wrapper.querySelector(
       '[data-dropdown-container]'
     );
+
     this.types = (this.wrapper.dataset.libraryTypes &&
       this.wrapper.dataset.libraryTypes.split(',')) || ['folk', 'forsk'];
     this.libraries = libraries;
@@ -250,18 +248,26 @@ class LibrarySelector {
       27: 'ESC'
     };
     var key = keyNames[e.keyCode];
-
-    if (key === 'UP') {
+    // keyCode is deprecated. Adding e.key for future versions
+    if (key === 'UP' || e.key === 'ArrowUp') {
       e.preventDefault();
       this.navigateDropDown(-1);
     }
-    if (key === 'DOWN') {
+    if (key === 'DOWN' || e.key === 'ArrowDown') {
       e.preventDefault();
       this.navigateDropDown(1);
     }
 
-    if (key === 'TAB' || key === 'ENTER') {
-      if (this.isOpen && this.dropdownContainer.classList.contains('visible')) {
+    if (
+      key === 'TAB' ||
+      key === 'ENTER' ||
+      e.key === 'Enter' ||
+      e.key === 'Tab'
+    ) {
+      if (
+        this.isOpen &&
+        this.librariesDropdownContainer.classList.contains('visible')
+      ) {
         e.preventDefault();
         this.select(
           this.currentlyVisibleAgencies[this.currentlySelectedIndex] &&
@@ -271,7 +277,7 @@ class LibrarySelector {
       this.close();
     }
 
-    if (key === 'ESC') {
+    if (key === 'ESC' || e.key === 'Escape') {
       this.close(e);
     }
   }

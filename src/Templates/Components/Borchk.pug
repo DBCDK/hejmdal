@@ -22,15 +22,15 @@ div#borchk
         div.input-container
           span(class='close-libraries-on-mobile' data-mobile-close)
           span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='4' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
+          input(type='text' id='libraryname-input-'+rand data-cy='libraryname-input' tabindex='1' name='libraryName-'+rand autocomplete='off' data-js-id="libraryname-input" data-input-name value=preselectedName)
           input(type="hidden" name="agency" id="libraryid-input" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
-          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="4")
-          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="5")
+          button(class='caret' type='button' class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn" tabindex="1")
+          button(class='close' type='button' class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn" tabindex="-1")
           div(id="libraries-dropdown-container" class='libraries-dropdown-container' data-dropdown-container data-cy="dropdown-container")
-        span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='')
-        label(for='sticky-library' class='sticky-library') Husk biblioteksvalg
+        span(id='libraryname-input-text' data-cy='libraryname-input-text' data-text='' tabindex="1")
+        label(for='sticky-library' class='sticky-library' ) Husk biblioteksvalg
         div.sticky-library
-          input(type='checkbox' name='setStickyAgency')
+          input(type='checkbox' name='setStickyAgency' tabindex="1")
 
 
     div(id="borchk-id-pin" class="id-pin-group")
@@ -38,7 +38,7 @@ div#borchk
         div.chosenLibLink
           p#chosenLib.chosenLib
             div.resetLib
-                a(href= preselectedId ? '/login?presel='+preselectedId+'&selectAgency=1' : '/login' tabindex="10") skift bibliotek
+                a(href= preselectedId ? '/login?presel='+preselectedId+'&selectAgency=1' : '/login' tabindex="1") skift bibliotek
       else
         div.chosenLibLink(style='display:none')
           p#chosenLib.chosenLib
@@ -47,24 +47,24 @@ div#borchk
         label(for='userid-input') Cpr- eller lånernummer
         div.input-container
           // N.B. autocomplete="username" assures that the userId field is stored and retrieved in the user's password manager's "username" field
-          input(type='text' value="" class='form-control ' id='userid-input' data-cy='userid-input' name='userId' autocomplete='username' tabindex='3')
+          input(type='text' value="" class='form-control ' id='userid-input' data-cy='userid-input' name='userId' autocomplete='username' tabindex='1')
         span(id='userid-input-text' data-text='')
 
       div.form-group
         label(for='pin-input') Indtast din kode
         div.input-container
-          input(type='password' class='form-control' tabindex="4" id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
-          button(type='button' id='toggle-pin-input' tabindex="5" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
+          input(type='password' class='form-control' tabindex="1" id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
+          button(type='button' id='toggle-pin-input' tabindex="1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
         span(id='pin-input-text' data-text='')
 
 
       div.action-container
-        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='5') Log ind
+        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='1') Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
-            a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='5') Ny Bruger?
+            a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='-1') Ny Bruger?
           else
-            a(class="modal-trigger" onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='5') Ny Bruger?
+            a(class="modal-trigger" onclick='toggleModal("userModal")' data-cy='new-user-button' tabindex='1') Ny Bruger?
 
     if preselectedId && !selectAgency
       script.

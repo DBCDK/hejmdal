@@ -18,6 +18,8 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
 
   // force open modal
   if (status === 'open') {
+    // modals start at tabindex 2
+    modal.tabIndex = 2;
     // Prevent multiple modals to open (possible by tabbing)
     closeAllOpenModals();
 
@@ -27,6 +29,9 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
     // focus modal (fx. use of arrow keys) -  bypassing this with forgotModal
     if (!modal.getElementsByClassName('forgotPw-body')[0]) {
       modal.getElementsByClassName('modal-body')[0].focus();
+    } else {
+      var agencyIdInput = document.getElementById('agencyId');
+      agencyIdInput.focus();
     }
     return;
   }
@@ -66,12 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   body.addEventListener('keyup', function (e) {
     // if ESC pressed
-    if (e.keyCode === 27) {
+    if (e.key === 'Escape' || e.keyCode === 27) {
       closeAllOpenModals();
     }
 
     // if ENTER pressed
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
       // Get focused element
       const aciveElement = document.activeElement;
 
