@@ -37,7 +37,7 @@ block append content
               div.input-container
                 input(type="text" value="" class="form-control" id="autocomplete-pass" name="autocomplete-pass" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="pass")
                 input(type='password' class='form-control' id='pass-input' data-cy='pass-input' name='password' autocomplete='password' tabindex='0')
-                button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex="-1")
+                button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex="0")
               span(id='pass-input-text' data-text='')
 
               if error
@@ -46,7 +46,7 @@ block append content
 
             div.action-container
               button(type='submit' id='netpunkt-submit' data-cy='netpunkt-submit' tabindex='0' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Log ind
-              div.other-actionsa(class="modal-trigger forgotPw-link" onclick='toggleModal("forgotModal")' tabindex='5' ) Jeg har glemt min adgangskode
+              div.other-actionsa(class="modal-trigger forgotPw-link" onclick='toggleModal("forgotModal")' tabindex='0' ) Jeg har glemt min adgangskode
 
     script.
       document.addEventListener('DOMContentLoaded', function() {
@@ -56,6 +56,10 @@ block append content
             var messageContainerElement = document.getElementById('message-container');
             messageContainerElement.style.display = 'none';
           });
+        }
+        var groupInput = document.getElementById('group-input');
+        if (groupInput) {
+          groupInput.focus();
         }
       });
 

@@ -1,8 +1,8 @@
 div(id="userModal" class="modal" aria-hidden="true")
   div.modal-header
-    button(type="button" tabindex="-1" onclick='toggleModal("userModal")')
+    button(type="button" tabindex="0" onclick='toggleModal("userModal")')
     h2.modal-title #{newUser.title}
-  div(class="modal-body" tabindex="-1")
+  div(class="modal-body" tabindex="0")
     each section in newUser.sections
       div.modal-body-section
         if(section.header)
@@ -15,9 +15,9 @@ div(id="userModal" class="modal" aria-hidden="true")
       label(for='modal-libraryname-input') Vælg dit lokale bibliotek
       div.input-container
         span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-        input(type='text' data-cy='libraryname-input' id='modal-libraryname-input' tabindex="-1" name='libraryName' autocomplete='off' data-input-name value=preselectedName)
+        input(type='text' data-cy='libraryname-input' id='modal-libraryname-input' tabindex="0" name='libraryName' autocomplete='off' data-input-name value=preselectedName)
         input(type="hidden" name="agency" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
-        button(class='caret' type='button' tabindex="-1" class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
-        button(class='close' type='button' tabindex="-1" class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
-        div(class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container")
+        button(class='caret' type='button' tabindex="0" class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
+        button(class='close' type='button' tabindex="0" class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
+        div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container" tabindex="0")
       span(data-cy='libraryname-input-text' data-text='')

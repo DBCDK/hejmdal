@@ -12,15 +12,17 @@ class LibrarySelector {
     this.libraryInput = this.wrapper.querySelector('[data-input-name]');
     this.libraryIdInput = this.wrapper.querySelector('[data-input-id]');
     this.toggleButton = this.wrapper.querySelector('[data-toggle]');
+    this.toggleButton.setAttribute('aria-label', 'toggle');
     this.clearButton = this.wrapper.querySelector('[data-clear]');
+    this.clearButton.setAttribute('aria-label', 'ryd');
     this.mobileClearButton = this.wrapper.querySelector('[data-mobile-clear]');
+    this.mobileClearButton.setAttribute('aria-label', 'ryd');
     this.mobileCloseButton = this.wrapper.querySelector('[data-mobile-close]');
-    this.dropdownContainer = document.getElementById(
-      'libraries-dropdown-container'
-    );
+    this.mobileCloseButton.setAttribute('aria-label', 'luk');
     this.librariesDropdownContainer = this.wrapper.querySelector(
       '[data-dropdown-container]'
     );
+
     this.types = (this.wrapper.dataset.libraryTypes &&
       this.wrapper.dataset.libraryTypes.split(',')) || ['folk', 'forsk'];
     this.libraries = libraries;
@@ -29,6 +31,7 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = -1;
     this.currentlySelectedItem = null;
+    this.librariesDropdown = null; // for setting aria labelledby
 
     this.isOpen = false;
     this.filter();
@@ -84,6 +87,8 @@ class LibrarySelector {
     this.currentlyVisibleAgencies = [];
     this.currentlySelectedIndex = query && query.length > 2 ? 0 : -1;
     var ul = document.createElement('ul');
+    ul.setAttribute('lang', 'da');
+    // this.librariesDropdown.setAttribute('aria-labelledby', 'libraryname-input');
     if (this.types.indexOf('folk') >= 0) {
       var folkebiblioteker = this.filterQuery(
         query,
@@ -144,6 +149,9 @@ class LibrarySelector {
     if (label && this.types.length > 1) {
       ul.appendChild(this.createLabel(label));
     }
+    ul.setAttribute('role', 'listbox');
+    // Set the tabindex to allow the ul to be focused
+    ul.setAttribute('tabindex', '0');
     for (let i = 0; i < libraries.length; i++) {
       var library = libraries[i];
       var li = this.createEntry(library);
@@ -162,7 +170,12 @@ class LibrarySelector {
     var li = document.createElement('li');
     li.innerHTML = entry.name;
     li.entry = entry;
+    li.id = entry.name;
     li.classList.add('agency');
+    li.setAttribute('role', 'option');
+
+    // Initially set aria-selected to false
+    li.setAttribute('aria-selected', 'false');
     return li;
   }
 
@@ -235,18 +248,26 @@ class LibrarySelector {
       27: 'ESC'
     };
     var key = keyNames[e.keyCode];
-
-    if (key === 'UP') {
+    // keyCode is deprecated. Adding e.key for future versions
+    if (key === 'UP' || e.key === 'ArrowUp') {
       e.preventDefault();
       this.navigateDropDown(-1);
     }
-    if (key === 'DOWN') {
+    if (key === 'DOWN' || e.key === 'ArrowDown') {
       e.preventDefault();
       this.navigateDropDown(1);
     }
 
-    if (key === 'TAB' || key === 'ENTER') {
-      if (this.isOpen && this.dropdownContainer.classList.contains('visible')) {
+    if (
+      key === 'TAB' ||
+      key === 'ENTER' ||
+      e.key === 'Enter' ||
+      e.key === 'Tab'
+    ) {
+      if (
+        this.isOpen &&
+        this.librariesDropdownContainer.classList.contains('visible')
+      ) {
         e.preventDefault();
         this.select(
           this.currentlyVisibleAgencies[this.currentlySelectedIndex] &&
@@ -256,7 +277,7 @@ class LibrarySelector {
       this.close();
     }
 
-    if (key === 'ESC') {
+    if (key === 'ESC' || e.key === 'Escape') {
       this.close(e);
     }
   }
@@ -276,12 +297,19 @@ class LibrarySelector {
     } else if (this.currentlySelectedIndex < 0) {
       this.currentlySelectedIndex = this.currentlyVisibleAgencies.length - 1;
     }
+    this.currentlyVisibleAgencies.forEach((agency) => {
+      agency.setAttribute('aria-selected', 'false');
+    });
     this.highlightSelected(this.currentlySelectedIndex);
+    // for voice-over and puts focused name in inputfield
+    this.libraryInput.value =
+      this.currentlyVisibleAgencies[this.currentlySelectedIndex].innerHTML;
   }
   highlightSelected(index) {
     if (this.currentlyVisibleAgencies[index]) {
       this.currentlySelectedItem = this.currentlyVisibleAgencies[index];
       this.currentlySelectedItem.classList.add('selected');
+      this.currentlySelectedItem.setAttribute('aria-selected', 'true');
       this.currentlySelectedItem.scrollIntoView(false);
     }
   }
