@@ -67,6 +67,7 @@ describe('Unittesting methods in culr.component:', () => {
       expect(result).toEqual({
         blocked: null,
         municipalityAgencyId: '911116',
+        municipalityNumber: '1110',
         userPrivilege: []
       });
     });
