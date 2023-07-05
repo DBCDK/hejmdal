@@ -171,7 +171,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
       }
     }
 
-    if (culrResponse.MunicipalityNo && culrResponse.MunicipalityNo.length < 4) {
+    if (culrResponse.MunicipalityNo && !isNaN(culrResponse.MunicipalityNo)) {
       response.municipalityNumber = culrResponse.MunicipalityNo;
       if (user.agency && !user.agency.startsWith('7')) {
         log.debug('Ignore CULR info when setting municipalityAgencyId', user.agency, culrResponse.MunicipalityNo);
