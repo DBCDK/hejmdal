@@ -1,12 +1,14 @@
 div(id="helpModal" class="modal" aria-hidden="true")
   div.modal-header
-    button(type="button" tabindex="2" onclick='toggleModal("helpModal")')
+    button(type="button" tabindex="11" onclick='toggleModal("helpModal")')
     h2.modal-title #{help.title}
-  div(class="modal-body" tabindex="2")
+  div(class="modal-body" tabindex="10")
     each section in help.sections
       if(!(lockedAgency && section.header == 'Bibliotek'))
-        div.modal-body-section
+        div.modal-body-section(tabindex="10")
           if(section.header)
             h3 #{section.header}
           each text in section.texts
             p !{text}
+script.
+  document.getElementById('helpModal').focus();

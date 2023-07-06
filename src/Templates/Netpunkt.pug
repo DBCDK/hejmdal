@@ -57,8 +57,9 @@ block append content
             messageContainerElement.style.display = 'none';
           });
         }
+        var errorBox = document.getElementById('error-body');
         var groupInput = document.getElementById('group-input');
-        if (groupInput) {
+        if (groupInput && !errorBox) {
           groupInput.focus();
         }
       });
