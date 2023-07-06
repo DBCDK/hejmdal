@@ -1,10 +1,10 @@
 div(id="userModal" class="modal" aria-hidden="true")
   div.modal-header
-    button(type="button" tabindex="0" onclick='toggleModal("userModal")')
+    button(type="button" tabindex="61" onclick='toggleModal("userModal")')
     h2.modal-title #{newUser.title}
-  div(class="modal-body" tabindex="0")
+  div(class="modal-body" tabindex='60')
     each section in newUser.sections
-      div.modal-body-section
+      div.modal-body-section(tabindex='60')
         if(section.header)
           h3 #{section.header}
         each text in section.texts
@@ -15,9 +15,9 @@ div(id="userModal" class="modal" aria-hidden="true")
       label(for='modal-libraryname-input') Vælg dit lokale bibliotek
       div.input-container
         span(class='clear-libraries-on-mobile' data-mobile-clear) Ryd
-        input(type='text' data-cy='libraryname-input' id='modal-libraryname-input' tabindex="0" name='libraryName' autocomplete='off' data-input-name value=preselectedName)
+        input(type='text' data-cy='libraryname-input' id='modal-libraryname-input' tabindex="60" name='libraryName' autocomplete='off' data-input-name value=preselectedName)
         input(type="hidden" name="agency" aria-hidden='true' tabindex="-1" value=preselectedId data-input-id)
-        button(class='caret' type='button' tabindex="0" class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
-        button(class='close' type='button' tabindex="0" class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
-        div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container" tabindex="0")
+        button(class='caret' type='button' tabindex="60" class=preselectedName ? 'hide' : ''  data-toggle aria-hidden='false' data-cy="caret-libraries-btn")
+        button(class='close' type='button' tabindex="60" class=preselectedName ? '' : 'hide'  data-clear aria-hidden='true' data-cy="clear-libraries-btn")
+        div(id="libraries-dropdown-container" class='libraries-dropdown-container' aria-hidden='true' data-dropdown-container data-cy="dropdown-container" tabindex="60")
       span(data-cy='libraryname-input-text' data-text='')

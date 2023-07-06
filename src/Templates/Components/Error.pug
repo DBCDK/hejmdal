@@ -1,10 +1,10 @@
 // Headline
 div#error-header
-  a(href= preselectedId ? '/login?presel='+preselectedId+'&userSelected=true' : '/login' id='error-close-btn')
+  a(href= preselectedId ? '/login?presel='+preselectedId+'&userSelected=true' : '/login' id='error-close-btn' tabindex="1")
   h2 Noget gik galt
 
 // Message
-div#error-body
+div#error-body(tabindex="1")
   case error
     when 'snotl'
       p Den side, du vil logge ind på, har ikke ret til at benytte bibliotekslogin. Du er derfor ikke logget ind.
@@ -47,3 +47,6 @@ div#error-body
     div
       br
       p Du har #{retries} forsøg tilbage
+
+script.
+  document.getElementById('error-close-btn').focus();

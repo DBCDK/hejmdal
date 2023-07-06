@@ -1,10 +1,10 @@
 div(id="privacyModal" class="modal" aria-hidden="true")
   div.modal-header
-    button(type="button" tabindex="2" onclick='toggleModal("privacyModal")')
+    button(type="button" tabindex="31" onclick='toggleModal("privacyModal")')
     h2.modal-title #{privacyPolicy.title}
-  div(class="modal-body" tabindex="2")
+  div(class="modal-body" tabindex="30")
     each section in privacyPolicy.sections
-      div.modal-body-section
+      div.modal-body-section(tabindex="30")
         if(section.header)
           h3 #{section.header}
         each text in section.texts
