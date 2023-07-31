@@ -7,6 +7,7 @@
 export const municipalityName = {
   700400: 'Sydslesvig',
   710100: 'København',
+  900450: 'Landsbókasavnið',
   911116: 'Býarbókasavnið',
   911130: 'Kalaallit Nunaat',
   714700: 'Frederiksberg',
