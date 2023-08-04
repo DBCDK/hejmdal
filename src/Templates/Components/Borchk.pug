@@ -1,10 +1,11 @@
 
 script.
   document.addEventListener('DOMContentLoaded', function () {
-    let errorBoxIsShowing=(document.getElementById("error-container") !== null)
-    if(errorBoxIsShowing){
+    let errContainer  = document.getElementById("error-container");
+    if(errContainer !== null){
       document.getElementById("borchk-dropdown").style.display="none"
       document.getElementById("borchk-id-pin").style.display="block"
+      errContainer.focus()
     }
   })
 
@@ -81,7 +82,7 @@ div#borchk
         }
 
     if error
-      div#error-container
+      div#error-container(tabindex="15")
         include Error
 
     script.
