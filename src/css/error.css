@@ -17,6 +17,7 @@
       font-size: 16px;
       color: var(--white);
     }
+
     #error-close-btn {
       width: 40px;
       height: 40px;
@@ -27,16 +28,24 @@
       top: 0px;
       right: 0px;
     }
+
+    #error-close-btn:focus {
+      background-color: darkred;
+    }
   }
+
   #error-body {
+
     /* */
     p {
       color: var(--white);
     }
   }
+
   #error-actions {
     display: none;
   }
+
   .center {
     text-align: center;
   }
@@ -57,11 +66,13 @@
         background-size: 10px;
       }
     }
+
     #error-body {
       p {
         display: inline;
       }
     }
+
     #error-actions {
       display: inline;
       margin-left: 5px;
@@ -80,6 +91,7 @@
   0% {
     transform: translateY(-200px);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -89,6 +101,7 @@
   0% {
     transform: translateX(100vw);
   }
+
   100% {
     transform: translateX(0);
   }
