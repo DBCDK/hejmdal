@@ -90,13 +90,13 @@ const helpTexts = {
       {
         header: 'Dine rettigheder',
         texts: [
-          'Det er Folkebibliotekerne i de enkelte kommuner, der er dataansvarlig for behandlingen af dine oplysninger. Du har altid mulighed for at kontakte KOMBIT på vegne af de danske folkebiblioteker, om indsigt i behandlingen af dine personoplysninger. Du kan anmode om berigtigelse eller sletning af dine personoplysninger samt om begrænsning af behandlingen af personoplysningerne. Du kan til enhver tid gøre indsigelse mod folkebiblioteket i din kommunes behandling af dine personoplysninger i forbindelse login-funktionen af grunde, der vedrører din særlige situation.'
+          'Det er Folkebibliotekerne i de enkelte kommuner, der er dataansvarlig for behandlingen af dine oplysninger. Du har altid mulighed for at kontakte dit folkebibliotek om indsigt i behandlingen af dine personoplysninger. Du kan anmode om berigtigelse eller sletning af dine personoplysninger samt om begrænsning af behandlingen af personoplysningerne. Du kan til enhver tid gøre indsigelse mod folkebiblioteket i din kommunes behandling af dine personoplysninger i forbindelse login-funktionen af grunde, der vedrører din særlige situation.'
         ]
       },
       {
         header: 'Kontakt om behandling af personoplysninger',
         texts: [
-          'Har du spørgsmål til behandling af dine personoplysninger, kan du henvende dig til KOMBIT på bibsys@kombit.dk eller på tlf. 3334 9400.'
+          'Har du spørgsmål til behandling af dine personoplysninger, kan du henvende dig til dit folkebibliotek.'
         ]
       },
       {
@@ -216,7 +216,7 @@ const helpTexts = {
  * @param helpNames {Array}
  * @param placeHolders {Array}
  * @param prefix {string}
- * @returns {mixed}
+ * @returns {boolean}
  */
 export function getText(helpNames, placeHolders = false, prefix = '') {
   let helpObj = false;
@@ -246,7 +246,7 @@ export function getText(helpNames, placeHolders = false, prefix = '') {
  * Set replacers for helpTexts if agency is defines. Defaults to empty strings
  *
  * @param agency {object}
- * @returns {mixed}
+ * @returns {string}
  */
 export function setLoginReplacersFromAgency(agency) {
   const loginHelpReplacers = {
