@@ -85,7 +85,7 @@ export async function mapCulrResponse(
       agencyId: user.agency,
       userId: user.userId,
       userIdType: user.cpr ? 'CPR' : 'LOCAL'
-    })
+    });
   }
 
   if (cpr) {
