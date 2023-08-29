@@ -63,6 +63,7 @@ export async function mapCulrResponse(
   let agencies = [];
   let fromCpr = {};
   let dbcidpAuthorize;
+  let foundLoginAgency = false;
 
   log.debug('mapCulrResponse', culr);
 
@@ -71,18 +72,19 @@ export async function mapCulrResponse(
       if (account.userIdType === 'CPR' && !cpr) {
         cpr = account.userIdValue;
       }
-
+      foundLoginAgency = foundLoginAgency || user.agency === account.provider;
       agencies.push({
         agencyId: account.provider,
         userId: account.userIdValue,
         userIdType: account.userIdType
       });
     });
-  } else if (cpr && user.agency) {
+  }
+  if (!foundLoginAgency && user.agency && user.userId) {
     agencies.push({
       agencyId: user.agency,
-      userId: cpr,
-      userIdType: 'CPR'
+      userId: user.userId,
+      userIdType: user.cpr ? 'CPR' : 'LOCAL'
     });
   }
 
