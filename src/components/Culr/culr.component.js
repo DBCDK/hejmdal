@@ -239,7 +239,7 @@ async function createUser(user, agencyId) {
     userIdType,
     userIdValue,
     agencyId,
-    municipalityNo: borchkInfo.municipalityNumber
+    municipalityNo: borchkInfo.municipalityNumber ?? null
   });
 
   const responseCode = response && response.return.responseStatus.responseCode;
