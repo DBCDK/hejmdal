@@ -18,15 +18,16 @@ const municipalityTab = Object.fromEntries(
  * Retrieval of user identity/identities from CULR webservice
  *
  * @param {Object} user
+ * @param createCulrAccountAgency
  * @returns {Promise<{}>}
  */
-export async function getUserAttributesFromCulr(user = {}) {
+export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgency = null) {
   const {userId, agency: agencyId = null} = user;
   let attributes = {};
   let response = null;
   let responseCode;
 
-  const account = await getUserAccount(user);
+  const account = await getUserAccount(userId, agencyId);
   if (!account || !account.response) {
     return attributes;
   }
@@ -36,14 +37,14 @@ export async function getUserAttributesFromCulr(user = {}) {
   responseCode = account.responseCode;
 
   // Check if we should create an account (If is NOT in CULR)
-  if (shouldCreateAccount(agencyId, user, response)) {
+  if (shouldCreateAccount(agencyId, user, response, createCulrAccountAgency)) {
     // It should not have been possible for a user to have authenticated through borchk,
     // and not to exist in CULR. Therefore a warning is logged.
     log.warn('Borck user not in culr', {userId: userId, agency: agencyId});
 
     try {
-      const createUserResponse = await createUser(user, agencyId);
-      const newAccount = await getUserAccount(user);
+      const createUserResponse = await createUser(user, createCulrAccountAgency ?? agencyId);
+      const newAccount = await getUserAccount(userId, createCulrAccountAgency ?? agencyId);
 
       // set user account informations
       response = newAccount.response;
@@ -90,13 +91,11 @@ export async function getUserAttributesFromCulr(user = {}) {
  *
  * Always tries to fetch account by a global-id - then with local-id as fallback
  *
- * @param {Object} user
- * @returns {Object} response (account) + responseCode (error|success)
+ * @param {String} userId
+ * @param {String} agencyId
+ * @returns {Promise<null|{response: *, responseCode: *}>}
  */
-
-async function getUserAccount(user) {
-  const {userId, agency: agencyId = null} = user;
-
+async function getUserAccount(userId, agencyId) {
   let response = null;
   let responseCode = null;
 
@@ -235,7 +234,7 @@ async function createUser(user, agencyId) {
 
   // Check if user has logged in on municipality
   // Create user on CULR.
-  const borchkInfo = await getBorchkInfo(user);
+  const borchkInfo = (user.agency === agencyId) ? await getBorchkInfo(user) : {};
   const response = await culr.createAccount({
     userIdType,
     userIdValue,
@@ -262,20 +261,23 @@ async function createUser(user, agencyId) {
  * @param {String} library
  * @param {Object} user
  * @param {Object} response
- * @returns
+ * @param {String} createCulrAccountAgency
+ * @returns {boolean}
  */
-export function shouldCreateAccount(library, user, response) {
+export function shouldCreateAccount(library, user, response, createCulrAccountAgency = null) {
+  const responseCode = response && response.result.responseStatus.responseCode;
+  if (createCulrAccountAgency && (responseCode === 'ACCOUNT_DOES_NOT_EXIST')) {
+    return true;
+  }
+
   if (!library || !populateCulr[library]) {
     return false;
   }
 
-  const currentProvider =
-    user.identityProviders && user.identityProviders.slice(-1)[0];
-  if (currentProvider !== 'borchk') {
+  if (user.userType !== 'borchk') {
     return false;
   }
 
-  const responseCode = response && response.result.responseStatus.responseCode;
   if (responseCode === 'ACCOUNT_DOES_NOT_EXIST') {
     return true;
   }

@@ -70,7 +70,8 @@ export function extractClientInfo(client) { // eslint-disable-line
     buttonTxtColor: client.display && client.display.buttonTxtColor ? client.display.buttonTxtColor : '#ffffff',
     buttonTxtHoverColor: client.display && client.display.buttonTxtHoverColor ? client.display.buttonTxtHoverColor : '#ffffff',
     singleLogoutPath: client.singleLogoutPath,
-    proxy: client.proxy || false
+    proxy: client.proxy || false,
+    createCulrAccountAgency: client.createCulrAccountAgency || null
   };
 
   if (CONFIG.app.env === 'test') {

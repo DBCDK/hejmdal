@@ -87,6 +87,7 @@ The following is a full list of possible configuration options
     "buttonHoverColor": "Login button hover color, default #e56312",
     "buttonTxtHoverColor": "Login button hover text color, default #ffffff"
   },
+  "createCulrAccountAgency": "Create user in CULR in this agency, if not found. Only used by bibliotek.dk (190101)",
   "logoColor": "Color of hejmdal logo, default #252525",
   "redirectUris": [],
   "singleLogoutPath": "/single-logout"

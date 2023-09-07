@@ -208,8 +208,8 @@ describe('Unittesting methods in culr.component:', () => {
         responseStatus: {responseCode: 'OK200'}
       }
     };
-    const BORCHK_USER = {identityProviders: ['borchk']};
-    const MITID_USER = {identityProviders: ['nemlogin']};
+    const BORCHK_USER = {userType: 'borchk', identityProviders: ['borchk']};
+    const MITID_USER = {userType: 'nemlogin', identityProviders: ['nemlogin']};
     it('should return false if library is not on municipalityName list', async () => {
       const result = await shouldCreateAccount('999999');
       expect(result).toEqual(false);
