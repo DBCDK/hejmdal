@@ -29,7 +29,9 @@ const storage = CONFIG.mock_storage
  */
 export async function getUser(req, res, next) {
   try {
-    const createCulrAccountAgency = req.getState().serviceClient.createCulrAccountAgency;
+    const state = req.getState() ?? {};
+    const serviceClient = state.serviceClient ?? {};
+    const createCulrAccountAgency = serviceClient.createCulrAccountAgency ?? null;
     const {user, client: clientId, accessToken} = res.locals.oauth.token;
 
     const ticketAttributes = await getUserAttributesForClient(
