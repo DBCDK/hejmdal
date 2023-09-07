@@ -29,12 +29,16 @@ const storage = CONFIG.mock_storage
  */
 export async function getUser(req, res, next) {
   try {
+    const state = req.getState() ?? {};
+    const serviceClient = state.serviceClient ?? {};
+    const createCulrAccountAgency = serviceClient.createCulrAccountAgency ?? null;
     const {user, client: clientId, accessToken} = res.locals.oauth.token;
 
     const ticketAttributes = await getUserAttributesForClient(
       user,
       clientId,
-      accessToken
+      accessToken,
+      createCulrAccountAgency
     );
 
     log.debug('Userinfo generated', {
@@ -52,10 +56,18 @@ export async function getUser(req, res, next) {
   }
 }
 
-export async function getUserAttributesForClient(user, clientId, accessToken) {
+/**
+ *
+ * @param user
+ * @param clientId
+ * @param accessToken
+ * @param createCulrAccountAgency
+ * @returns {Promise<{}>}
+ */
+export async function getUserAttributesForClient(user, clientId, accessToken, createCulrAccountAgency = null) {
   try {
     const [culrAttributes, client] = await Promise.all([
-      getUserAttributesFromCulr(user, user.agency),
+      getUserAttributesFromCulr(user, createCulrAccountAgency),
       getClientById(clientId)
     ]);
     return await mapCulrResponse(
@@ -71,7 +83,6 @@ export async function getUserAttributesForClient(user, clientId, accessToken) {
       stack: error.stack,
       userData: JSON.stringify(user)
     });
-    return;
   }
 }
 

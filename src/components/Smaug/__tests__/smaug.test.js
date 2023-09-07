@@ -77,6 +77,7 @@ describe('Test Smaug component', () => {
       buttonTxtHoverColor: '#ffffff',
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
+      createCulrAccountAgency: null,
       defaultUser: 'netpunkt',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},
