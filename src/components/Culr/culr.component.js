@@ -265,8 +265,8 @@ async function createUser(user, agencyId) {
  * @returns {boolean}
  */
 export function shouldCreateAccount(library, user, response, createCulrAccountAgency = null) {
-  const responseCode = response && response.result.responseStatus.responseCode;
-  if (createCulrAccountAgency && (responseCode === 'ACCOUNT_DOES_NOT_EXIST')) {
+  const responseCode = response && response.result && response.result.responseStatus.responseCode;
+  if (createCulrAccountAgency && (responseCode === 'ACCOUNT_DOES_NOT_EXIST') && !!user.cpr) {
     return true;
   }
 
