@@ -1,7 +1,7 @@
 version: '3'
 services:
   database:
-    image: postgres:9.6
+    image: docker-dbc.artifacts.dbccloud.dk/dbc-postgres-14:latest
     environment:
       - POSTGRES_DB=hejmdal
       - POSTGRES_HOST_AUTH_METHOD=trust

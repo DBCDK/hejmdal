@@ -4,7 +4,7 @@ exports[`LoggerMiddleware tests Should invoke next and make call to log.error 1`
 [
   "parsing of request failed",
   {
-    "error": [TypeError: Cannot read property 'baseUrl' of null],
+    "error": [TypeError: Cannot read properties of null (reading 'baseUrl')],
     "req": null,
   },
 ]

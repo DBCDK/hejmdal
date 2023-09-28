@@ -78,6 +78,7 @@ export const CONFIG = {
     client: 'postgresql',
     connection: {
       host: process.env.HEJMDAL_DB_HOST,
+      port: process.env.HEJMDAL_DB_PORT || 5432,
       database: process.env.HEJMDAL_DB_NAME,
       user: process.env.HEJMDAL_DB_USER,
       password: process.env.HEJMDAL_DB_USER_PASSWORD,

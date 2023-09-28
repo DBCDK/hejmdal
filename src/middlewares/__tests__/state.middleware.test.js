@@ -54,8 +54,9 @@ describe('stateMiddleware tests', () => {
         return_url: 'some_url'
       }
     };
+    ctx.session.save = function save(fn) {};
     setDefaultState(ctx, ctx, () => {});
-    expect(ctx.session.user).toEqual({});
+    expect(ctx.session.user).toEqual({ips: []});
     expect(ctx.session.state.consents).toBeDefined();
     expect(ctx.session.state.returnUrl).toEqual('some_url');
   });

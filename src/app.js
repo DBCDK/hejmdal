@@ -38,7 +38,6 @@ import initDatabase from './models/database';
 
 const {knex} = initDatabase();
 const app = express();
-initPassport(app);
 app.oauth = new OAuthServer({
   model, // See https://github.com/oauthjs/node-oauth2-server for specification
   allowBearerTokensInQueryString: true,
@@ -86,6 +85,7 @@ app.use(
       })
   })
 );
+initPassport(app);
 
 app.use(stateMiddleware);
 
