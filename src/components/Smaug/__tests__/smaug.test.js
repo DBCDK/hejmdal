@@ -78,6 +78,8 @@ describe('Test Smaug component', () => {
       clientId: 'hejmdal',
       clientSecret: 'hejmdal_secret',
       createCulrAccountAgency: null,
+      addAsMunicipalityLibrary: [],
+      addAsResearchLibrary: [],
       defaultUser: 'netpunkt',
       attributes: {
         cpr: {name: 'CPR-nummer', description: 'Brugerens CPR-nummer'},

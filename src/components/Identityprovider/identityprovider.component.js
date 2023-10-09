@@ -96,6 +96,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
     const branches = identityProviders.borchk
       ? await getListOfAgenciesForFrontend()
       : null;
+    adjustBranches(branches, state.serviceClient);
     const error = req.query.error ? req.query.error : null;
     const loginHelpReplacers = setLoginReplacersFromAgency(branch);
     const helpText = getText(
@@ -566,4 +567,39 @@ function isLoggedInWith(req) {
   return req
     .getUser()
     .identityProviders.filter(ip => identityProviders.includes(ip));
+}
+
+/** Duplicate libraries between library type, so a research library can be found as a municipalty library as well
+ * the client parameters addAs... contains the llist of libraries to be duplicated between library types
+ * This is only used very seldom, currently handling 900450 for ereolen to be seen as a municipality library
+ *
+ * @param branches {Object} List of libraries divided into categories folk, forsk and other
+ * @param serviceClient {Array}
+ */
+function adjustBranches(branches, serviceClient) {
+  adjustLibraryType(branches, 'folk', serviceClient.addAsMunicipalityLibrary);
+  adjustLibraryType(branches, 'forsk', serviceClient.addAsResearchLibrary);
+}
+
+/** Adjust one type of library for the borchk dropdowns.
+ * Copies a library to addLibraryType if found in one of the other two categories
+ *
+ * @param branches {Object}
+ * @param addLibraryType {String}
+ * @param addLibraries {Array}
+ */
+function adjustLibraryType(branches, addLibraryType, addLibraries) {
+  if (branches === Object(branches) && Array.isArray(addLibraries)) {
+    addLibraries.forEach(addLibrary => {
+      Object.keys(branches).forEach(category => {
+        if (addLibraryType !== category) {
+          branches[category].forEach(library => {
+            if (library.branchId === addLibrary) {
+              branches[addLibraryType].push(library);
+            }
+          });
+        }
+      });
+    });
+  }
 }
