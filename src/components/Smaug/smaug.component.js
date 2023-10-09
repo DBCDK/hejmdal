@@ -71,7 +71,9 @@ export function extractClientInfo(client) { // eslint-disable-line
     buttonTxtHoverColor: client.display && client.display.buttonTxtHoverColor ? client.display.buttonTxtHoverColor : '#ffffff',
     singleLogoutPath: client.singleLogoutPath,
     proxy: client.proxy || false,
-    createCulrAccountAgency: client.createCulrAccountAgency || null
+    createCulrAccountAgency: client.createCulrAccountAgency || null,
+    addAsMunicipalityLibrary: Array.isArray(client.addAsMunicipalityLibrary) ? client.addAsMunicipalityLibrary : [client.addAsMunicipalityLibrary],
+    addAsResearchLibrary: Array.isArray(client.addAsResearchLibrary) ? client.addAsResearchLibrary : [client.addAsResearchLibrary]
   };
 
   if (CONFIG.app.env === 'test') {

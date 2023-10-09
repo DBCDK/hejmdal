@@ -88,6 +88,8 @@ The following is a full list of possible configuration options
     "buttonTxtHoverColor": "Login button hover text color, default #ffffff"
   },
   "createCulrAccountAgency": "Create user in CULR in this agency, if not found. Only used by bibliotek.dk (190101)",
+  "addAsMunicipalityLibrary":  "Array of agencIds to take type as 'folk', default []",
+  "addAsResearchLibrary":  "Array of agencIds to take type as 'forsk', default []",
   "logoColor": "Color of hejmdal logo, default #252525",
   "redirectUris": [],
   "singleLogoutPath": "/single-logout"
@@ -139,3 +141,12 @@ Defines the list of attributes that _can_ be returned to the client service trou
 ## display
 
 Defines the layout of the DBC-IDP login form. If no custom display is used, the login page displayed will be identical to the one used for Netpunkt.  
+
+
+## addAsMunicipalityLibrary and addAsResearchLibrary
+
+Libraries in the borchk dropdown are split into type of library (municipality, research or other). 
+
+These two addAs... settings can contain an array of libraries that will be added to to library type indicated  by the name of the setting.
+
+These settings is only used by a few clients
