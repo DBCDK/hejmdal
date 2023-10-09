@@ -569,9 +569,11 @@ function isLoggedInWith(req) {
     .identityProviders.filter(ip => identityProviders.includes(ip));
 }
 
-/**
+/** Duplicate libraries between library type, so a research library can be found as a municipalty library as well
+ * the client parameters addAs... contains the llist of libraries to be duplicated between library types
+ * This is only used very seldom, currently handling 900450 for ereolen to be seen as a municipality library
  *
- * @param branches {Object}
+ * @param branches {Object} List of libraries divided into categories folk, forsk and other
  * @param serviceClient {Array}
  */
 function adjustBranches(branches, serviceClient) {
@@ -579,7 +581,8 @@ function adjustBranches(branches, serviceClient) {
   adjustLibraryType(branches, 'forsk', serviceClient.addAsResearchLibrary);
 }
 
-/**
+/** Adjust one type of library for the borchk dropdowns.
+ * Copies a library to addLibraryType if found in one of the other two categories
  *
  * @param branches {Object}
  * @param addLibraryType {String}
