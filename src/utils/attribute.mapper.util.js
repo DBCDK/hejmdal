@@ -94,6 +94,10 @@ export async function mapCulrResponse(
 
   const fields = Object.keys(attributes);
 
+  mapped.serviceStatus = {
+    borchk: culr.errorBorchk ? 'error' : 'ok',
+    culr: culr.errorCulr ? 'error' : 'ok'
+  };
   await Promise.all(
     fields.map(async field => {  // eslint-disable-line complexity
       try {
