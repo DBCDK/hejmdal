@@ -40,40 +40,25 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
   try {
     const identityProviders = getIdentityProviders(state);
 
-    if (
-      _.uniq(_.values(identityProviders)).length === 1 &&
-      _.head(_.uniq(_.values(identityProviders))) === null
-    ) {
-      const serviceClient = state.serviceClient;
-      log.error('The service has no valid identityproviders configured', {
-        serviceClient: {
-          id: serviceClient.id,
-          name: serviceClient.name,
-          identityProviders: serviceClient.identityProviders
-        }
-      });
-
+    if (noValidIdentityProvider(identityProviders, state)) {
       throw new Error('The service has no valid identityproviders configured');
     }
 
-    if (
-      req.session.query.idp &&
-      state.serviceClient.identityProviders.includes(req.session.query.idp)
-    ) {
+    // check for preselected idp
+    if (req.session.query.idp && state.serviceClient.identityProviders.includes(req.session.query.idp)) {
       state.serviceClient.identityProviders = [req.session.query.idp];
     }
-    if (
-      state.serviceClient.identityProviders.length === 1 &&
+
+    // check for passthru to selected idp
+    if (state.serviceClient.identityProviders.length === 1 &&
       state.serviceClient.identityProviders[0] !== 'borchk' &&
       state.serviceClient.identityProviders[0] !== 'netpunkt' &&
-      state.serviceClient.identityProviders[0] !== 'dbcidp'
-    ) {
-      res.redirect(
-        identityProviders[state.serviceClient.identityProviders[0]].link
-      );
+      state.serviceClient.identityProviders[0] !== 'dbcidp') {
+      res.redirect(identityProviders[state.serviceClient.identityProviders[0]].link);
       return;
     }
 
+    // preselected agency, either by user or client
     const stickyAgency = req.cookies ? req.cookies.stickyAgency : null;
     let preselectedName = null;
     let preselectedId = null;
@@ -85,17 +70,11 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       preselectedId = preselectedLibrary.branchId;
     }
 
-    const branch = state.serviceAgency
-      ? await getAgency(state.serviceAgency)
-      : null;
+    const branch = state.serviceAgency ? await getAgency(state.serviceAgency) : null;
     const lockedAgencyName = branch ? branch.agencyName : null;
-    const lockedBranchRegistrationUrl =
-      (branch && branch.registrationFormUrl) ||
-      (branch && branch.branchWebsiteUrl);
+    const lockedBranchRegistrationUrl = (branch && branch.registrationFormUrl) || (branch && branch.branchWebsiteUrl);
     const agencyTypeFilter = req.session.query.agencytype || 'folk,forsk';
-    const branches = identityProviders.borchk
-      ? await getListOfAgenciesForFrontend()
-      : null;
+    const branches = identityProviders.borchk ? await getListOfAgenciesForFrontend() : null;
     adjustBranches(branches, state.serviceClient);
     const error = req.query.error ? req.query.error : null;
     const loginHelpReplacers = setLoginReplacersFromAgency(branch);
@@ -105,6 +84,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       'login_'
     );
 
+    // remove idp's which should not be user selectable - bibliotek.dk functionality
     if (state.serviceClient.hideIdentityProviders) {
       Object.keys(identityProviders).forEach(idp => {
         if (state.serviceClient.hideIdentityProviders.includes(idp)) {
@@ -112,6 +92,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         }
       });
     }
+
     const identityProvidersCount = Object.values(identityProviders).filter(
       ip => ip
     ).length;
@@ -458,6 +439,27 @@ function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
     req.getState().returnUrl
   }${agencyParameter}${errorParameter}${preselectedLibrary}${retries}`;
   res.redirect(302, startOver);
+}
+
+/**
+ *
+ * @param identityProviders
+ * @param state
+ */
+function noValidIdentityProvider(identityProviders, state) {
+  if (
+    _.uniq(_.values(identityProviders)).length === 1 &&
+    _.head(_.uniq(_.values(identityProviders))) === null
+  ) {
+    const serviceClient = state.serviceClient;
+    log.error('The service has no valid identityproviders configured', {
+      serviceClient: {
+        id: serviceClient.id,
+        name: serviceClient.name,
+        identityProviders: serviceClient.identityProviders
+      }
+    });
+  }
 }
 
 /**
