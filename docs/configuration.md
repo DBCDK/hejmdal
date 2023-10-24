@@ -87,6 +87,8 @@ The following is a full list of possible configuration options
     "buttonHoverColor": "Login button hover color, default #e56312",
     "buttonTxtHoverColor": "Login button hover text color, default #ffffff"
   },
+  "identityProviders" : ["List of idps available for the client (nemlogin, borchk, unilogin, wayf, netpunkt, dbcidp)"],
+  "hideIdentityProviders" : ["List of idps hidden from the user. Available as passthru (idp parameter in login)"],
   "createCulrAccountAgency": "Create user in CULR in this agency, if not found. Only used by bibliotek.dk (190101)",
   "addAsMunicipalityLibrary":  "Array of agencIds to take type as 'folk', default []",
   "addAsResearchLibrary":  "Array of agencIds to take type as 'forsk', default []",
@@ -148,6 +150,16 @@ Defines the layout of the DBC-IDP login form. If no custom display is used, the 
 
 Libraries in the borchk dropdown are split into type of library (municipality, research or other). 
 
-These two addAs... settings can contain an array of libraries that will be added to to library type indicated  by the name of the setting.
+These two addAs... settings can contain an array of libraries that will be added to the library type indicated by the name of the setting.
 
 These settings is only used by a few clients
+
+## identityProviders and hideIdentityProviders 
+
+identityProviders defines the list of idp's available for the client. 
+Choose from "borchk", "dbcidp", "netpunkt", "unilogin", "nemlogin", "wayf".
+"dbcidp" and "netpunkt", can only be used alone.
+Defaults to ["nemlogin", "borchk", "unilogin", "wayf"]
+
+hideIdentityProviders can be used, to remove the possibility for the user to select a given idp.
+Ie ["nemlogin"] will remove the button for nemlogin - passthru functionality (using the idp parameter on login), will still work,

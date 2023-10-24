@@ -105,6 +105,13 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       'login_'
     );
 
+    if (state.serviceClient.hideIdentityProviders) {
+      Object.keys(identityProviders).forEach(idp => {
+        if (state.serviceClient.hideIdentityProviders.includes(idp)) {
+          identityProviders[idp] = null;
+        }
+      });
+    }
     const identityProvidersCount = Object.values(identityProviders).filter(
       ip => ip
     ).length;
