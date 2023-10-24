@@ -36,7 +36,7 @@ export async function validateUserInLibrary(serviceRequester, userInput, retries
     }
   } catch (e) {
     log.error('Request to BORCHK failed', {error: e.message, stack: e.stack});
-    userValidate = {message: ERRORS['service_unavailable'], error: 'BORCHK fatal error: ' + e.message};
+    userValidate = {message: ERRORS.service_unavailable, error: 'BORCHK fatal error: ' + e.message};
   }
 
   return userValidate;
