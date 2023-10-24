@@ -67,9 +67,7 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
   } else {
 // Quick fix for Býarbókasavnið. TODO: clean up.
     const userInfo = await getUserInfoFromBorchk({}, user);
-    if (userInfo && Object.keys(userInfo).length > 0) {
-      addUserInfoToAttributes(attributes, userInfo);
-    }
+    addUserInfoToAttributes(attributes, userInfo);
   }
   return attributes;
 }
@@ -80,12 +78,14 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
  * @param userInfo
  */
 function addUserInfoToAttributes(attributes, userInfo) {
-  attributes.errorBorchk = userInfo.errorBorchk || false;
-  attributes.errorCulr = userInfo.errorCulr || false;
-  attributes.blocked = userInfo.blocked || false;
-  attributes.userPrivilege = userInfo.userPrivilege || [];
-  attributes.municipalityNumber = userInfo.municipalityNumber;
-  attributes.municipalityAgencyId = userInfo.municipalityAgencyId;
+  if (userInfo && Object.keys(userInfo).length > 0) {
+    attributes.errorBorchk = userInfo.errorBorchk || false;
+    attributes.errorCulr = userInfo.errorCulr || false;
+    attributes.blocked = userInfo.blocked || false;
+    attributes.userPrivilege = userInfo.userPrivilege || [];
+    attributes.municipalityNumber = userInfo.municipalityNumber || null;
+    attributes.municipalityAgencyId = userInfo.municipalityAgencyId || null;
+  }
 }
 
 /**
