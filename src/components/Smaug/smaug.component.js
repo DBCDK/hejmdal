@@ -55,6 +55,7 @@ export function extractClientInfo(client) { // eslint-disable-line
     name: client.displayName,
     logoutScreen: client.logoutScreen || 'include',
     identityProviders: client.identityProviders || [],
+    hideIdentityProviders: client.hideIdentityProviders || [],
     attributes: client.attributes || [],
     borchkServiceName: client.borchkServiceName || null,
     urls: client.urls || {},

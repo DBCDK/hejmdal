@@ -60,6 +60,7 @@ describe('Test Smaug component', () => {
     expect(clientinfo).toEqual({
       grants: ['authorization_code', 'password', 'cas'],
       name: 'Test Service',
+      hideIdentityProviders: [],
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       requireConsent: false,
       title: 'Netpunkt Login',
