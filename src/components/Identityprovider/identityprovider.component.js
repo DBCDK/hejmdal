@@ -445,8 +445,10 @@ function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
  *
  * @param identityProviders
  * @param state
+ * @returns {boolean}
  */
 function noValidIdentityProvider(identityProviders, state) {
+  let error = false;
   if (
     _.uniq(_.values(identityProviders)).length === 1 &&
     _.head(_.uniq(_.values(identityProviders))) === null
@@ -459,7 +461,9 @@ function noValidIdentityProvider(identityProviders, state) {
         identityProviders: serviceClient.identityProviders
       }
     });
+    error = true;
   }
+  return error;
 }
 
 /**
