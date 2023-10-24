@@ -61,6 +61,7 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
 
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
+    attributes.culrId = response.result.Guid || null;
     const userInfo = await getUserInfoFromBorchk(response.result, user);
     addUserInfoToAttributes(attributes, userInfo);
   } else {

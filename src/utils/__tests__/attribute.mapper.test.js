@@ -70,7 +70,8 @@ describe('Attribute mapper unittest', () => {
       uniLoginInstitutions: [
         {id: '101DBC', name: 'DANSK BIBLIOTEKSCENTER A/S'},
         {id: 'A03132', name: 'Vejle Bibliotekerne c/o www.pallesgavebod.dk'}
-      ]
+      ],
+      serviceStatus: {borchk: 'ok', culr: 'ok'}
     });
   });
 
@@ -83,31 +84,31 @@ describe('Attribute mapper unittest', () => {
       }
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1903'});
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1903', serviceStatus: {borchk: 'ok', culr: 'ok'}});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102364788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2036'});
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2036', serviceStatus: {borchk: 'ok', culr: 'ok'}});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102374788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1937'});
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1937', serviceStatus: {borchk: 'ok', culr: 'ok'}});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102575788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2057'});
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '2057', serviceStatus: {borchk: 'ok', culr: 'ok'}});
 
     ctx.setState({
       culr: {accounts: [{userIdType: 'CPR', userIdValue: '0102585788'}]}
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1858'});
+    expect(ctx.session.state.ticket.attributes).toEqual({birthYear: '1858', serviceStatus: {borchk: 'ok', culr: 'ok'}});
   });
 
   it('map gender', async () => {
@@ -121,7 +122,8 @@ describe('Attribute mapper unittest', () => {
     });
     await mapAttributesToTicket(ctx, ctx, next);
     expect(ctx.session.state.ticket.attributes).toEqual({
-      gender: 'f'
+      gender: 'f',
+      serviceStatus: {borchk: 'ok', culr: 'ok'}
     });
   });
 
@@ -139,7 +141,8 @@ describe('Attribute mapper unittest', () => {
       birthDate: null,
       birthYear: null,
       gender: null,
-      cpr: '0123456789'
+      cpr: '0123456789',
+      serviceStatus: {borchk: 'ok', culr: 'ok'}
     });
   });
 
@@ -158,7 +161,8 @@ describe('Attribute mapper unittest', () => {
       agencies: [
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
-      ]
+      ],
+      serviceStatus: {borchk: 'ok', culr: 'ok'}
     });
   });
 
@@ -181,6 +185,7 @@ describe('Attribute mapper unittest', () => {
         {agencyId: '000111', userId: '0102456789', userIdType: 'CPR'},
         {agencyId: '111222', userId: '222333', userIdType: 'LOCAL-1'}
       ],
+      serviceStatus: {borchk: 'ok', culr: 'ok'},
       municipality: null
     });
   });
@@ -196,7 +201,7 @@ describe('Attribute mapper unittest', () => {
       ticket: {}
     });
     await mapAttributesToTicket(ctx, ctx, next);
-    expect(ctx.session.state.ticket.attributes).toEqual({});
+    expect(ctx.session.state.ticket.attributes).toEqual({serviceStatus: {borchk: 'ok', culr: 'ok'}});
     expect(log.warn).toBeCalledWith('Cannot map attribute: notThere');
   });
 });

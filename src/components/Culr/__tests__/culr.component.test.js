@@ -42,7 +42,9 @@ describe('Unittesting methods in culr.component:', () => {
         municipalityNumber: '909',
         municipalityAgencyId: '790900',
         userPrivilege: [],
-        culrId: 'guid-0102031111'
+        culrId: 'guid-0102031111',
+        errorBorchk: false,
+        errorCulr: false
       });
     });
 
