@@ -158,7 +158,7 @@ The variables are specified at the form `name : internal config object`. Referen
   Set to `1` (`MOCK_CULR=1`) to mock CULR and use a predefined response
 
 - `MOCK_NEMLOGIN` : `mock_externals.nemlogin`  
-  set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login and use a predefined response
+  set to `1` (`MOCK_NEMLOGIN=1`) to mock NEM-Login (MitId) and use a predefined response
 
 - `MOCK_VIPCORE`: `mock_externals.vipCore`  
   Set to `1` (`MOCK_VIPCORE=1`) to mock vipCore and use a predefined response

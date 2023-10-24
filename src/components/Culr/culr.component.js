@@ -29,7 +29,7 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
 
   const account = await getUserAccount(userId, agencyId);
   if (!account || !account.response) {
-    return attributes;
+    return  {errorCulr: true};
   }
 
   // set user account informations
@@ -61,35 +61,37 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
 
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
-    const {
-      blocked,
-      userPrivilege,
-      municipalityNumber,
-      municipalityAgencyId
-    } = await getUserInfoFromBorchk(response.result, user);
-    attributes.blocked = blocked || false;
-    attributes.userPrivilege = userPrivilege || [];
-    attributes.municipalityNumber = municipalityNumber;
-    attributes.municipalityAgencyId = municipalityAgencyId;
     attributes.culrId = response.result.Guid || null;
-    return attributes;
-  }
-
+    const userInfo = await getUserInfoFromBorchk(response.result, user);
+    addUserInfoToAttributes(attributes, userInfo);
+  } else {
 // Quick fix for Býarbókasavnið. TODO: clean up.
-  const userInfo = await getUserInfoFromBorchk({}, user);
-  if (userInfo && Object.keys(userInfo).length > 0) {
-    attributes.blocked = userInfo.blocked || false;
-    attributes.userPrivilege = userInfo.userPrivilege || [];
-    attributes.municipalityNumber = userInfo.municipalityNumber;
-    attributes.municipalityAgencyId = userInfo.municipalityAgencyId;
+    const userInfo = await getUserInfoFromBorchk({}, user);
+    addUserInfoToAttributes(attributes, userInfo);
   }
   return attributes;
 }
 
 /**
+ *
+ * @param attributes
+ * @param userInfo
+ */
+function addUserInfoToAttributes(attributes, userInfo) {
+  if (userInfo && Object.keys(userInfo).length > 0) {
+    attributes.errorBorchk = userInfo.errorBorchk || false;
+    attributes.errorCulr = userInfo.errorCulr || false;
+    attributes.blocked = userInfo.blocked || false;
+    attributes.userPrivilege = userInfo.userPrivilege || [];
+    attributes.municipalityNumber = userInfo.municipalityNumber || null;
+    attributes.municipalityAgencyId = userInfo.municipalityAgencyId || null;
+  }
+}
+
+/**
  * Fetches the users account
  *
- * Always tries to fetch account by a global-id - then with local-id as fallback
+ * Always first fetch account by a global-id - then with local-id as fallback
  *
  * @param {String} userId
  * @param {String} agencyId
@@ -118,7 +120,7 @@ async function getUserAccount(userId, agencyId) {
     return {response, responseCode};
   } catch (e) {
     log.error('Request to CULR failed', {error: e.message, stack: e.stack});
-    return null;
+    return {error: e.message};
   }
 }
 
@@ -135,7 +137,7 @@ export async function getBorchkInfo(user) {
     CONFIG.borchk.serviceRequester,
     user
   );
-  return result.error ? null : result;
+  return result;
 }
 
 /**
@@ -155,16 +157,21 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
     if (user.agency && user.userId && user.pincode) {
       const borchkInfo = await getBorchkInfo(user);
       if (borchkInfo) {
-        response.blocked = borchkInfo.blocked || null;
-        response.userPrivilege = borchkInfo.userPrivilege || null;
-        if (borchkInfo.municipalityNumber) {
-          response.municipalityNumber = borchkInfo.municipalityNumber;
-          if (borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
-            // Set municipalityAgency from municipalityNumber since this can be different than the login agency
-            // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
-            response.municipalityAgencyId = setMunicipalityAgency(borchkInfo.municipalityNumber);
-            log.info('municipality info. borchk: ', response);
-            return response;
+        if (borchkInfo.error) {
+          response.errorBorchk = true;
+        }
+        else {
+          response.blocked = borchkInfo.blocked || null;
+          response.userPrivilege = borchkInfo.userPrivilege || null;
+          if (borchkInfo.municipalityNumber) {
+            response.municipalityNumber = borchkInfo.municipalityNumber;
+            if (borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
+              // Set municipalityAgency from municipalityNumber since this can be different than the login agency
+              // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
+              response.municipalityAgencyId = setMunicipalityAgency(borchkInfo.municipalityNumber);
+              log.info('municipality info. borchk: ', response);
+              return response;
+            }
           }
         }
       }
@@ -211,6 +218,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
 function setMunicipalityAgency(municipality) {
   return municipalityTab[municipality] ?? (municipality.length === 3 ? `7${municipality}00` : null);
 }
+
 /**
  * Create user on CULR.
  *

@@ -94,6 +94,10 @@ export async function mapCulrResponse(
 
   const fields = Object.keys(attributes);
 
+  mapped.serviceStatus = {
+    borchk: culr.errorBorchk ? 'error' : 'ok',
+    culr: culr.errorCulr ? 'error' : 'ok'
+  };
   await Promise.all(
     fields.map(async field => {  // eslint-disable-line complexity
       try {
@@ -117,12 +121,14 @@ export async function mapCulrResponse(
             break;
           case 'agencies':
           case 'libraries':
-            mapped.agencies = [];
-            agencies.forEach((agency) => {
-              if (!removeAttributeAgencies.includes(agency.agencyId)) {
-                mapped.agencies.push(agency);
-              }
-            });
+            if (!mapped.agencies || !mapped.agencies.length) {  // allLibraries above has higher precedence
+              mapped.agencies = [];
+              agencies.forEach((agency) => {
+                if (!removeAttributeAgencies.includes(agency.agencyId)) {
+                  mapped.agencies.push(agency);
+                }
+              });
+            }
             break;
           case 'blocked':
             mapped.blocked = culr.blocked;

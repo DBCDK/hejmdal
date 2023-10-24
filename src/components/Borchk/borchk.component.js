@@ -15,26 +15,28 @@ import {ERRORS} from '../../utils/errors.util';
  * @param retries
  * @returns {Promise<*|{error: boolean, message: string}|{error: boolean, message: string}>}
  */
-export async function validateUserInLibrary(
-  serviceRequester,
-  userInput,
-  retries = 0
-) {
-  const response = await getClient(
-    userInput.agency,
-    userInput.userId,
-    userInput.pincode,
-    serviceRequester
-  );
+export async function validateUserInLibrary(serviceRequester, userInput, retries = 0) {
+  let userValidate;
+  try {
+    const response = await getClient(
+      userInput.agency,
+      userInput.userId,
+      userInput.pincode,
+      serviceRequester
+    );
 
-  const userValidate = extractInfo(response, retries, 'Agency: ' + userInput.agency + ' serviceRequester: ' + serviceRequester);
+    userValidate = extractInfo(response, retries, 'Agency: ' + userInput.agency + ' serviceRequester: ' + serviceRequester);
 
-  // Temporary fix: Borchk randomly returns service_unavailable. Retry once
-  if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
-    log.debug('Borchk unavailable - start retry', {
-      body: JSON.stringify(response)
-    });
-    return validateUserInLibrary(serviceRequester, userInput, 1);
+    // Temporary fix: Borchk randomly returns service_unavailable. Retry once
+    if (retries === 0 && userValidate.error && userValidate.message === 'sevua') {
+      log.debug('Borchk unavailable - start retry', {
+        body: JSON.stringify(response)
+      });
+      return validateUserInLibrary(serviceRequester, userInput, 1);
+    }
+  } catch (e) {
+    log.error('Request to BORCHK failed', {error: e.message, stack: e.stack});
+    userValidate = {message: ERRORS.service_unavailable, error: 'BORCHK fatal error: ' + e.message};
   }
 
   return userValidate;
