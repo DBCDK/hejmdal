@@ -136,6 +136,7 @@ Defines the list of attributes that _can_ be returned to the client service trou
 * `dbcidpUniqueId`: Anonymized identity of the uder in DBCIDP
 * `dbcidpUserInfo`: name, contactMail and contactPhone for a user logged in via DBCIDP
 * `dbcidpRoles`: List of roles for a user logged in via DBCIDP
+* `serviceStatus`: service status for borchk and culr. Both should be 'ok'
   )
 
 ## display
