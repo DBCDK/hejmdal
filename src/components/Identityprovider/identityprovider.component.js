@@ -4,7 +4,7 @@
  */
 import {log} from '../../utils/logging.util';
 import {looksLikeAUserId} from '../../utils/userId.util';
-import {isValidCpr} from '../../utils/cpr.util';
+import {borchkUserIdIsGlobal, isValidCpr} from '../../utils/cpr.util';
 import {
   getUniloginURL,
   validateUniloginTicket
@@ -183,7 +183,7 @@ export async function borchkCallback(req, res) {
     await blockLogin.clearFailedIp(req.ip);
     const user = {
       userId: userId,
-      cpr: isValidCpr(userId) ? userId : null,
+      cpr: (borchkUserIdIsGlobal(formData.agency) && isValidCpr(userId)) ? userId : null,
       userType: 'borchk',
       agency: formData.agency,
       pincode: formData.pincode,

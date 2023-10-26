@@ -178,6 +178,9 @@ The variables are specified at the form `name : internal config object`. Referen
 - `MUNICIPALITY_TO_AGENCY_TAB` : `municipalityAgencyTab`  
   List of space separated municipaltyNumber:agencyNumber (like "563:756100 100:710000") where municipalityAgencyId is set different than normal, defaults to ""
 
+- `LOCAL_ID_AGENCIES` : `localIdAgencies`  
+  List of space separated agencies which use local generated userId, like the royal library (800010)
+
 - `REMOVE_ATTRIBUTE_AGENCIES` : `removeAttributeAgencies`  
   List of space separated agencies which is only returned if allLibraries is used, defaults to ""
 
