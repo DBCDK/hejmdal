@@ -134,7 +134,8 @@ export const CONFIG = {
   },
   municipalityHack: process.env.MUNICIPALITY_AGENCY_HACK || '100450 790900',
   municipalityAgencyTab: process.env.MUNICIPALITY_TO_AGENCY_TAB || '',
-  removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || ''
+  removeAttributeAgencies: process.env.REMOVE_ATTRIBUTE_AGENCIES || '',
+  localIdAgencies: process.env.LOCAL_ID_AGENCIES || ''
 };
 
 // 2DO figure out why cypress tests fail when included

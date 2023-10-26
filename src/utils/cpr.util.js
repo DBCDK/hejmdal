@@ -2,9 +2,26 @@
  * @file
  */
 
+import {CONFIG} from './config.util';
+const localIdAgencies = CONFIG.localIdAgencies.replace(/[^\d]+/g, ' ').trim().split(' ');
+
+/** true if the agency has userids that can be a cpr
+ *
+ * Some agencies allow users to choose a userId that looks like a CPR
+ * for these agencies, the userId cannot be used as a global id
+ *
+ * localIdAgencies specifies the agencies where userId are locally defined, ie. cannot be used as a CPR
+ *
+ * @param agency {string}
+ * @returns {boolean}
+ */
+export function borchkUserIdIsGlobal(agency) {
+  return !localIdAgencies.includes(agency);
+}
+
 /**
  * Creates birthdate, birthYear and gender from CPR
- * @param cpr
+ * @param cpr {string}
  * @returns {{}}
  */
 export function mapFromCpr(cpr) {

@@ -7,6 +7,7 @@ import * as culr from './culr.client';
 import {log} from '../../utils/logging.util';
 import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
+import {borchkUserIdIsGlobal} from '../../utils/cpr.util';
 import {populateCulr} from '../../utils/populateCulr.util';
 import {sortBy} from 'lodash';
 
@@ -91,7 +92,8 @@ function addUserInfoToAttributes(attributes, userInfo) {
 /**
  * Fetches the users account
  *
- * Always first fetch account by a global-id - then with local-id as fallback
+ * Fetch account by a global-id, unless the agency use non global userId's (like 800010)
+ * - then with local-id as fallback
  *
  * @param {String} userId
  * @param {String} agencyId
@@ -102,18 +104,14 @@ async function getUserAccount(userId, agencyId) {
   let responseCode = null;
 
   try {
-    response = await culr.getAccountsByGlobalId({
-      uidValue: userId,
-      agencyId
-    });
-    responseCode = response && response.result.responseStatus.responseCode;
+    if (borchkUserIdIsGlobal(agencyId)) {
+      response = await culr.getAccountsByGlobalId({uidValue: userId});
+      responseCode = response && response.result.responseStatus.responseCode;
+    }
 
-    if (responseCode === 'ACCOUNT_DOES_NOT_EXIST' && agencyId) {
-      // Not found as global id, lets try as local id
-      response = await culr.getAccountsByLocalId({
-        userIdValue: userId,
-        agencyId
-      });
+    if (agencyId && (responseCode === 'ACCOUNT_DOES_NOT_EXIST' || !borchkUserIdIsGlobal(agencyId))) {
+      // Not found (or usable) as global id, lets try as local id
+      response = await culr.getAccountsByLocalId({userIdValue: userId, agencyId});
       responseCode = response && response.result.responseStatus.responseCode;
     }
 
