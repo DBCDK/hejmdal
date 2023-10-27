@@ -53,7 +53,7 @@ describe('test store and get user', () => {
         municipality: '909',
         municipalityAgencyId: '790900',
         netpunktAgency: null,
-        // serviceStatus: {borchk: 'ok', culr: 'ok'},
+        serviceStatus: {borchk: 'ok', culr: 'ok'},
         uniloginId: null,
         uniqueId: 'guid-0102031111',
         uniLoginInstitutions: [],
