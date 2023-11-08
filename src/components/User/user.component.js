@@ -32,13 +32,15 @@ export async function getUser(req, res, next) {
     const state = req.getState() ?? {};
     const serviceClient = state.serviceClient ?? {};
     const createCulrAccountAgency = serviceClient.createCulrAccountAgency ?? null;
+    const skipBorchk = req.query.skipBorchk ?? false;
     const {user, client: clientId, accessToken} = res.locals.oauth.token;
 
     const ticketAttributes = await getUserAttributesForClient(
       user,
       clientId,
       accessToken,
-      createCulrAccountAgency
+      createCulrAccountAgency,
+      !skipBorchk
     );
 
     log.debug('Userinfo generated', {
@@ -62,12 +64,13 @@ export async function getUser(req, res, next) {
  * @param clientId
  * @param accessToken
  * @param createCulrAccountAgency
+ * @param useBorchk
  * @returns {Promise<{}>}
  */
-export async function getUserAttributesForClient(user, clientId, accessToken, createCulrAccountAgency = null) {
+export async function getUserAttributesForClient(user, clientId, accessToken, createCulrAccountAgency = null, useBorchk = true) {
   try {
     const [culrAttributes, client] = await Promise.all([
-      getUserAttributesFromCulr(user, createCulrAccountAgency),
+      getUserAttributesFromCulr(user, createCulrAccountAgency, useBorchk),
       getClientById(clientId)
     ]);
     return await mapCulrResponse(
