@@ -116,6 +116,9 @@ The client makes a request to the token endpoint by sending the, following param
 
 `curl https://login.bib.dk/userinfo -H 'Authorization: Bearer {ACCESS_TOKEN}'`
 
+if biblioteklogin is used as idp, the userinfo endpoint will use borchk, to get information about the status uf the user, from the library used.
+If this kind of information is not needed, it can be skipped, by appending ?skipBorchk=1 to /userinfo
+
 response:
 
 Returns a map of attributes. Which attributes that a returned depends on the client configuration. The default configuration returns uniqueId and municipality
