@@ -20,9 +20,10 @@ const municipalityTab = Object.fromEntries(
  *
  * @param {Object} user
  * @param createCulrAccountAgency
+ * @param useBorchk
  * @returns {Promise<{}>}
  */
-export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgency = null) {
+export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgency = null, useBorchk = true) {
   const {userId, agency: agencyId = null} = user;
   let attributes = {};
   let response = null;
@@ -60,15 +61,14 @@ export async function getUserAttributesFromCulr(user = {}, createCulrAccountAgen
     }
   }
 
+  let culrResult = {};
   if (responseCode === 'OK200') {
     attributes.accounts = response.result.Account;
     attributes.culrId = response.result.Guid || null;
-    const userInfo = await getUserInfoFromBorchk(response.result, user);
-    addUserInfoToAttributes(attributes, userInfo);
-  } else {
-// Quick fix for Býarbókasavnið. TODO: clean up.
-    const userInfo = await getUserInfoFromBorchk({}, user);
-    addUserInfoToAttributes(attributes, userInfo);
+    culrResult = response.result;
+  }
+  if (useBorchk) {
+    addUserInfoToAttributes(attributes, await getUserInfoFromBorchk(culrResult, user));
   }
   return attributes;
 }
