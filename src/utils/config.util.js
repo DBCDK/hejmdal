@@ -66,6 +66,7 @@ export const CONFIG = {
     vipCore: process.env.MOCK_VIPCORE === '1',
     smaug: process.env.MOCK_SMAUG === '1',
     unilogin: process.env.MOCK_UNILOGIN === '1',
+    uniloginOidc: process.env.MOCK_UNILOGIN_OIDC === '1',
     wayf: process.env.MOCK_WAYF === '1',
     dbcidp: process.env.MOCK_DBCIDP === '1'
   },
@@ -114,6 +115,14 @@ export const CONFIG = {
     secret: process.env.UNI_LOGIN_SECRET,
     uniloginBasePath: process.env.UNI_LOGIN_URL,
     maxTicketAge: process.env.UNI_LOGIN_MAX_TICKET_AGE || 60
+  },
+  unilogin_oidc: {
+    id: process.env.UNILOGIN_OIDC_ID,
+    secret: process.env.UNILOGIN_OIDC_SECRET,
+    auth_url: `${process.env.UNILOGIN_OIDC_URL}/auth`,
+    token_url: `${process.env.UNILOGIN_OIDC_URL}/token`,
+    userinfo_url: `${process.env.UNILOGIN_OIDC_URL}/token/introspect`,
+    logout_url: `${process.env.UNILOGIN_OIDC_URL}/logout`
   },
   dbcidp: {
     dbcidpUri: process.env.DBCIDP_URI

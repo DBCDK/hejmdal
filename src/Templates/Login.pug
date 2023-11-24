@@ -25,6 +25,9 @@ block append content
               if identityProviders.unilogin
                 include Components/Unilogin
 
+              if identityProviders.unilogin_oidc
+                include Components/UniloginOidc
+
               if identityProviders.nemlogin
                 include Components/Nemlogin
 
