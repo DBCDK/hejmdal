@@ -10,6 +10,10 @@ import {
   validateUniloginTicket
 } from '../UniLogin/unilogin.component';
 import {
+  getUniloginOidcURL,
+  validateUniloginOidcTicket
+} from '../UniloginOIDC/uniloginOIDC.component';
+import {
   getGateWayfLoginResponse,
   getGateWayfLoginUrl
 } from '../GateWayf/gatewayf.component';
@@ -325,6 +329,29 @@ export async function uniloginCallback(req) {
 }
 
 /**
+ *
+ * @param req
+ * @returns {Promise<*>}
+ */
+export async function uniloginOidcCallback(req) {
+  let userId = null;
+  const oidcResult = await validateUniloginOidcTicket(req);
+  if (oidcResult && oidcResult.sub) {
+    userId = oidcResult.sub;
+  } else {
+    identityProviderValidationFailed(req);
+  }
+
+  req.setUser({
+    userId: userId,
+    userType: 'unilogin_oidc',
+    uniloginId: userId
+  });
+
+  return req;
+}
+
+/**
  * Parses the callback parameters for nemlogin (via gatewayf).
  *
  * @param req
@@ -387,6 +414,9 @@ export async function identityProviderCallback(req, res) {
         break;
       case 'unilogin':
         await uniloginCallback(req);
+        break;
+      case 'unilogin_oidc':
+        await uniloginOidcCallback(req);
         break;
       case 'wayf':
         await wayfCallback(req);
@@ -479,6 +509,7 @@ function getIdentityProviders(state) {
     dbcidp: null,
     netpunkt: null,
     unilogin: null,
+    unilogin_oidc: null,
     nemlogin: null,
     wayf: null
   };
@@ -507,6 +538,12 @@ function getIdentityProviders(state) {
   if (identityProviders.includes('unilogin')) {
     providers.unilogin = {
       link: getUniloginURL(stateHash)
+    };
+  }
+
+  if (identityProviders.includes('unilogin_oidc')) {
+    providers.unilogin_oidc = {
+      link: getUniloginOidcURL(stateHash)
     };
   }
 
