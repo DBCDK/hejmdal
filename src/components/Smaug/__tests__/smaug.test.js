@@ -62,6 +62,7 @@ describe('Test Smaug component', () => {
       name: 'Test Service',
       hideIdentityProviders: [],
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
+      idpIdentity: {},
       requireConsent: false,
       title: 'Netpunkt Login',
       logoColor: '#252525',

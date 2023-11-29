@@ -6,7 +6,7 @@
  * @type {{statecodetoken: string, someAccessToken: {sub: string, iss: string, active: boolean, typ: string, nonce: string, client_id: string, acr: string, azp: string, auth_time: number, scope: string, exp: number, session_state: string, iat: number, jti: string, username: null}}}
  */
 const mocks = {
-  statecodetoken: 'someAccessToken',
+  codetokenidentityoidccodes: 'someAccessToken',
   someAccessToken: {
     exp: 1700719599, //
     iat: 1700719299,
