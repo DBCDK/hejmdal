@@ -3,6 +3,7 @@
  * Provides UNI-Login integration
  */
 
+import {log} from '../../utils/logging.util';
 import moment from 'moment';
 import crypto from 'crypto';
 import base64url from 'base64url';
@@ -59,12 +60,17 @@ export async function validateUniloginOidcTicket(req) {
   if (consoleDebug) { console.log('validate OIDC identity', uniloginIdentity); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC code', code); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC token', token); }  // eslint-disable-line no-console
+  log.debug('OIDC validate code', code);
+  require('request').debug = true;
   if (code) {
     const accessToken = await getAccessToken(code, token, uniloginIdentity, uniloginOidcCodes);
+    log.debug('OIDC validate accessToken', accessToken);
     if (accessToken) {
       userInfo = await getUserInfo(accessToken, uniloginIdentity);
+      log.debug('OIDC validate userInfo', userInfo);
     }
   }
+  require('request').debug = false;
   return userInfo;
 }
 
