@@ -97,5 +97,6 @@ export async function getUserInfo(accessToken, identity) {
  */
 export function getReturnUrl(token = '') {
   const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/${token}`;
-  return ego_url.replace('http://localhost:3011', 'https://localhost');
+  const ret_url = ego_url.replace('http://localhost:3011', 'https://localhost');
+  return ret_url.replace('stg.login.bib.dk', 'login.bib.dk');
 }
