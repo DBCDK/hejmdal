@@ -343,7 +343,7 @@ export async function uniloginOidcCallback(req) {
   let userId = null;
   log.debug('OIDC callback req.getUser()', req.getUser());
   log.debug('OIDC callback req.query', req.query);
-  log.debug('OIDC callback req.getState().stateHash', req.getState().stateHash);
+  log.debug('OIDC callback req.getState().stateHash', {stateHash: req.getState().stateHash});
   const oidcResult = await validateUniloginOidcTicket(req);
   log.debug('OIDC callback result', oidcResult);
   if (oidcResult && oidcResult.sub) {
