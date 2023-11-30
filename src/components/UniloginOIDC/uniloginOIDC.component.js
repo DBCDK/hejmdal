@@ -50,13 +50,13 @@ export async function validateUniloginOidcTicket(req) {
   let userInfo = false;
   log.debug('OIDC validate req.query', req.query);
   const {code} = req.query;
-  log.debug('OIDC validate code', code);
+  log.debug('OIDC validate code', {code: code});
   const {uniloginOidcCodes} = req.getUser();
   const {idpIdentity} = req.getState().serviceClient;
   const token = req.getState().stateHash;
   log.debug('OIDC validate uniloginOidcCodes', uniloginOidcCodes);
   log.debug('OIDC validate idpIdentity', idpIdentity);
-  log.debug('OIDC validate token', token);
+  log.debug('OIDC validate token', {token: token});
   // if unilogin id and secret are set in the specific smaug-client, use that instead of the general setting
   const uniloginIdentity = {
     id: idpIdentity.unilogin.id ?? CONFIG.unilogin_oidc.id,
@@ -65,11 +65,11 @@ export async function validateUniloginOidcTicket(req) {
   if (consoleDebug) { console.log('validate OIDC identity', uniloginIdentity); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC code', code); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC token', token); }  // eslint-disable-line no-console
-  log.debug('OIDC validate code', code);
+  log.debug('OIDC validate code', {code: code});
   require('request').debug = true;
   if (code) {
     const accessToken = await getAccessToken(code, token, uniloginIdentity, uniloginOidcCodes);
-    log.debug('OIDC validate accessToken', accessToken);
+    log.debug('OIDC validate accessToken', {accesstoken: accessToken}});
     if (accessToken) {
       userInfo = await getUserInfo(accessToken, uniloginIdentity);
       log.debug('OIDC validate userInfo', userInfo);
