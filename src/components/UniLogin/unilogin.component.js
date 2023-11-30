@@ -19,7 +19,7 @@ import {
  * @param {string} token
  * @return {string}
  */
-export function getUniloginURL(token) {
+export function getUniloginUrl(token) {
   return CONFIG.mock_externals.unilogin
     ? getMockedUniloginUrl(token)
     : getLiveUniloginUrl(token);

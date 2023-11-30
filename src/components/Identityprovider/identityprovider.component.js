@@ -6,12 +6,13 @@ import {log} from '../../utils/logging.util';
 import {looksLikeAUserId} from '../../utils/userId.util';
 import {borchkUserIdIsGlobal, isValidCpr} from '../../utils/cpr.util';
 import {
-  getUniloginURL,
+  getUniloginUrl,
   validateUniloginTicket
 } from '../UniLogin/unilogin.component';
 import {
-  getUniloginOidcURL,
-  validateUniloginOidcTicket
+  getUniloginOidcUrl,
+  validateUniloginOidcTicket,
+  createUniloginOidcCodes
 } from '../UniloginOIDC/uniloginOIDC.component';
 import {
   getGateWayfLoginResponse,
@@ -42,6 +43,11 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
   const state = req.getState();
 
   try {
+    if (state.serviceClient.identityProviders.includes('unilogin_oidc') && !state.oidcCodes) {
+      state.oidcCodes = createUniloginOidcCodes();
+      req.setUser({oidcCodes: state.oidcCodes});  // we need to save code_challenge and code_verifier for later
+    }
+
     const identityProviders = getIdentityProviders(state);
 
     if (noValidIdentityProvider(identityProviders, state)) {
@@ -502,8 +508,8 @@ function noValidIdentityProvider(identityProviders, state) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-  const {stateHash} = state;
-  const identityProviders = state.serviceClient.identityProviders;
+  const {stateHash, oidcCodes} = state;
+  const {identityProviders, idpIdentity} = state.serviceClient;
   let providers = {
     borchk: null,
     dbcidp: null,
@@ -537,13 +543,13 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('unilogin')) {
     providers.unilogin = {
-      link: getUniloginURL(stateHash)
+      link: getUniloginUrl(stateHash)
     };
   }
 
   if (identityProviders.includes('unilogin_oidc')) {
     providers.unilogin_oidc = {
-      link: getUniloginOidcURL(stateHash)
+      link: getUniloginOidcUrl(stateHash, idpIdentity.unilogin ?? {}, oidcCodes)
     };
   }
 

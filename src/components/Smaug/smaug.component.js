@@ -74,7 +74,8 @@ export function extractClientInfo(client) { // eslint-disable-line
     proxy: client.proxy || false,
     createCulrAccountAgency: client.createCulrAccountAgency || null,
     addAsMunicipalityLibrary: Array.isArray(client.addAsMunicipalityLibrary) ? client.addAsMunicipalityLibrary : [client.addAsMunicipalityLibrary],
-    addAsResearchLibrary: Array.isArray(client.addAsResearchLibrary) ? client.addAsResearchLibrary : [client.addAsResearchLibrary]
+    addAsResearchLibrary: Array.isArray(client.addAsResearchLibrary) ? client.addAsResearchLibrary : [client.addAsResearchLibrary],
+    idpIdentity: client.idpIdentity || {}
   };
 
   if (CONFIG.app.env === 'test') {

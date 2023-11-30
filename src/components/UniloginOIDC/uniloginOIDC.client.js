@@ -10,25 +10,28 @@ import {CONFIG} from '../../utils/config.util';
 import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 import {uniloginOidcMock} from './mocks/uniloginOIDC.mock';
+
 const consoleDebug = false;
+
 /**
  *
- * @param state
- * @param code
- * @param token
+ * @param {string} code
+ * @param {string} token
+ * @param {object} identity - the unilogin id and secret for the given smaug client
+ * @param {object} oidcCodes - code_verifier and code_challenge for the user request
  * @returns {Promise<null>}
  */
-export async function getAccessToken(state, code, token) {
+export async function getAccessToken(code, token, identity, oidcCodes) {
   if (CONFIG.mock_externals.uniloginOidc) {
-    return uniloginOidcMock(state + code + token);
+    return uniloginOidcMock(code + token + identity.id + oidcCodes.code_verifier);
   }
   const params = [
     'grant_type=authorization_code',
     'code=' + code,
-    'client_id=' + CONFIG.unilogin_oidc.id,
+    'client_id=' + identity.id,
     'redirect_uri=' +  encodeURIComponent(getReturnUrl(token)),
-    'code_verifier=' +  state,
-    'client_secret=' +  CONFIG.unilogin_oidc.secret
+    'code_verifier=' +  oidcCodes.code_verifier,
+    'client_secret=' +  identity.secret
   ];
   if (consoleDebug) { console.log('getAccessToken', CONFIG.unilogin_oidc.token_url); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('getAccessToken', params); }  // eslint-disable-line no-console
@@ -52,17 +55,18 @@ export async function getAccessToken(state, code, token) {
 
 /**
  *
- * @param accessToken
+ * @param {string} accessToken
+ * @param {object} identity - the unilogin id and secret for the given smaug client
  * @returns {Promise<any>}
  */
-export async function getUserInfo(accessToken) {
+export async function getUserInfo(accessToken, identity) {
   if (CONFIG.mock_externals.uniloginOidc) {
     return uniloginOidcMock(accessToken);
   }
   const params = [
     'token=' + accessToken,
-    'client_id=' + CONFIG.unilogin_oidc.id,
-    'client_secret=' +  CONFIG.unilogin_oidc.secret
+    'client_id=' + identity.id,
+    'client_secret=' +  identity.secret
   ];
   if (consoleDebug) { console.log('getUserInfo', CONFIG.unilogin_oidc.userinfo_url); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('getUserInfo', params); }  // eslint-disable-line no-console

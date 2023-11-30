@@ -3,6 +3,7 @@
  */
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import {getGateWayfLogoutUrl} from '../GateWayf/gatewayf.component';
+import {getUniloginOidcLogoutUrl} from '../UniloginOIDC/uniloginOIDC.component';
 import {getClientInfoByToken} from '../Smaug/smaug.component';
 import {deleteuser} from '../User/user.component';
 import {log} from '../../utils/logging.util';
@@ -65,6 +66,21 @@ export function gateWayfLogout(req, res, next) {
     ) {
       req.setState({logoutGatewayf: true});
       return res.redirect(getGateWayfLogoutUrl());
+    }
+  }
+  next();
+}
+export function unloginOidcLogout(req, res, next) {
+  const {identityProviders} = req.getUser() || {};
+  const {logoutUniloginOidc} = req.getState();
+  if (identityProviders) {
+    if (
+      identityProviders &&
+      !logoutUniloginOidc &&
+      (identityProviders.includes('unilogin_oidc'))
+    ) {
+      req.setState({logoutUniloginOidc: true});
+      return res.redirect(getUniloginOidcLogoutUrl());
     }
   }
   next();
