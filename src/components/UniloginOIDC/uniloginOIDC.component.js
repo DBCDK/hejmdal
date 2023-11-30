@@ -69,7 +69,7 @@ export async function validateUniloginOidcTicket(req) {
   require('request').debug = true;
   if (code) {
     const accessToken = await getAccessToken(code, token, uniloginIdentity, uniloginOidcCodes);
-    log.debug('OIDC validate accessToken', {accesstoken: accessToken}});
+    log.debug('OIDC validate accessToken', {accesstoken: accessToken});
     if (accessToken) {
       userInfo = await getUserInfo(accessToken, uniloginIdentity);
       log.debug('OIDC validate userInfo', userInfo);
