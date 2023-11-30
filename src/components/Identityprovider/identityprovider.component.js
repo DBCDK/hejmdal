@@ -43,9 +43,9 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
   const state = req.getState();
 
   try {
-    if (state.serviceClient.identityProviders.includes('unilogin_oidc') && !state.oidcCodes) {
-      state.oidcCodes = createUniloginOidcCodes();
-      req.setUser({oidcCodes: state.oidcCodes});  // we need to save code_challenge and code_verifier for later
+    if (state.serviceClient.identityProviders.includes('unilogin_oidc') && !state.uniloginOidcCodes) {
+      state.uniloginOidcCodes = createUniloginOidcCodes();
+      req.setUser({uniloginOidcCodes: state.uniloginOidcCodes});  // we need to save code_challenge and code_verifier for later
     }
 
     const identityProviders = getIdentityProviders(state);
@@ -512,7 +512,7 @@ function noValidIdentityProvider(identityProviders, state) {
  * @return {object}
  */
 function getIdentityProviders(state) {
-  const {stateHash, oidcCodes} = state;
+  const {stateHash, uniloginOidcCodes} = state;
   const {identityProviders, idpIdentity} = state.serviceClient;
   let providers = {
     borchk: null,
@@ -553,7 +553,7 @@ function getIdentityProviders(state) {
 
   if (identityProviders.includes('unilogin_oidc')) {
     providers.unilogin_oidc = {
-      link: getUniloginOidcUrl(stateHash, idpIdentity.unilogin ?? {}, oidcCodes)
+      link: getUniloginOidcUrl(stateHash, idpIdentity.unilogin ?? {}, uniloginOidcCodes)
     };
   }
 
