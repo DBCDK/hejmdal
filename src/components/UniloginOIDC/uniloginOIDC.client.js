@@ -79,6 +79,7 @@ export async function getUserInfo(accessToken, identity) {
     if (consoleDebug) { console.log('response', response.body); }  // eslint-disable-line no-console
     const parsed = response.body ? JSON.parse(response.body) : {error: 'no reponse body'};
     if (consoleDebug) { console.log('parsed', parsed); }  // eslint-disable-line no-console
+    log.debug('getUserInfo OIDC', parsed);
     return parsed ?? {};
   } catch (error) {
     log.error('Error validating getUserInfo', {
