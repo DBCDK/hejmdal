@@ -10,7 +10,7 @@ block append content
       div#message-container.message-container
         div.close-button X
         div#response-message
-        
+
       div.top
         span(id='logo')
           include ./Components/logo
@@ -23,20 +23,20 @@ block append content
               label(for='group-input') Biblioteksnummer
               div.input-container
                 div(class='input-prefix' tabindex="-1") DK-
-                input(type='text' class='form-control' id='group-input' data-cy='group-input' name='groupId' autocomplete='password' tabindex='0')
+                input(type='text' class='form-control' id='group-input' data-cy='group-input' name='loginBibDkGroupId' autocomplete='password' tabindex='0')
               span(id='group-input-text' data-text='')
 
             div.form-group
               label(for='user-input') Bruger ID
               div.input-container
-                input(type='text' class='form-control' id='user-input' data-cy='user-input' name='userId' autocomplete='password' tabindex='0')
+                input(type='text' class='form-control' id='user-input' data-cy='user-input' name='loginBibDkUserId' autocomplete='password' tabindex='0')
               span(id='user-input-text' data-text='')
 
             div.form-group
               label(for='pass-input') Adgangskode
               div.input-container
                 input(type="text" value="" class="form-control" id="autocomplete-pass" name="autocomplete-pass" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="pass")
-                input(type='password' class='form-control' id='pass-input' data-cy='pass-input' name='password' autocomplete='password' tabindex='0')
+                input(type='password' class='form-control' id='pass-input' data-cy='pass-input' name='loginBibDkPassword' autocomplete='password' tabindex='0')
                 button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex="0")
               span(id='pass-input-text' data-text='')
 
@@ -62,7 +62,7 @@ block append content
         if (groupInput && !errorBox) {
           groupInput.focus();
         }
-        
+
         let errContainer  = document.getElementById("error-container");
           if(errContainer !== null){
             errContainer.focus()
