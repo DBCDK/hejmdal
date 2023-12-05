@@ -177,8 +177,8 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 export async function borchkCallback(req, res) {
   const requestUri = req.getState().serviceClient.borchkServiceName;
   const formData = req.fakeBorchkPost || req.body;
-  formData.userId = formData.loginBibDkUserId;
-  const userId = formData && formData.userId ? formData.userId.trim(' ') : null;
+  const userId = formData && formData.loginBibDkUserId ? formData.loginBibDkUserId.trim(' ') : null;
+  formData.userId = userId;
   let validated = {error: true, message: 'unknown_error'};
 
   if (userId) {
