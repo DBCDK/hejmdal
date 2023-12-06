@@ -108,7 +108,7 @@ describe('test identityProviderCallback method', () => {
   it('Should add borchk user to context', async () => {
     ctx.params.type = 'borchk';
     ctx.fakeBorchkPost = {
-      userId: 'testId',
+      loginBibDkUserId: 'testId',
       pincode: 'testPincode',
       agency: '710100'
     };

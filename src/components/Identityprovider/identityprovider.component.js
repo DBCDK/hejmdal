@@ -177,7 +177,8 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 export async function borchkCallback(req, res) {
   const requestUri = req.getState().serviceClient.borchkServiceName;
   const formData = req.fakeBorchkPost || req.body;
-  const userId = formData && formData.userId ? formData.userId.trim(' ') : null;
+  const userId = formData && formData.loginBibDkUserId ? formData.loginBibDkUserId.trim(' ') : null;
+  formData.userId = userId;
   let validated = {error: true, message: 'unknown_error'};
 
   if (userId) {
@@ -238,56 +239,21 @@ export async function borchkCallback(req, res) {
 }
 
 /**
- * Parses the callback parameters for dbcidp. Parameters from form comes as post
+ * Parses the callback parameters for netpunkt and dbcidp. Parameters from form comes as post
  *
  * @param req
  * @param res
+ * @param idpName
  * @returns {*}
  */
-export async function dbcidpCallback(req, res) {
+export async function dbcidpCallback(req, res, idpName) {
   const formData = req.fakeNetpunktPost || req.body;
-  const trimmedGroupId = formData.groupId.toLowerCase().replace('dk-', '');
+  const trimmedGroupId = formData.loginBibDkGroupId.toLowerCase().replace('dk-', '');
   const validated = {error: true, message: 'unknown_error'};
 
-  const userId = formData.userId;
+  const userId = formData.loginBibDkUserId;
   const groupId = trimmedGroupId;
-  const password = formData.password;
-
-  if (userId && groupId && password) {
-    const isValid = await validateIdpUser(userId, groupId, password);
-    if (isValid) {
-      const user = {
-        userId: userId,
-        userType: 'dbcidp',
-        agency: groupId,
-        password: password,
-        userValidated: true
-      };
-      return req.setUser(user);
-    }
-    validated.message = 'fimis';
-  } else {
-    validated.message = 'fieldValidationErrors';
-  }
-  identityProviderValidationFailed(req, res, validated, groupId);
-  return false;
-}
-
-/**
- * Parses the callback parameters for netpunkt. Parameters from form comes as post
- *
- * @param req
- * @param res
- * @returns {*}
- */
-export async function netpunktCallback(req, res) {
-  const formData = req.fakeNetpunktPost || req.body;
-  const trimmedGroupId = formData.groupId.toLowerCase().replace('dk-', '');
-  const validated = {error: true, message: 'unknown_error'};
-
-  const userId = formData.userId;
-  const groupId = trimmedGroupId;
-  const password = formData.password;
+  const password = formData.loginBibDkPassword;
 
   if (userId && groupId && password) {
     const isValid = await validateIdpUser(userId, groupId, password);
@@ -295,7 +261,7 @@ export async function netpunktCallback(req, res) {
     if (isValid) {
       const user = {
         userId: userId,
-        userType: 'netpunkt',
+        userType: idpName,
         agency: groupId,
         password: password,
         userValidated: true
@@ -414,13 +380,13 @@ export async function identityProviderCallback(req, res) {
         await borchkCallback(req, res);
         break;
       case 'dbcidp':
-        await dbcidpCallback(req, res);
+        await dbcidpCallback(req, res, 'dbcidp');
         break;
       case 'nemlogin':
         await nemloginCallback(req);
         break;
       case 'netpunkt':
-        await netpunktCallback(req, res);
+        await dbcidpCallback(req, res, 'netpunkt');
         break;
       case 'unilogin':
         await uniloginCallback(req);
