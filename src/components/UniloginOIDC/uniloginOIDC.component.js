@@ -111,6 +111,7 @@ function getLiveUniloginOidcUrl(token, identity, oidcCodes) {
 }
 
 /**
+ * Constructs the URL that should be used to redirect the user to logout from UNI-Login
  *
  * @param token
  */
