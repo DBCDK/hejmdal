@@ -57,31 +57,18 @@ export async function validateToken(req, res, next) {
 export function gateWayfLogout(req, res, next) {
   const {identityProviders} = req.getUser() || {};
   const {logoutGatewayf} = req.getState();
-  if (identityProviders) {
-    if (
-      identityProviders &&
-      !logoutGatewayf &&
-      (identityProviders.includes('nemlogin') ||
-        identityProviders.includes('wayf'))
-    ) {
-      req.setState({logoutGatewayf: true});
-      return res.redirect(getGateWayfLogoutUrl());
-    }
+  if (identityProviders && !logoutGatewayf && (identityProviders.includes('nemlogin') || identityProviders.includes('wayf'))) {
+    req.setState({logoutGatewayf: true});
+    return res.redirect(getGateWayfLogoutUrl());
   }
   next();
 }
 export function unloginOidcLogout(req, res, next) {
-  const {identityProviders} = req.getUser() || {};
+  const {identityProviders, uniloginOidcIdToken} = req.getUser() || {};
   const {logoutUniloginOidc} = req.getState();
-  if (identityProviders) {
-    if (
-      identityProviders &&
-      !logoutUniloginOidc &&
-      (identityProviders.includes('unilogin_oidc'))
-    ) {
-      req.setState({logoutUniloginOidc: true});
-      return res.redirect(getUniloginOidcLogoutUrl());
-    }
+  if (identityProviders && !logoutUniloginOidc && (identityProviders.includes('unilogin_oidc'))) {
+    req.setState({logoutUniloginOidc: true});
+    return res.redirect(getUniloginOidcLogoutUrl(uniloginOidcIdToken));
   }
   next();
 }
@@ -92,11 +79,7 @@ export function unloginOidcLogout(req, res, next) {
  * @param {Array} identityProviders
  */
 function getLogoutInfoCode(identityProviders) {
-  if (
-    identityProviders &&
-    (identityProviders.includes('unilogin') ||
-      identityProviders.includes('wayf'))
-  ) {
+  if (identityProviders && (identityProviders.includes('unilogin') || identityProviders.includes('wayf'))) {
     return 'logout_close_browser';
   }
   return 'logout';
@@ -106,7 +89,7 @@ function getLogoutInfoCode(identityProviders) {
  * Logs out the user from Hejmdal.
  *
  * If a redirect_uri is set, this will be used to create a link
- * For all Identity Providers used but borchk, show a message about closing browser to end sessions at the Identity Provider
+ * For IDPs not supporting logout, show a close browser message to end sessions at the IDP
  *
  * @param req
  * @param res

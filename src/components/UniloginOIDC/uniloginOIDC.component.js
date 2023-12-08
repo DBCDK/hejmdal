@@ -4,20 +4,14 @@
  */
 
 import {log} from '../../utils/logging.util';
-import moment from 'moment';
 import crypto from 'crypto';
 import base64url from 'base64url';
 
-import {md5} from '../../utils/hash.utils';
 import {CONFIG} from '../../utils/config.util';
-import {
-  getAccessToken,
-  getUserInfo,
-  getReturnUrl
-} from './uniloginOIDC.client';
+import {getOidcTokens, getUserInfo, getReturnUrl} from './uniloginOIDC.client';
+import {getMockedUniloginOidcUrl, getMockedUniloginOidcLogoutUrl} from './mocks/uniloginOIDC.mock';
 
-require('request').debug = false;
-
+/* remove debugging when oidc is in production */
 const consoleDebug = false;
 
 /**
@@ -25,7 +19,8 @@ const consoleDebug = false;
  *
  * @param {string} token
  * @param {object} identity
- * @return {string}
+ * @param {object} oidcCodes
+ * @returns {string}
  */
 export function getUniloginOidcUrl(token, identity, oidcCodes) {
   return CONFIG.mock_externals.uniloginOidc
@@ -33,12 +28,19 @@ export function getUniloginOidcUrl(token, identity, oidcCodes) {
     : getLiveUniloginOidcUrl(token, identity, oidcCodes);
 }
 
-export function getUniloginOidcLogoutUrl(token, identity, oidcCodes) {
-  // 2DO
-}
-
 /**
- * Validates the OIDC unilogin ticket and fetch the access token
+ *
+ * @param token
+ * @returns {*}
+ */
+export function getUniloginOidcLogoutUrl(token) {
+  return CONFIG.mock_externals.uniloginOidc
+      ? getMockedUniloginOidcLogoutUrl(token)
+      : getLiveUniloginOidcLogoutUrl(token);
+  }
+
+  /**
+   * Validates the OIDC unilogin ticket and fetch the access token
  * Parameter "sub" (subject Identifier) is "Tjenestespecifikt pseudonym for brugeren som logger ind.
  *                                            Pr. default sættes brugerens BrokerID som sub."
  * All dataelements as specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336
@@ -66,12 +68,13 @@ export async function validateUniloginOidcTicket(req) {
   if (consoleDebug) { console.log('validate OIDC code', code); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC token', token); }  // eslint-disable-line no-console
   log.debug('OIDC validate code', {code: code});
-  require('request').debug = true;
+  require('request').debug = consoleDebug;
   if (code) {
-    const accessToken = await getAccessToken(code, token, uniloginIdentity, uniloginOidcCodes);
-    log.debug('OIDC validate accessToken', {accesstoken: accessToken});
-    if (accessToken) {
-      userInfo = await getUserInfo(accessToken, uniloginIdentity);
+    const {access_token, id_token} = await getOidcTokens(code, token, uniloginIdentity, uniloginOidcCodes);
+    log.debug('OIDC validate access_token', {access_token, id_token});
+    if (access_token) {
+      req.setUser({uniloginOidcIdToken: id_token});  // save id_token for later logout
+      userInfo = await getUserInfo(access_token, uniloginIdentity);
       log.debug('OIDC validate userInfo', userInfo);
     }
   }
@@ -80,25 +83,11 @@ export async function validateUniloginOidcTicket(req) {
 }
 
 /**
- *
- * @param token
- * @returns {string}
- */
-function getMockedUniloginOidcUrl(token) {
-  const user = 'valid_user_id';
-  const timestamp = moment()
-    .utc()
-    .format('YYYYMMDDHHmmss');
-  const auth = md5(timestamp + CONFIG.unilogin.secret + user);
-
-  return `/login/identityProviderCallback/unilogin_oidc/${token}?auth=${auth}&timestamp=${timestamp}&user=${user}`;
-}
-
-/**
  * Constructs the URL that should be used to redirect the user to UNI-Login
  *
  * @param {string} token
  * @param {object} identity
+ * @param {object} oidcCodes
  * @return {string}
  */
 function getLiveUniloginOidcUrl(token, identity, oidcCodes) {
@@ -119,6 +108,24 @@ function getLiveUniloginOidcUrl(token, identity, oidcCodes) {
   if (consoleDebug) { console.log('params', params); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('unilogin', unilogin); }  // eslint-disable-line no-console
   return unilogin;
+}
+
+/**
+ * Constructs the URL that should be used to redirect the user to logout from UNI-Login
+ *
+ * @param token
+ */
+function getLiveUniloginOidcLogoutUrl(token) {
+  const returnUrl = CONFIG.app.host.replace('http://localhost:3011', 'https://localhost') + '/logout';
+  const params = [
+    'post_logout_redirect_uri=' + encodeURIComponent(returnUrl),
+    'id_token_hint=' + token
+  ];
+  const unilogout = CONFIG.unilogin_oidc.logout_url + '?' + params.join('&');
+  if (consoleDebug) { console.log('returnUrl', returnUrl); }  // eslint-disable-line no-console
+  if (consoleDebug) { console.log('params', params); }  // eslint-disable-line no-console
+  if (consoleDebug) { console.log('unilogout', unilogout); }  // eslint-disable-line no-console
+  return unilogout;
 }
 
 /** create a random code_verifier and the corresponding code_challenge

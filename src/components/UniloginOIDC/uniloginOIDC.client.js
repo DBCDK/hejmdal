@@ -21,7 +21,7 @@ const consoleDebug = false;
  * @param {object} oidcCodes - code_verifier and code_challenge for the user request
  * @returns {Promise<null>}
  */
-export async function getAccessToken(code, token, identity, oidcCodes) {
+export async function getOidcTokens(code, token, identity, oidcCodes) {
   if (CONFIG.mock_externals.uniloginOidc) {
     return uniloginOidcMock(code + token + identity.id + oidcCodes.code_verifier);
   }
@@ -33,8 +33,8 @@ export async function getAccessToken(code, token, identity, oidcCodes) {
     'code_verifier=' +  oidcCodes.code_verifier,
     'client_secret=' +  identity.secret
   ];
-  if (consoleDebug) { console.log('getAccessToken', CONFIG.unilogin_oidc.token_url); }  // eslint-disable-line no-console
-  if (consoleDebug) { console.log('getAccessToken', params); }  // eslint-disable-line no-console
+  if (consoleDebug) { console.log('getOidcTokens', CONFIG.unilogin_oidc.token_url); }  // eslint-disable-line no-console
+  if (consoleDebug) { console.log('getOidcTokens', params); }  // eslint-disable-line no-console
   try {
     const response = await promiseRequest('post', {
       url: CONFIG.unilogin_oidc.token_url,
@@ -44,9 +44,9 @@ export async function getAccessToken(code, token, identity, oidcCodes) {
     if (consoleDebug) { console.log('response', response.body); }  // eslint-disable-line no-console
     const parsed = JSON.parse(response.body);
     if (consoleDebug) { console.log('parsed', parsed); }  // eslint-disable-line no-console
-    return parsed.access_token ?? null;
+    return {access_token: (parsed.access_token ?? null), id_token: (parsed.id_token ?? null)};
   } catch (error) {
-    log.error('Error validating getAccessToken', {
+    log.error('Error validating getOidcTokens', {
       stack: error.stack,
       message: error.message
     });
