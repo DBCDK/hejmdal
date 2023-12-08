@@ -3,10 +3,9 @@
  * @file
  * fra Stil https://viden.stil.dk/pages/viewpage.action?pageId=161059336#TilslutOIDC(Letv%C3%A6gtsl%C3%B8sning)-Eksempelp%C3%A5udfyldtmetadata:
  *
- * @type {{statecodetoken: string, someAccessToken: {sub: string, iss: string, active: boolean, typ: string, nonce: string, client_id: string, acr: string, azp: string, auth_time: number, scope: string, exp: number, session_state: string, iat: number, jti: string, username: null}}}
  */
 const mocks = {
-  codetokenidentityoidccodes: 'someAccessToken',
+  codetokenidentityoidccodes: {access_token: 'someAccessToken', id_token: 'someIdToken'},
   someAccessToken: {
     exp: 1700719599, //
     iat: 1700719299,
@@ -26,6 +25,28 @@ const mocks = {
   }
 };
 
+/**
+ *
+ * @param mock
+ * @returns {{error: string}}
+ */
 export function uniloginOidcMock(mock) {
   return mocks[mock] ?? {error: 'unknown mock: ' + mock};
+}
+
+/**
+ *
+ * @param token
+ * @returns {string}
+ */
+export function getMockedUniloginOidcUrl(token) {
+  return `/login/identityProviderCallback/unilogin_oidc/${token}?session_state=someSessionState&code=someCode&state=someState`;
+}
+
+/**
+ *
+ * @returns {string}
+ */
+export function getMockedUniloginOidcLogoutUrl() {
+  return '/logout';
 }

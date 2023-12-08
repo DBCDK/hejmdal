@@ -45,7 +45,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
   try {
     if (state.serviceClient.identityProviders.includes('unilogin_oidc') && !state.uniloginOidcCodes) {
       state.uniloginOidcCodes = createUniloginOidcCodes();
-      req.setUser({uniloginOidcCodes: state.uniloginOidcCodes});  // we need to save code_challenge and code_verifier for later
+      req.setUser({uniloginOidcCodes: state.uniloginOidcCodes});  // need to save code_challenge and code_verifier for later
     }
 
     const identityProviders = getIdentityProviders(state);

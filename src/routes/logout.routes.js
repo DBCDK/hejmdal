@@ -7,10 +7,11 @@ import {
   logout,
   singleLogout,
   validateToken,
-  gateWayfLogout
+  gateWayfLogout,
+  unloginOidcLogout
 } from '../components/Logout/logout.component';
 const router = Router();
 
-router.get('/', validateToken, gateWayfLogout, singleLogout, logout);
+router.get('/', validateToken, gateWayfLogout, unloginOidcLogout, singleLogout, logout);
 
 export default router;
