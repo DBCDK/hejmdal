@@ -168,13 +168,15 @@ describe('Test Smaug component', () => {
         idpUsed: {
           name: 'Valgt IDP',
           description: 'Navn på den IDP der er logget ind med'
-        }
+        },
+        tokenUser: {}
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,
         returnUrl: '/example/'
       },
-      proxy: false
+      proxy: false,
+      user: {}
     });
   });
 

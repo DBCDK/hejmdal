@@ -92,6 +92,7 @@ export const ATTRIBUTES = {
     name: 'produkter i DBCIDP',
     description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
   },
+  tokenUser: {},
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
   }
