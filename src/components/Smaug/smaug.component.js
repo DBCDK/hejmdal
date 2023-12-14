@@ -75,7 +75,8 @@ export function extractClientInfo(client) { // eslint-disable-line
     createCulrAccountAgency: client.createCulrAccountAgency || null,
     addAsMunicipalityLibrary: Array.isArray(client.addAsMunicipalityLibrary) ? client.addAsMunicipalityLibrary : [client.addAsMunicipalityLibrary],
     addAsResearchLibrary: Array.isArray(client.addAsResearchLibrary) ? client.addAsResearchLibrary : [client.addAsResearchLibrary],
-    idpIdentity: client.idpIdentity || {}
+    idpIdentity: client.idpIdentity || {},
+    user: client.user || {}
   };
 
   if (CONFIG.app.env === 'test') {

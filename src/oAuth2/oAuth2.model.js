@@ -152,7 +152,6 @@ module.exports.getUser = async function (user) {
     // Therefore we are both validating the user and getting an autherized token in the same step.
     // If user is authorized we add the token object to the user, so we can reuse it in the saveToken method
     const params = {username, password, agency, clientId, ips};
-    console.log('IPS', ips);
     const smaugToken = await getTokenForUser(params);
     user.smaugToken = smaugToken;
     // user object requires an userId property

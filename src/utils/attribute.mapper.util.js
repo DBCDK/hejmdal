@@ -9,6 +9,7 @@ import {log} from './logging.util';
 import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
+import {getClientInfoByToken} from '../components/Smaug/smaug.component';
 import {fetchDbcidpAuthorize, getDbcidpAgencyRightsAsFors, checkAgencyForProduct} from '../components/DBCIDP/dbcidp.client';
 
 const removeAttributeAgencies = CONFIG.removeAttributeAgencies;
@@ -64,6 +65,7 @@ export async function mapCulrResponse(
   let fromCpr = {};
   let dbcidpAuthorize;
   let foundLoginAgency = false;
+  let clientInfo = {};
 
   log.debug('mapCulrResponse', culr);
 
@@ -169,6 +171,10 @@ export async function mapCulrResponse(
             break;
           case 'forsrights':
             mapped.forsrights = await getDbcidpAgencyRightsAsFors(accessToken, user);
+            break;
+          case 'tokenUser':
+            clientInfo = await getClientInfoByToken(accessToken);
+            mapped.tokenUser = clientInfo.user ?? {};
             break;
           case 'dbcidp':
             mapped.dbcidp = [{agencyId: user.agency, rights: dbcidpAuthorize.rights || {}}];

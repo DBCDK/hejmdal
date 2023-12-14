@@ -77,7 +77,11 @@ The following is a full list of possible configuration options
       "name": "Bruger data fra dbcidp",
       "description": "name, contactMail og contactPhone i dbcidp"
     },
-    "dbcidpRoles": ["Liste a brugerens roller (egenskaber) i dbcidp"]
+    "dbcidpRoles": ["Liste a brugerens roller (egenskaber) i dbcidp"],
+    "tokenUser": {
+      "name": "bruger data indeholdt i tokenet",
+      "description": "De bruger data der er indeholdt i tokenet. Bør kun udstilles til fortrolige klienter"
+    }
   },
   "display": {
     "title": "Titel på siden, default 'Netpunkt login'",
