@@ -13,6 +13,8 @@ describe('Unittesting methods in OIDC unilogin.client', () => {
     const userInfo = await getUserInfo(access_token);
     expect(userInfo.sub).toBeDefined();
     expect(userInfo.sub).toBe('2a419de3-2a00-484e-8720-7dce792f49ef');
+    expect(userInfo.aktoer_gruppe).toBe('Elev');
+    expect(userInfo.uniid).toBe('1234567890');
   });
 });
 
@@ -28,5 +30,7 @@ describe('Unittesting methods in OIDC unilogin.component', () => {
     const userInfo = await validateUniloginOidcTicket(ctx);
     expect(userInfo.sub).toBeDefined();
     expect(userInfo.sub).toBe('2a419de3-2a00-484e-8720-7dce792f49ef');
+    expect(userInfo.aktoer_gruppe).toBe('Elev');
+    expect(userInfo.uniid).toBe('1234567890');
   });
 });

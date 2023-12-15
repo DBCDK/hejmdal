@@ -307,6 +307,8 @@ export async function uniloginCallback(req) {
  */
 export async function uniloginOidcCallback(req) {
   let userId = null;
+  let aktoer_gruppe = null;
+  let uniid = null;
   log.debug('OIDC callback req.getUser()', req.getUser());
   log.debug('OIDC callback req.query', req.query);
   log.debug('OIDC callback req.getState().stateHash', {stateHash: req.getState().stateHash});
@@ -314,6 +316,8 @@ export async function uniloginOidcCallback(req) {
   log.debug('OIDC callback result', oidcResult);
   if (oidcResult && oidcResult.sub) {
     userId = oidcResult.sub;
+    aktoer_gruppe = oidcResult.aktoer_gruppe ?? null;
+    uniid = oidcResult.uniid ?? null;
   } else {
     identityProviderValidationFailed(req);
   }
@@ -321,7 +325,9 @@ export async function uniloginOidcCallback(req) {
   req.setUser({
     userId: userId,
     userType: 'unilogin_oidc',
-    uniloginId: userId
+    uniloginId: userId,
+    aktoer_gruppe: aktoer_gruppe,
+    uniid: uniid
   });
 
   return req;

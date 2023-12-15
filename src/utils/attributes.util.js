@@ -92,7 +92,18 @@ export const ATTRIBUTES = {
     name: 'produkter i DBCIDP',
     description: 'Liste (array) af produkter som ønskes tjekket i DBCIDP for det aktuelle agency'
   },
-  tokenUser: {},
+  tokenUser: {
+    name: 'Bruger data indeholdt i tokenet',
+    description: 'De bruger data der er indeholdt i tokenet. Bør kun udstilles til fortrolige klienter'
+  },
+  uniloginUniId: {
+    name: 'Brugerens unilogin ID',
+    description: 'Udleveret fra OIDC unilogin parameteren uniid'
+  },
+  uniloginUserType: {
+    name: 'Brugerens unilogin type',
+    description: 'Udleveret fra OIDC unilogin parameteren aktoer_gruppe'
+  },
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
   }

@@ -147,6 +147,12 @@ export async function mapCulrResponse(
           case 'uniloginId':
             mapped.uniloginId = user.uniloginId || null;
             break;
+          case 'uniloginUniId':
+            mapped.uniloginUniId = user.uniid;
+            break;
+          case 'uniloginUserType':
+            mapped.uniloginUserType = user.aktoer_gruppe;
+            break;
           case 'userId':
             mapped.userId = user.userId;
             break;
