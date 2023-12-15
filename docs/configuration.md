@@ -30,6 +30,14 @@ The following is a full list of possible configuration options
       "name": "CPR-nummer",
       "description": "Brugerens CPR-nummer"
     },
+    "uniloginUniId": {
+      "name": "Brugerens unilogin ID",
+      "description": "Udleveret fra OIDC unilogin parameteren uniid"
+    },
+    "uniloginUserType": {
+      "name": "Brugerens unilogin type",
+      "description": "Udleveret fra OIDC unilogin parameteren aktoer_gruppe"
+    },
     "municipality": {
       "name": "Kommunenummer",
       "description": "3 cifret kommunenummer"
@@ -79,7 +87,7 @@ The following is a full list of possible configuration options
     },
     "dbcidpRoles": ["Liste a brugerens roller (egenskaber) i dbcidp"],
     "tokenUser": {
-      "name": "bruger data indeholdt i tokenet",
+      "name": "Bruger data indeholdt i tokenet",
       "description": "De bruger data der er indeholdt i tokenet. Bør kun udstilles til fortrolige klienter"
     }
   },

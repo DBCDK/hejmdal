@@ -162,6 +162,14 @@ describe('Test Smaug component', () => {
           name: 'Bibliotekslogin id',
           description: 'Anonymiseret identifikation hos Bibliotekslogin'
         },
+        uniloginUniId: {
+          name: 'Brugerens unilogin ID',
+          description: 'Udleveret fra OIDC unilogin parameteren uniid'
+        },
+        uniloginUserType: {
+          name: 'Brugerens unilogin type',
+          description: 'Udleveret fra OIDC unilogin parameteren aktoer_gruppe'
+        },
         uniLoginInstitutions: {
           name: 'List of unilogin institutions a user is connected to'
         },
@@ -169,7 +177,10 @@ describe('Test Smaug component', () => {
           name: 'Valgt IDP',
           description: 'Navn på den IDP der er logget ind med'
         },
-        tokenUser: {}
+        tokenUser: {
+          name: 'Bruger data indeholdt i tokenet',
+          description: 'De bruger data der er indeholdt i tokenet. Bør kun udstilles til fortrolige klienter'
+        }
       },
       urls: {
         host: `http://localhost:${CONFIG.app.port}`,

@@ -50,15 +50,10 @@ export function getUniloginOidcLogoutUrl(token) {
  */
 export async function validateUniloginOidcTicket(req) {
   let userInfo = false;
-  log.debug('OIDC validate req.query', req.query);
   const {code} = req.query;
-  log.debug('OIDC validate code', {code: code});
   const {uniloginOidcCodes} = req.getUser();
   const {idpIdentity} = req.getState().serviceClient;
   const token = req.getState().stateHash;
-  log.debug('OIDC validate uniloginOidcCodes', uniloginOidcCodes);
-  log.debug('OIDC validate idpIdentity', idpIdentity);
-  log.debug('OIDC validate token', {token: token});
   // if unilogin id and secret are set in the specific smaug-client, use that instead of the general setting
   const uniloginIdentity = {
     id: idpIdentity.unilogin.id ?? CONFIG.unilogin_oidc.id,
