@@ -177,7 +177,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 export async function borchkCallback(req, res) {
   const requestUri = req.getState().serviceClient.borchkServiceName;
   const formData = req.fakeBorchkPost || req.body;
-  const userId = formData && formData.loginBibDkUserId ? formData.loginBibDkUserId.trim(' ') : null;
+  const userId = formData && formData.loginBibDkUserId ? trimPossibleCpr(formData.loginBibDkUserId.trim(' ')) : null;
   formData.userId = userId;
   let validated = {error: true, message: 'unknown_error'};
 
@@ -636,3 +636,15 @@ function adjustLibraryType(branches, addLibraryType, addLibraries) {
     });
   }
 }
+/**  Normalize what looks like a cpr.
+ * If userId contains 10 digits, ignoring space and hyphen, then use the cpr-normalized id
+ *
+ * @param userId {string}
+ * @returns {string}
+ */
+export function trimPossibleCpr(userId) {
+  const digits = (userId.match(/\d/g) || []).join('');
+  const stripped = (userId.match(/[^ \-]/g) || []).join('');
+  return (stripped.length === 10 && digits.length === 10 && isValidCpr(digits)) ? stripped : userId;
+}
+
