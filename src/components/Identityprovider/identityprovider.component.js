@@ -644,7 +644,7 @@ function adjustLibraryType(branches, addLibraryType, addLibraries) {
  */
 export function trimPossibleCpr(userId) {
   const digits = (userId.match(/\d/g) || []).join('');
-  const stripped = (userId.match(/[^ \-]/g) || []).join('');
+  const stripped = (userId.match(/[^ -]/g) || []).join('');
   return (stripped.length === 10 && digits.length === 10 && isValidCpr(digits)) ? stripped : userId;
 }
 
