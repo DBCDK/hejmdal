@@ -114,7 +114,6 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       serviceClient: state.serviceClient.name,
       identityProviders,
       logoColor: state.serviceClient.logoColor,
-      title: state.serviceClient.title,
       btnStyle: 'background-color:' + state.serviceClient.buttonColor + ';color:' + state.serviceClient.buttonTxtColor,
       btnOnmouseover: 'this.style.backgroundColor=\'' + state.serviceClient.buttonHoverColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtHoverColor + '\'',
       btnOnmouseout: 'this.style.backgroundColor=\'' + state.serviceClient.buttonColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtColor + '\'',
@@ -126,6 +125,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
     if (state.serviceClient.identityProviders.includes('netpunkt') || state.serviceClient.identityProviders.includes('dbcidp')) {
       res.render('Netpunkt', {
         ...commonParameters,
+        title: state.serviceClient.title || 'Netpunkt Login',
         idpAction: state.serviceClient.identityProviders.includes('netpunkt') ? identityProviders.netpunkt.action : identityProviders.dbcidp.action,
         defaultUser: state.serviceClient.defaultUser,
         hideFooter: true
@@ -133,6 +133,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
     } else {
       res.render('Login', {
         ...commonParameters,
+        title: state.serviceClient.title || 'Log ind',
         agencyTypeFilter,
         identityProvidersCount,
         branches: branches,
