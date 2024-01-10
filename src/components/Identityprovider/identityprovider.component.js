@@ -107,31 +107,33 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
       ip => ip
     ).length;
 
+    const commonParameters = {
+      retries: req.query.retries,
+      error: error,
+      returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
+      serviceClient: state.serviceClient.name,
+      identityProviders,
+      logoColor: state.serviceClient.logoColor,
+      title: state.serviceClient.title,
+      btnStyle: 'background-color:' + state.serviceClient.buttonColor + ';color:' + state.serviceClient.buttonTxtColor,
+      btnOnmouseover: 'this.style.backgroundColor=\'' + state.serviceClient.buttonHoverColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtHoverColor + '\'',
+      btnOnmouseout: 'this.style.backgroundColor=\'' + state.serviceClient.buttonColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtColor + '\'',
+      help: helpText,
+      newUser: getText(['newUser']),
+      cookie: getText(['cookies']),
+      loginToProfile: !!req.session.loginToProfil
+    };
     if (state.serviceClient.identityProviders.includes('netpunkt') || state.serviceClient.identityProviders.includes('dbcidp')) {
       res.render('Netpunkt', {
-        retries: req.query.retries,
-        error: error,
-        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
-        serviceClient: state.serviceClient.name,
-        identityProviders,
+        ...commonParameters,
         idpAction: state.serviceClient.identityProviders.includes('netpunkt') ? identityProviders.netpunkt.action : identityProviders.dbcidp.action,
         defaultUser: state.serviceClient.defaultUser,
-        title: state.serviceClient.title,
-        btnStyle: 'background-color:' + state.serviceClient.buttonColor + ';color:' + state.serviceClient.buttonTxtColor,
-        btnOnmouseover: 'this.style.backgroundColor=\'' + state.serviceClient.buttonHoverColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtHoverColor + '\'',
-        btnOnmouseout: 'this.style.backgroundColor=\'' + state.serviceClient.buttonColor + '\';this.style.color=\'' + state.serviceClient.buttonTxtColor + '\'',
-        hideFooter: true,
-        loginToProfile: !!req.session.loginToProfil
+        hideFooter: true
       });
     } else {
       res.render('Login', {
-        retries: req.query.retries,
-        error: error,
-        returnUrl: buildReturnUrl(state, {error: 'LoginCancelled'}),
-        serviceClient: state.serviceClient.name,
-        logoColor: state.serviceClient.logoColor,
+        ...commonParameters,
         agencyTypeFilter,
-        identityProviders,
         identityProvidersCount,
         branches: branches,
         preselectedName: preselectedName,
@@ -139,12 +141,7 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
         selectAgency: req.query.selectAgency,
-        lockedBranchRegistrationUrl,
-        help: helpText,
-        newUser: getText(['newUser']),
-        cookie: getText(['cookies']),
-        privacyPolicy: getText(['privacyPolicy']),
-        loginToProfile: !!req.session.loginToProfil
+        lockedBranchRegistrationUrl
       });
     }
 
@@ -300,12 +297,15 @@ export async function uniloginCallback(req) {
   return req;
 }
 
-/** Pick data elements sub, aktoer_gruppe and uniid from the unilogin OIDC ticket
+/** Pick data elements aktoer_gruppe and uniid from the unilogin OIDC ticket
  * Some of the elements is specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336
  *
- * sub looks unique. Doc say: "Tjenestespecifikt pseudonym for brugeren som logger ind"
- * aktoer_gruppe looks like some kind of user type, test users found with Elev and Medarbejder
- * uniid looks like some internal non crypted user id - could be unique
+ * aktoer_gruppe is the user type, test users found with Elev and Medarbejder (and Kontakt)
+ * - Fra STIL: Medarbejder og "lærer" mappes begge til "Medarbejder"
+ * uniid looks like some internal non crypted user id and unique
+ * - Fra STIL: uniid er unikt for brugeren, personen og kan benyttes til unik identifikation.
+ *             en bruger i unilogin beholder sit uniid i hele brugerens levetid i vores system.
+ *             Hvis en bruger slettes går der stadig minimum 1 år før vi fjerner tilknytningen til uniid, og uniid er helt unikt
  *
  * @param req
  * @returns {Promise<*>}
@@ -315,8 +315,8 @@ export async function uniloginOidcCallback(req) {
   let aktoer_gruppe = null;
   let uniid = null;
   const oidcResult = await validateUniloginOidcTicket(req);
-  if (oidcResult && oidcResult.sub) {
-    userId = oidcResult.sub;
+  if (oidcResult && oidcResult.uniid) {
+    userId = oidcResult.uniid;
     aktoer_gruppe = oidcResult.aktoer_gruppe ?? null;
     uniid = oidcResult.uniid ?? null;
   } else {
@@ -602,8 +602,8 @@ function isLoggedInWith(req) {
     .identityProviders.filter(ip => identityProviders.includes(ip));
 }
 
-/** Duplicate libraries between library type, so a research library can be found as a municipalty library as well
- * the client parameters addAs... contains the llist of libraries to be duplicated between library types
+/** Duplicate libraries between library type, so a research library can be found as a municipality library as well
+ * the client parameters addAs... contains the list of libraries to be duplicated between library types
  * This is only used very seldom, currently handling 900450 for ereolen to be seen as a municipality library
  *
  * @param branches {Object} List of libraries divided into categories folk, forsk and other

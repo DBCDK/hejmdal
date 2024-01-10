@@ -6,7 +6,7 @@ block append content
       div.top
         span(id='logo')
           include ./Components/logo
-          h1 Log ind
+          h1 #{title}
         p Hvis du vil låne, reservere eller redigere din brugerprofil, skal du være logget ind.&#160;
           if (help && help.title && help.sections)
               include Components/Helptext.container.pug

@@ -99,12 +99,13 @@ The following is a full list of possible configuration options
     "buttonHoverColor": "Login button hover color, default #e56312",
     "buttonTxtHoverColor": "Login button hover text color, default #ffffff"
   },
+  "logoColor": "Color of hejmdal logo, default #252525",
+  "displayName": "The name of the client using hejmdal, used on the logout screen",
   "identityProviders" : ["List of idps available for the client (nemlogin, borchk, unilogin, wayf, netpunkt, dbcidp)"],
   "hideIdentityProviders" : ["List of idps hidden from the user. Available as passthru (idp parameter in login)"],
   "createCulrAccountAgency": "Create user in CULR in this agency, if not found. Only used by bibliotek.dk (190101)",
   "addAsMunicipalityLibrary":  "Array of agencIds to take type as 'folk', default []",
   "addAsResearchLibrary":  "Array of agencIds to take type as 'forsk', default []",
-  "logoColor": "Color of hejmdal logo, default #252525",
   "redirectUris": [],
   "singleLogoutPath": "/single-logout"
 }
