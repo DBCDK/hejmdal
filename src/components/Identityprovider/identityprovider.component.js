@@ -141,7 +141,8 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
         lockedAgency: state.serviceAgency || null,
         lockedAgencyName: lockedAgencyName,
         selectAgency: req.query.selectAgency,
-        lockedBranchRegistrationUrl
+        lockedBranchRegistrationUrl,
+        privacyPolicy: getText(['privacyPolicy'])
       });
     }
 
