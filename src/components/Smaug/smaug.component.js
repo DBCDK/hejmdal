@@ -65,7 +65,7 @@ export function extractClientInfo(client) { // eslint-disable-line
     requireConsent: !!client.requireConsent,
     logoColor: client.logoColor ? client.logoColor : '#252525',
     defaultUser: client.display && typeof client.display.defaultUser !== 'undefined' ? client.display.defaultUser : 'netpunkt',
-    title: client.display && client.display.title ? client.display.title : 'Netpunkt Login',
+    title: client.display && client.display.title ? client.display.title : '',
     buttonColor: client.display && client.display.buttonColor ? client.display.buttonColor : '#252525',
     buttonHoverColor: client.display && client.display.buttonHoverColor ? client.display.buttonHoverColor : '#e56312',
     buttonTxtColor: client.display && client.display.buttonTxtColor ? client.display.buttonTxtColor : '#ffffff',

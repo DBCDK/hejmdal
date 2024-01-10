@@ -60,7 +60,7 @@ div#borchk
 
 
       div.action-container
-        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='1') Log ind
+        button(type='submit' id='borchk-submit' data-cy='borchk-submit' tabindex='1' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Log ind
         div.other-actions
           if (lockedAgency && lockedBranchRegistrationUrl)
             a(class="modal-trigger" href=lockedBranchRegistrationUrl data-cy='new-user-button' tabindex='-1') Ny Bruger?

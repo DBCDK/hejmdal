@@ -91,7 +91,7 @@ function getLiveUniloginOidcUrl(token, identity, oidcCodes) {
     'response_type=code',
     'client_id=' + (identity.id ?? CONFIG.unilogin_oidc.id),
     'redirect_uri=' + encodeURIComponent(returnUrl),
-    'scope=openid',
+    'scope=InstitutionIdsClientScope UserHasLicenseClientScope openid',
     'acr_values=To_Faktor',
     'nonce=' + randomString(20),
     'code_challenge=' + oidcCodes.code_challenge,

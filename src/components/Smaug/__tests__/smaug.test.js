@@ -64,7 +64,7 @@ describe('Test Smaug component', () => {
       identityProviders: ['nemlogin', 'borchk', 'unilogin', 'wayf'],
       idpIdentity: {},
       requireConsent: false,
-      title: 'Netpunkt Login',
+      title: '',
       logoColor: '#252525',
       redirectUris: [
         'http://localhost:3011/*',
