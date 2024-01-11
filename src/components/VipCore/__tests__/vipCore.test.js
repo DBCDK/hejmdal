@@ -18,6 +18,22 @@ describe('Test vipCore component', () => {
   it('Lookup a library from name', async () => {
     const list = [
       {
+        address: 'Kongevejen 30, Endelave',
+        agencyId: '761500',
+        agencyName: 'Horsens',
+        branchEmail: 'bibliotek@horsens.dk',
+        branchId: '761502',
+        branchName: 'Endelave Bibliotek',
+        branchShortName: 'Endelave',
+        branchWebsiteUrl: 'https://horsensbibliotek.dk',
+        city: 'Horsens',
+        distance: '',
+        municipalityNo: '615',
+        registrationFormUrl: 'https://horsensbibliotek.dk/registration',
+        registrationFormUrlText: 'Opret biblioteksbruger',
+        type: 'Folkebibliotek'
+      },
+      {
         agencyId: '761500',
         branchId: '761500',
         agencyName: 'Horsens',
@@ -74,6 +90,51 @@ describe('Test vipCore component', () => {
         registrationFormUrl: '',
         registrationFormUrlText: '',
         branchEmail: ''
+      },
+      {
+        address: 'Ane Stauningsvej 21',
+        agencyId: '831260',
+        agencyName: 'Social- og Sundhedsskolen Fredericia, Biblioteket',
+        branchEmail: 'vme@sosufvh.dk',
+        branchId: '861940',
+        branchName: 'Social- og Sundhedsskolen Horsens, Biblioteket',
+        branchShortName: 'SSH Horsens',
+        branchWebsiteUrl: '',
+        city: 'Horsens',
+        registrationFormUrl: '',
+        registrationFormUrlText: '',
+        type: 'Forskningsbibliotek'
+      },
+      {
+        address: 'Ravnebjerget 12, Søvind',
+        agencyId: '761500',
+        agencyName: 'Horsens',
+        branchEmail: 'biblioteksoevind@horsens.dk',
+        branchId: '761506',
+        branchName: 'Søvind Bibliotek',
+        branchShortName: 'Søvind Bibliotek',
+        branchWebsiteUrl: 'https://horsensbibliotek.dk',
+        city: 'Horsens',
+        distance: '',
+        municipalityNo: '615',
+        registrationFormUrl: 'https://horsensbibliotek.dk/registration',
+        registrationFormUrlText: 'Opret biblioteksbruger',
+        type: 'Folkebibliotek'
+      },
+      {
+        address: 'Chr. M. Østergaards Vej 4',
+        agencyId: '831020',
+        agencyName: 'VIA Bibliotek',
+        branchEmail: 'bibhorsens@via.dk',
+        branchId: '830410',
+        branchName: 'VIA Biblioteket Campus Horsens',
+        branchShortName: 'VIA UC. Bibl. Campus Horsens',
+        branchWebsiteUrl: 'https://www.bibliotekerne.via.dk',
+        city: 'Horsens',
+        distance: '',
+        registrationFormUrl: '',
+        registrationFormUrlText: '',
+        type: 'Forskningsbibliotek'
       }
     ];
 
