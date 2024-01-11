@@ -153,7 +153,7 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 11);
+    cy.get('#borchk-dropdown .agency').should('have.length', 16);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
