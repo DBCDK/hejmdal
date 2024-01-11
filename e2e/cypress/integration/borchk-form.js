@@ -167,7 +167,7 @@ context('Borchk form', () => {
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
-    cy.get('#borchk-dropdown .agency').should('have.length', 5);
+    cy.get('#borchk-dropdown .agency').should('have.length', 10);
     cy.get('#borchk-dropdown .agency')
       .first()
       .should('have.text', 'Det Kgl. Bibliotek');
