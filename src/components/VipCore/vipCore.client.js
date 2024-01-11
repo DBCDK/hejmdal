@@ -115,7 +115,7 @@ async function getBorrowercheckLibraries() {
 }
 
 /**
- * Parse findLibrary repsonse and extract the few data needed
+ * Parse findLibrary response and extract the few data needed
  *
  * @param response
  * @param checkLibraries
@@ -123,6 +123,7 @@ async function getBorrowercheckLibraries() {
  */
 function parseFindLibraryResponse(response, checkLibraries) {
   const noBorrowercheckSupport = [];
+  const addBranchLibrary = [];
   const libraryList = [];
   if (response && Array.isArray(response.pickupAgency)) {
     const agencies = [];
@@ -130,14 +131,14 @@ function parseFindLibraryResponse(response, checkLibraries) {
       const branchId = getAgencyField(agency, 'branchId');
       const branchType = getAgencyField(agency, 'branchType');
 
-      if (agencies.includes(branchId) || (!['H', 'P'].includes(branchType))) {
-        return;
-      }
-
       if (!CONFIG.mock_externals.vipCore && !checkLibraries.includes(branchId)) {
         noBorrowercheckSupport.push(branchId);
         return;
       }
+      if (agencies.includes(branchId) || (!['H', 'P'].includes(branchType))) {
+        addBranchLibrary.push(branchId);
+      }
+
       const item = {
         agencyId: getAgencyField(agency, 'agencyId'),
         branchId: branchId,
@@ -149,10 +150,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
         type: getAgencyField(agency, 'agencyType'),
         registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
         branchWebsiteUrl: getAgencyField(agency, 'branchWebsiteUrl'),
-        registrationFormUrlText: getAgencyField(
-          agency,
-          'registrationFormUrlText'
-        ),
+        registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
         branchEmail: getAgencyField(agency, 'branchEmail')
       };
 
@@ -169,7 +167,10 @@ function parseFindLibraryResponse(response, checkLibraries) {
       agencies.push(branchId);
     });
     if (noBorrowercheckSupport.length) {
-      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk.'); // eslint-disable-line no-console
+      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
+    }
+    if (addBranchLibrary.length) {
+      console.log('INFO: ' + addBranchLibrary.sort() + ' branches supports borrowercheck for login.bib.dk'); // eslint-disable-line no-console
     }
   }
 
