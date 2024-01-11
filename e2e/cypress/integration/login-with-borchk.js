@@ -53,7 +53,7 @@ context('Login flow', () => {
 
     cy.log('Log out user');
     cy.get('#logout button').click();
-    cy.location('pathname').should('eq', '/logout');
+    cy.location('pathname').should('eq', '/logout/');
 
     cy.visit(authorize());
     cy.location('pathname').should('eq', '/login');

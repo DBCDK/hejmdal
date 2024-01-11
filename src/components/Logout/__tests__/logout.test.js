@@ -31,7 +31,7 @@ describe('Test Logout component', () => {
 
     expect(ctx.render).toBeCalledWith('Logout', {
       returnurl: null,
-      serviceName: ''
+      serviceName: 'bibliotekslogin'
     });
   });
 

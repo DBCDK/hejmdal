@@ -112,7 +112,7 @@ export function logout(req, res, next) {
       } else {
         res.render('Logout', {
           returnurl: (serviceClient && buildReturnUrl(state)) || null,
-          serviceName: (serviceClient && serviceClient.name) || ''
+          serviceName: (serviceClient && serviceClient.name) || 'bibliotekslogin'
         });
       }
     });
@@ -149,7 +149,7 @@ export function singleLogout(req, res, next) {
       }message=${getLogoutInfoCode(identityProviders)}`;
     }
     const link = (serviceClient && buildReturnUrl(state)) || null;
-    const serviceName = (serviceClient && serviceClient.name) || '';
+    const serviceName = (serviceClient && serviceClient.name) || 'bibliotekslogin';
     const clientInfo = clients.map(client => ({
       singleLogoutUrl: client.singleLogoutUrl,
       clientId: client.clientId
