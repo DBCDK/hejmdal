@@ -6,12 +6,13 @@ const defaultState = {
   authorizationURL: `${window.location.origin}/oauth/authorization`,
   tokenURL: `${window.location.origin}/oauth/token`,
   userinfoURL: `${window.location.origin}/userinfo/`,
+  logoutURL: `${window.location.origin}/logout/`,
   redirectUri: `${window.location.origin}/example`,
   path: `/login`,
   clientId: '',
   code: null,
   token: null,
-  acces_token: null,
+  access_token: null,
   user: null,
   presel: '',
   agency: '',
@@ -88,9 +89,7 @@ window.getUserinfo = function getUserinfo() {
 };
 
 window.logout = function logout() {
-  hejmdal = defaultState;
-  setState();
-  window.location = '/logout';
+  window.location = `/logout/?access_token=${hejmdal.access_token}`;
 };
 
 /**
