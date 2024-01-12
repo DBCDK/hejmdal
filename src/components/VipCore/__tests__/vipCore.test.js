@@ -19,8 +19,8 @@ describe('Test vipCore component', () => {
     const list = [
       {
         address: 'Kongevejen 30, Endelave',
-        agencyId: '761500',
-        agencyName: 'Horsens',
+        agencyId: '761502',
+        agencyName: 'Endelave',
         branchEmail: 'bibliotek@horsens.dk',
         branchId: '761502',
         branchName: 'Endelave Bibliotek',
@@ -93,8 +93,8 @@ describe('Test vipCore component', () => {
       },
       {
         address: 'Ane Stauningsvej 21',
-        agencyId: '831260',
-        agencyName: 'Social- og Sundhedsskolen Fredericia, Biblioteket',
+        agencyId: '861940',
+        agencyName: 'SSH Horsens',
         branchEmail: 'vme@sosufvh.dk',
         branchId: '861940',
         branchName: 'Social- og Sundhedsskolen Horsens, Biblioteket',
@@ -107,8 +107,8 @@ describe('Test vipCore component', () => {
       },
       {
         address: 'Ravnebjerget 12, Søvind',
-        agencyId: '761500',
-        agencyName: 'Horsens',
+        agencyId: '761506',
+        agencyName: 'Søvind Bibliotek',
         branchEmail: 'biblioteksoevind@horsens.dk',
         branchId: '761506',
         branchName: 'Søvind Bibliotek',
@@ -123,8 +123,8 @@ describe('Test vipCore component', () => {
       },
       {
         address: 'Chr. M. Østergaards Vej 4',
-        agencyId: '831020',
-        agencyName: 'VIA Bibliotek',
+        agencyId: '830410',
+        agencyName: 'VIA UC. Bibl. Campus Horsens',
         branchEmail: 'bibhorsens@via.dk',
         branchId: '830410',
         branchName: 'VIA Biblioteket Campus Horsens',

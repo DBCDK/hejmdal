@@ -129,20 +129,16 @@ function parseFindLibraryResponse(response, checkLibraries) {
     const agencies = [];
     response.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
-      const branchType = getAgencyField(agency, 'branchType');
-
       if (!CONFIG.mock_externals.vipCore && !checkLibraries.includes(branchId)) {
         noBorrowercheckSupport.push(branchId);
         return;
       }
-      if (agencies.includes(branchId) || (!['H', 'P'].includes(branchType))) {
-        addBranchLibrary.push(branchId);
-      }
 
+      const branchType = getAgencyField(agency, 'branchType');
       const item = {
-        agencyId: getAgencyField(agency, 'agencyId'),
+        agencyId: branchId,
         branchId: branchId,
-        agencyName: getAgencyField(agency, 'agencyName'),
+        agencyName: '',
         branchName: getAgencyField(agency, 'branchName'),
         branchShortName: getAgencyField(agency, 'branchShortName'),
         city: getAgencyField(agency, 'city'),
@@ -153,14 +149,18 @@ function parseFindLibraryResponse(response, checkLibraries) {
         registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
         branchEmail: getAgencyField(agency, 'branchEmail')
       };
-
-      const municipalityNo = item.agencyId.substr(1, 3);
-      if (item.type === 'Folkebibliotek' && municipalityName[item.agencyId]) {
-        item.agencyName = municipalityName[item.agencyId];
-        item.municipalityNo = municipalityNo;
+      if (item.type === 'Folkebibliotek') {
+        item.municipalityNo = branchId.substr(1, 3);
       }
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
+      }
+      if (['H', 'P'].includes(branchType)) {
+        item.agencyName = municipalityName[branchId] ?? getAgencyField(agency, 'agencyName');
+      }
+      else {
+        item.agencyName = municipalityName[branchId] ?? (item.branchShortName ?? item.branchName);
+        addBranchLibrary.push(branchId);
       }
 
       libraryList.push(item);
@@ -170,7 +170,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
       console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
     }
     if (addBranchLibrary.length) {
-      console.log('INFO: ' + addBranchLibrary.sort() + ' branches supports borrowercheck for login.bib.dk'); // eslint-disable-line no-console
+      console.log('INFO: ' + addBranchLibrary.sort() + ' branches support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
     }
   }
 
