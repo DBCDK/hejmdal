@@ -45,14 +45,14 @@ div#borchk
           p#chosenLib.chosenLib
 
       div(class="form-group top-input")
-        label(for='userid-input') Cpr- eller lånernummer
+        label(for='userid-input') Cpr- eller lånernummer / BrugerID
         div.input-container
           // N.B. autocomplete="username" assures that the userId field is stored and retrieved in the user's password manager's "username" field
           input(type='text' value="" class='form-control ' id='userid-input' data-cy='userid-input' name='loginBibDkUserId' autocomplete='username' tabindex='1')
         span(id='userid-input-text' data-text='')
 
       div.form-group
-        label(for='pin-input') Indtast din kode
+        label(for='pin-input') Indtast din pinkode
         div.input-container
           input(type='password' class='form-control' tabindex="1" id='pin-input' data-cy='pin-input' name='pincode' autocomplete='new-pincode')
           button(type='button' id='toggle-pin-input' tabindex="1" onclick='toggleFieldVisibility("pin-input");' aria-hidden="true")
