@@ -8,8 +8,9 @@ import crypto from 'crypto';
 import base64url from 'base64url';
 
 import {CONFIG} from '../../utils/config.util';
-import {getOidcTokens, getUserInfo, getReturnUrl} from './uniloginOIDC.client';
-import {getMockedUniloginOidcUrl, getMockedUniloginOidcLogoutUrl} from './mocks/uniloginOIDC.mock';
+import {getOidcTokens, getReturnUrl, getUserInfo} from './uniloginOIDC.client';
+import {getMockedUniloginOidcLogoutUrl, getMockedUniloginOidcUrl} from './mocks/uniloginOIDC.mock';
+import {identityProviderValidationFailed} from '../Identityprovider/identityprovider.component';
 
 /* remove debugging when oidc is in production */
 const consoleDebug = false;
@@ -143,4 +144,41 @@ export function createUniloginOidcCodes() {
  */
 function randomString(length) {
   return crypto.randomBytes((length + 1) / 2).toString('hex').substr(0, length);
+}
+
+/** Pick data elements aktoer_gruppe and uniid from the unilogin OIDC ticket
+ * Some of the elements is specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336
+ *
+ * aktoer_gruppe is the user type, test users found with Elev and Medarbejder (and Kontakt)
+ * - Fra STIL: Medarbejder og "lærer" mappes begge til "Medarbejder"
+ * uniid looks like some internal non crypted user id and unique
+ * - Fra STIL: uniid er unikt for brugeren, personen og kan benyttes til unik identifikation.
+ *             en bruger i unilogin beholder sit uniid i hele brugerens levetid i vores system.
+ *             Hvis en bruger slettes går der stadig minimum 1 år før vi fjerner tilknytningen til uniid, og uniid er helt unikt
+ *
+ * @param req
+ * @returns {Promise<*>}
+ */
+export async function uniloginOidcCallback(req) {
+    let userId = null;
+    let aktoer_gruppe = null;
+    let uniid = null;
+    const oidcResult = await validateUniloginOidcTicket(req);
+    if (oidcResult && oidcResult.uniid) {
+        userId = oidcResult.uniid;
+        aktoer_gruppe = oidcResult.aktoer_gruppe ?? null;
+        uniid = oidcResult.uniid ?? null;
+    } else {
+        identityProviderValidationFailed(req);
+    }
+
+    req.setUser({
+        userId: userId,
+        userType: 'unilogin_oidc',
+        uniloginId: userId,
+        aktoer_gruppe: aktoer_gruppe,
+        uniid: uniid
+    });
+
+    return req;
 }

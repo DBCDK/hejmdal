@@ -8,10 +8,8 @@ import moment from 'moment';
 import {md5} from '../../utils/hash.utils';
 import {CONFIG} from '../../utils/config.util';
 import {log} from '../../utils/logging.util';
-import {
-  getInstitutionIdsForUser,
-  getInstitutionInformation
-} from './unilogin.client';
+import {getInstitutionIdsForUser, getInstitutionInformation} from './unilogin.client';
+import {identityProviderValidationFailed} from '../Identityprovider/identityprovider.component';
 
 /**
  * Genereates and returns a url to be used for login using UNI-Login
@@ -125,4 +123,26 @@ export async function getInstitutionsForUser(userId) {
     return await getInstitutionInformation(institutionIds);
   }
   return [];
+}
+
+/**
+ * Parses the callback parameters for unilogin.
+ *
+ * @param {object} req
+ */
+export async function uniloginCallback(req) {
+    let userId = null;
+    if (validateUniloginTicket(req.query)) {
+        userId = req.query.user;
+    } else {
+        identityProviderValidationFailed(req);
+    }
+
+    req.setUser({
+        userId: userId,
+        userType: 'unilogin',
+        uniloginId: userId
+    });
+
+    return req;
 }

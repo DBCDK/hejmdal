@@ -47,15 +47,21 @@ export async function fetchDbcidpAuthorize(accessToken, user) {
 /** Fetch the list of agencies who has license for a given product
  *
  * @param productName
- * @param params
  * @returns {Promise<{}|any>}
  */
-export async function fetchSubscribersByProduct(productName, params) {
+export async function fetchSubscribersByProduct(productName) {
   try {
     let resp;
     if (CONFIG.mock_externals.dbcidp) {
       resp = getMockClient(productName);
     } else {
+      const params = {
+        url:
+          CONFIG.dbcidp.dbcidpUri +
+          '/v1/queries/subscribersbyproductname/' +
+          productName,
+        headers: {'Content-Type': 'application/json'}
+      };
       resp = await promiseRequest('get', params);
     }
     if (resp.statusCode === 200) {
@@ -70,71 +76,6 @@ export async function fetchSubscribersByProduct(productName, params) {
   return {};
 }
 
-/** Return true if a given agency har license for a given product
- *
- * @param agencyId
- * @param productName
- * @returns {Promise<boolean>}
- */
-export async function checkAgencyForProduct(agencyId, productName) {
-  const requestParams = {
-    url:
-      CONFIG.dbcidp.dbcidpUri +
-      '/v1/queries/subscribersbyproductname/' +
-      productName,
-    headers: {'Content-Type': 'application/json'}
-  };
-  let found = false;
-  const result = await fetchSubscribersByProduct(productName, requestParams);
-  if (result && result.organisations && result.organisations.length) {
-    result.organisations.forEach((lib) => {
-      if (lib.agencyId === agencyId) {
-        found = true;
-      }
-    });
-  }
-  return found;
-}
-
-/**
- * Function to retrieve agency rights from DBCIDP service
- *
- * @param {string} accessToken
- * @param {object} user information
- * @return {array}
- */
-export async function getDbcidpAgencyRights(accessToken, user) {
-  const dbcidpAuth = await fetchDbcidpAuthorize(accessToken, user);
-  return dbcidpAuth.length === 0
-    ? {}
-    : [{agencyId: user.agency, rights: dbcidpAuth.rights}];
-}
-
-/**
- * Function to retrieve agency rights from DBCIDP service and return result as FORS structure to help older clients
- *
- * @param {string} accessToken
- * @param {object} user information
- * @return {array}
- */
-export async function getDbcidpAgencyRightsAsFors(accessToken, user) {
-  const dbcidp = await getDbcidpAgencyRights(accessToken, user);
-  log.info('map DBCIDP to FORS');
-  const result = [];
-  dbcidp.forEach((agency) => {
-    if (agency.agencyId) {
-      const fors = {agencyId: agency.agencyId, rights: {}};
-      if (agency.rights && Array.isArray(agency.rights)) {
-        agency.rights.forEach((right) => {
-          fors.rights[right.productName.toLowerCase()] = ['500', '501'];
-        });
-      }
-      result.push(fors);
-    }
-  });
-
-  return result;
-}
 
 /**
  * Function to authenticate a user (netpunkt-triple) against DBCIDP

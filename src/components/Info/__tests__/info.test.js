@@ -22,7 +22,7 @@ describe('test showinfo method', () => {
       infoId: 'not_valid'
     };
     showInfo(ctx, ctx, next);
-    expect(next).toBeCalled();
-    expect(ctx.render).not.toBeCalled();
+    expect(next).toHaveBeenCalled();
+    expect(ctx.render).not.toHaveBeenCalled();
   });
 });

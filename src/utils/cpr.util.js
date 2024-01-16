@@ -3,6 +3,7 @@
  */
 
 import {CONFIG} from './config.util';
+
 const localIdAgencies = CONFIG.localIdAgencies.replace(/[^\d]+/g, ' ').trim().split(' ');
 
 /** true if the agency has userids that can be a cpr
@@ -87,4 +88,16 @@ export function isValidDate(ddmmyy) {
   const mm = ddmmyy.substr(2, 2) || '00';
   const d = new Date(ddmmyy.substr(4, 2), mm - 1, ddmmyy.substr(0, 2));
   return d && d.getMonth() + 1 === parseInt(mm, 10);
+}
+
+/**  Normalize what looks like a cpr.
+ * If userId contains 10 digits, ignoring space and hyphen, then use the cpr-normalized id
+ *
+ * @param userId {string}
+ * @returns {string}
+ */
+export function trimPossibleCpr(userId) {
+  const digits = (userId.match(/\d/g) || []).join('');
+  const stripped = (userId.match(/[^ -]/g) || []).join('');
+  return (stripped.length === 10 && digits.length === 10 && isValidCpr(digits)) ? stripped : userId;
 }

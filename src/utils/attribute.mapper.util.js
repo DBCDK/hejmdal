@@ -10,7 +10,11 @@ import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
 import {getClientInfoByToken} from '../components/Smaug/smaug.component';
-import {fetchDbcidpAuthorize, getDbcidpAgencyRightsAsFors, checkAgencyForProduct} from '../components/DBCIDP/dbcidp.client';
+import {
+  getDbcidpAuthorize,
+  getDbcidpAgencyRightsAsFors,
+  checkAgencyForProduct
+} from '../components/DBCIDP/dbcidp.component';
 
 const removeAttributeAgencies = CONFIG.removeAttributeAgencies;
 
@@ -105,7 +109,7 @@ export async function mapCulrResponse(
       try {
         if (['dbcidp', 'dbcidpUniqueId', 'dbcidpUserInfo', 'dbcidpRoles'].includes(field)) {
           if (!dbcidpAuthorize) {
-            dbcidpAuthorize = await fetchDbcidpAuthorize(accessToken, user);
+            dbcidpAuthorize = await getDbcidpAuthorize(accessToken, user);
           }
         }
         switch (field) {
