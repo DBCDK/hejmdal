@@ -3,33 +3,20 @@
  *
  */
 import {log} from '../../utils/logging.util';
-import {looksLikeAUserId} from '../../utils/userId.util';
-import {borchkUserIdIsGlobal, isValidCpr} from '../../utils/cpr.util';
+import {getUniloginUrl, uniloginCallback} from '../UniLogin/unilogin.component';
 import {
-  getUniloginUrl,
-  validateUniloginTicket
-} from '../UniLogin/unilogin.component';
-import {
+  createUniloginOidcCodes,
   getUniloginOidcUrl,
-  validateUniloginOidcTicket,
-  createUniloginOidcCodes
+  uniloginOidcCallback
 } from '../UniloginOIDC/uniloginOIDC.component';
-import {
-  getGateWayfLoginResponse,
-  getGateWayfLoginUrl
-} from '../GateWayf/gatewayf.component';
-import {
-  getListOfAgenciesForFrontend,
-  getAgency
-} from '../../utils/vipCore.util';
-import {validateIdpUser} from '../DBCIDP/dbcidp.client';
+import {getGateWayfLoginUrl, nemloginCallback, wayfCallback} from '../GateWayf/gatewayf.component';
+import {getAgency, getListOfAgenciesForFrontend} from '../../utils/vipCore.util';
 import {getText, setLoginReplacersFromAgency} from '../../utils/text.util';
 import buildReturnUrl from '../../utils/buildReturnUrl.util';
 import _ from 'lodash';
-import {validateUserInLibrary} from '../Borchk/borchk.component';
-import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {ERRORS} from '../../utils/errors.util';
-import {getAgencyByCpr} from '../Culr/culr.component';
+import {borchkCallback} from '../Borchk/borchk.component';
+import {dbcidpCallback} from '../DBCIDP/dbcidp.component';
 
 /**
  * Returns Identityprovider screen if user is not logged in.
@@ -167,211 +154,6 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 }
 
 /**
- * Parses the callback parameters for borchk. Parameters from form comes as post
- *
- * @param req
- * @param res
- * @returns {*}
- */
-export async function borchkCallback(req, res) {
-  const requestUri = req.getState().serviceClient.borchkServiceName;
-  const formData = req.fakeBorchkPost || req.body;
-  const userId = formData && formData.loginBibDkUserId ? trimPossibleCpr(formData.loginBibDkUserId.trim(' ')) : null;
-  formData.userId = userId;
-  let validated = {error: true, message: 'unknown_error'};
-
-  if (userId) {
-    if (formData.agency && formData.pincode) {
-      validated = await validateUserInLibrary(requestUri, formData);
-    } else {
-      validated.message = ERRORS.missing_fields;
-    }
-  }
-
-  if (!validated.error) {
-    await blockLogin.clearFailedUser(userId, formData.agency);
-    await blockLogin.clearFailedIp(req.ip);
-    const user = {
-      userId: userId,
-      cpr: (borchkUserIdIsGlobal(formData.agency) && isValidCpr(userId)) ? userId : null,
-      userType: 'borchk',
-      agency: formData.agency,
-      pincode: formData.pincode,
-      userValidated: true
-    };
-    if (formData.setStickyAgency) {
-      const decadeInMs = 315360000000; // 1000*60*60*24*365*10 - close to 10 years
-      res.cookie('stickyAgency', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
-    }
-    req.session.rememberMe = formData.rememberMe;
-    req.setUser(user);
-    return true;
-  }
-  blockClientUntilTime(
-    res,
-    await blockLogin.toManyLoginsFromIp(req.ip, validated.message)
-  );
-  const blockToTime = await blockLogin.toManyLoginsFromUser(
-    userId,
-    formData.agency,
-    validated.message
-  );
-  if (blockToTime) {
-    validated.message = 'tmul';
-    blockClientUntilTime(res, blockToTime);
-  } else {
-    if (validated.message === 'bonfd' && !looksLikeAUserId(userId)) {
-      validated.message = 'bonui';
-    }
-    identityProviderValidationFailed(
-      req,
-      res,
-      validated,
-      formData.agency,
-      Math.min(
-        await blockLogin.getLoginsLeftUserId(userId, formData.agency),
-        await blockLogin.getLoginsLeftIp(req.ip)
-      )
-    );
-  }
-  return false;
-}
-
-/**
- * Parses the callback parameters for netpunkt and dbcidp. Parameters from form comes as post
- *
- * @param req
- * @param res
- * @param idpName
- * @returns {*}
- */
-export async function dbcidpCallback(req, res, idpName) {
-  const formData = req.fakeNetpunktPost || req.body;
-  const trimmedGroupId = formData.loginBibDkGroupId.toLowerCase().replace('dk-', '');
-  const validated = {error: true, message: 'unknown_error'};
-
-  const userId = formData.loginBibDkUserId;
-  const groupId = trimmedGroupId;
-  const password = formData.loginBibDkPassword;
-
-  if (userId && groupId && password) {
-    const isValid = await validateIdpUser(userId, groupId, password);
-
-    if (isValid) {
-      const user = {
-        userId: userId,
-        userType: idpName,
-        agency: groupId,
-        password: password,
-        userValidated: true
-      };
-
-      // Set user session
-      return req.setUser(user);
-    }
-    validated.message = 'fimis';
-  } else {
-    validated.message = 'fieldValidationErrors';
-  }
-  identityProviderValidationFailed(req, res, validated, groupId);
-  return false;
-}
-
-/**
- * Parses the callback parameters for unilogin.
- *
- * @param {object} req
- */
-export async function uniloginCallback(req) {
-  let userId = null;
-  if (validateUniloginTicket(req.query)) {
-    userId = req.query.user;
-  } else {
-    identityProviderValidationFailed(req);
-  }
-
-  req.setUser({
-    userId: userId,
-    userType: 'unilogin',
-    uniloginId: userId
-  });
-
-  return req;
-}
-
-/** Pick data elements aktoer_gruppe and uniid from the unilogin OIDC ticket
- * Some of the elements is specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336
- *
- * aktoer_gruppe is the user type, test users found with Elev and Medarbejder (and Kontakt)
- * - Fra STIL: Medarbejder og "lærer" mappes begge til "Medarbejder"
- * uniid looks like some internal non crypted user id and unique
- * - Fra STIL: uniid er unikt for brugeren, personen og kan benyttes til unik identifikation.
- *             en bruger i unilogin beholder sit uniid i hele brugerens levetid i vores system.
- *             Hvis en bruger slettes går der stadig minimum 1 år før vi fjerner tilknytningen til uniid, og uniid er helt unikt
- *
- * @param req
- * @returns {Promise<*>}
- */
-export async function uniloginOidcCallback(req) {
-  let userId = null;
-  let aktoer_gruppe = null;
-  let uniid = null;
-  const oidcResult = await validateUniloginOidcTicket(req);
-  if (oidcResult && oidcResult.uniid) {
-    userId = oidcResult.uniid;
-    aktoer_gruppe = oidcResult.aktoer_gruppe ?? null;
-    uniid = oidcResult.uniid ?? null;
-  } else {
-    identityProviderValidationFailed(req);
-  }
-
-  req.setUser({
-    userId: userId,
-    userType: 'unilogin_oidc',
-    uniloginId: userId,
-    aktoer_gruppe: aktoer_gruppe,
-    uniid: uniid
-  });
-
-  return req;
-}
-
-/**
- * Parses the callback parameters for nemlogin (via gatewayf).
- *
- * @param req
- */
-export async function nemloginCallback(req) {
-  const response = await getGateWayfLoginResponse(req, 'nemlogin');
-  const cpr = isValidCpr(response.userId) ? response.userId : null;
-  const agency = (await getAgencyByCpr(cpr)) || null;
-
-  req.setUser({
-    userId: response.userId,
-    cpr,
-    userType: 'nemlogin',
-    agency
-  });
-
-  return req;
-}
-
-/**
- * Parses the call parameters for wayf (via gatewayf)
- * @param req
- */
-export async function wayfCallback(req) {
-  const response = await getGateWayfLoginResponse(req, 'wayf');
-
-  req.setUser({
-    userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
-    wayfId: response.wayfId,
-    userType: 'wayf'
-  });
-
-  return req;
-}
-/**
  * Callback function from external identityproviders
  *
  * @param {Object} req
@@ -443,7 +225,7 @@ export async function identityProviderCallback(req, res) {
  * @param loginsLeft number
  *
  */
-function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
+export function identityProviderValidationFailed(req, res, error, agency, loginsLeft) {
   const agencyParameter = req.getState().serviceAgency
     ? '&agency=' + req.getState().serviceAgency
     : '';
@@ -568,27 +350,6 @@ export default function userIsLoggedIn(req) {
 }
 
 /**
- * Show blocked page
- *
- * @param res
- * @param blockToTime
- */
-function blockClientUntilTime(res, blockToTime) {
-  const now = new Date();
-  const blocked = blockToTime ? new Date(blockToTime) : now;
-  if (blocked > now) {
-    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / 60000);
-    const minutesTxt =
-      'Login blokeret i ' +
-      blockMinutes +
-      ' minut' +
-      (blockMinutes !== 1 ? 'ter.' : '.');
-    res.status(429);
-    res.render('Blocked', {error: minutesTxt});
-  }
-}
-
-/**
  * Returns the valid identityproviders a user is logged in with.
  *
  * @param req
@@ -637,16 +398,5 @@ function adjustLibraryType(branches, addLibraryType, addLibraries) {
       });
     });
   }
-}
-/**  Normalize what looks like a cpr.
- * If userId contains 10 digits, ignoring space and hyphen, then use the cpr-normalized id
- *
- * @param userId {string}
- * @returns {string}
- */
-export function trimPossibleCpr(userId) {
-  const digits = (userId.match(/\d/g) || []).join('');
-  const stripped = (userId.match(/[^ -]/g) || []).join('');
-  return (stripped.length === 10 && digits.length === 10 && isValidCpr(digits)) ? stripped : userId;
 }
 

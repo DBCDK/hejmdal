@@ -6,6 +6,10 @@
 import {getClient} from './borchk.client';
 import {log} from '../../utils/logging.util';
 import {ERRORS} from '../../utils/errors.util';
+import {identityProviderValidationFailed} from '../Identityprovider/identityprovider.component';
+import * as blockLogin from '../BlockLogin/blocklogin.component';
+import {borchkUserIdIsGlobal, isValidCpr, trimPossibleCpr} from '../../utils/cpr.util';
+import {looksLikeAUserId} from '../../utils/userId.util';
 
 /**
  * Validate a user against a given library, using the borchk service
@@ -136,4 +140,96 @@ function extractInfo(response, retries = 0, requesterInfo) {
   }
 
   return statusResponse;
+}
+
+/**
+ * Parses the callback parameters for borchk. Parameters from form comes as post
+ *
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+export async function borchkCallback(req, res) {
+  const requestUri = req.getState().serviceClient.borchkServiceName;
+  const formData = req.fakeBorchkPost || req.body;
+  const userId = formData && formData.loginBibDkUserId ? trimPossibleCpr(formData.loginBibDkUserId.trim(' ')) : null;
+  formData.userId = userId;
+  let validated = {error: true, message: 'unknown_error'};
+
+  if (userId) {
+    if (formData.agency && formData.pincode) {
+      validated = await validateUserInLibrary(requestUri, formData);
+    } else {
+      validated.message = ERRORS.missing_fields;
+    }
+  }
+
+  if (!validated.error) {
+    await blockLogin.clearFailedUser(userId, formData.agency);
+    await blockLogin.clearFailedIp(req.ip);
+    const user = {
+      userId: userId,
+      cpr: (borchkUserIdIsGlobal(formData.agency) && isValidCpr(userId)) ? userId : null,
+      userType: 'borchk',
+      agency: formData.agency,
+      pincode: formData.pincode,
+      userValidated: true
+    };
+    if (formData.setStickyAgency) {
+      const decadeInMs = 315360000000; // 1000*60*60*24*365*10 - close to 10 years
+      res.cookie('stickyAgency', formData.agency, {expires: new Date(Date.now() + decadeInMs), httpOnly: true});
+    }
+    req.session.rememberMe = formData.rememberMe;
+    req.setUser(user);
+    return true;
+  }
+  blockClientUntilTime(
+    res,
+    await blockLogin.toManyLoginsFromIp(req.ip, validated.message)
+  );
+  const blockToTime = await blockLogin.toManyLoginsFromUser(
+    userId,
+    formData.agency,
+    validated.message
+  );
+  if (blockToTime) {
+    validated.message = 'tmul';
+    blockClientUntilTime(res, blockToTime);
+  } else {
+    if (validated.message === 'bonfd' && !looksLikeAUserId(userId)) {
+      validated.message = 'bonui';
+    }
+    identityProviderValidationFailed(
+      req,
+      res,
+      validated,
+      formData.agency,
+      Math.min(
+        await blockLogin.getLoginsLeftUserId(userId, formData.agency),
+        await blockLogin.getLoginsLeftIp(req.ip)
+      )
+    );
+  }
+  return false;
+}
+
+/**
+ * Show blocked page
+ *
+ * @param res
+ * @param blockToTime
+ */
+function blockClientUntilTime(res, blockToTime) {
+  const now = new Date();
+  const blocked = blockToTime ? new Date(blockToTime) : now;
+  if (blocked > now) {
+    const blockMinutes = Math.ceil((blocked.getTime() - now.getTime()) / 60000);
+    const minutesTxt =
+      'Login blokeret i ' +
+      blockMinutes +
+      ' minut' +
+      (blockMinutes !== 1 ? 'ter.' : '.');
+    res.status(429);
+    res.render('Blocked', {error: minutesTxt});
+  }
 }

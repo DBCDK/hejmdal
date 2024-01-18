@@ -1,7 +1,6 @@
 import {
   authenticate,
-  identityProviderCallback,
-  trimPossibleCpr
+  identityProviderCallback
 } from '../identityprovider.component';
 import {mockContext} from '../../../utils/test.util';
 import moment from 'moment';
@@ -125,12 +124,5 @@ describe('test identityProviderCallback method', () => {
     };
     await identityProviderCallback(ctx, ctx, next);
     expect(ctx.getUser()).toEqual(expected);
-  });
-
-  it('Should normalize cpr with -', async () => {
-    expect(trimPossibleCpr('123456-1234')).toEqual('123456-1234');
-    expect(trimPossibleCpr('121212-123')).toEqual('121212-123');
-    expect(trimPossibleCpr('121212-1234')).toEqual('1212121234');
-    expect(trimPossibleCpr('12 12 12-1234')).toEqual('1212121234');
   });
 });

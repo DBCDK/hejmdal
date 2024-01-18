@@ -7,10 +7,12 @@ import {log} from '../../utils/logging.util';
 import KeyValueStorage from '../../models/keyvalue.storage.model';
 import PersistentTicketStorage from '../../models/GateWayfTicket/gatewayfticket.persistent.storage.model';
 import {
+  getMockedGateWayfLoginResponse,
   getMockedGateWayfLoginUrl,
-  getMockedGateWayfLogoutUrl,
-  getMockedGateWayfLoginResponse
+  getMockedGateWayfLogoutUrl
 } from './mock/gatewayf.mock';
+import {isValidCpr} from '../../utils/cpr.util';
+import {getAgencyByCpr} from '../Culr/culr.component';
 
 /**
  * Retrieving gatewayf response through co-body module
@@ -142,4 +144,40 @@ function getLiveGateWayfLogoutUrl() {
   const returnUrl = encodeURIComponent(`${CONFIG.app.host}/logout`);
 
   return `${base}?op=logout&returnUrl=${returnUrl}`;
+}
+
+/**
+ * Parses the callback parameters for nemlogin (via gatewayf).
+ *
+ * @param req
+ */
+export async function nemloginCallback(req) {
+  const response = await getGateWayfLoginResponse(req, 'nemlogin');
+  const cpr = isValidCpr(response.userId) ? response.userId : null;
+  const agency = (await getAgencyByCpr(cpr)) || null;
+
+  req.setUser({
+    userId: response.userId,
+    cpr,
+    userType: 'nemlogin',
+    agency
+  });
+
+  return req;
+}
+
+/**
+ * Parses the call parameters for wayf (via gatewayf)
+ * @param req
+ */
+export async function wayfCallback(req) {
+  const response = await getGateWayfLoginResponse(req, 'wayf');
+
+  req.setUser({
+    userId: response.userId || response.wayfId, // If userId ist not set we have to use wayfId as userId #190
+    wayfId: response.wayfId,
+    userType: 'wayf'
+  });
+
+  return req;
 }

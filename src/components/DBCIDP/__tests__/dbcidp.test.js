@@ -1,4 +1,5 @@
-import {fetchSubscribersByProduct, checkAgencyForProduct, fetchDbcidpAuthorize} from '../dbcidp.client';
+import {fetchSubscribersByProduct, fetchDbcidpAuthorize} from '../dbcidp.client';
+import {checkAgencyForProduct} from '../dbcidp.component';
 import {CONFIG} from '../../../utils/config.util';
 
 describe('Test DBCIDP', () => {
