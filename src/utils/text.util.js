@@ -138,9 +138,9 @@ const helpTexts = {
         ]
       },
       {
-        header: 'CPR- og lånernummer / BrugerID',
+        header: 'CPR / Lånernummer / BrugerID',
         texts: [
-          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit CPR-/lånernummer/BrugerID i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Nogle biblioteker har en anden type BrugerID (fx e-mail), spørg evt. på dit bibliotek, hvis du er i tvivl. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
+          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit CPR, Lånernummer eller BrugerID i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Nogle biblioteker har en anden type BrugerID (fx e-mail), spørg evt. på dit bibliotek, hvis du er i tvivl. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
         ]
       },
       {
@@ -196,7 +196,7 @@ const helpTexts = {
       {
         header: 'Kundeservice',
         texts: [
-          'Oplever du fejl i forbindelse med login, kan du kontakte kundeservice.dbc.dk'
+          'Oplever du fejl i forbindelse med login, kan du kontakte <a href="https://kundeservice.dbc.dk/kontakt" target="DBCKundeservice">kundeservice.dbc.dk</a>'
         ]
       }
     ]
