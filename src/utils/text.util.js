@@ -138,15 +138,15 @@ const helpTexts = {
         ]
       },
       {
-        header: 'CPR- og lånernummer',
+        header: 'CPR- og lånernummer / BrugerID',
         texts: [
-          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit CPR- eller lånernummer i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
+          'Du skal være oprettet som bruger på biblioteket for at kunne logge ind. Du kan skrive dit CPR-/lånernummer/BrugerID i feltet. Dit lånernummer står på det lånerkort, du har fået udleveret på biblioteket, da du blev oprettet. Nogle biblioteker har en anden type BrugerID (fx e-mail), spørg evt. på dit bibliotek, hvis du er i tvivl. Hvis du ikke er oprettet som låner, kan du se hvordan på bibliotekets hjemmeside eller oprette dig direkte ved at trykke på ’Opret bruger’ ved siden af log ind-knappen.'
         ]
       },
       {
         header: 'Pinkode',
         texts: [
-          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner. Alternativt kan du logge ind på dit lokale folkebibliotek med MitID og oprette en ny pinkode under brugerprofil.'
+          'Pinkoden er den kode, som du bruger, når du låner på biblioteket. Hvis du ikke kan huske din kode, kan du henvende dig på det bibliotek, hvor du er oprettet som låner. Alternativt kan du logge ind på dit lokale bibliotek med MitID og oprette en ny pinkode under brugerprofil.'
         ]
       }
     ]
@@ -157,7 +157,7 @@ const helpTexts = {
       {
         header: 'MitID',
         texts: [
-          'Vælg MitID, hvis du vil logge ind ved hjælp af MitID med brug af dit nøglekort. Du vil blive viderestillet til MitID. Når du er logget ind der, bliver du stillet tilbage til den side, du var ved at logge ind på.'
+          'Vælg MitID, hvis du vil logge ind ved hjælp af MitID med brug af dit nøglekort/din app på telefonen. Du vil blive viderestillet til MitID. Når du er logget ind der, bliver du stillet tilbage til den side, du var ved at logge ind på.'
         ]
       }
     ]
