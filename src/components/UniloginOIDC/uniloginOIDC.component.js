@@ -167,7 +167,7 @@ export async function uniloginOidcCallback(req) {
       userId: oidcResult.uniid,
       uniid: oidcResult.uniid,
       aktoer_gruppe: oidcResult.aktoer_gruppe ?? null,
-      userHasLicense: oidcResult.userHasLicense ?? null,
+      userHasLicense: oidcResult.userHasLicense === 'true',
       institutionIds: oidcResult.institutionIds ?? null
     });
   } else {
