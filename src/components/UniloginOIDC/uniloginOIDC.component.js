@@ -160,25 +160,24 @@ function randomString(length) {
  * @returns {Promise<*>}
  */
 export async function uniloginOidcCallback(req) {
-    let userId = null;
-    let aktoer_gruppe = null;
-    let uniid = null;
-    const oidcResult = await validateUniloginOidcTicket(req);
+  let userId = null;
+  let aktoer_gruppe = null;
+  let uniid = null;
+  let userHasLicense = null;
+  let institutionIds = null;
+  const oidcResult = await validateUniloginOidcTicket(req);
     if (oidcResult && oidcResult.uniid) {
-        userId = oidcResult.uniid;
-        aktoer_gruppe = oidcResult.aktoer_gruppe ?? null;
-        uniid = oidcResult.uniid ?? null;
+      req.setUser({
+        userType: 'unilogin_oidc',
+        userId: oidcResult.uniid,
+        uniid: oidcResult.uniid,
+        aktoer_gruppe: oidcResult.aktoer_gruppe ?? null,
+        userHasLicense: oidcResult.userHasLicense ?? null,
+        institutionIds: oidcResult.institutionIds ?? null
+      });
     } else {
         identityProviderValidationFailed(req);
     }
-
-    req.setUser({
-        userId: userId,
-        userType: 'unilogin_oidc',
-        uniloginId: userId,
-        aktoer_gruppe: aktoer_gruppe,
-        uniid: uniid
-    });
 
     return req;
 }

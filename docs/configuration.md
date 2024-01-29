@@ -38,6 +38,14 @@ The following is a full list of possible configuration options
       "name": "Brugerens unilogin type",
       "description": "Udleveret fra OIDC unilogin parameteren aktoer_gruppe"
     },
+    "uniloginHasLicense": {
+      "name": "Brugerens licensforhold (boolean)",
+      "description": "Udleveret fra OIDC unilogin parameteren userHasLicense"
+    },
+    "uniloginInstitutionIds": {
+      "name": "Brugerens institutioner (array af ids eller null)",
+      "description": "Udleveret fra OIDC unilogin parameteren institutionIds"
+    },
     "municipality": {
       "name": "Kommunenummer",
       "description": "3 cifret kommunenummer"
