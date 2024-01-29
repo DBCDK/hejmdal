@@ -104,6 +104,14 @@ export const ATTRIBUTES = {
     name: 'Brugerens unilogin type',
     description: 'Udleveret fra OIDC unilogin parameteren aktoer_gruppe'
   },
+  uniloginHasLicense: {
+    name: 'Brugerens licensforhold (boolean)',
+    description: 'Udleveret fra OIDC unilogin parameteren userHasLicense'
+  },
+  uniloginInstitutionIds: {
+    name: 'Brugerens institutioner (array af ids eller null)',
+    description: 'Udleveret fra OIDC unilogin parameteren institutionIds'
+  },
   uniLoginInstitutions: {
     name: 'List of unilogin institutions a user is connected to'
   }
