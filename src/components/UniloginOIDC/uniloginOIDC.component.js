@@ -147,7 +147,8 @@ function randomString(length) {
 }
 
 /** Pick data elements aktoer_gruppe and uniid from the unilogin OIDC ticket
- * Some of the elements is specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336
+ * Some of the elements is specified in https://viden.stil.dk/pages/viewpage.action?pageId=161059336 and
+ *                                      https://viden.stil.dk/display/OFFSKOLELOGIN/Tilslut+OIDC
  *
  * aktoer_gruppe is the user type, test users found with Elev and Medarbejder (and Kontakt)
  * - Fra STIL: Medarbejder og "lærer" mappes begge til "Medarbejder"
