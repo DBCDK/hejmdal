@@ -155,6 +155,9 @@ function randomString(length) {
  * - Fra STIL: uniid er unikt for brugeren, personen og kan benyttes til unik identifikation.
  *             en bruger i unilogin beholder sit uniid i hele brugerens levetid i vores system.
  *             Hvis en bruger slettes går der stadig minimum 1 år før vi fjerner tilknytningen til uniid, og uniid er helt unikt
+ * - Fra STIL: Institutions_ids burde nu blive returneret dog kun for testbrugere der har licens. Dette skyldes at claimet
+ *             er et GivAdgang specifikt felt og kun institutioner som brugeren er tilknyttet OG har licens til returneres
+ *
  *
  * @param req
  * @returns {Promise<*>}
@@ -167,8 +170,8 @@ export async function uniloginOidcCallback(req) {
       userId: oidcResult.uniid,
       uniid: oidcResult.uniid,
       aktoer_gruppe: oidcResult.aktoer_gruppe ?? null,
-      userHasLicense: oidcResult.userHasLicense === 'true',
-      institutionIds: oidcResult.institutionIds ?? null
+      has_license: oidcResult.has_license === 'true',
+      institution_ids: oidcResult.institution_ids ?? null
     });
   } else {
     identityProviderValidationFailed(req);

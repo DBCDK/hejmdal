@@ -172,11 +172,11 @@ describe('Test Smaug component', () => {
         },
         uniloginHasLicense: {
           name: 'Brugerens licensforhold (boolean)',
-          description: 'Udleveret fra OIDC unilogin parameteren userHasLicense'
+          description: 'Udleveret fra OIDC unilogin parameteren has_license'
         },
         uniloginInstitutionIds: {
           name: 'Brugerens institutioner (array af ids eller null)',
-          description: 'Udleveret fra OIDC unilogin parameteren institutionIds'
+          description: 'Udleveret fra OIDC unilogin parameteren institution_ids'
         },
         uniLoginInstitutions: {
           name: 'List of unilogin institutions a user is connected to'
