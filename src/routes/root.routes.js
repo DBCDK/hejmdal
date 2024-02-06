@@ -10,7 +10,7 @@ const router = Router();
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 import sanityCheck from '../utils/sanityCheck.util';
 import {log} from '../utils/logging.util';
-import {requestNewPassword} from '../components/DBCIDP/dbcidp.client';
+import {requestNewPassword, requestChangePassword, requestValidatePassword} from '../components/DBCIDP/dbcidp.client';
 
 router.get('/', renderFrontPage);
 
@@ -28,12 +28,42 @@ router.get('/health', async (req, res) => {
   res.status(status);
   res.send(health);
 });
+
 router.post('/newpassword', async (req, res) => {
   let {agencyId, identity} = req.body;
 
   const pwRequestSent = await requestNewPassword({
     identity,
     agencyId
+  });
+  let status = 200;
+  res.status(status);
+  // close modal from here or go to a received page
+  res.send(pwRequestSent);
+});
+
+router.post('/changepassword', async (req, res) => {
+  let {agencyId, identity, currPass, newPass} = req.body;
+
+  const pwRequestSent = await requestChangePassword({
+    identity,
+    agencyId,
+    password: currPass,
+    newPassword: newPass
+  });
+  let status = 200;
+  res.status(status);
+  // close modal from here or go to a received page
+  res.send(pwRequestSent);
+});
+
+router.post('/validatepassword', async (req, res) => {
+  let {agencyId, identity, newPass} = req.body;
+
+  const pwRequestSent = await requestValidatePassword({
+    identity,
+    agencyId,
+    password: newPass
   });
   let status = 200;
   res.status(status);

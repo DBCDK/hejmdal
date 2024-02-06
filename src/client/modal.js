@@ -26,12 +26,13 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
     dimmer.classList.add('visible');
     modal.classList.add('visible');
     modal.removeAttribute('aria-hidden');
-    // focus modal (fx. use of arrow keys) -  bypassing this with forgotModal
-    if (!modal.getElementsByClassName('forgotPw-body')[0]) {
+    // focus modal (fx. use of arrow keys) -  bypassing this with forgotModal and changeModal
+    if (modal.getElementsByClassName('forgotPw-body')[0]) {
+      document.getElementById('agencyId').focus();
+    } else if (modal.getElementsByClassName('changePw-body')[0]) {
+      document.getElementById('agencyIdChangePassword').focus();
+  } else {
       modal.getElementsByClassName('modal-body')[0].focus();
-    } else {
-      var agencyIdInput = document.getElementById('agencyId');
-      agencyIdInput.focus();
     }
     return;
   }
