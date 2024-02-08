@@ -127,7 +127,6 @@ script.
           console.log('change result data', data);
           if (data.message !== 'OK200') {
             var errorMessage = data.message.split(',');
-            console.log('errorMessage', errorMessage);
             let passwordMsg = [];
             errorMessage.forEach((err) => {
               if (passwordErrorText[err]) passwordMsg.push(passwordErrorText[err]);
@@ -149,7 +148,7 @@ script.
               agencyIdChangePasswordInput.focus();
             }
             else {
-              responseMessagePwChange.textContent = 'Noget gik galt. Adgangskoden er ikke ændret (' . errorMessage.join('; ') . ')';
+              responseMessagePwChange.textContent = 'Noget gik galt. Adgangskoden er ikke ændret (' + errorMessage.join('; ') + ')';
               messageContainerPwChange.style.display = 'block';
               messageContainerPwChange.style.color = 'var(--error)';
               agencyIdChangePasswordInput.focus();
