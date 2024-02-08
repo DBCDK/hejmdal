@@ -1,0 +1,228 @@
+script.
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const identityErrorText = {
+      ILLEGAL_AGENCYID: 'Ukendt Biblioteksnummer',
+      ILLEGAL_AGENCYID_REVERSED: 'Ukendt Biblioteksnummer',
+      ILLEGAL_AGENCYID_MISSING: 'Ukendt Biblioteksnummer',
+      ILLEGAL_ACCESSPROFILE_MISSING: 'Ukendt Biblioteksnummer, Bruger Id eller Adgangskode',
+      ILLEGAL_INVALID_USER: 'Ukendt Biblioteksnummer, Bruger Id eller Adgangskode'
+    }
+    const passwordErrorText = {
+      TOO_SHORT: 'Den nye adgangskode er for kort',
+      ILLEGAL_QWERTY_SEQUENCE: 'Adgangskoden er for simpel - uheldig tegn sekvens',
+      ILLEGAL_NUMERICAL_SEQUENCE: 'Adgangskoden er for simpel - uheldig numerisk sekvens',
+      ILLEGAL_ALPHABETICAL_SEQUENCE: 'Adgangskoden er for simpel - uheldig tegn sekvens',
+      ILLEGAL_PASSWORD_REUSE: 'Adgangskoden er brugt tidligere'
+    }
+    var activeErrorField = '';
+    var identityChangePasswordInput = document.getElementById('identityChangePassword');
+    var agencyIdChangePasswordInput = document.getElementById('agencyIdChangePassword');
+    var currPassInput = document.getElementById('currPass');
+    var newPassInput = document.getElementById('newPass');
+    var checkPassInput = document.getElementById('checkPass');
+    var messageContainerPwChange = document.getElementById('change-pw-message-container');
+    var responseMessagePwChange = document.getElementById('change-pw-response-message');
+    var closeButton = document.querySelector('.changePw-close-button');
+
+    if (agencyIdChangePasswordInput) {
+      agencyIdChangePasswordInput.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity("Feltet skal udfyldes");
+      });
+
+      agencyIdChangePasswordInput.addEventListener('input', function(e) {
+        e.target.setCustomValidity("");
+      });
+
+      agencyIdChangePasswordInput.addEventListener('input', function (e) {
+        // Pad with zeros if necessary
+        e.target.value = e.target.value.substring(0, 6);
+
+        // Clear any custom validity message
+        e.target.setCustomValidity("");
+      });
+
+      agencyIdChangePasswordInput.addEventListener('blur', function (e) {
+        // Pad with zeros if necessary
+        e.target.value = e.target.value.padStart(6, '0');
+      });
+    }
+
+    if (identityChangePasswordInput) {
+      identityChangePasswordInput.addEventListener('input', function(e) {
+        e.target.setCustomValidity("");
+      });
+
+      identityChangePasswordInput.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity("Feltet skal udfyldes");
+      });
+    }
+
+    if (currPassInput) {
+      currPassInput.addEventListener('input', function(e) {
+        e.target.setCustomValidity("");
+      });
+
+      currPassInput.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity("Feltet skal udfyldes");
+      });
+    }
+
+    if (newPassInput) {
+      newPassInput.addEventListener('input', function(e) {
+        e.target.setCustomValidity("");
+      });
+
+      newPassInput.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity("Feltet skal udfyldes");
+      });
+    }
+
+    if (checkPassInput) {
+      checkPassInput.addEventListener('input', function(e) {
+        e.target.setCustomValidity("");
+      });
+
+      checkPassInput.addEventListener('invalid', function(e) {
+        e.target.setCustomValidity("Feltet skal udfyldes");
+      });
+    }
+
+    if (closeButton) {
+      closeButton.addEventListener('click', function(e) {
+        messageContainerPwChange.style.display = "none";
+      });
+    }
+
+    document.getElementById('changepw-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (activeErrorField) {
+        document.getElementById(activeErrorField).textContent = '';
+        activeErrorField = '';
+      }
+      if (newPassInput.value !== checkPassInput.value) {
+        activeErrorField = 'newPass-text';
+        document.getElementById(activeErrorField).textContent = 'Gl. og Ny adgangskode er forskellige';
+        document.getElementById(activeErrorField).style.color = 'var(--error)';
+        newPassInput.focus();
+      }
+      else {
+        var data = {
+          'agencyId': agencyIdChangePasswordInput.value,
+          'identity': identityChangePasswordInput.value,
+          'currPass': currPassInput.value,
+          'newPass': newPassInput.value
+        };
+        console.log('change data', data);
+
+        fetch('/changepassword', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('change result data', data);
+          if (data.message !== 'OK200') {
+            var errorMessage = data.message.split(',');
+            console.log('errorMessage', errorMessage);
+            let passwordMsg = [];
+            errorMessage.forEach((err) => {
+              if (passwordErrorText[err]) passwordMsg.push(passwordErrorText[err]);
+            });
+            let identityMsg = [];
+            errorMessage.forEach((err) => {
+              if (identityErrorText[err]) identityMsg.push(identityErrorText[err]);
+            });
+            if (passwordMsg.length) {
+              activeErrorField = 'newPass-text';
+              document.getElementById(activeErrorField).textContent = passwordMsg.join('; ');
+              document.getElementById(activeErrorField).style.color = 'var(--error)';
+              newPassInput.focus();
+            }
+            else if (identityMsg.length) {
+              activeErrorField = 'agencyIdChangePassword-text';
+              document.getElementById(activeErrorField).textContent = identityMsg.join('; ')
+              document.getElementById(activeErrorField).style.color = 'var(--error)';
+              agencyIdChangePasswordInput.focus();
+            }
+            else {
+              responseMessagePwChange.textContent = 'Noget gik galt. Adgangskoden er ikke ændret (' . errorMessage.join('; ') . ')';
+              messageContainerPwChange.style.display = 'block';
+              messageContainerPwChange.style.color = 'var(--error)';
+              agencyIdChangePasswordInput.focus();
+            }
+          }
+          else {
+            toggleModal('changeModal');
+            var messageContainer = document.getElementById('message-container');
+            var responseMessage = document.getElementById('response-message');
+            responseMessage.textContent = 'Adgangskoden er ændret.'
+            messageContainer.style.display = "block";
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
+    });
+  });
+
+div(id="changeModal" class="modal changePw" aria-hidden="true")
+  div.changePw-header
+    button(type="button" tabindex="51" onclick='toggleModal("changeModal")')
+
+  div.changePw-body
+    span(id='logo' class='')
+      include ../../Components/logo
+      h1 Skift adgangskode
+    div#netpunkt
+      div#change-pw-message-container.changePw-message-container
+        div.changePw-close-button X
+        div#change-pw-response-message
+      form(autocomplete='off' method='post' id='changepw-form')
+        div.form-group
+          label(for='agencyIdChangePassword')  Biblioteksnummer*
+          div.input-container
+            div(class='input-prefix' tabindex="-1") DK-
+            input(type='text' class='form-control' id='agencyIdChangePassword' data-cy='agencyIdChangePassword' name='agencyIdChangePassword' tabindex='50' required)
+          span(id='agencyIdChangePassword-text' data-text='')
+
+        div.form-group
+          label(for='identityChangePassword') Bruger ID*
+          div.input-container
+            input(type='text' class='form-control' id='identityChangePassword' data-cy='identityChangePassword' name='identityChangePassword' tabindex='50' required)
+          span(id='identityChangePassword-text' data-text='')
+
+        div.form-group
+          label(for='currPass') Gl. adgangskode*
+          div.input-container
+            input(type='text' class='form-control' id='currPass' data-cy='currPass' name='currPass' tabindex='50' required)
+          span(id='currPass-text' data-text='')
+
+        div.form-group
+          label(for='newPass') Ny adgangskode*
+          div.input-container
+            input(type='text' class='form-control' id='newPass' data-cy='newPass' name='newPass' tabindex='50' required)
+          span(id='newPass-text' data-text='test newPass-text')
+
+        div.form-group
+          label(for='checkPass') Gentag ny adgangskode*
+          div.input-container
+            input(type='text' class='form-control' id='checkPass' data-cy='checkPass' name='checkPass' tabindex='50' required)
+          span(id='checkPass-text' data-text='')
+
+          div.required * Påkrævet
+
+          if error
+            div#error-container(tabindex="15")
+              include ../../Components/Error
+
+        div.action-container
+          button(type='submit' id='changepw-submit' data-cy='changepw-submit' tabindex='50' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Skift adgangskode
+        div.changePw-note.bottom-space
+          | Har du glemt dit bruger ID? Kun brugere med personligt login kan ændre adgangskode her. Kontakt din biblioteksadministrator eller&nbsp;
+          a(href='http://kundeservice.dbc.dk' target='_blank' tabindex='50') DBCs kundeservice.
+
