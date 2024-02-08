@@ -75,4 +75,22 @@ context('Netpunkt form', () => {
     );
   });
 
+  it('Should show forgot password modal', () => {
+    cy.get('[data-cy="forgotPw"]').click();
+    cy.get('#agencyId').should('have.attr', 'type', 'text');
+    cy.get('#identity').should('have.attr', 'type', 'text');
+    cy.get('#forgotpw-submit').should('have.attr', 'type', 'submit');
+    cy.get('#forgotpw-submit').click();
+  });
+
+  it('Should show change password modal', () => {
+    cy.get('[data-cy="changePw"]').click();
+    cy.get('#agencyIdChangePassword').should('have.attr', 'type', 'text');
+    cy.get('#identityChangePassword').should('have.attr', 'type', 'text');
+    cy.get('#currPass').should('have.attr', 'type', 'text');
+    cy.get('#newPass').should('have.attr', 'type', 'text');
+    cy.get('#checkPass').should('have.attr', 'type', 'text');
+    cy.get('#changepw-submit').should('have.attr', 'type', 'submit');
+  });
+
 });

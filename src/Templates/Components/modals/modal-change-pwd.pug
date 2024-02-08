@@ -25,69 +25,6 @@ script.
     var responseMessagePwChange = document.getElementById('change-pw-response-message');
     var closeButton = document.querySelector('.changePw-close-button');
 
-    if (agencyIdChangePasswordInput) {
-      agencyIdChangePasswordInput.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity("Feltet skal udfyldes");
-      });
-
-      agencyIdChangePasswordInput.addEventListener('input', function(e) {
-        e.target.setCustomValidity("");
-      });
-
-      agencyIdChangePasswordInput.addEventListener('input', function (e) {
-        // Pad with zeros if necessary
-        e.target.value = e.target.value.substring(0, 6);
-
-        // Clear any custom validity message
-        e.target.setCustomValidity("");
-      });
-
-      agencyIdChangePasswordInput.addEventListener('blur', function (e) {
-        // Pad with zeros if necessary
-        e.target.value = e.target.value.padStart(6, '0');
-      });
-    }
-
-    if (identityChangePasswordInput) {
-      identityChangePasswordInput.addEventListener('input', function(e) {
-        e.target.setCustomValidity("");
-      });
-
-      identityChangePasswordInput.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity("Feltet skal udfyldes");
-      });
-    }
-
-    if (currPassInput) {
-      currPassInput.addEventListener('input', function(e) {
-        e.target.setCustomValidity("");
-      });
-
-      currPassInput.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity("Feltet skal udfyldes");
-      });
-    }
-
-    if (newPassInput) {
-      newPassInput.addEventListener('input', function(e) {
-        e.target.setCustomValidity("");
-      });
-
-      newPassInput.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity("Feltet skal udfyldes");
-      });
-    }
-
-    if (checkPassInput) {
-      checkPassInput.addEventListener('input', function(e) {
-        e.target.setCustomValidity("");
-      });
-
-      checkPassInput.addEventListener('invalid', function(e) {
-        e.target.setCustomValidity("Feltet skal udfyldes");
-      });
-    }
-
     if (closeButton) {
       closeButton.addEventListener('click', function(e) {
         messageContainerPwChange.style.display = "none";
@@ -100,13 +37,7 @@ script.
         document.getElementById(activeErrorField).textContent = '';
         activeErrorField = '';
       }
-      if (newPassInput.value !== checkPassInput.value) {
-        activeErrorField = 'newPass-text';
-        document.getElementById(activeErrorField).textContent = 'Gl. og Ny adgangskode er forskellige';
-        document.getElementById(activeErrorField).style.color = 'var(--error)';
-        newPassInput.focus();
-      }
-      else {
+      if (changePwSubmit(e)) {
         var data = {
           'agencyId': agencyIdChangePasswordInput.value,
           'identity': identityChangePasswordInput.value,
