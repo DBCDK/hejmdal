@@ -175,18 +175,23 @@ export async function requestNewPassword({identity, agencyId}) {
  * @returns {Promise<boolean>}
  */
 export async function requestChangePassword({identity, agencyId, password, newPassword}) {
-  const idpChangePasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/password/change';
-  const body = {identity, agencyId, password, newPassword};
-  const params = {
-    url: idpChangePasswordUri,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(body)
-  };
   try {
-    const response = await promiseRequest('post', params);
+    let response;
+    if (CONFIG.mock_externals.dbcidp) {
+      response = getMockClient(identity);
+    } else {
+      const idpChangePasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/password/change';
+      const body = {identity, agencyId, password, newPassword};
+      const params = {
+        url: idpChangePasswordUri,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      };
+      response = await promiseRequest('post', params);
+    }
     if (response.statusCode === 200) {
       return {message: 'OK200'};
     }
