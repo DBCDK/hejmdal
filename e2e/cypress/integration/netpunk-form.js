@@ -75,4 +75,60 @@ context('Netpunkt form', () => {
     );
   });
 
+  it('Should show forgot password modal', () => {
+    cy.get('[data-cy="forgotPw"]').click();
+    cy.get('#agencyId').should('have.attr', 'type', 'text');
+    cy.get('#identity').should('have.attr', 'type', 'text');
+    cy.get('#forgotpw-submit').should('have.attr', 'type', 'submit');
+    cy.get('#forgotpw-submit').click();
+  });
+
+  it('Should show change password modal', () => {
+    cy.get('[data-cy="changePw"]').click();
+    cy.get('#agencyIdChangePassword').should('have.attr', 'type', 'text');
+    cy.get('#identityChangePassword').should('have.attr', 'type', 'text');
+    cy.get('#currPass').should('have.attr', 'type', 'text');
+    cy.get('#newPass').should('have.attr', 'type', 'text');
+    cy.get('#checkPass').should('have.attr', 'type', 'text');
+    cy.get('#changepw-submit').should('have.attr', 'type', 'submit');
+    cy.get('#changepw-submit').click();
+  });
+
+  it('Should check validity of fields in change password modal', () => {
+    cy.get('[data-cy="changePw"]').click();
+    cy.get('#agencyIdChangePassword').type('1111');
+    cy.get('#identityChangePassword').type('1111');
+    cy.get('#currPass').type('1111');
+    cy.get('#newPass').type('1111');
+    cy.get('#checkPass').type('1111');
+    cy.get('#changepw-submit').click();
+    cy.get('#agencyIdChangePassword-text').should('not.be.empty');
+
+    cy.get('#agencyIdChangePassword').clear();
+    cy.get('#agencyIdChangePassword').type('111111');
+    cy.get('#checkPass').clear();
+    cy.get('#checkPass').type('11111');
+    cy.get('#changepw-submit').click();
+    cy.get('#newPass-text').should('not.be.empty');
+    cy.get('#checkPass-text').should('not.be.empty');
+
+    cy.get('#checkPass').clear();
+    cy.get('#checkPass').type('1111');
+    cy.get('#identityChangePassword').clear();
+    cy.get('#identityChangePassword').type('newPassFail');
+    cy.get('#change-pw-response-message').should('be.empty');
+    cy.get('#changepw-submit').click();
+    cy.get('#change-pw-response-message').should('not.be.empty');
+  });
+
+  it('Should check validity ok in change password modal', () => {
+    cy.get('[data-cy="changePw"]').click();
+    cy.get('#agencyIdChangePassword').type('111111');
+    cy.get('#identityChangePassword').type('newPassOk');
+    cy.get('#currPass').type('1111');
+    cy.get('#newPass').type('1111');
+    cy.get('#checkPass').type('1111');
+    cy.get('#changepw-submit').click();
+    cy.get('#change-pw-response-message').should('be.empty');
+  });
 });

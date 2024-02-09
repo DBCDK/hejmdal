@@ -150,6 +150,94 @@ export async function requestNewPassword({identity, agencyId}) {
 }
 
 /**
+ * Function to sending a request to change password
+ * returns {valid: true} or {valid: false, message: 'some_message'} where 'some_message' is one or more of
+ *   ILLEGAL_EMPTY_INPUT,
+ *   ILLEGAL_EMPTY_IDENTITY,
+ *   ILLEGAL_EMPTY_AGENCYID,
+ *   ILLEGAL_EMPTY_PASSWORD,
+ *   ILLEGAL_USERNAME,
+ *   ILLEGAL_USERNAME_REVERSED,
+ *   ILLEGAL_AGENCYID,
+ *   ILLEGAL_AGENCYID_REVERSED,
+ *   ILLEGAL_ACCESSPROFILE_MISSING,
+ *   ILLEGAL_AGENCY_MISSING,
+ *   TOO_SHORT,
+ *   ILLEGAL_QWERTY_SEQUENCE,
+ *   ILLEGAL_NUMERICAL_SEQUENCE,
+ *   ILLEGAL_ALPHABETICAL_SEQUENCE,
+ *   ILLEGAL_PASSWORD_REUSE
+ *
+ * @param identity identity, f.ex. 'netpunkt'
+ * @param agencyId agencyId, f.ex. '716700'
+ * @param password the current password
+ * @param newPassword the new password
+ * @returns {Promise<boolean>}
+ */
+export async function requestChangePassword({identity, agencyId, password, newPassword}) {
+  try {
+    let response;
+    if (CONFIG.mock_externals.dbcidp) {
+      response = getMockClient(identity);
+    } else {
+      const idpChangePasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/password/change';
+      const body = {identity, agencyId, password, newPassword};
+      const params = {
+        url: idpChangePasswordUri,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      };
+      response = await promiseRequest('post', params);
+    }
+    if (response.statusCode === 200) {
+      return {message: 'OK200'};
+    }
+    return JSON.parse(response.body);
+  } catch (error) {
+    log.error('Error changing password on DBCIDP', {
+      error: error.message,
+      stack: error.stack
+    });
+    return {message: 'ERROR_PASSWORD_CHANGE'};
+  }
+}
+
+/**
+ * Function to sending a request to check for valid new password
+ * returns {valid: true} or {valid: false, message: 'some_message'} where 'some_message' is explained above
+ *
+ * @param identity identity, f.ex. 'netpunkt'
+ * @param agencyId agencyId, f.ex. '716700'
+ * @param password the password to validate
+ * @returns {Promise<boolean>}
+ */
+export async function requestValidatePassword({identity, agencyId, password}) {
+  const idpValidatePasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/password/validate';
+  const body = {identity, agencyId, password};
+  const params = {
+    url: idpValidatePasswordUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  try {
+    const response = await promiseRequest('post', params);
+    return JSON.parse(response.body);
+  } catch (error) {
+    log.error('Error changing password on DBCIDP', {
+      error: error.message,
+      stack: error.stack
+    });
+    return {valid: false, message: 'ERROR_PASSWORD_VALIDATE'};
+  }
+}
+
+/**
  * Check if DbcIdp webservice is up.
  *
  * @returns {Promise}

@@ -1,8 +1,8 @@
 script.
   document.addEventListener('DOMContentLoaded', function() {
-    
+
     var identityInput = document.getElementById('identity');
- 
+
     var agencyIdInput = document.getElementById('agencyId');
     if (agencyIdInput) {
       agencyIdInput.addEventListener('invalid', function(e) {
@@ -12,7 +12,7 @@ script.
       agencyIdInput.addEventListener('input', function(e) {
         e.target.setCustomValidity("");
       });
-      
+
       agencyIdInput.addEventListener('input', function (e) {
         // Pad with zeros if necessary
         e.target.value = e.target.value.substring(0, 6);
@@ -26,24 +26,24 @@ script.
         e.target.value = e.target.value.padStart(6, '0');
       });
     }
-     
+
     if (identityInput) {
       identityInput.addEventListener('input', function(e) {
         e.target.setCustomValidity("");
       });
-      
+
       identityInput.addEventListener('invalid', function(e) {
         e.target.setCustomValidity("Feltet skal udfyldes");
       });
     }
-   
+
     document.getElementById('forgotpw-form').addEventListener('submit', function(e) {
       e.preventDefault();
       var data = {
         'agencyId': agencyIdInput.value,
         'identity': identityInput.value
       };
-  
+
       fetch('/newpassword', {
         method: 'POST',
         headers: {
@@ -53,6 +53,9 @@ script.
       })
       .then(response => response.json())
       .then(data => {
+      console.log('response',response);
+      console.log('data', data);
+
         // Close the modal
         toggleModal('forgotModal');
         let msg="Der er opstået en fejl. Prøv venligst igen senere."
@@ -61,7 +64,7 @@ script.
             if(groupinput){
               groupinput.focus();
             }
-        
+
           msg="Din anmodning om adgangskode er modtaget. Hvis dit bruger ID findes i systemet, vil du modtage en mail med din nye adgangskode."
         }
 
@@ -76,11 +79,11 @@ script.
       });
     });
   });
-    
+
 div(id="forgotModal" class="modal forgotPw" aria-hidden="true")
-  div.forgotPw-header 
+  div.forgotPw-header
     button(type="button" tabindex="51" onclick='toggleModal("forgotModal")')
-  
+
   div.forgotPw-body
     span(id='logo' class='')
       include ../../Components/logo
@@ -101,13 +104,13 @@ div(id="forgotModal" class="modal forgotPw" aria-hidden="true")
           span(id='identity-text' data-text='')
 
           div.required * Påkrævet
-          
+
           if error
             div#error-container(tabindex="15")
               include ../../Components/Error
 
         div.action-container
           button(type='submit' id='forgotpw-submit' data-cy='forgotpw-submit' tabindex='50' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Send ny adgangskode
-        div.forgotpw-note.bottom-space 
-          | Har du glemt dit bruger ID? Kun brugere med personligt login kan ændre adgangskode her. Kontakt din biblioteksadministrator eller 
+        div.forgotPw-note.bottom-space
+          | Har du glemt dit bruger ID? Kun brugere med personligt login kan ændre adgangskode her. Kontakt din biblioteksadministrator eller&nbsp;
           a(href='http://kundeservice.dbc.dk' target='_blank' tabindex='50') DBCs kundeservice.

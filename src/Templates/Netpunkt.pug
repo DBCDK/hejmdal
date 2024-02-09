@@ -3,9 +3,10 @@ extends Main
 block append body
   body
     include Components/modals/modal-forgot
+    include Components/modals/modal-change-pwd
 
 block append content
-  div(id="login" class=hideFooter ? "vertical-aligned" : "")
+  div(id='login' class=hideFooter ? 'vertical-aligned' : '')
     div.content-container
       div#message-container.message-container
         div.close-button X
@@ -22,7 +23,7 @@ block append content
             div.form-group
               label(for='group-input') Biblioteksnummer
               div.input-container
-                div(class='input-prefix' tabindex="-1") DK-
+                div(class='input-prefix' tabindex='-1') DK-
                 input(type='text' class='form-control' id='group-input' data-cy='group-input' name='loginBibDkGroupId' autocomplete='password' tabindex='0')
               span(id='group-input-text' data-text='')
 
@@ -35,18 +36,19 @@ block append content
             div.form-group
               label(for='pass-input') Adgangskode
               div.input-container
-                input(type="text" value="" class="form-control" id="autocomplete-pass" name="autocomplete-pass" aria-hidden='true' tabindex="-1" aria-disabled='false' style="position:absolute; top: -1000px" autocomplete="pass")
+                input(type='text' value='' class='form-control' id='autocomplete-pass' name='autocomplete-pass' aria-hidden='true' tabindex='-1' aria-disabled='false' style='position:absolute; top: -1000px' autocomplete='pass')
                 input(type='password' class='form-control' id='pass-input' data-cy='pass-input' name='loginBibDkPassword' autocomplete='password' tabindex='0')
-                button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex="0")
+                button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("pass-input");' tabindex='0')
               span(id='pass-input-text' data-text='')
 
               if error
-                div#error-container(tabindex="15")
+                div#error-container(tabindex='15')
                   include Components/Error
 
             div.action-container
               button(type='submit' id='netpunkt-submit' data-cy='netpunkt-submit' tabindex='0' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Log ind
-              div.other-actionsa(class="modal-trigger forgotPw-link" onclick='toggleModal("forgotModal")' tabindex='0' ) Jeg har glemt min adgangskode
+              div.other-actionsa(class='modal-trigger forgotPw-link' data-cy='forgotPw' onclick='toggleModal("forgotModal")' tabindex='0' ) Jeg har glemt min adgangskode
+              div.other-actionsa(class='modal-trigger changePw-link' data-cy='changePw' onclick='toggleModal("changeModal")' tabindex='0' ) Jeg vil skifte adgangskode
 
     script.
       document.addEventListener('DOMContentLoaded', function() {
@@ -63,7 +65,7 @@ block append content
           groupInput.focus();
         }
 
-        let errContainer  = document.getElementById("error-container");
+        let errContainer  = document.getElementById('error-container');
           if(errContainer !== null){
             errContainer.focus()
           }

@@ -10,6 +10,59 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   field.setAttribute('type', newType);
 };
 
+window.changePwSubmit = function changePwSubmit(event) {
+  var agencyId = document.getElementById('agencyIdChangePassword');
+  var identity = document.getElementById('identityChangePassword');
+  var currPass = document.getElementById('currPass');
+  var newPass = document.getElementById('newPass');
+  var checkPass = document.getElementById('checkPass');
+
+  resetFieldErrorMessage(agencyId, '');
+  resetFieldErrorMessage(identity, '');
+  resetFieldErrorMessage(currPass, '');
+  resetFieldErrorMessage(newPass, '');
+  resetFieldErrorMessage(checkPass, '');
+
+  var errorRequiredField = 'Feltet skal udfyldes';
+  var errorAgencyField = 'Indtast gyldigt biblioteksnummer';
+  var errorPassDiffers = 'Ny og Gentag ny adgangskode er ikke identiske';
+
+  var valid = true;
+
+  if (!agencyId.value) {
+    addFieldErrorMessage(agencyId, errorRequiredField);
+    valid = false;
+  }
+  if (!identity.value) {
+    addFieldErrorMessage(identity, errorRequiredField);
+    valid = false;
+  }
+  if (!currPass.value) {
+    addFieldErrorMessage(currPass, errorRequiredField);
+    valid = false;
+  }
+  if (!newPass.value) {
+    addFieldErrorMessage(newPass, errorRequiredField);
+    valid = false;
+  }
+  if (!checkPass.value) {
+    addFieldErrorMessage(checkPass, errorRequiredField);
+    valid = false;
+  }
+
+  if (agencyId.value && !validAgency(agencyId.value)) {
+    addFieldErrorMessage(agencyId, errorAgencyField);
+    valid = false;
+  }
+
+  if (newPass.value && checkPass.value && newPass.value !== checkPass.value) {
+    addFieldErrorMessage(newPass, errorPassDiffers);
+    addFieldErrorMessage(checkPass, errorPassDiffers);
+    valid = false;
+  }
+
+  return valid;
+};
 /**
  * Function to validate netpunkt form fields (triggered on form submit)
  *
@@ -50,14 +103,9 @@ window.netpunktSubmit = function netpunktSubmit(event) {
     valid = false;
   }
 
-  if (groupId.value) {
-    // trimming groupId in case of user has entered leading DK-
-    const trimmedGroupId = groupId.value.toLowerCase().replace('dk-', '');
-    // if trimmed groupId length is not 6 characters
-    if (trimmedGroupId.length !== 6) {
-      addFieldErrorMessage(groupId, errorInvalidField);
-      valid = false;
-    }
+  if (groupId.value && !validAgency(groupId.value)) {
+    addFieldErrorMessage(groupId, errorInvalidField);
+    valid = false;
   }
 
   // If errors found, do not submit form
@@ -65,6 +113,17 @@ window.netpunktSubmit = function netpunktSubmit(event) {
     event.preventDefault();
   }
 };
+
+/**
+ * trimming agency in case of user has entered leading DK-
+ * trimmed agency length must be 6 characters
+ *
+ * @param field
+ * @returns {boolean}
+ */
+function validAgency(agency) {
+  return agency.toLowerCase().replace('dk-', '').length === 6;
+}
 
 /**
  * Function to reset form fields
