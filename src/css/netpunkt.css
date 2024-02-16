@@ -18,3 +18,11 @@
     }
   }
 }
+
+.info-circle {
+  background: svg-inline(--info-circle) no-repeat center center;
+  width: 4rem;
+  height: 1.2rem;
+  display: inline-flex;
+  cursor: pointer;
+}

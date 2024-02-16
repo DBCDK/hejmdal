@@ -15,6 +15,10 @@
   fill: white;
 }
 
+@svg-load --info-circle url(svg/icons/info_circle.svg) {
+  fill: black;
+}
+
 /* Fonts */
 @font-face {
   font-family: 'FaktPro-Normal';

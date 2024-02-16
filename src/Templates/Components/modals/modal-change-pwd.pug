@@ -86,6 +86,11 @@ script.
             }
           }
           else {
+            agencyIdChangePasswordInput.value = '';
+            identityChangePasswordInput.value = '';
+            currPassInput.value = '';
+            newPassInput.value = '';
+            checkPassInput.value = '';
             toggleModal('changeModal');
             var messageContainer = document.getElementById('message-container');
             var responseMessage = document.getElementById('response-message');
@@ -99,6 +104,19 @@ script.
       }
     });
   });
+
+div(id="infoModal" class="modal info-modal infoChangePw" aria-hidden="true")
+  div.changePw-header
+    button(type="button" tabindex="51" onclick='toggleModal("infoModal"), toggleModal("changeModal")')
+  div.changePw-body
+    h1 Vælg en sikker adgangskode
+    div#netpunkt
+      p
+      ul.form-group
+        li Adgangskoden skal være på min. 15 tegn.
+        li Adgangskoden må ikke indeholde sekvenser på 3 tal eller mere, fx 123, 12345.
+        li Visse tegn og bogstav sekvenser er udelukket, fx qwe eller abc, abcd.
+        li Ord som ‘password’ og andre ofte anvendte ord, kan ikke bruges.
 
 div(id="changeModal" class="modal changePw" aria-hidden="true")
   div.changePw-header
@@ -117,31 +135,32 @@ div(id="changeModal" class="modal changePw" aria-hidden="true")
           label(for='agencyIdChangePassword')  Biblioteksnummer*
           div.input-container
             div(class='input-prefix' tabindex="-1") DK-
-            input(type='text' class='form-control' id='agencyIdChangePassword' data-cy='agencyIdChangePassword' name='agencyIdChangePassword' tabindex='50' required)
+            input(type='text' class='form-control' id='agencyIdChangePassword' placeholder='Bibliotekskode - 6 cifre' data-cy='agencyIdChangePassword' name='agencyIdChangePassword' tabindex='50' required)
           span(id='agencyIdChangePassword-text' data-text='')
 
         div.form-group
           label(for='identityChangePassword') Bruger ID*
           div.input-container
-            input(type='text' class='form-control' id='identityChangePassword' data-cy='identityChangePassword' name='identityChangePassword' tabindex='50' required)
+            input(type='text' class='form-control' id='identityChangePassword' placeholder='' data-cy='identityChangePassword' name='identityChangePassword' tabindex='50' required)
           span(id='identityChangePassword-text' data-text='')
 
         div.form-group
-          label(for='currPass') Gl. adgangskode*
+          label(for='currPass') Nuværende adgangskode*
           div.input-container
-            input(type='text' class='form-control' id='currPass' data-cy='currPass' name='currPass' tabindex='50' required)
+            input(type='password' class='form-control' id='currPass' placeholder='Eksisterende kodeord' data-cy='currPass' name='currPass' tabindex='50' required)
           span(id='currPass-text' data-text='')
 
         div.form-group
           label(for='newPass') Ny adgangskode*
+            div.other-actionsa(class='modal-trigger info-circle' id='info' data-cy='infoPw' onclick='toggleModal("infoModal", "open")' tabindex='0' )
           div.input-container
-            input(type='text' class='form-control' id='newPass' data-cy='newPass' name='newPass' tabindex='50' required)
+            input(type='text' class='form-control' id='newPass' placeholder='Nyt kodeord - minimum 15 tegn' data-cy='newPass' name='newPass' tabindex='50' required)
           span(id='newPass-text' data-text='test newPass-text')
 
         div.form-group
           label(for='checkPass') Gentag ny adgangskode*
           div.input-container
-            input(type='text' class='form-control' id='checkPass' data-cy='checkPass' name='checkPass' tabindex='50' required)
+            input(type='text' class='form-control' id='checkPass' placeholder='Gentag nyt kodeord' data-cy='checkPass' name='checkPass' tabindex='50' required)
           span(id='checkPass-text' data-text='')
 
           div.required * Påkrævet

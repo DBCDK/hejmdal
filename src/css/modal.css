@@ -114,6 +114,11 @@
   }
 }
 
+.info-modal {
+  min-height: 20vh;
+  height: 45vh;
+}
+
 @media (min-width: 486px) {
   .modal {
     .modal-header {
@@ -230,6 +235,11 @@
     .changePw {
       min-width: 400px;
     }
+  }
+  .info-modal {
+    width: 60vw;
+    min-height: 20vh;
+    height: 35vh;
   }
 
   #userModal .modal-body {
