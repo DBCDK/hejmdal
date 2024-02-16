@@ -87,7 +87,7 @@ context('Netpunkt form', () => {
     cy.get('[data-cy="changePw"]').click();
     cy.get('#agencyIdChangePassword').should('have.attr', 'type', 'text');
     cy.get('#identityChangePassword').should('have.attr', 'type', 'text');
-    cy.get('#currPass').should('have.attr', 'type', 'text');
+    cy.get('#currPass').should('have.attr', 'type', 'password');
     cy.get('#newPass').should('have.attr', 'type', 'text');
     cy.get('#checkPass').should('have.attr', 'type', 'text');
     cy.get('#changepw-submit').should('have.attr', 'type', 'submit');
