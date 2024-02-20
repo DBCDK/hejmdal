@@ -10,9 +10,9 @@ script.
     }
     const passwordErrorText = {
       TOO_SHORT: 'Den nye adgangskode er for kort',
-      ILLEGAL_QWERTY_SEQUENCE: 'Adgangskoden er for simpel - uheldig tegn sekvens',
-      ILLEGAL_NUMERICAL_SEQUENCE: 'Adgangskoden er for simpel - uheldig numerisk sekvens',
-      ILLEGAL_ALPHABETICAL_SEQUENCE: 'Adgangskoden er for simpel - uheldig tegn sekvens',
+      ILLEGAL_QWERTY_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af tegn',
+      ILLEGAL_NUMERICAL_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af cifre',
+      ILLEGAL_ALPHABETICAL_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af tegn',
       ILLEGAL_PASSWORD_REUSE: 'Adgangskoden er brugt tidligere'
     }
     var activeErrorField = '';
@@ -114,9 +114,10 @@ div(id="infoModal" class="modal info-modal infoChangePw" aria-hidden="true")
       p
       ul.form-group
         li Adgangskoden skal være på min. 15 tegn.
-        li Adgangskoden må ikke indeholde sekvenser på 3 tal eller mere, fx 123, 12345.
-        li Visse tegn og bogstav sekvenser er udelukket, fx qwe eller abc, abcd.
+        li Adgangskoden må ikke indeholde sekvenser på 4 tal eller mere, fx 1234, 12345.
+        li Visse tegn og bogstav sekvenser er udelukket, fx qwer eller abcd, abcde.
         li Ord som ‘password’ og andre ofte anvendte ord, kan ikke bruges.
+        li Tidligere brugte adgangskoder, kan ikke bruges igen.
 
 div(id="changeModal" class="modal changePw" aria-hidden="true")
   div.changePw-header
