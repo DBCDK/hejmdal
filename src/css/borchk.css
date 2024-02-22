@@ -17,7 +17,7 @@
 .chosenLibLink {
   display: inline-flex;
   margin-top: 1.25rem;
-  margin-bottom: none;
+  margin-bottom: 0;
 }
 
 .chosenLib {
@@ -283,7 +283,7 @@
           width: inherit;
           height: auto;
 
-          transition-duration: none;
+          transition-duration: 0s;
 
           input {
             width: calc(100% - 50px);
