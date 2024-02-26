@@ -167,6 +167,7 @@ export async function requestNewPassword({identity, agencyId}) {
  *   ILLEGAL_NUMERICAL_SEQUENCE,
  *   ILLEGAL_ALPHABETICAL_SEQUENCE,
  *   ILLEGAL_PASSWORD_REUSE
+ *   ILLEGAL_NOT_PERSONAL
  *
  * @param identity identity, f.ex. 'netpunkt'
  * @param agencyId agencyId, f.ex. '716700'
