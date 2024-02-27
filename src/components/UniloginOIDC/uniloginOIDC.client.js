@@ -97,7 +97,9 @@ export async function getUserInfo(accessToken, identity) {
  * @return {string}
  */
 export function getReturnUrl(token = '') {
-  const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/${token}`;
+  //const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/${token}`;
+  const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/`;
   const ret_url = ego_url.replace('http://localhost:3011', 'https://localhost');
+  //const ret_url = ego_url.replace('http://localhost:3011', 'https://login.bib.dk');
   return ret_url.replace('stg.login.bib.dk', 'login.bib.dk');
 }

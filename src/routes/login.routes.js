@@ -27,4 +27,18 @@ router.post(
   identityProviderCallback
 );
 
+router.get(
+  '/identityProviderCallback/:type',
+  validateClientIsSet,
+  setDefaultState,
+  identityProviderCallback
+);
+
+router.post(
+  '/identityProviderCallback/:type',
+  validateClientIsSet,
+  setDefaultState,
+  identityProviderCallback
+);
+
 export default router;

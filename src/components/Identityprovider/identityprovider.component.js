@@ -162,9 +162,16 @@ export async function authenticate(req, res, next) { // eslint-disable-line comp
 export async function identityProviderCallback(req, res) {
   try {
     if (req.getState().stateHash !== req.params.state) {
-      log.error('Invalid state', {params: req.params, state: req.getState()});
-      res.status(403);
-      return res.send('invalid state');
+      console.log('params', req.params.state);
+      console.log('getState', req.getState().stateHash);
+      if (req.params.type === 'unilogin_oidc' && (!req.params.state || req.params.state === 'unilogin')) {
+        req.params.state = req.getState().stateHash;
+      }
+      else {
+        log.error('Invalid state', {params: req.params, state: req.getState()});
+        res.status(403);
+        return res.send('invalid state');
+      }
     }
     switch (req.params.type) {
       case 'borchk':
