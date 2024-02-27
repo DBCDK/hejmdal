@@ -56,7 +56,7 @@ export async function setDefaultState(req, res, next) {
  * Adds a state hash value to session.
  *
  * The state hash is used to validate that responses from identity providers are
- * initiated in the current session. If not the user must af initiated login from an
+ * initiated in the current session. If not the user has initiated login from an
  * invalid flow.
  *
  * @param {Request} req
