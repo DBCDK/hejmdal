@@ -38,14 +38,13 @@ export async function setDefaultState(req, res, next) {
     stateHash: setStateHash(req),
     consents: {}, // contains consent attributes for services [serviceName] = Array(attributes)
     returnUrl: handleNullFromUrl(req.query.return_url),
-    serviceAgency:
-      req.session.query && handleNullFromUrl(req.session.query.agency),
+    serviceAgency: req.session.query && handleNullFromUrl(req.session.query.agency),
     serviceClient: req.session.client,
     ticket: req.ticket || {} // ticketId (id) and ticketToken (token) and/or attributes object,
   };
   req.session.loginToProfile = !!req.query.loginToProfile;
   req.session.user = req.session.user || {};
-  req.session.user.ips = (req.ips.length && req.ips) || [req.ip];
+  req.session.user.ips = (req.ips && req.ips.length && req.ips) || [req.ip];
   setTrackingId(req.session.state.stateHash);
   req.session.save(() => {
     return next();
