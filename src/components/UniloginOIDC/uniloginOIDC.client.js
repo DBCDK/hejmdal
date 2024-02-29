@@ -11,7 +11,7 @@ import {promiseRequest} from '../../utils/request.util';
 import {log} from '../../utils/logging.util';
 import {uniloginOidcMock} from './mocks/uniloginOIDC.mock';
 
-const consoleDebug = false;
+const consoleDebug = true;
 
 /**
  *
