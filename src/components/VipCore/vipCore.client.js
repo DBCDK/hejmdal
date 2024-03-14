@@ -140,7 +140,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
         agencyId: branchId,
         branchId: branchId,
         agencyName: '',
-        loginAgencyId: checkLibraries[branchId].loginAgencyId ?? branchId,
+        loginAgencyId: checkLibraries[branchId] ? checkLibraries[branchId].loginAgencyId : branchId,
         branchName: getAgencyField(agency, 'branchName'),
         branchShortName: getAgencyField(agency, 'branchShortName'),
         city: getAgencyField(agency, 'city'),
