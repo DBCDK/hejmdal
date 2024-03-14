@@ -7,7 +7,6 @@
     "dev": ". ./env.env && npm run serve",
     "dev:debug": ". ./env.env && npm run serve:debug",
     "dev:test": "npm run build:dev & . ./env.test && npm run serve",
-    "dev:fvs": "npm run build:dev & . ./env.fvs && npm run serve",
     "build:dev": "npm run build:css:dev & npm run build:js:dev",
     "build:prod": "npm run build:css:prod && npm run build:js:prod",
     "build:css:dev": "rm -f static/css/* && postcss src/css/styles.css --dir static/css --watch --map --use postcss-import precss autoprefixer cssnano postcss-inline-svg postcss-custom-properties",
