@@ -221,7 +221,7 @@ context('Borchk form', () => {
       .focus()
       .clear()
       .type('sl{downarrow}{downarrow}{enter}');
-    for (var i = 2; i; i--) {
+    for (var i = 3; i; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('[data-cy=pin-input]').type('1234{enter}');
       const xx = '#error-body';
@@ -269,7 +269,7 @@ context('Borchk form', () => {
       .focus()
       .clear()
       .type('sl{downarrow}{enter}');
-    for (var i = 2; i > 1; i--) {
+    for (var i = 3; i > 1; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('#pin-input').type('1233{enter}');
       cy.get('#error-body').should(
