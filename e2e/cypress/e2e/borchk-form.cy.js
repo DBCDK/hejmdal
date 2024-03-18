@@ -225,9 +225,6 @@ context('Borchk form', () => {
     for (var i = 2; i; i--) {
       cy.get('#userid-input').type(uid);
       cy.get('[data-cy=pin-input]').type('1234{enter}');
-      const xx = '#error-body';
-      cy.task('log','error-body txt ');
-      cy.task('log', xx);
       cy.get('#error-body').debug();
       cy.get('#error-body').should(
         'contain',
