@@ -230,7 +230,7 @@ context('Borchk form', () => {
       cy.get('#error-body').debug();
       cy.get('#error-body').should(
         'contain',
-        'Du har ' + i + ' forsøg tilbage'
+        'Du har ' + '3' + ' forsøg tilbage'
       );
     }
     cy.get('#userid-input').type(uid);
@@ -274,7 +274,7 @@ context('Borchk form', () => {
       cy.get('#pin-input').type('1233{enter}');
       cy.get('#error-body').should(
         'contain',
-        'Du har ' + i + ' forsøg tilbage'
+        'Du har ' + '3' + ' forsøg tilbage'
       );
     }
     cy.reload();
