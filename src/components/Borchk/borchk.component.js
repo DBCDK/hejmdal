@@ -9,6 +9,7 @@ import {ERRORS} from '../../utils/errors.util';
 import {identityProviderValidationFailed} from '../Identityprovider/identityprovider.component';
 import * as blockLogin from '../BlockLogin/blocklogin.component';
 import {borchkUserIdIsGlobal, isValidCpr, trimPossibleCpr} from '../../utils/cpr.util';
+import {getAgency} from '../../utils/vipCore.util';
 import {looksLikeAUserId} from '../../utils/userId.util';
 
 /**
@@ -21,9 +22,10 @@ import {looksLikeAUserId} from '../../utils/userId.util';
  */
 export async function validateUserInLibrary(serviceRequester, userInput, retries = 0) {
   let userValidate;
+  const branchInfo = await getAgency(userInput.agency);
   try {
     const response = await getClient(
-      userInput.agency,
+      branchInfo.loginAgencyId ?? userInput.agency,
       userInput.userId,
       userInput.pincode,
       serviceRequester
