@@ -101,10 +101,11 @@ async function getBorrowercheckLibraries() {
 
   if (response.statusCode === 200) {
     if (response.body && Array.isArray(response.body.borrowerCheckLibrary)) {
-      const checkLibraries = [];
+      const checkLibraries = {};
       response.body.borrowerCheckLibrary.forEach(agency => {
         if (agency.isil) {
-          checkLibraries.push(agency.isil.toLowerCase().replace('dk-', ''));
+          const checkAgencyId = agency.isil.toLowerCase().replace('dk-', '');
+          checkLibraries[checkAgencyId] = agency;
         }
       });
       return checkLibraries;
@@ -124,12 +125,12 @@ async function getBorrowercheckLibraries() {
 function parseFindLibraryResponse(response, checkLibraries) {
   const noBorrowercheckSupport = [];
   const addBranchLibrary = [];
+  const useLoginAgency = [];
   const libraryList = [];
   if (response && Array.isArray(response.pickupAgency)) {
-    const agencies = [];
     response.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
-      if (!CONFIG.mock_externals.vipCore && !checkLibraries.includes(branchId)) {
+      if (!CONFIG.mock_externals.vipCore && !checkLibraries[branchId]) {
         noBorrowercheckSupport.push(branchId);
         return;
       }
@@ -139,6 +140,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
         agencyId: branchId,
         branchId: branchId,
         agencyName: '',
+        loginAgencyId: checkLibraries[branchId] ? checkLibraries[branchId].loginAgencyId : branchId,
         branchName: getAgencyField(agency, 'branchName'),
         branchShortName: getAgencyField(agency, 'branchShortName'),
         city: getAgencyField(agency, 'city'),
@@ -155,6 +157,9 @@ function parseFindLibraryResponse(response, checkLibraries) {
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
       }
+      if (branchId !== item.loginAgencyId) {
+        useLoginAgency.push(branchId);
+      }
       if (['H', 'P'].includes(branchType)) {
         item.agencyName = municipalityName[branchId] ?? getAgencyField(agency, 'agencyName');
       }
@@ -164,13 +169,15 @@ function parseFindLibraryResponse(response, checkLibraries) {
       }
 
       libraryList.push(item);
-      agencies.push(branchId);
     });
     if (noBorrowercheckSupport.length) {
       console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
     }
     if (addBranchLibrary.length) {
       console.log('INFO: ' + addBranchLibrary.sort() + ' branches support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
+    }
+    if (useLoginAgency.length) {
+      console.log('INFO: ' + useLoginAgency.sort() + ' branches use different login agency'); // eslint-disable-line no-console
     }
   }
 

@@ -11,7 +11,7 @@ export default class FailedLogin extends Model {
   static jsonSchema = {
     properties: {
       id: {type: 'string', minLength: 0, maxLength: 64},
-      created: {type: 'dateTime'},
+      created: {type: 'string'},
       failInfo: {type: 'object'}
     }
   };
