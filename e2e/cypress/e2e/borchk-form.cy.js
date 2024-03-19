@@ -215,7 +215,6 @@ context('Borchk form', () => {
       'Bibliotekskoden skal være på mindst 4 tegn.'
     );
   });
-  /*
   it('Should block user', () => {
     const uid = Math.random().toString(10).slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]')
@@ -261,8 +260,6 @@ context('Borchk form', () => {
     );
     cy.get('#error-body').should('contain', 'Login blokeret');
   });
-   */
-  /*
   it('Should clear user when succesfull login', () => {
     const uid = Math.random().toString(10).slice(-10);
     cy.get('#borchk-dropdown [data-cy=libraryname-input]')
@@ -290,7 +287,6 @@ context('Borchk form', () => {
     cy.get('#pin-input').type('1233{enter}');
     cy.get('#error-body').should('contain', 'Du har 2 forsøg tilbage');
   });
-   */
 
   it('Should retry only once on service unavailable', () => {
     cy.get('#borchk-dropdown [data-cy=libraryname-input]').type(
