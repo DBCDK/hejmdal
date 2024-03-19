@@ -20,6 +20,7 @@ describe('Test vipCore component', () => {
       {
         address: 'Kongevejen 30, Endelave',
         agencyId: '761502',
+        loginAgencyId: '761502',
         agencyName: 'Endelave',
         branchEmail: 'bibliotek@horsens.dk',
         branchId: '761502',
@@ -35,6 +36,7 @@ describe('Test vipCore component', () => {
       },
       {
         agencyId: '761500',
+        loginAgencyId: '761500',
         branchId: '761500',
         agencyName: 'Horsens',
         branchName: 'Horsens Bibliotek',
@@ -51,6 +53,7 @@ describe('Test vipCore component', () => {
       },
       {
         agencyId: '860970',
+        loginAgencyId: '860970',
         branchId: '860970',
         agencyName: 'Horsens Gymnasium, Biblioteket',
         branchName: 'Horsens Gymnasium, Biblioteket',
@@ -65,6 +68,7 @@ describe('Test vipCore component', () => {
       },
       {
         agencyId: '874540',
+        loginAgencyId: '874540',
         branchId: '874540',
         agencyName: 'Horsens Statsskole, Biblioteket',
         branchName: 'Horsens Statsskole, Biblioteket',
@@ -79,6 +83,7 @@ describe('Test vipCore component', () => {
       },
       {
         agencyId: '861340',
+        loginAgencyId: '861340',
         branchId: '861340',
         agencyName: 'Learnmark Horsens',
         branchName: 'Learnmark Horsens',
@@ -94,6 +99,7 @@ describe('Test vipCore component', () => {
       {
         address: 'Ane Stauningsvej 21',
         agencyId: '861940',
+        loginAgencyId: '861940',
         agencyName: 'SSH Horsens',
         branchEmail: 'vme@sosufvh.dk',
         branchId: '861940',
@@ -108,6 +114,7 @@ describe('Test vipCore component', () => {
       {
         address: 'Ravnebjerget 12, Søvind',
         agencyId: '761506',
+        loginAgencyId: '761506',
         agencyName: 'Søvind Bibliotek',
         branchEmail: 'biblioteksoevind@horsens.dk',
         branchId: '761506',
@@ -124,6 +131,7 @@ describe('Test vipCore component', () => {
       {
         address: 'Chr. M. Østergaards Vej 4',
         agencyId: '830410',
+        loginAgencyId: '830410',
         agencyName: 'VIA UC. Bibl. Campus Horsens',
         branchEmail: 'bibhorsens@via.dk',
         branchId: '830410',
@@ -156,6 +164,7 @@ describe('Test vipCore component', () => {
         registrationFormUrl: 'https://bib.ballerup.dk/registration',
         registrationFormUrlText: 'Opret dig som låner med MitID',
         branchEmail: 'ballerup-bibliotek@balk.dk',
+        loginAgencyId: '715100',
         distance: '1237',
         municipalityNo: '151'
       },
@@ -172,6 +181,7 @@ describe('Test vipCore component', () => {
         registrationFormUrl: 'https://egedalbibliotekerne.dk/registration',
         registrationFormUrlText: 'Opret biblioteksbruger',
         branchEmail: 'smorum.bibliotek@egekom.dk',
+        loginAgencyId: '724000',
         distance: '2905',
         municipalityNo: '240'
       }
