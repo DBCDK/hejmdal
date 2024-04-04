@@ -10,7 +10,9 @@ const mockIdpRights = {
   '100300': {statusCode:200, body:'{"authenticated":true,"rights":[]}'},
   'filmstriben': {statusCode:200, body:'{"organisations":[{"id":1630,"modified":"2021-06-28T12:52:44.313+02:00","created":"2021-06-28T12:52:44.313+02:00","url":"http://idpservice.iscrum-prod.svc.cloud.dbc.dk/api/v1/organisation/1630/","version":1,"agencyId":"710100","agencyName":"Hovedbiblioteket, Krystalgade"},{"id":1602,"modified":"2021-06-28T12:52:43.861+02:00","created":"2021-06-28T12:52:43.861+02:00","url":"http://idpservice.iscrum-prod.svc.cloud.dbc.dk/api/v1/organisation/1602/","version":1,"agencyId":"715100","agencyName":"Ballerup Bibliotek"}]}'},
   'newPassOk': {statusCode: 200, body: '{"message":"OK200"}'},
-  'newPassFail': {statusCode:404, body:'{"message":"TO_SHORT"}'}
+  'newPassFail': {statusCode:404, body:'{"message":"TO_SHORT"}'},
+  '111111to_short': {statusCode:200, body:'{"valid": false, "message":"TOO_SHORT"}'},
+  '1111112222': {statusCode:200, body:'{"valid":true}'},
 };
 
 export default function getMockClient(mock = 'default') {

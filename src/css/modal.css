@@ -138,10 +138,7 @@
       padding: 0px 100px;
     }
   }
-  .forgotPw {
-    min-width: 243px;
-  }
-  .changePw {
+  .newPw {
     min-width: 243px;
   }
 }
@@ -229,10 +226,7 @@
     .modal-body {
       padding: 0px 50px;
     }
-    .forgotPw {
-      min-width: 400px;
-    }
-    .changePw {
+    .newPw {
       min-width: 400px;
     }
   }
@@ -272,60 +266,26 @@
       padding: 0px 100px;
     }
   }
- .forgotPw {
-    min-width: 600px;
-  }
-  .changePw {
+
+  .newPw {
     min-width: 600px;
   }
 }
 
-.forgotPw {
+.newPw {
   max-height: 600px;
   min-height: 95vh;
   max-width: 700px;
 }
 
-.forgotPw-link {
-  text-decoration: underline;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-
-.forgotPw-header>button {
-  width: 60px;
-  height: 60px;
-  cursor: pointer;
-  background: svg-inline(--close-large) no-repeat center;
-  background-size: 15px;
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  border: none !important;
-}
-
-.forgotPw-body {
-  padding: 5% 10% 15% 8%;
-}
-
-.forgotPw-note {
-  margin-top: 1rem;
-}
-
-.changePw {
-  max-height: 600px;
-  min-height: 95vh;
-  max-width: 700px;
-}
-
-.changePw-link {
+.newPw-link {
   text-decoration: underline;
   cursor: pointer;
   margin-top: 1rem;
   margin-left: 1rem;
 }
 
-.changePw-header>button {
+.newPw-header>button {
   width: 60px;
   height: 60px;
   cursor: pointer;
@@ -337,15 +297,15 @@
   border: none !important;
 }
 
-.changePw-body {
+.newPw-body {
   padding: 5% 10% 15% 8%;
 }
 
-.changePw-note {
+.newPw-note {
   margin-top: 1rem;
 }
 
-.changePw-message-container {
+.newPw-message-container {
   position: relative;
   padding: 20px;
   border: 1px solid #000;
@@ -353,7 +313,16 @@
   margin-bottom: 20px;
   display: none;
 }
-.changePw-close-button {
+
+#newPw-code-pass-container {
+  display: none;
+}
+
+.newPw-code-container {
+  display: block;
+}
+
+.newPw-close-button {
   position: absolute;
   top: 5px;
   right: 10px;
