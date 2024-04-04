@@ -76,7 +76,7 @@ context('Netpunkt form', () => {
   });
 
   it('Should show new password modal', () => {
-    cy.get('[data-cy="changePw"]').click();
+    cy.get('[data-cy="newPw"]').click();
     cy.get('#agencyIdNewPassword').should('have.attr', 'type', 'text');
     cy.get('#identityNewPassword').should('have.attr', 'type', 'text');
     cy.get('#newPw-submit-step1').should('have.attr', 'type', 'submit');
@@ -84,7 +84,7 @@ context('Netpunkt form', () => {
   });
 
   it.only('Should check validity of fields in new password modal', () => {
-    cy.get('[data-cy="changePw"]').click();
+    cy.get('[data-cy="newPw"]').click();
     cy.get('#agencyIdNewPassword').type('1111');
     cy.get('#identityNewPassword').type('2222');
     cy.get('#newPw-submit-step1').click();
