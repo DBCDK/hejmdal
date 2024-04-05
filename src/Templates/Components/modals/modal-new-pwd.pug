@@ -20,8 +20,8 @@ script.
       ILLEGAL_PASSWORD_REUSE: 'Adgangskoden er brugt tidligere',
       ILLEGAL_NOT_PERSONAL: 'Kun personlige logins kan ændre kodeord'
     }
-    var infoStep1 = 'Udfyld Biblioteksnummer og Bruger ID og vælg Mail sikkerhedskode. Du får en mail med en sikkerhedskode, som skal bruges derefter.'
-    var infoStep2 = 'Udfyld sikkerhedskode, som du finder i den mail, der netop er sendt til dig og vælg en ny sikker adgangskode.'
+    const infoStep1 = 'Udfyld Biblioteksnummer og Bruger ID og vælg Mail sikkerhedskode. Du får en mail med en sikkerhedskode, som skal bruges derefter.'
+    const infoStep2 = 'Udfyld sikkerhedskode, som du finder i den mail, der netop er sendt til dig og vælg en ny sikker adgangskode.'
     var activeErrorField = '';
     var identityNewPasswordInput = document.getElementById('identityNewPassword');
     var agencyIdNewPasswordInput = document.getElementById('agencyIdNewPassword');
@@ -52,7 +52,7 @@ script.
         document.getElementById(activeErrorField).textContent = '';
         activeErrorField = '';
       }
-      if (submitStep2.value == 'submitStep2') {
+      if (submitStep2.value === 'submitStep2') {
         if (newPwSubmitStep2(e)) {
           var data = {
             'identity': identityNewPasswordInput.value,
@@ -71,25 +71,17 @@ script.
           .then(response => response.json())
           .then(data => {
             if (!data.valid || data.message !== 'PASSWORD_CHANGED') {
-              var errorMessage = data.message.split(',');
+              const errorMessage = data.message.split(',');
               let passwordMsg = [];
-              errorMessage.forEach((err) => {
-                if (passwordErrorText[err]) passwordMsg.push(passwordErrorText[err]);
-              });
               let identityMsg = [];
               errorMessage.forEach((err) => {
-                if (identityErrorText[err]) identityMsg.push(identityErrorText[err]);
+                if (passwordErrorText[err]) { passwordMsg.push(passwordErrorText[err]); }
+                if (identityErrorText[err]) { identityMsg.push(identityErrorText[err]); }
               });
-              if (passwordMsg.length) {
-                activeErrorField = 'newPassword-text';
-                document.getElementById(activeErrorField).textContent = passwordMsg.join('; ');
-                document.getElementById(activeErrorField).style.color = 'var(--error)';
+              if (showErrorMessages(passwordMsg, document.getElementById('newPassword-text'))) {
                 newPasswordInput.focus();
               }
-              else if (identityMsg.length) {
-                activeErrorField = 'agencyIdNewPassword-text';
-                document.getElementById(activeErrorField).textContent = identityMsg.join('; ')
-                document.getElementById(activeErrorField).style.color = 'var(--error)';
+              else if (showErrorMessages(identityMsg, document.getElementById('newPassword-text'))) {
                 agencyIdNewPasswordInput.focus();
               }
               else {
@@ -117,7 +109,7 @@ script.
           });
         }
       }
-      else if (submitStep1.value == 'submitStep1') {
+      else if (submitStep1.value === 'submitStep1') {
         if (newPwSubmitStep1(e)) {
           var data = {
             'identity': identityNewPasswordInput.value,

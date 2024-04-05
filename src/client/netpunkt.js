@@ -16,6 +16,19 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
 
 /**
  *
+ * @param {array} errors
+ * @param {div element} errorElement
+ */
+window.showErrorMessages = function showErrorMessages(errors, errorElement) {
+  if (errors.length) {
+    errorElement.textContent = errors.join('; ');
+    errorElement.style.color = 'var(--error)';
+  }
+  return errors.length;
+};
+
+/**
+ *
  * @param {event} event
  * @returns {boolean}
  */
