@@ -26,12 +26,10 @@ window.toggleModal = function toggleModal(id, status = 'toggle') {
     dimmer.classList.add('visible');
     modal.classList.add('visible');
     modal.removeAttribute('aria-hidden');
-    // focus modal (fx. use of arrow keys) -  bypassing this with forgotModal and changeModal
-    if (modal.getElementsByClassName('forgotPw-body')[0]) {
-      document.getElementById('agencyId').focus();
-    } else if (modal.getElementsByClassName('changePw-body')[0]) {
-      document.getElementById('agencyIdChangePassword').focus();
-  } else {
+    // focus modal (fx. use of arrow keys) -  bypassing this with newModal
+    if (modal.getElementsByClassName('newPw-body')[0]) {
+      document.getElementById('agencyIdNewPassword').focus();
+    } else {
       modal.getElementsByClassName('modal-body')[0].focus();
     }
     return;

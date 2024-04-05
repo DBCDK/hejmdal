@@ -2,8 +2,7 @@ extends Main
 
 block append body
   body
-    include Components/modals/modal-change-pwd
-    include Components/modals/modal-forgot
+    include Components/modals/modal-new-pwd
 
 block append content
   div(id='login' class=hideFooter ? 'vertical-aligned' : '')
@@ -47,8 +46,7 @@ block append content
 
             div.action-container
               button(type='submit' id='netpunkt-submit' data-cy='netpunkt-submit' tabindex='0' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Log ind
-              div.other-actionsa(class='modal-trigger forgotPw-link' data-cy='forgotPw' onclick='toggleModal("forgotModal")' tabindex='0' ) Jeg har glemt min adgangskode
-              div.other-actionsa(class='modal-trigger changePw-link' data-cy='changePw' onclick='toggleModal("changeModal")' tabindex='0' ) Jeg vil skifte adgangskode
+              div.other-actionsa(class='modal-trigger newPw-link' data-cy='newPw' onclick='toggleModal("newPwdModal")' tabindex='0' ) Ny adgangskode
 
     script.
       document.addEventListener('DOMContentLoaded', function() {

@@ -10,7 +10,7 @@ const router = Router();
 import {renderFrontPage} from '../components/FrontPage/frontpage.component';
 import sanityCheck from '../utils/sanityCheck.util';
 import {log} from '../utils/logging.util';
-import {requestNewPassword, requestChangePassword, requestValidatePassword} from '../components/DBCIDP/dbcidp.client';
+import * as DBCIDP from '../components/DBCIDP/dbcidp.client';
 
 router.get('/', renderFrontPage);
 
@@ -29,23 +29,46 @@ router.get('/health', async (req, res) => {
   res.send(health);
 });
 
+// currently not used - newpasswordstep[12] now facilitates new/change dbcidp password
 router.post('/newpassword', async (req, res) => {
   let {agencyId, identity} = req.body;
 
-  const pwRequestSent = await requestNewPassword({
-    identity,
-    agencyId
-  });
+  const pwRequestSent = await DBCIDP.requestNewPassword({identity, agencyId});
   let status = 200;
   res.status(status);
   // close modal from here or go to a received page
   res.send(pwRequestSent);
 });
 
+router.post('/newpasswordstep1', async (req, res) => {
+  let {agencyid, identity, hash} = req.body;
+
+  const pwRequestSent = await DBCIDP.requestNewPasswordStep1({identity, agencyid, hash});
+  let status = 200;
+  res.status(status);
+  res.send(pwRequestSent);
+});
+
+router.post('/newpasswordstep2', async (req, res) => {
+  let {agencyid, identity, hash, secret, password} = req.body;
+
+  const pwRequestSent = await DBCIDP.requestNewPasswordStep2({
+    identity,
+    agencyid,
+    hash,
+    secret,
+    password
+  });
+  let status = 200;
+  res.status(status);
+  res.send(pwRequestSent);
+});
+
+// currently not used - newpasswordstep[12] now facilitates new/change dbcidp password
 router.post('/changepassword', async (req, res) => {
   let {agencyId, identity, currPass, newPass} = req.body;
 
-  const pwRequestSent = await requestChangePassword({
+  const pwRequestSent = await DBCIDP.requestChangePassword({
     identity,
     agencyId,
     password: currPass,
@@ -57,10 +80,11 @@ router.post('/changepassword', async (req, res) => {
   res.send(pwRequestSent);
 });
 
+// currently not used - newpasswordstep[12] now facilitates new/change dbcidp password
 router.post('/validatepassword', async (req, res) => {
   let {agencyId, identity, newPass} = req.body;
 
-  const pwRequestSent = await requestValidatePassword({
+  const pwRequestSent = await DBCIDP.requestValidatePassword({
     identity,
     agencyId,
     password: newPass
