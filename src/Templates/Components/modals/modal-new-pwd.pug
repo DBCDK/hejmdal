@@ -22,20 +22,20 @@ script.
     }
     const infoStep1 = 'Udfyld Biblioteksnummer og Bruger ID og vælg Mail sikkerhedskode. Du får en mail med en sikkerhedskode, som skal bruges derefter.'
     const infoStep2 = 'Udfyld sikkerhedskode, som du finder i den mail, der netop er sendt til dig og vælg en ny sikker adgangskode.'
+    const identityNewPasswordInput = document.getElementById('identityNewPassword');
+    const agencyIdNewPasswordInput = document.getElementById('agencyIdNewPassword');
+    const twoFactorCodeInput = document.getElementById('twoFactorCode');
+    const newPasswordInput = document.getElementById('newPassword');
+    const checkPasswordInput = document.getElementById('checkPassword');
+    const messageContainerNewPass = document.getElementById('new-pw-message-container');
+    const responseMessageNewPass = document.getElementById('new-pw-response-message');
+    const closeButton = document.querySelector('.newPw-close-button');
+    const submitStep1 = document.getElementById('newPw-submit-step1');
+    const submitStep2 = document.getElementById('newPw-submit-step2');
+    const submitCodeContainer = document.getElementById('newPw-code-container')
+    const submitCodePassContainer = document.getElementById('newPw-code-pass-container')
+    const secretHash = Date.now();
     var activeErrorField = '';
-    var identityNewPasswordInput = document.getElementById('identityNewPassword');
-    var agencyIdNewPasswordInput = document.getElementById('agencyIdNewPassword');
-    var twoFactorCodeInput = document.getElementById('twoFactorCode');
-    var newPasswordInput = document.getElementById('newPassword');
-    var checkPasswordInput = document.getElementById('checkPassword');
-    var messageContainerNewPass = document.getElementById('new-pw-message-container');
-    var responseMessageNewPass = document.getElementById('new-pw-response-message');
-    var closeButton = document.querySelector('.newPw-close-button');
-    var submitStep1 = document.getElementById('newPw-submit-step1');
-    var submitStep2 = document.getElementById('newPw-submit-step2');
-    var submitCodeContainer = document.getElementById('newPw-code-container')
-    var submitCodePassContainer = document.getElementById('newPw-code-pass-container')
-    var secretHash = Date.now();
 
     if (closeButton) {
       closeButton.addEventListener('click', function(e) {
@@ -72,8 +72,8 @@ script.
           .then(data => {
             if (!data.valid || data.message !== 'PASSWORD_CHANGED') {
               const errorMessage = data.message.split(',');
-              let passwordMsg = [];
-              let identityMsg = [];
+              const passwordMsg = [];
+              const identityMsg = [];
               errorMessage.forEach((err) => {
                 if (passwordErrorText[err]) { passwordMsg.push(passwordErrorText[err]); }
                 if (identityErrorText[err]) { identityMsg.push(identityErrorText[err]); }
@@ -98,10 +98,8 @@ script.
               newPasswordInput.value = '';
               checkPasswordInput.value = '';
               toggleModal('newPwdModal');
-              var messageContainer = document.getElementById('message-container');
-              var responseMessage = document.getElementById('response-message');
-              responseMessage.textContent = 'Adgangskoden er ændret.'
-              messageContainer.style.display = "block";
+              document.getElementById('response-message').textContent = 'Adgangskoden er ændret.'
+              document.getElementById('message-container').style.display = "block";
             }
           })
           .catch(error => {
@@ -136,7 +134,7 @@ script.
               newPasswordInput.required = true;
               checkPasswordInput.required = true;
             } else {
-              let identityMsg = [];
+              const identityMsg = [];
               if (data.message && identityErrorText[data.message]) {
                 identityMsg.push(identityErrorText[data.message]);
               } else {

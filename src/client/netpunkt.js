@@ -5,7 +5,7 @@ const errorAgencyField = 'Indtast gyldigt biblioteksnummer';
 /**
  * Function to toggle password field visibility
  *
- * @param id
+ * @param {string} id
  */
 window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
@@ -18,6 +18,7 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
  *
  * @param {array} errors
  * @param {div element} errorElement
+ * @returns {*}
  */
 window.showErrorMessages = function showErrorMessages(errors, errorElement) {
   if (errors.length) {
