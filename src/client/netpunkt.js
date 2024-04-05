@@ -1,7 +1,11 @@
+const errorPassDiffers = 'Ny og Gentag ny adgangskode er ikke identiske';
+const errorRequiredField = 'Feltet skal udfyldes';
+const errorAgencyField = 'Indtast gyldigt biblioteksnummer';
+
 /**
  * Function to toggle password field visibility
  *
- * @param {String} id
+ * @param {string} id
  */
 window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   var field = document.getElementById(id);
@@ -10,25 +14,32 @@ window.toggleFieldVisibility = function toggleFieldVisibility(id) {
   field.setAttribute('type', newType);
 };
 
-window.changePwSubmit = function changePwSubmit(event) {
-  var agencyId = document.getElementById('agencyIdChangePassword');
-  var identity = document.getElementById('identityChangePassword');
-  var currPass = document.getElementById('currPass');
-  var newPass = document.getElementById('newPass');
-  var checkPass = document.getElementById('checkPass');
+/**
+ *
+ * @param {array} errors
+ * @param {div element} errorElement
+ * @returns {*}
+ */
+window.showErrorMessages = function showErrorMessages(errors, errorElement) {
+  if (errors.length) {
+    errorElement.textContent = errors.join('; ');
+    errorElement.style.color = 'var(--error)';
+  }
+  return errors.length;
+};
 
+/**
+ *
+ * @param {event} event
+ * @returns {boolean}
+ */
+window.newPwSubmitStep1 = function newPwSubmitStep1(event) {
+  var agencyId = document.getElementById('agencyIdNewPassword');
+  var identity = document.getElementById('identityNewPassword');
   resetFieldErrorMessage(agencyId, '');
   resetFieldErrorMessage(identity, '');
-  resetFieldErrorMessage(currPass, '');
-  resetFieldErrorMessage(newPass, '');
-  resetFieldErrorMessage(checkPass, '');
-
-  var errorRequiredField = 'Feltet skal udfyldes';
-  var errorAgencyField = 'Indtast gyldigt biblioteksnummer';
-  var errorPassDiffers = 'Ny og Gentag ny adgangskode er ikke identiske';
 
   var valid = true;
-
   if (!agencyId.value) {
     addFieldErrorMessage(agencyId, errorRequiredField);
     valid = false;
@@ -37,36 +48,51 @@ window.changePwSubmit = function changePwSubmit(event) {
     addFieldErrorMessage(identity, errorRequiredField);
     valid = false;
   }
-  if (!currPass.value) {
-    addFieldErrorMessage(currPass, errorRequiredField);
-    valid = false;
-  }
-  if (!newPass.value) {
-    addFieldErrorMessage(newPass, errorRequiredField);
-    valid = false;
-  }
-  if (!checkPass.value) {
-    addFieldErrorMessage(checkPass, errorRequiredField);
-    valid = false;
-  }
-
   if (agencyId.value && !validAgency(agencyId.value)) {
     addFieldErrorMessage(agencyId, errorAgencyField);
     valid = false;
   }
-
-  if (newPass.value && checkPass.value && newPass.value !== checkPass.value) {
-    addFieldErrorMessage(newPass, errorPassDiffers);
-    addFieldErrorMessage(checkPass, errorPassDiffers);
-    valid = false;
-  }
-
   return valid;
 };
+
+/**
+ *
+ * @param {event} event
+ * @returns {boolean}
+ */
+window.newPwSubmitStep2 = function newPwSubmitStep2(event) {
+  var twoFactorCode = document.getElementById('twoFactorCode');
+  var newPassword = document.getElementById('newPassword');
+  var checkPassword = document.getElementById('checkPassword');
+  resetFieldErrorMessage(twoFactorCode, '');
+  resetFieldErrorMessage(newPassword, '');
+  resetFieldErrorMessage(checkPassword, '');
+
+  var valid = window.newPwSubmitStep1(event);
+  if (!twoFactorCode.value) {
+    addFieldErrorMessage(twoFactorCode, errorRequiredField);
+    valid = false;
+  }
+  if (!newPassword.value) {
+    addFieldErrorMessage(newPassword, errorRequiredField);
+    valid = false;
+  }
+  if (!checkPassword.value) {
+    addFieldErrorMessage(checkPassword, errorRequiredField);
+    valid = false;
+  }
+  if (newPassword.value && checkPassword.value && newPassword.value !== checkPassword.value) {
+    addFieldErrorMessage(newPassword, errorPassDiffers);
+    addFieldErrorMessage(checkPassword, errorPassDiffers);
+    valid = false;
+  }
+  return valid;
+};
+
 /**
  * Function to validate netpunkt form fields (triggered on form submit)
  *
- * @param {event} FormSubmit
+ * @param {event} event
  */
 window.netpunktSubmit = function netpunktSubmit(event) {
   // get form fields
@@ -80,7 +106,6 @@ window.netpunktSubmit = function netpunktSubmit(event) {
   resetFieldErrorMessage(password, '');
 
   // Error messages
-  var errorRequiredField = 'Feltet skal udfyldes';
   var errorInvalidField = 'Indtast et gyldigt biblioteksnummer';
 
   // Default state
@@ -118,7 +143,7 @@ window.netpunktSubmit = function netpunktSubmit(event) {
  * trimming agency in case of user has entered leading DK-
  * trimmed agency length must be 6 characters
  *
- * @param field
+ * @param {string} agency
  * @returns {boolean}
  */
 function validAgency(agency) {
@@ -128,7 +153,7 @@ function validAgency(agency) {
 /**
  * Function to reset form fields
  *
- * @param {field} Element
+ * @param {element} field
  */
 function resetFieldErrorMessage(field) {
   if (!field) {

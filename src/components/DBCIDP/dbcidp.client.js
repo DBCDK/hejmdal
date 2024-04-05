@@ -126,6 +126,7 @@ export async function validateIdpUser(userIdAut, groupIdAut, passwordAut) {
  *
  * @returns {Promise<boolean|*>}
  */
+// currently not used - requestNewPasswordStep[12] now facilitates new/change dbcidp password
 export async function requestNewPassword({identity, agencyId}) {
   const idpNewPasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/newpassword';
   const body = {identity, agencyId};
@@ -142,6 +143,104 @@ export async function requestNewPassword({identity, agencyId}) {
     return JSON.parse(response.body);
   } catch (error) {
     log.error('Error creating new password on DBCIDP', {
+      error: error.message,
+      stack: error.stack
+    });
+    return false;
+  }
+}
+
+/**
+ * Function to change password step 1 - request to send a mail with a code
+ * returns {valid: true, agencyid: "nnnnnn", identity: "xxxxx", email: "aaa@bbb.cc"} or {message: 'some_message'} where 'some_message' is one or more of
+ *   ILLEGAL_UNKNOWN_USER
+ *   ILLEGAL_EMPTY_IDENTITY,
+ *   ILLEGAL_EMPTY_AGENCYID,
+ *   ILLEGAL_ACCESSPROFILE_MISSING,
+ *   ILLEGAL_AGENCY_MISSING,
+ * @param identity identity, f.ex. 'netpunkt'
+ * @param agencyid agencyid, f.ex. '716700'
+ * @param hash the hash send when requesting for a code
+ * @returns {Promise<boolean>}
+ */
+export async function requestNewPasswordStep1({identity, agencyid, hash}) {
+  const idpCodeForNewPasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/twofactor/step1';
+  const body = {identity, agencyid, hash};
+  const params = {
+    url: idpCodeForNewPasswordUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  try {
+    let response;
+    if (CONFIG.mock_externals.dbcidp) {
+      response = getMockClient(agencyid + identity);
+    } else {
+      response = await promiseRequest('post', params);
+    }
+    return JSON.parse(response.body);
+  } catch (error) {
+    log.error('Error requesting step1 for new password on DBCIDP', {
+      error: error.message,
+      stack: error.stack
+    });
+    return false;
+  }
+}
+
+/**
+ * Function to change password step 2
+ * returns {valid: true, message: "PASSWORD_CHANGED", agencyid: "nnnnnn", identity: "xxxxx"} or {message: 'some_message'} where 'some_message' is one or more of
+ *   ILLEGAL_UNKNOWN_USER
+ *   ILLEGAL_MAX_TRIES
+ *   ILLEGAL_INCORRECT_INPUT
+ *   ILLEGAL_EMPTY_INPUT,
+ *   ILLEGAL_EMPTY_IDENTITY,
+ *   ILLEGAL_EMPTY_AGENCYID,
+ *   ILLEGAL_EMPTY_PASSWORD,
+ *   ILLEGAL_USERNAME,
+ *   ILLEGAL_USERNAME_REVERSED,
+ *   ILLEGAL_AGENCYID,
+ *   ILLEGAL_AGENCYID_REVERSED,
+ *   ILLEGAL_ACCESSPROFILE_MISSING,
+ *   ILLEGAL_AGENCY_MISSING,
+ *   TOO_SHORT,
+ *   ILLEGAL_QWERTY_SEQUENCE,
+ *   ILLEGAL_NUMERICAL_SEQUENCE,
+ *   ILLEGAL_ALPHABETICAL_SEQUENCE,
+ *   ILLEGAL_PASSWORD_REUSE
+ *
+ * @param identity identity, f.ex. 'netpunkt'
+ * @param agencyid agencyId, f.ex. '716700'
+ * @param hash the hash send when requesting for a code
+ * @param secret the code returned in the users mail
+ * @param password the current password
+ * @returns {Promise<boolean>}
+ */
+export async function requestNewPasswordStep2({identity, agencyid, hash, secret, password}) {
+  const idpNewPasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/twofactor/step2';
+  const body = {identity, agencyid, hash, secret, password};
+  const params = {
+    url: idpNewPasswordUri,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  try {
+    let response;
+    if (CONFIG.mock_externals.dbcidp) {
+      response = getMockClient(agencyid + identity);
+    } else {
+      response = await promiseRequest('post', params);
+    }
+    return JSON.parse(response.body);
+  } catch (error) {
+    log.error('Error requesting step2 for new password on DBCIDP', {
       error: error.message,
       stack: error.stack
     });
@@ -175,6 +274,7 @@ export async function requestNewPassword({identity, agencyId}) {
  * @param newPassword the new password
  * @returns {Promise<boolean>}
  */
+// currently not used - requestNewPasswordStep[12] now facilitates new/change dbcidp password
 export async function requestChangePassword({identity, agencyId, password, newPassword}) {
   try {
     let response;
@@ -215,6 +315,7 @@ export async function requestChangePassword({identity, agencyId, password, newPa
  * @param password the password to validate
  * @returns {Promise<boolean>}
  */
+// currently not used - requestNewPasswordStep[12] now facilitates new/change dbcidp password
 export async function requestValidatePassword({identity, agencyId, password}) {
   const idpValidatePasswordUri = CONFIG.dbcidp.dbcidpUri + '/v1/password/validate';
   const body = {identity, agencyId, password};

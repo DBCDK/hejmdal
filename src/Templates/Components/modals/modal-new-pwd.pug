@@ -1,0 +1,232 @@
+script.
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const identityErrorText = {
+      WRONG_REQUEST: 'Noget gik galt, prøv igen lidt senere',
+      ILLEGAL_AGENCYID: 'Ukendt Biblioteksnummer',
+      ILLEGAL_AGENCYID_REVERSED: 'Ukendt Biblioteksnummer',
+      ILLEGAL_AGENCY_MISSING: 'Ukendt Biblioteksnummer eller Bruger ID',
+      ILLEGAL_ACCESSPROFILE_MISSING: 'Ukendt Biblioteksnummer, Bruger Id eller Adgangskode',
+      ILLEGAL_INVALID_USER: 'Ukendt Biblioteksnummer, Bruger Id eller Adgangskode',
+      ILLEGAL_UNKNOWN_USER: 'Ukendt Biblioteksnummer eller Bruger Id',
+      ILLEGAL_INCORRECT_INPUT: 'Ukendt Biblioteksnummer, Bruger Id eller kode fra mail'
+    }
+    const passwordErrorText = {
+      TOO_SHORT: 'Den nye adgangskode er for kort',
+      ILLEGAL_QWERTY_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af tegn',
+      ILLEGAL_NUMERICAL_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af cifre',
+      ILLEGAL_ALPHABETICAL_SEQUENCE: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af tegn',
+      ILLEGAL_REPEATED_CHARS: 'Adgangskoden er for simpel - ikke tilladt rækkefølge af tegn',
+      ILLEGAL_PASSWORD_REUSE: 'Adgangskoden er brugt tidligere',
+      ILLEGAL_NOT_PERSONAL: 'Kun personlige logins kan ændre kodeord'
+    }
+    const infoStep1 = 'Udfyld Biblioteksnummer og Bruger ID og vælg Mail sikkerhedskode. Du får en mail med en sikkerhedskode, som skal bruges derefter.'
+    const infoStep2 = 'Udfyld sikkerhedskode, som du finder i den mail, der netop er sendt til dig og vælg en ny sikker adgangskode.'
+    const identityNewPasswordInput = document.getElementById('identityNewPassword');
+    const agencyIdNewPasswordInput = document.getElementById('agencyIdNewPassword');
+    const twoFactorCodeInput = document.getElementById('twoFactorCode');
+    const newPasswordInput = document.getElementById('newPassword');
+    const checkPasswordInput = document.getElementById('checkPassword');
+    const messageContainerNewPass = document.getElementById('new-pw-message-container');
+    const responseMessageNewPass = document.getElementById('new-pw-response-message');
+    const closeButton = document.querySelector('.newPw-close-button');
+    const submitStep1 = document.getElementById('newPw-submit-step1');
+    const submitStep2 = document.getElementById('newPw-submit-step2');
+    const submitCodeContainer = document.getElementById('newPw-code-container')
+    const submitCodePassContainer = document.getElementById('newPw-code-pass-container')
+    const secretHash = Date.now();
+    var activeErrorField = '';
+
+    if (closeButton) {
+      closeButton.addEventListener('click', function(e) {
+        messageContainerNewPass.style.display = "none";
+      });
+    }
+
+    responseMessageNewPass.textContent = infoStep1;
+    messageContainerNewPass.style.display = 'block';
+
+    document.getElementById('newpw-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (activeErrorField) {
+        document.getElementById(activeErrorField).textContent = '';
+        activeErrorField = '';
+      }
+      if (submitStep2.value === 'submitStep2') {
+        if (newPwSubmitStep2(e)) {
+          var data = {
+            'identity': identityNewPasswordInput.value,
+            'agencyid': agencyIdNewPasswordInput.value,
+            'hash': secretHash,
+            'secret': twoFactorCodeInput.value,
+            'password': newPasswordInput.value,
+          };
+          fetch('/newpasswordstep2', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (!data.valid || data.message !== 'PASSWORD_CHANGED') {
+              const errorMessage = data.message.split(',');
+              const passwordMsg = [];
+              const identityMsg = [];
+              errorMessage.forEach((err) => {
+                if (passwordErrorText[err]) { passwordMsg.push(passwordErrorText[err]); }
+                if (identityErrorText[err]) { identityMsg.push(identityErrorText[err]); }
+              });
+              if (showErrorMessages(passwordMsg, document.getElementById('newPassword-text'))) {
+                newPasswordInput.focus();
+              }
+              else if (showErrorMessages(identityMsg, document.getElementById('newPassword-text'))) {
+                agencyIdNewPasswordInput.focus();
+              }
+              else {
+                responseMessageNewPass.textContent = 'Noget gik galt. Adgangskoden er ikke ændret (' + errorMessage.join('; ') + ')';
+                messageContainerNewPass.style.display = 'block';
+                messageContainerNewPass.style.color = 'var(--error)';
+                agencyIdNewPasswordInput.focus();
+              }
+            }
+            else {
+              agencyIdNewPasswordInput.value = '';
+              identityNewPasswordInput.value = '';
+              twoFactorCodeInput.value = '';
+              newPasswordInput.value = '';
+              checkPasswordInput.value = '';
+              toggleModal('newPwdModal');
+              document.getElementById('response-message').textContent = 'Adgangskoden er ændret.'
+              document.getElementById('message-container').style.display = "block";
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        }
+      }
+      else if (submitStep1.value === 'submitStep1') {
+        if (newPwSubmitStep1(e)) {
+          var data = {
+            'identity': identityNewPasswordInput.value,
+            'agencyid': agencyIdNewPasswordInput.value,
+            'hash': secretHash,
+          };
+          fetch('/newpasswordstep1', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          })
+          .then(response => response.json())
+          .then(data => {
+            // Do not flag ILLEGAL_UNKNOWN_USER as an error
+            if (data.valid || data.message === 'ILLEGAL_UNKNOWN_USER') {
+              submitCodeContainer.style.display = 'none';
+              submitCodePassContainer.style.display = 'block';
+              responseMessageNewPass.textContent = infoStep2;
+              messageContainerNewPass.style.display = 'block';
+              twoFactorCodeInput.focus();
+              twoFactorCodeInput.required = true;
+              newPasswordInput.required = true;
+              checkPasswordInput.required = true;
+            } else {
+              const identityMsg = [];
+              if (data.message && identityErrorText[data.message]) {
+                identityMsg.push(identityErrorText[data.message]);
+              } else {
+                identityMsg.push(identityErrorText['WRONG_REQUEST']);
+              };
+              responseMessageNewPass.textContent = identityMsg.join('; ');
+              messageContainerNewPass.style.display = 'block';
+              messageContainerNewPass.style.color = 'var(--error)';
+              agencyIdNewPasswordInput.focus();
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        }
+      }
+    });
+  });
+
+div(id="infoModal" class="modal info-modal infoNewPw" aria-hidden="true")
+  div.newPw-header
+    button(type="button" tabindex="51" onclick='toggleModal("infoModal"), toggleModal("newPwdModal")')
+  div.newPw-body
+    h1 Vælg en sikker adgangskode
+    div#netpunkt
+      p
+      ul.form-group
+        li Adgangskoden skal være på min. 15 tegn.
+        li Adgangskoden må ikke indeholde sekvenser på 4 tal eller mere, fx 1234, 12345.
+        li Visse tegn og bogstav sekvenser er udelukket, fx qwer eller abcd, abcde.
+        li Ord som ‘password’ og andre ofte anvendte ord, kan ikke bruges.
+        li Tidligere brugte adgangskoder, kan ikke bruges igen.
+
+div(id="newPwdModal" class="modal newPw" aria-hidden="true")
+  div.newPw-header
+    button(type="button" tabindex="51" onclick='toggleModal("newPwdModal")')
+
+  div.newPw-body
+    span(id='logo' class='')
+      include ../../Components/logo
+      h1 Ny adgangskode
+    div#netpunkt
+      div#new-pw-message-container.newPw-message-container
+        div.newPw-close-button X
+        div#new-pw-response-message
+      form(autocomplete='off' method='post' id='newpw-form')
+        div.form-group
+          label(for='agencyIdNewPassword')  Biblioteksnummer*
+          div.input-container
+            div(class='input-prefix' tabindex="-1") DK-
+            input(type='text' class='form-control' id='agencyIdNewPassword' placeholder='Bibliotekskode - 6 cifre' data-cy='agencyIdNewPassword' name='agencyIdNewPassword' tabindex='50' required)
+          span(id='agencyIdNewPassword-text' data-text='')
+
+        div.form-group
+          label(for='identityNewPassword') Bruger ID*
+          div.input-container
+            input(type='text' class='form-control' id='identityNewPassword' placeholder='' data-cy='identityNewPassword' name='identityNewPassword' tabindex='50' required)
+          span(id='identityNewPassword-text' data-text='')
+
+        div#newPw-code-container
+          div.action-container
+            button(type='submit' id='newPw-submit-step1' onClick='this.value="submitStep1"' data-cy='newPw-submit-step1' tabindex='50' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Mail sikkerhedskode
+          div.newPw-note.bottom-space
+            | Kun brugere med personligt login kan ændre adgangskode her.<br />Kontakt din biblioteksadministrator eller&nbsp;
+            a(href='http://kundeservice.dbc.dk' target='_blank' tabindex='50') DBCs kundeservice
+            | , hvis du har glemt dit Bruger ID.
+
+        div#newPw-code-pass-container
+          div.form-group
+            label(for='twoFactorCode') Kode modtaget i mail*
+            div.input-container
+              input(type='text' class='form-control' id='twoFactorCode' placeholder='Talkode fra mail' data-cy='twoFactorCode' name='twoFactorCode' tabindex='50')
+            span(id='twoFactorCode-text' data-text='')
+
+          div.form-group
+            label(for='newPassword') Ny adgangskode*
+              div.other-actionsa(class='modal-trigger info-circle' id='info' data-cy='infoPw' onclick='toggleModal("infoModal", "open")' tabindex='0' )
+            div.input-container
+              input(type='text' class='form-control' id='newPassword' placeholder='Nyt kodeord - minimum 15 tegn' data-cy='newPassword' name='newPassword' tabindex='50')
+            span(id='newPassword-text' data-text='test newPassword-text')
+
+          div.form-group
+            label(for='checkPassword') Gentag ny adgangskode*
+            div.input-container
+              input(type='text' class='form-control' id='checkPassword' placeholder='Gentag nyt kodeord' data-cy='checkPassword' name='checkPassword' tabindex='50')
+            span(id='checkPassword-text' data-text='')
+
+            div.required * Påkrævet
+
+            if error
+              div#error-container(tabindex="15")
+                include ../../Components/Error
+
+          div.action-container
+            button(type='submit' id='newPw-submit-step2' onClick='this.value="submitStep2"' data-cy='newPw-submit-step2' tabindex='50' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Skift adgangskode
