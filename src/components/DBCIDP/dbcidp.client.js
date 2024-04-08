@@ -181,9 +181,6 @@ export async function requestNewPasswordStep1({identity, agencyid, hash}) {
     } else {
       response = await promiseRequest('post', params);
     }
-    console.log('rpw', params);
-    console.log('rpw', response.statusCode);
-    console.log('rpw', response.body);
     return JSON.parse(response.body);
   } catch (error) {
     log.error('Error requesting step1 for new password on DBCIDP', {
