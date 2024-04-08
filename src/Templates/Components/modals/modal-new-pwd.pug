@@ -185,7 +185,7 @@ div(id="newPwdModal" class="modal newPw" aria-hidden="true")
           label(for='agencyIdNewPassword')  Biblioteksnummer*
           div.input-container
             div(class='input-prefix' tabindex="-1") DK-
-            input(type='text' class='form-control' id='agencyIdNewPassword' placeholder='Bibliotekskode - 6 cifre' data-cy='agencyIdNewPassword' name='agencyIdNewPassword' tabindex='50' required)
+            input(type='text' class='form-control' id='agencyIdNewPassword' placeholder='Biblioteksnummer - 6 cifre' data-cy='agencyIdNewPassword' name='agencyIdNewPassword' tabindex='50' required)
           span(id='agencyIdNewPassword-text' data-text='')
 
         div.form-group
@@ -228,6 +228,6 @@ div(id="newPwdModal" class="modal newPw" aria-hidden="true")
             button(type='submit' id='newPw-submit-step2' onClick='this.value="submitStep2"' data-cy='newPw-submit-step2' tabindex='50' style=btnStyle onmouseover=btnOnmouseover onmouseout=btnOnmouseout) Skift adgangskode
 
         div.newPw-note.bottom-space
-          | Kun brugere med personligt login kan ændre adgangskode her.<br />Kontakt din biblioteksadministrator eller&nbsp;
+          | Kun brugere med personligt login kan ændre adgangskode her.<br />Kontakt din brugeradministrator eller&nbsp;
           a(href='http://kundeservice.dbc.dk' target='_blank' tabindex='50') DBCs kundeservice
           | , hvis du har glemt dit Bruger ID.
