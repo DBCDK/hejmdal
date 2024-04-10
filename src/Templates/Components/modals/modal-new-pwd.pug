@@ -209,13 +209,15 @@ div(id="newPwdModal" class="modal newPw" aria-hidden="true")
             label(for='newPassword') Ny adgangskode*
               div.other-actionsa(class='modal-trigger info-circle' id='info' data-cy='infoPw' onclick='toggleModal("infoModal", "open")' tabindex='0' )
             div.input-container
-              input(type='text' class='form-control' id='newPassword' placeholder='Nyt kodeord - minimum 15 tegn' data-cy='newPassword' name='newPassword' tabindex='50')
+              input(type='password' class='form-control' id='newPassword' placeholder='Nyt kodeord - minimum 15 tegn' data-cy='newPassword' name='newPassword' tabindex='50')
+              button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("newPassword");' tabindex='0')
             span(id='newPassword-text' data-text='test newPassword-text')
 
           div.form-group
             label(for='checkPassword') Gentag ny adgangskode*
             div.input-container
-              input(type='text' class='form-control' id='checkPassword' placeholder='Gentag nyt kodeord' data-cy='checkPassword' name='checkPassword' tabindex='50')
+              input(type='password' class='form-control' id='checkPassword' placeholder='Gentag nyt kodeord' data-cy='checkPassword' name='checkPassword' tabindex='50')
+              button(type='button' id='toggle-pass-input' onclick='toggleFieldVisibility("checkPassword");' tabindex='0')
             span(id='checkPassword-text' data-text='')
 
             div.required * Påkrævet
