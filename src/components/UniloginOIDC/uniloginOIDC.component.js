@@ -96,7 +96,8 @@ function getLiveUniloginOidcUrl(token, identity, oidcCodes) {
     'acr_values=To_Faktor',
     'nonce=' + randomString(20),
     'code_challenge=' + oidcCodes.code_challenge,
-    'code_challenge_method=S256'
+    'code_challenge_method=S256',
+    'state=' + token
   ];
   const unilogin = CONFIG.unilogin_oidc.auth_url + '?' + params.join('&');
   if (consoleDebug) { console.log('oidcCodes', oidcCodes); }  // eslint-disable-line no-console
