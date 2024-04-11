@@ -38,6 +38,7 @@ export async function getOidcTokens(code, token, identity, oidcCodes) {
   try {
     const response = await promiseRequest('post', {
       url: CONFIG.unilogin_oidc.token_url,
+      method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: params.join('&')
     });
@@ -73,6 +74,7 @@ export async function getUserInfo(accessToken, identity) {
   try {
     const response = await promiseRequest('post', {
       url: CONFIG.unilogin_oidc.userinfo_url,
+      method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: params.join('&')
     });

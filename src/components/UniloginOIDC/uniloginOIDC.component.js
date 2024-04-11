@@ -64,17 +64,25 @@ export async function validateUniloginOidcTicket(req) {
   if (consoleDebug) { console.log('validate OIDC code', code); }  // eslint-disable-line no-console
   if (consoleDebug) { console.log('validate OIDC token', token); }  // eslint-disable-line no-console
   log.debug('OIDC validate code', {code: code});
-  require('request').debug = consoleDebug;
   if (code) {
-    const {access_token, id_token} = await getOidcTokens(code, token, uniloginIdentity, uniloginOidcCodes);
-    log.debug('OIDC validate access_token', {access_token, id_token});
-    if (access_token) {
-      req.setUser({uniloginOidcIdToken: id_token});  // save id_token for later logout
-      userInfo = await getUserInfo(access_token, uniloginIdentity);
-      log.debug('OIDC validate userInfo', userInfo);
+    try {
+      require('request').debug = consoleDebug;
+      const {access_token, id_token} = await getOidcTokens(code, token, uniloginIdentity, uniloginOidcCodes);
+      log.debug('OIDC validate access_token', {access_token, id_token});
+      if (access_token) {
+        req.setUser({uniloginOidcIdToken: id_token});  // save id_token for later logout
+        userInfo = await getUserInfo(access_token, uniloginIdentity);
+        log.debug('OIDC validate userInfo', userInfo);
+      }
+    } catch (error) {
+      log.error('Error in validateUniloginOidcTicket', {
+        stack: error.stack,
+        message: error.message
+      });
+    } finally {
+      require('request').debug = false;
     }
   }
-  require('request').debug = false;
   return userInfo;
 }
 
