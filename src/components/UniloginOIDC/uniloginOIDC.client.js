@@ -29,7 +29,7 @@ export async function getOidcTokens(code, token, identity, oidcCodes) {
     'grant_type=authorization_code',
     'code=' + code,
     'client_id=' + identity.id,
-    'redirect_uri=' +  encodeURIComponent(getReturnUrl(token)),
+    'redirect_uri=' +  getReturnUrl(token),
     'code_verifier=' +  oidcCodes.code_verifier,
     'client_secret=' +  identity.secret
   ];
@@ -39,7 +39,7 @@ export async function getOidcTokens(code, token, identity, oidcCodes) {
     const response = await promiseRequest('post', {
       url: CONFIG.unilogin_oidc.token_url,
       method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      headers: {'content-type': 'application/x-www-form-urlencoded'},
       body: params.join('&')
     });
     if (consoleDebug) { console.log('response', response.body); }  // eslint-disable-line no-console
@@ -102,7 +102,7 @@ export function getReturnUrl(token = '') {
   // const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/${token}`;
   const ego_url =  `${CONFIG.app.host}/login/identityProviderCallback/unilogin_oidc/unilogin`;
   // const ret_url = ego_url.replace('http://localhost:3011', 'https://localhost');
-  const ret_url = ego_url.replace('http://localhost:3011', 'https://stg.login.bib.dk');
+  const ret_url = ego_url.replace('http://localhost:3011', 'https://login.bib.dk');
   return ret_url;
   // return ret_url.replace('stg.login.bib.dk', 'login.bib.dk');
 }
