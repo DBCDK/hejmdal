@@ -8,6 +8,7 @@
 import {log} from './logging.util';
 import {CONFIG} from './config.util';
 import {mapFromCpr} from './cpr.util';
+import {getAgency} from './vipCore.util';
 import {getInstitutionsForUser} from '../components/UniLogin/unilogin.component';
 import {getClientInfoByToken} from '../components/Smaug/smaug.component';
 import {
@@ -51,34 +52,35 @@ export default async function mapAttributesToTicket(req, res, next) {
  * @param {object} culr The CULR reponse object
  * @param {object} attributes The attributes object defined in Smaug
  * @param {object} user data returned by the idp
- * @param clientId
- * @param accessToken
+ * @param {string} clientId
+ * @param {string} accessToken
  * @see ATTRIBUTES
  * @returns {Promise<{}>}
  */
-export async function mapCulrResponse(
-  culr,
-  attributes,
-  user,
-  clientId,
-  accessToken
-) {
-  let mapped = {};
+export async function mapCulrResponse(culr, attributes, user, clientId, accessToken) {
+  const agencies = [];
+  const attributeKeys = Object.keys(attributes);
+  const mapped = {
+    serviceStatus: {
+      borchk: culr.errorBorchk ? 'error' : 'ok',
+      culr: culr.errorCulr ? 'error' : 'ok'
+    }};
   let cpr = user.cpr || null;
-  let agencies = [];
-  let fromCpr = {};
   let dbcidpAuthorize;
   let foundLoginAgency = false;
   let clientInfo = {};
 
   log.debug('mapCulrResponse', culr);
 
+  const branchInfo = user.agency ? await getAgency(user.agency) : {};
   if (culr.accounts && Array.isArray(culr.accounts)) {
     culr.accounts.forEach(account => {
       if (account.userIdType === 'CPR' && !cpr) {
         cpr = account.userIdValue;
       }
-      foundLoginAgency = foundLoginAgency || user.agency === account.provider;
+      foundLoginAgency = foundLoginAgency ||
+        account.provider === user.agency ||
+        account.provider === branchInfo.loginAgencyId;
       agencies.push({
         agencyId: account.provider,
         userId: account.userIdValue,
@@ -93,19 +95,10 @@ export async function mapCulrResponse(
       userIdType: user.cpr ? 'CPR' : 'LOCAL'
     });
   }
+  const fromCpr = cpr ? mapFromCpr(cpr) : {};
 
-  if (cpr) {
-    fromCpr = mapFromCpr(cpr);
-  }
-
-  const fields = Object.keys(attributes);
-
-  mapped.serviceStatus = {
-    borchk: culr.errorBorchk ? 'error' : 'ok',
-    culr: culr.errorCulr ? 'error' : 'ok'
-  };
   await Promise.all(
-    fields.map(async field => {  // eslint-disable-line complexity
+    attributeKeys.map(async field => {  // eslint-disable-line complexity
       try {
         if (['dbcidp', 'dbcidpUniqueId', 'dbcidpUserInfo', 'dbcidpRoles'].includes(field)) {
           if (!dbcidpAuthorize) {
