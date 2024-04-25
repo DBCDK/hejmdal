@@ -147,7 +147,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
         agencyId: branchId,
         branchId: branchId,
         agencyName: '',
-        borrowerCheckAllowed: !!checkLibraries[branchId],
+        borrowerCheckAllowed: !!checkLibraries[branchId] || CONFIG.mock_externals.vipCore,
         loginAgencyId: loginAgencyId,
         branchName: getAgencyField(agency, 'branchName'),
         branchShortName: getAgencyField(agency, 'branchShortName'),
