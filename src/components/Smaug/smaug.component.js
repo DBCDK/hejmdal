@@ -6,7 +6,13 @@ import {
 } from './smaug.client';
 import {log} from '../../utils/logging.util';
 import {CONFIG} from '../../utils/config.util';
+import {getAgency} from '../../utils/vipCore.util';
 
+/**
+ *
+ * @param clientId
+ * @returns {Promise<*|null>}
+ */
 export async function getClientInfoByClientId(clientId) {
   try {
     const smaugClient = await getClientById(clientId);
@@ -28,6 +34,11 @@ export async function getClientInfoByClientId(clientId) {
   }
 }
 
+/**
+ *
+ * @param token
+ * @returns {Promise<*|null>}
+ */
 export async function getClientInfoByToken(token) {
   try {
     const smaugClient = await getClientByToken(token);
@@ -87,15 +98,33 @@ export function extractClientInfo(client) { // eslint-disable-line
 }
 /* eslint-enable complexity */
 
-export function getTokenForUser({
+/**
+ *
+ * @param clientId
+ * @param agency
+ * @param username
+ * @param password
+ * @returns {Promise<*|undefined>}
+ */
+export async function getTokenForUser({
   clientId,
   agency = '',
   username = null,
   password = null
 }) {
-  return getToken(clientId, agency, username, password);
+  let loginAgency = agency;
+  if (loginAgency) {
+     const branch = await getAgency(loginAgency);
+     loginAgency = branch.loginAgencyId ?? loginAgency;
+  }
+  return getToken(clientId, loginAgency, username, password);
 }
 
+/**
+ *
+ * @param token
+ * @returns {Promise<{count: number}|any|undefined>}
+ */
 export function revokeClientToken(token) {
   return revokeToken(token);
 }

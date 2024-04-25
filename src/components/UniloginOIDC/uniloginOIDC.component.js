@@ -13,7 +13,7 @@ import {getMockedUniloginOidcLogoutUrl, getMockedUniloginOidcUrl} from './mocks/
 import {identityProviderValidationFailed} from '../Identityprovider/identityprovider.component';
 
 /* remove debugging when oidc is in production */
-const consoleDebug = true;
+const consoleDebug = false;
 
 /**
  * Genereates and returns a url to be used for login using OIDC UNI-Login
