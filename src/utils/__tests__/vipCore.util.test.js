@@ -15,6 +15,7 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_0',
     agencyName: 'ægencyName_0',
     branchName: 'branchName_0',
+    borrowerCheckAllowed: true,
     misc: 'extra info',
     municipalityNo: '910'
   },
@@ -23,6 +24,7 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_1',
     agencyName: 'agencyName_1',
     branchName: 'branchName_1',
+    borrowerCheckAllowed: true,
     misc: 'extra info',
     municipalityNo: '101'
   },
@@ -31,6 +33,7 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_2',
     agencyName: 'agencyName_2',
     branchName: 'branchName_2',
+    borrowerCheckAllowed: true,
     type: 'Folkebibliotek',
     misc: 'extra info',
     municipalityNo: '615'
@@ -40,6 +43,7 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_3',
     agencyName: 'agencyName_3',
     branchName: 'branchName_3',
+    borrowerCheckAllowed: true,
     type: 'Forskningsbibliotek',
     misc: 'extra info'
   },
@@ -48,6 +52,7 @@ const mockAgencyList = [
     branchShortName: 'branchShortName_4',
     agencyName: 'agencyName_4',
     branchName: 'branchName_4',
+    borrowerCheckAllowed: true,
     type: 'Forskningsbibliotek',
     misc: 'extra info'
   }
@@ -87,7 +92,7 @@ describe('Unittesting methods in agencies.util.js', () => {
 
     const result = await getListOfAgenciesForFrontend();
 
-    expect(expected).toEqual(result);
+    expect(result).toEqual(expected);
   });
 
   it('should return Forskningsbiblioteker only', async () => {
