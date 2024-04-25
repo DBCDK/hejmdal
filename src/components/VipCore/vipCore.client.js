@@ -88,8 +88,7 @@ async function getBorrowercheckLibraries() {
   if (CONFIG.mock_externals.vipCore) {
     return [];
   }
-  let response;
-  response = await promiseRequest('post', {
+  const response = await promiseRequest('post', {
     url: CONFIG.vipCore.uri + '/borrowerchecklist/',
     body: {
       serviceRequester: 'login.bib.dk',
