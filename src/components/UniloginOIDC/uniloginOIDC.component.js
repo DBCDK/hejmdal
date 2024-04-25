@@ -173,9 +173,7 @@ function randomString(length) {
  * @returns {Promise<*>}
  */
 export async function uniloginOidcCallback(req) {
-  console.log('uniloginOidcCallback', req.params);
   const oidcResult = await validateUniloginOidcTicket(req);
-  console.log('uniloginOidcCallback result', oidcResult);
   if (oidcResult && oidcResult.uniid) {
     req.setUser({
       userType: 'unilogin_oidc',

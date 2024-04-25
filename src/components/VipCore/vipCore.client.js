@@ -88,16 +88,15 @@ async function getBorrowercheckLibraries() {
   if (CONFIG.mock_externals.vipCore) {
     return [];
   }
-    let response;
-    response = await promiseRequest('post', {
-      url: CONFIG.vipCore.uri + '/borrowerchecklist/',
-      body: {
-        serviceRequester: 'login.bib.dk',
-        borrowerCheckAllowed: 'true',
-        trackingId: 'login.bib.dk'
-      },
-      json: true
-    });
+  const response = await promiseRequest('post', {
+    url: CONFIG.vipCore.uri + '/borrowerchecklist/',
+    body: {
+      serviceRequester: 'login.bib.dk',
+      borrowerCheckAllowed: 'true',
+      trackingId: 'login.bib.dk'
+    },
+    json: true
+  });
 
   if (response.statusCode === 200) {
     if (response.body && Array.isArray(response.body.borrowerCheckLibrary)) {
@@ -130,22 +129,30 @@ function parseFindLibraryResponse(response, checkLibraries) {
   if (response && Array.isArray(response.pickupAgency)) {
     response.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
+      const branchType = getAgencyField(agency, 'branchType');
+      const agencyType = getAgencyField(agency, 'agencyType');
+      const isMunicipalityBranch = (agencyType === 'Folkebibliotek' && branchType === 'f');
+      let loginAgencyId = checkLibraries[branchId] ? checkLibraries[branchId].loginAgencyId : branchId;
       if (!CONFIG.mock_externals.vipCore && !checkLibraries[branchId]) {
-        noBorrowercheckSupport.push(branchId);
-        return;
+        if (isMunicipalityBranch) {
+          loginAgencyId = getAgencyField(agency, 'agencyId');
+        } else {
+          noBorrowercheckSupport.push(branchId);
+          return;
+        }
       }
 
-      const branchType = getAgencyField(agency, 'branchType');
       const item = {
         agencyId: branchId,
         branchId: branchId,
         agencyName: '',
-        loginAgencyId: checkLibraries[branchId] ? checkLibraries[branchId].loginAgencyId : branchId,
+        borrowerCheckAllowed: !!checkLibraries[branchId] || CONFIG.mock_externals.vipCore,
+        loginAgencyId: loginAgencyId,
         branchName: getAgencyField(agency, 'branchName'),
         branchShortName: getAgencyField(agency, 'branchShortName'),
         city: getAgencyField(agency, 'city'),
         address: getAgencyField(agency, 'postalAddress'),
-        type: getAgencyField(agency, 'agencyType'),
+        type: agencyType,
         registrationFormUrl: getAgencyField(agency, 'registrationFormUrl'),
         branchWebsiteUrl: getAgencyField(agency, 'branchWebsiteUrl'),
         registrationFormUrlText: getAgencyField(agency, 'registrationFormUrlText'),
@@ -157,7 +164,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
       if (agency.geolocation) {
         item.distance = getAgencyField(agency.geolocation, 'distanceInMeter');
       }
-      if (branchId !== item.loginAgencyId) {
+      if ((branchId !== item.loginAgencyId) && !isMunicipalityBranch) {
         useLoginAgency.push(branchId);
       }
       if (['H', 'P'].includes(branchType)) {
@@ -165,7 +172,9 @@ function parseFindLibraryResponse(response, checkLibraries) {
       }
       else {
         item.agencyName = municipalityName[branchId] ?? (item.branchShortName ?? item.branchName);
-        addBranchLibrary.push(branchId);
+        if (!isMunicipalityBranch) {
+          addBranchLibrary.push(branchId);
+        }
       }
 
       libraryList.push(item);

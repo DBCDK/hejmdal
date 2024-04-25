@@ -105,19 +105,16 @@ async function setUiList() {
     };
     agencyList.forEach(branch => {
       const type = getType(branch);
-      if (!branch.agencyName || !type) {
-        return;
+      if (branch.agencyName && branch.borrowerCheckAllowed && type) {
+        uiBranchList[type].push({
+          branchId: branch.branchId,
+          name: branch.agencyName,
+          registrationUrl: branch.registrationFormUrl || branch.branchWebsiteUrl
+        });
       }
-      uiBranchList[type].push({
-        branchId: branch.branchId,
-        name: branch.agencyName,
-        registrationUrl: branch.registrationFormUrl || branch.branchWebsiteUrl
-      });
     });
     uiBranchList.folk.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
-    uiBranchList.forsk.sort((b1, b2) =>
-      b1.name.localeCompare(b2.name, 'da-DK')
-    );
+    uiBranchList.forsk.sort((b1, b2) => b1.name.localeCompare(b2.name, 'da-DK'));
   }
 }
 
