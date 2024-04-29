@@ -10,6 +10,7 @@ import {CONFIG} from './config.util';
  * @type {Array}
  */
 let agencyList = [];
+let municipalityToAgencyList = {};
 let uiBranchList = {};
 let agencyRenewTime = Number.MAX_SAFE_INTEGER;
 
@@ -19,7 +20,7 @@ let agencyRenewTime = Number.MAX_SAFE_INTEGER;
  * @returns {Promise<void>}
  */
 export async function cacheAgencies(name = '') {
-  agencyList = await libraryListFromName(name);
+  ({agencyList, municipalityToAgencyList} = await libraryListFromName(name));
   if (agencyList.length) {
     agencyRenewTime = new Date().getTime() + CONFIG.vipCore.life_time;
   }
@@ -37,6 +38,16 @@ export async function getListOfAgenciesForFrontend(filterParam = null) {
     return uiBranchList[filterParam];
   }
   return uiBranchList;
+}
+
+/** Handles exception for the general rule for municipality and agencyId
+ *
+ * @param municipality
+ * @returns {Promise<null>}
+ */
+export async function getAgencyFromMunicipality(municipality) {
+  await setAgencyList();
+  return municipalityToAgencyList[municipality] ?? null;
 }
 
 /**

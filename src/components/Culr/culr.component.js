@@ -1,6 +1,6 @@
 /**
  * @file
- * CULR compoennt handles all interaction between the containing application and CULR
+ * CULR component handles all interaction between the containing application and CULR
  */
 
 import * as culr from './culr.client';
