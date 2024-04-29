@@ -119,13 +119,14 @@ async function getBorrowercheckLibraries() {
  *
  * @param response
  * @param checkLibraries
- * @returns {Array}
+ * @returns {{municipalityToAgencyList: {}, agencyList: *[]}}
  */
 function parseFindLibraryResponse(response, checkLibraries) {
   const noBorrowercheckSupport = [];
   const addBranchLibrary = [];
   const useLoginAgency = [];
-  const libraryList = [];
+  const agencyList = [];
+  let municipalityToAgencyList = {};
   if (response && Array.isArray(response.pickupAgency)) {
     response.pickupAgency.forEach(agency => {
       const branchId = getAgencyField(agency, 'branchId');
@@ -142,6 +143,9 @@ function parseFindLibraryResponse(response, checkLibraries) {
         }
       }
 
+      if (checkLibraries[branchId] && checkLibraries[branchId].municipalityNumber) {
+        municipalityToAgencyList[checkLibraries[branchId].municipalityNumber] = checkLibraries[branchId].loginAgencyId;
+      }
       const item = {
         agencyId: branchId,
         branchId: branchId,
@@ -177,7 +181,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
         }
       }
 
-      libraryList.push(item);
+      agencyList.push(item);
     });
     if (noBorrowercheckSupport.length) {
       console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
@@ -190,7 +194,7 @@ function parseFindLibraryResponse(response, checkLibraries) {
     }
   }
 
-  return libraryList;
+  return {agencyList, municipalityToAgencyList};
 }
 
 /**

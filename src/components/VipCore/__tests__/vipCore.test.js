@@ -154,7 +154,7 @@ describe('Test vipCore component', () => {
       }
     ];
 
-    expect(list).toEqual(await libraryListFromName('horsen?'));
+    expect(list).toEqual((await libraryListFromName('horsen?')).agencyList);
   });
 
   it('Lookup a library from position', async () => {
@@ -197,11 +197,11 @@ describe('Test vipCore component', () => {
       }
     ];
 
-    expect(list).toEqual(await libraryListFromPosition('55.72', '12.35'));
+    expect(list).toEqual((await libraryListFromPosition('55.72', '12.35')).agencyList);
   });
 
   it('Lookup a library not there', async () => {
     const empty = [];
-    expect(empty).toEqual(await libraryListFromName('notFound'));
+    expect(empty).toEqual((await libraryListFromName('notFound')).agencyList);
   });
 });
