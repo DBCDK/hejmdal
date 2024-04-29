@@ -1,4 +1,4 @@
-@svg-load unilogin url(svg/services/uni-login.svg) {
+@svg-load unilogin url(svg/services/Unilogin.svg) {
   fill: black;
 }
 
@@ -6,6 +6,6 @@
   display: block;
   margin-top: 3px;
   background: svg-inline(unilogin) no-repeat center;
-  width: 70px;
+  width: 90px;
   height: 20px;
 }

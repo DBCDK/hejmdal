@@ -163,15 +163,15 @@ const helpTexts = {
     ]
   },
   login_unilogin: {
-    title: 'Hjælp til login med UNI•Login',
+    title: 'Hjælp til login med Unilogin',
     sections: [
       {
-        header: 'UNI•Login',
+        header: 'Unilogin',
         texts: [
-          'Vælg UNI•Login, hvis du vil logge ind ved hjælp af dit UNI•Login.',
-          'Du vil blive viderestillet til UNI•Login. ' +
-            'Når du er logget ind der, bliver du stillet tilbage til Bibliotekslogin og vil være logget ind med både Bibliotekslogin og UNI•Login',
-          'Du kan herefter bruge andre sider, der benytter Bibliotekslogin eller UNI•Login, uden at skulle logge ind igen.'
+          'Vælg Unilogin, hvis du vil logge ind ved hjælp af dit Unilogin.',
+          'Du vil blive viderestillet til Unilogin. ' +
+            'Når du er logget ind der, bliver du stillet tilbage til Bibliotekslogin og vil være logget ind med både Bibliotekslogin og Unilogin',
+          'Du kan herefter bruge andre sider, der benytter Bibliotekslogin eller Unilogin, uden at skulle logge ind igen.'
         ]
       }
     ]
