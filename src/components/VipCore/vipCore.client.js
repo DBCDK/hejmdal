@@ -85,18 +85,20 @@ export async function libraryListFromPosition(
  * @returns {Array}
  */
 async function getBorrowercheckLibraries() {
+  let response;
   if (CONFIG.mock_externals.vipCore) {
-    return [];
+    response = getMockClient('checkLibraries');
+  }  else {
+    response = await promiseRequest('post', {
+      url: CONFIG.vipCore.uri + '/borrowerchecklist/',
+      body: {
+        serviceRequester: 'login.bib.dk',
+        borrowerCheckAllowed: 'true',
+        trackingId: 'login.bib.dk'
+      },
+      json: true
+    });
   }
-  const response = await promiseRequest('post', {
-    url: CONFIG.vipCore.uri + '/borrowerchecklist/',
-    body: {
-      serviceRequester: 'login.bib.dk',
-      borrowerCheckAllowed: 'true',
-      trackingId: 'login.bib.dk'
-    },
-    json: true
-  });
 
   if (response.statusCode === 200) {
     if (response.body && Array.isArray(response.body.borrowerCheckLibrary)) {

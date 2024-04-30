@@ -9,11 +9,9 @@ import {validateUserInLibrary} from '../Borchk/borchk.component';
 import {CONFIG} from '../../utils/config.util';
 import {borchkUserIdIsGlobal} from '../../utils/cpr.util';
 import {populateCulr} from '../../utils/populateCulr.util';
+import {getAgencyFromMunicipality} from '../../utils/vipCore.util';
 import {sortBy} from 'lodash';
 
-const municipalityTab = Object.fromEntries(
-  CONFIG.municipalityAgencyTab.replace(/[ ,]+/g, ' ').trim().split(' ').map(s => s.split(':'))
-);
 
 /**
  * Retrieval of user identity/identities from CULR webservice
@@ -166,7 +164,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
             if (borchkInfo.municipalityNumber.match(/^[1-8][0-9]{2}$/)) {
               // Set municipalityAgency from municipalityNumber since this can be different than the login agency
               // As such, we do not know if the user is registered at the municipalityAgency when it differs from the login agency
-              response.municipalityAgencyId = setMunicipalityAgency(borchkInfo.municipalityNumber);
+              response.municipalityAgencyId = await setMunicipalityAgency(borchkInfo.municipalityNumber);
               log.info('municipality info. borchk: ', response);
               return response;
             }
@@ -181,7 +179,7 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
         log.debug('Ignore CULR info when setting municipalityAgencyId', user.agency, culrResponse.MunicipalityNo);
         response.municipalityAgencyId = user.agency;
       } else {
-        response.municipalityAgencyId = setMunicipalityAgency(culrResponse.MunicipalityNo);
+        response.municipalityAgencyId = await setMunicipalityAgency(culrResponse.MunicipalityNo);
       }
       log.info('municipality info. culr: ', response);
     }
@@ -213,8 +211,8 @@ export async function getUserInfoFromBorchk(culrResponse, user) {
  * @param municipality {string}
  * @returns {string|null}
  */
-function setMunicipalityAgency(municipality) {
-  return municipalityTab[municipality] ?? (municipality.length === 3 ? `7${municipality}00` : null);
+async function setMunicipalityAgency(municipality) {
+  return await getAgencyFromMunicipality(municipality) ?? (municipality.length === 3 ? `7${municipality}00` : null);
 }
 
 /**
