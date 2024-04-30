@@ -153,21 +153,21 @@ context('Borchk form', () => {
     // Show all
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 2);
-    cy.get('#borchk-dropdown .agency').should('have.length', 15);
+    cy.get('#borchk-dropdown .agency').should('have.length', 19);
 
     // Show folkebiblioteker
     cy.visit(`${authorize}&agencytype=folk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
     cy.get('#borchk-dropdown .subject').should('have.length', 0);
-    cy.get('#borchk-dropdown .agency').should('have.length', 8);
+    cy.get('#borchk-dropdown .agency').should('have.length', 11);
     cy.get('#borchk-dropdown .agency').should(
       'contain.text',
-      'BýarbókasavniðDBC dummy libraryDBC Test libraryKalaallit NunaatNæstvedRingstedSlagelseAarhus'
+      'BornholmBýarbókasavniðDBC dummy libraryDBC Test libraryEsbjergKalaallit NunaatNæstvedRingstedSlagelseSydslesvigAarhus'
     );
     // Show forskningsbiblioteker
     cy.visit(`${authorize}&agencytype=forsk`);
     cy.get('#borchk-dropdown [data-cy=caret-libraries-btn]').click();
-    cy.get('#borchk-dropdown .agency').should('have.length', 7);
+    cy.get('#borchk-dropdown .agency').should('have.length', 8);
     cy.get('#borchk-dropdown .agency')
       .first()
       .should('have.text', 'Campus Slagelse');
