@@ -113,10 +113,14 @@ export async function getTokenForUser({
   password = null
 }) {
   let loginAgency = agency;
+//  Need more consideration. Token must be users agency/branch to get token containing the users agency/branch
+//    Using the loginAgency (if any) will fail when retrieving the users rights from dbcidp
+/*
   if (loginAgency) {
      const branch = await getAgency(loginAgency);
      loginAgency = branch.loginAgencyId ?? loginAgency;
   }
+*/
   return getToken(clientId, loginAgency, username, password);
 }
 
