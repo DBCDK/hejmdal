@@ -9,6 +9,10 @@
 _Heimdall (Hejmdal in Danish, Heimdallr in Norrønt) is attested as possessing foreknowledge, keen eyesight and hearing, is described as "the whitest of the gods" and keeps watch for the onset of Ragnarök while drinking fine mead in his dwelling Himinbjörg, located where the burning rainbow bridge Bifröst meets heaven_
 [Wikipedia](https://en.wikipedia.org/wiki/Heimdallr)
 
+## MOVED to private git
+
+As of may 2end 2024, the code is moved to DBC's git repository. Contact [DBC](http://dbc.dk)
+
 ## Releases
 
 Releases are found at GitHub [/releases](https://github.com/DBCDK/hejmdal/releases). Each containing a link to the changelog for the given release. A consolidated changelog for all releases is found at [CHANGELOG.md](https://github.com/DBCDK/hejmdal/blob/master/CHANGELOG.md) in the project root.  
