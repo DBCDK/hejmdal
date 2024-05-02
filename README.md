@@ -11,7 +11,7 @@ _Heimdall (Hejmdal in Danish, Heimdallr in Norrønt) is attested as possessing f
 
 ## MOVED to private git
 
-As of may 2end 2024, the code is moved to DBC's git repository. Contact [DBC](http://dbc.dk)
+As of may 2end 2024, the code is moved to DBC's git repository. Contact [DBC](https://www.dbc.dk)
 
 ## Releases
 
