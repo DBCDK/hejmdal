@@ -185,15 +185,20 @@ function parseFindLibraryResponse(response, checkLibraries) {
 
       agencyList.push(item);
     });
+    /* eslint-disable no-console */
     if (noBorrowercheckSupport.length) {
-      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
+      console.log('INFO: ' + noBorrowercheckSupport.sort() + ' does not support borrowercheck for login.bib.dk');
     }
     if (addBranchLibrary.length) {
-      console.log('INFO: ' + addBranchLibrary.sort() + ' branches support borrowercheck for login.bib.dk'); // eslint-disable-line no-console
+      console.log('INFO: ' + addBranchLibrary.sort() + ' branches support borrowercheck for login.bib.dk');
     }
     if (useLoginAgency.length) {
-      console.log('INFO: ' + useLoginAgency.sort() + ' branches use different login agency'); // eslint-disable-line no-console
+      console.log('INFO: ' + useLoginAgency.sort() + ' branches use different login agency');
     }
+    if (municipalityToAgencyList) {
+      console.log('INFO: municipality anormality', municipalityToAgencyList);
+    }
+    /* eslint-enable no-console */
   }
 
   return {agencyList, municipalityToAgencyList};
